@@ -2,17 +2,9 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { useQuery } from "react-query";
 
 function App() {
   const [count, setCount] = useState(0);
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["ping"],
-    queryFn: () =>
-      fetch("/ping")
-        .then((res) => res.json())
-        .then((data) => data.data),
-  });
 
   return (
     <>
@@ -25,7 +17,6 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <h3>ping: {isLoading ? "loading..." : error ? "error" : data}</h3>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
