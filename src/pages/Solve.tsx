@@ -1,9 +1,110 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import styled from "styled-components";
+import ProblemDescription from "../components/solve/ProblemDescription.tsx";
+import CodeEditor from "../components/solve/CodeEditor.tsx";
+import TestResultConsole from "../components/solve/TestResultConsole.tsx";
+import DragResizable from "../components/solve/DragResizable.tsx";
+
+function safeNum(_n: string | undefined) {
+  const n = Number(_n);
+  return Number.isSafeInteger(n) ? n : null;
+}
 
 export default function Solve() {
   const params = useParams();
 
+  const problemNumber = safeNum(params.problem_number);
+  const handleRunTest = () => {
+    alert("테스트 실행");
+  };
+  const handleSubmit = () => {
+    alert("제출하기");
+  };
+
+  if (problemNumber === null) {
+    return <main>invalid problem number</main>;
+  }
+
   return (
-    <main>Solve (problem number: {params.problem_number ?? "no number"})</main>
+    <Main>
+      <TopNav>
+        <Link to={"/"}>
+          <img src="/LeftArrow.svg" alt="&larr;" width={31} />
+          Back
+        </Link>
+      </TopNav>
+      <Row>
+        <Col>
+          <ProblemDescription problemNumber={problemNumber} />
+        </Col>
+        <Col>
+          <Col>
+            <CodeEditor />
+            <DragResizable>
+              <TestResultConsole />
+            </DragResizable>
+          </Col>
+          <BottomNav>
+            <SubmitButton onClick={handleRunTest}>테스트 실행</SubmitButton>
+            <SubmitButton onClick={handleSubmit} $primary>
+              제출하기
+            </SubmitButton>
+          </BottomNav>
+        </Col>
+      </Row>
+    </Main>
   );
 }
+
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100vh;
+  overflow: hidden;
+`;
+const TopNav = styled.nav`
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  background: #f0745f;
+  border-bottom: 4px solid #373737;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+  }
+`;
+const Row = styled.div`
+  display: flex;
+  flex: 1;
+  gap: 16px;
+  padding: 0 16px 16px;
+  min-height: 0;
+`;
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+`;
+const BottomNav = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 16px 0 0;
+`;
+const SubmitButton = styled.button<{ $primary?: boolean }>`
+  padding: 9px 20px;
+  border: 4px solid #373737;
+  border-radius: 5px;
+  box-shadow: 4px 4px #323232;
+  font-size: 18px;
+  background: ${(props) => (props.$primary ? "#f0745f" : "#ededed")};
+`;
