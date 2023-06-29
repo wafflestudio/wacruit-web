@@ -11,7 +11,6 @@
 ## 개발 환경 세팅
 ```shell
 yarn
-npx msw init public/ --save # MSW 세팅
 husky install # 허스키(pre-commit library) 설치
 husky add .husky/pre-commit "lint-staged --no-stash --verbose && yarn build" # 허스키 명령어 세팅
 
