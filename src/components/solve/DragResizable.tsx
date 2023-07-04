@@ -64,7 +64,7 @@ export default function DragResizable(props: Props) {
         }}
       >
         <img
-          src="/DragHandle.svg"
+          src="/icon/DragHandle.svg"
           alt="&equiv;"
           draggable={false}
           height={HANDLE_HEIGHT}

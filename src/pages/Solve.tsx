@@ -29,7 +29,7 @@ export default function Solve() {
     <Main>
       <TopNav>
         <Link to={"/"}>
-          <img src="/LeftArrow.svg" alt="&larr;" width={31} />
+          <img src="/icon/LeftArrow.svg" alt="&larr;" width={31} />
           Back
         </Link>
       </TopNav>
