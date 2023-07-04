@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface Props {
   children: ReactNode;
+  initialHeight: number;
 }
 
 // 높이 조절 손잡이의 크기
@@ -25,12 +26,20 @@ export default function DragResizable(props: Props) {
     maxHeight: number;
   } | null>(null);
   // 드래그되지 않는 상태에서 저장하고 있는 높이
-  const [height, setHeight] = useState("300px");
+  const [height, setHeight] = useState(`${props.initialHeight}px`);
+
+  // props.initialHeight가 바뀌면 드래그 초기화
+  const [propHeight, setPropHeight] = useState(props.initialHeight);
+  if (propHeight !== props.initialHeight) {
+    setPropHeight(props.initialHeight);
+    setHeight(`${props.initialHeight}px`);
+    dragInfo.current = null;
+  }
 
   useEffect(() => {
     const handleMouseUp = () => {
-      if (!container.current) return;
       dragInfo.current = null;
+      if (!container.current) return;
       setHeight(container.current.style.height);
     };
     const handleMouseDown = (e: MouseEvent) => {

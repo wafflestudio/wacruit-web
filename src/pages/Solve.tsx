@@ -40,7 +40,7 @@ export default function Solve() {
         <Col>
           <Col>
             <CodeEditor />
-            <DragResizable>
+            <DragResizable initialHeight={300}>
               <TestResultConsole />
             </DragResizable>
           </Col>
