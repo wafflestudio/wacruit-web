@@ -13,6 +13,8 @@ const Section = styled.section`
   border: 4px solid #373737;
   border-bottom-width: 2px;
   border-radius: 5px 5px 0 0;
+
+  /* Solve page layout */
   flex: 1;
   overflow: auto;
   min-height: 0;
