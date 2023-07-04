@@ -26,42 +26,55 @@ export default function Solve() {
   }
 
   return (
-    <Main>
-      <TopNav>
-        <Link to={"/"}>
-          <img src="/icon/LeftArrow.svg" alt="&larr;" width={31} />
-          Back
-        </Link>
-      </TopNav>
-      <Row>
-        <Col>
-          <ProblemDescription problemNumber={problemNumber} />
-        </Col>
-        <Col>
+    <Container>
+      <Main>
+        <TopNav>
+          <Link to={"/"}>
+            <img src="/icon/LeftArrow.svg" alt="&larr;" width={31} />
+            Back
+          </Link>
+        </TopNav>
+        <Row>
           <Col>
-            <CodeEditor />
-            <DragResizable initialHeight={300}>
-              <TestResultConsole />
-            </DragResizable>
+            <ProblemDescription problemNumber={problemNumber} />
           </Col>
-          <BottomNav>
-            <SubmitButton onClick={handleRunTest}>테스트 실행</SubmitButton>
-            <SubmitButton onClick={handleSubmit} $primary>
-              제출하기
-            </SubmitButton>
-          </BottomNav>
-        </Col>
-      </Row>
-    </Main>
+          <Col>
+            <Col>
+              <CodeEditor />
+              <DragResizable initialHeight={300}>
+                <TestResultConsole />
+              </DragResizable>
+            </Col>
+            <BottomNav>
+              <SubmitButton onClick={handleRunTest}>테스트 실행</SubmitButton>
+              <SubmitButton onClick={handleSubmit} $primary>
+                제출하기
+              </SubmitButton>
+            </BottomNav>
+          </Col>
+        </Row>
+      </Main>
+    </Container>
   );
 }
 
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  padding: 30px;
+  box-sizing: border-box;
+  background: #fff7e9;
+`;
 const Main = styled.main`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 100vh;
+  flex: 1;
   overflow: hidden;
+  border: 4px solid #373737;
+  box-shadow: 10px 10px #373737;
+  border-radius: 5px;
+  background: white;
 `;
 const TopNav = styled.nav`
   display: flex;
