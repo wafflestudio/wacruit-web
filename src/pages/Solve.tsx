@@ -120,4 +120,9 @@ const SubmitButton = styled.button<{ $primary?: boolean }>`
   box-shadow: 4px 4px #323232;
   font-size: 18px;
   background: ${(props) => (props.$primary ? "#f0745f" : "#ededed")};
+  cursor: pointer;
+  &:active {
+    box-shadow: 2px 2px #323232;
+    transform: translate(2px, 2px);
+  }
 `;
