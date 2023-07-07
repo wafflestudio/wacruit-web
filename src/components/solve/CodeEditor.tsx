@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import SelectLanguage, { Language } from "./SelectLanguage.tsx";
+import LanguageSelection, { Language } from "./LanguageSelection.tsx";
 import { useState } from "react";
+import EditorToggle from "./EditorToggle.tsx";
 
 interface Props {
   onFullscreenClick: () => void;
@@ -8,6 +9,7 @@ interface Props {
 
 export default function CodeEditor(props: Props) {
   const [language, setLanguage] = useState<Language>("Python");
+  const [isEditorOpen, setIsEditorOpen] = useState(true);
   return (
     <Section>
       {/* Header가 Editor를 가리도록, Header를 먼저 배치. 실제 렌더 위치는 grid에 의해 보정됨 */}
@@ -16,10 +18,11 @@ export default function CodeEditor(props: Props) {
         <span>Script</span>
         <FullscreenButton onClick={props.onFullscreenClick} />
       </Header>
-      <SelectLanguage
+      <LanguageSelection
         language={language}
         onChange={(language) => setLanguage(language)}
       />
+      <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} />
     </Section>
   );
 }
@@ -27,7 +30,7 @@ export default function CodeEditor(props: Props) {
 const Section = styled.section`
   display: grid;
   grid-template-rows: auto 1fr;
-  grid-template-columns: auto auto 1fr;
+  grid-template-columns: auto auto 1fr auto;
 
   min-width: 295px; // 탭 모양이 안 깨지는 크기
 
@@ -61,7 +64,7 @@ const Editor = styled.pre`
   border-radius: 0 4px 4px 4px;
   flex: 1;
   grid-row: 2;
-  grid-column: 1 / 4;
+  grid-column: 1 / 5;
   overflow: auto;
 `;
 

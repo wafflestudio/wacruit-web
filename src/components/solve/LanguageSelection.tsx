@@ -9,7 +9,7 @@ interface Props {
   onChange: (language: Language) => void;
 }
 
-export default function SelectLanguage(props: Props) {
+export default function LanguageSelection(props: Props) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>
