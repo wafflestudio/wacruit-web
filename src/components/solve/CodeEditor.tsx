@@ -59,17 +59,20 @@ const Section = styled.section`
 `;
 
 const Header = styled.h3`
-  margin: 0 0 -4px 0; // 탭 헤더로 테두리 일부를 가린다
   background: url("/image/trapzoid.svg");
+
   display: flex;
   align-items: center;
+
   padding-left: 32px;
   padding-right: 32px;
   height: 47px;
   width: 293px;
+  margin: 0 0 -4px 0; // 탭 헤더로 테두리 일부를 가린다
+  box-sizing: border-box;
+
   grid-row: 1;
   grid-column: 1;
-  box-sizing: border-box;
 
   span {
     flex: 1;
@@ -77,19 +80,22 @@ const Header = styled.h3`
 `;
 
 const EditorWrapper = styled.div`
-  margin: 0;
   border: 4px solid #373737;
   border-bottom-width: 2px;
   border-radius: 0 4px 4px 4px;
+
   flex: 1;
+  overflow: auto;
+  margin: 0;
+
   grid-row: 2;
   grid-column: 1 / 5;
-  overflow: auto;
 `;
 
 const FullscreenButton = styled.button`
   width: 20px;
   height: 20px;
+
   border: none;
   background: url("/icon/FullScreen.svg");
   cursor: pointer;

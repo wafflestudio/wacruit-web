@@ -78,6 +78,7 @@ const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
+
   background: white;
   border: 4px solid #373737;
   border-radius: 5px;
@@ -85,12 +86,14 @@ const List = styled.ul`
   button {
     width: 100%;
     text-align: left;
-    border: 0;
+    position: relative;
+    padding-left: 20px;
+
+    border: none;
     background: none;
     color: #373737;
     cursor: pointer;
-    position: relative;
-    padding-left: 20px;
+
     img {
       position: absolute;
       left: 4px;
