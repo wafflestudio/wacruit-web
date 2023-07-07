@@ -2,18 +2,37 @@ import styled from "styled-components";
 import LanguageSelection, { Language } from "./LanguageSelection.tsx";
 import { useState } from "react";
 import EditorToggle from "./EditorToggle.tsx";
+import { useCodeMirror } from "@uiw/react-codemirror";
+import { LanguageSupport } from "@codemirror/language";
+import { python } from "@codemirror/lang-python";
+import { java } from "@codemirror/lang-java";
+import { javascript } from "@codemirror/lang-javascript";
 
 interface Props {
   onFullscreenClick: () => void;
 }
 
+const languages: Record<Language, LanguageSupport> = {
+  Python: python(),
+  Java: java(),
+  Javascript: javascript(),
+};
+
 export default function CodeEditor(props: Props) {
   const [language, setLanguage] = useState<Language>("Python");
   const [isEditorOpen, setIsEditorOpen] = useState(true);
+  const [code, setCode] = useState("");
+  const { setContainer } = useCodeMirror({
+    height: "100%",
+    style: { height: "100%" },
+    extensions: [languages[language]],
+    value: code,
+    onChange: (v) => setCode(v),
+  });
   return (
     <Section>
       {/* Header가 Editor를 가리도록, Header를 먼저 배치. 실제 렌더 위치는 grid에 의해 보정됨 */}
-      <Editor>{'main() {\n  puts("Hello, world!");\n}'}</Editor>
+      <EditorWrapper ref={(elem) => setContainer(elem ?? undefined)} />
       <Header>
         <span>Script</span>
         <FullscreenButton onClick={props.onFullscreenClick} />
@@ -57,7 +76,7 @@ const Header = styled.h3`
   }
 `;
 
-const Editor = styled.pre`
+const EditorWrapper = styled.div`
   margin: 0;
   border: 4px solid #373737;
   border-bottom-width: 2px;
