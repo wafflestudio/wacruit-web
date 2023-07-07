@@ -1,21 +1,65 @@
 import styled from "styled-components";
 
-export default function CodeEditor() {
+interface Props {
+  onFullscreenClick: () => void;
+}
+
+export default function CodeEditor(props: Props) {
   return (
     <Section>
-      <h3>Script</h3>
-      <pre>{'main() {\n  puts("Hello, world!");\n}'}</pre>
+      {/* Header가 Editor를 가리도록, Header를 먼저 배치. 실제 렌더 위치는 grid에 의해 보정됨 */}
+      <Editor>{'main() {\n  puts("Hello, world!");\n}'}</Editor>
+      <Header>
+        <span>Script</span>
+        <FullscreenButton onClick={props.onFullscreenClick} />
+      </Header>
     </Section>
   );
 }
 
 const Section = styled.section`
-  border: 4px solid #373737;
-  border-bottom-width: 2px;
-  border-radius: 5px 5px 0 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+
+  min-width: 295px; // 탭 모양이 안 깨지는 크기
 
   /* Solve page layout */
   flex: 1;
-  overflow: auto;
   min-height: 0;
+`;
+
+const Header = styled.h3`
+  margin: 0 0 -4px 0; // 탭 헤더로 테두리 일부를 가린다
+  background: url("/image/trapzoid.svg");
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  height: 47px;
+  width: 293px;
+  grid-row: 1;
+  box-sizing: border-box;
+
+  span {
+    flex: 1;
+  }
+`;
+
+const Editor = styled.pre`
+  margin: 0;
+  border: 4px solid #373737;
+  border-bottom-width: 2px;
+  border-radius: 0 4px 4px 4px;
+  flex: 1;
+  grid-row: 2;
+  overflow: auto;
+`;
+
+const FullscreenButton = styled.button`
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: url("/icon/fullscreen.svg");
+  cursor: pointer;
 `;

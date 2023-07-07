@@ -3,7 +3,10 @@ import styled from "styled-components";
 import ProblemDescription from "../components/solve/ProblemDescription.tsx";
 import CodeEditor from "../components/solve/CodeEditor.tsx";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
-import DragResizable from "../components/solve/DragResizable.tsx";
+import DragResizable, {
+  DragResizableRef,
+} from "../components/solve/DragResizable.tsx";
+import { useRef } from "react";
 
 function safeNum(_n: string | undefined) {
   const n = Number(_n);
@@ -12,6 +15,7 @@ function safeNum(_n: string | undefined) {
 
 export default function Solve() {
   const params = useParams();
+  const dragResizableRef = useRef<DragResizableRef>(null);
 
   const problemNumber = safeNum(params.problem_number);
   const handleRunTest = () => {
@@ -40,8 +44,10 @@ export default function Solve() {
           </Col>
           <Col>
             <Col>
-              <CodeEditor />
-              <DragResizable initialHeight={300}>
+              <CodeEditor
+                onFullscreenClick={() => dragResizableRef.current?.minimize()}
+              />
+              <DragResizable initialHeight={300} ref={dragResizableRef}>
                 <TestResultConsole />
               </DragResizable>
             </Col>
