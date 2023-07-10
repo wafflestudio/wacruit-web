@@ -1,14 +1,22 @@
-import { styled } from "styled-components";
-import { BoldText, HorizontalLine, Text } from "./styledComponents";
-import { useState } from "react";
+import {
+  BoldText,
+  HorizontalLine,
+  Table,
+  TableHeader,
+  TableItem,
+  Text,
+} from "./styledComponents";
+import { TestCase } from "./ProblemDescription";
 
-interface TestCase {
-  input: string;
-  output: string;
+interface TestCaseTableProps {
+  defaultTestCases: TestCase[];
+  customTestCases: TestCase[];
 }
 
-export default function TestCaseTable() {
-  const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+export default function TestCaseTable({
+  defaultTestCases,
+  customTestCases,
+}: TestCaseTableProps) {
   return (
     <Table>
       <tbody>
@@ -17,50 +25,35 @@ export default function TestCaseTable() {
           <BoldText as="th">Input</BoldText>
           <BoldText as="th">Output</BoldText>
         </TableHeader>
-        {/* TODO: Array 업데이트 */}
+
         {/* default test cases */}
-        {[1, 2, 3].map((idx) => (
-          <TestCase key={idx}>
-            <BoldText as="th">{idx}</BoldText>
+        {defaultTestCases.map((testCaseItem, idx) => (
+          <TableItem key={idx}>
+            <BoldText as="th">{idx + 1}</BoldText>
             <Text as="td">4, 5</Text>
             <Text as="td">
               a=4
               <br />
               b=5
             </Text>
-          </TestCase>
+          </TableItem>
         ))}
 
         {/* custom test cases */}
-        {customTestCases.length !== 0 && (
-          <HorizontalLine $marginTopInPX="20px" $marginBottomInPX="20px" />
-        )}
+        {customTestCases.length !== 0 && <HorizontalLine margin="20px 0" />}
+        {customTestCases?.map((testCaseItem, idx) => (
+          <TableItem key={idx}>
+            {/* TODO: 아래 3+idx 업데이트 */}
+            <BoldText as="th">{defaultTestCases.length + idx + 1}</BoldText>
+            <td>
+              <Text as="pre">{testCaseItem.input}</Text>
+            </td>
+            <td>
+              <Text as="pre">{testCaseItem.output}</Text>
+            </td>
+          </TableItem>
+        ))}
       </tbody>
     </Table>
   );
 }
-
-// TODO: export 지우기
-export const Table = styled.table`
-  width: 100%;
-  margin-top: 16px;
-  > tbody {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-`;
-
-const TableHeader = styled.tr`
-  display: grid;
-  grid-template-columns: 2fr 11fr 11fr;
-  gap: 10px;
-`;
-export const TestCase = styled(TableHeader)`
-  > th,
-  td {
-    background-color: #f6f6f6;
-    padding: 10px 15px;
-    border-radius: 5px;
-  }
-`;

@@ -54,8 +54,4 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   }
 `;
 
-const ModalDiv = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: blue;
-`;
+const ModalDiv = styled.div``;

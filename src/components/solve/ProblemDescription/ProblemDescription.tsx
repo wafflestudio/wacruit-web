@@ -8,18 +8,37 @@ import Modal from "./Modal";
 // } from "./TestCaseTable";
 import { BoldText, HorizontalLine, Text } from "./styledComponents";
 import TestCaseTable from "./TestCaseTable";
+import TestCaseModal from "./TestCaseModal";
+import { useState } from "react";
 
 interface Props {
   problemNumber: number;
 }
 
+export interface TestCase {
+  input: string;
+  output: string;
+}
+
 export default function ProblemDescription(props: Props) {
+  const defaultTestCases: TestCase[] = [
+    { input: "4, 5", output: "a=4<br/>b=5" },
+    { input: "4, 5", output: "a=4<br/>b=5" },
+    { input: "4, 5", output: "a=4<br/>b=5" },
+  ];
+  const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+
   const modalHandle = useModal();
   return (
     // TODO: 데이터 api 연결
     <Section>
       <Modal handle={modalHandle}>
-        <div>1231312</div>
+        <TestCaseModal
+          setCustomTestCases={setCustomTestCases}
+          onClose={modalHandle.closeModal}
+          defaultTestCases={defaultTestCases}
+          customTestCases={customTestCases}
+        />
       </Modal>
       <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
       <Text>
@@ -33,8 +52,11 @@ export default function ProblemDescription(props: Props) {
       <Text>-100,000 ≤ a, b ≤ 100,000</Text>
       <HorizontalLine margin="17px 0 14px 0" />
 
-      <BoldText>입출력 예시</BoldText>
-      <TestCaseTable />
+      <BoldText margin="0 0 16px 0">입출력 예시</BoldText>
+      <TestCaseTable
+        defaultTestCases={defaultTestCases}
+        customTestCases={customTestCases}
+      />
       <AddTestCaseButton
         onClick={() => {
           modalHandle.openModal();
@@ -74,7 +96,6 @@ const Section = styled.section`
   flex: 1;
 
   * {
-    padding: 0;
     font-family: Pretendard, sans-serif;
     color: #323232;
     box-sizing: border-box;
@@ -89,6 +110,7 @@ const ProblemTitle = styled.h1`
 `;
 
 const AddTestCaseButton = styled.button`
+  padding: 0;
   box-sizing: border-box;
   float: right;
   margin-top: 16px;
