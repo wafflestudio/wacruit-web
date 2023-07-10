@@ -118,14 +118,14 @@ const Section = styled.section`
   * {
     margin: 0;
     padding: 0;
-    font-family: Pretendard;
+    font-family: Pretendard, sans-serif;
     color: #323232;
     list-style-type: none;
     text-decoration: none;
     border-collapse: collapse;
     box-sizing: border-box;
-    letter-spacing: -0.5px;
   }
+
   a {
     text-decoration: inherit;
     color: inherit;
@@ -183,7 +183,7 @@ const AddTestCaseButton = styled.button`
   float: right;
   margin-top: 16px;
   padding: 8px;
-  width: 238px;
+  width: 216px;
   height: 39px;
 
   display: flex;
@@ -202,6 +202,6 @@ const AddTestCaseButton = styled.button`
   }
 
   > p {
-    font-weight: 600;
+    font-weight: 500;
   }
 `;
