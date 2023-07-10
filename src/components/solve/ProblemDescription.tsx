@@ -21,36 +21,62 @@ export default function ProblemDescription(props: Props) {
       <HorizontalLine $marginTopInPX="17px" $marginBottomInPX="14px" />
 
       <BoldText>입출력 예시</BoldText>
-      <TestCaseList>
-        <ListHeader>
-          <div></div>
-          <BoldText>Input</BoldText>
-          <BoldText>Output</BoldText>
-        </ListHeader>
-        {/* TODO: map 함수로 array => ListItem */}
-        <ListItem>
-          <BoldText>#1</BoldText>
-          <Text>4, 5</Text>
-          <Text>
-            a=4 <br /> b=5
-          </Text>
-        </ListItem>
-        <ListItem>
-          <BoldText>#2</BoldText>
-          <Text>4, 5</Text>
-          <Text>
-            a=4 <br /> b=5
-          </Text>
-        </ListItem>
-        <ListItem>
-          <BoldText>#3</BoldText>
-          <Text>4, 5</Text>
-          <Text>
-            a=4 <br /> b=5
-          </Text>
-        </ListItem>
+      <TestCaseTable>
+        <TestCaseHeaderTableRow>
+          <th>
+            <BoldText>#</BoldText>
+          </th>
+          <th>
+            <BoldText>Input</BoldText>
+          </th>
+          <th>
+            <BoldText>Output</BoldText>
+          </th>
+        </TestCaseHeaderTableRow>
+        <TestCaseItemTableRow>
+          <th>
+            <BoldText>1</BoldText>
+          </th>
+          <td>
+            <Text>4, 5</Text>
+          </td>
+          <td>
+            <Text>
+              a=4 <br />
+              b=5
+            </Text>
+          </td>
+        </TestCaseItemTableRow>
+        <TestCaseItemTableRow>
+          <th>
+            <BoldText>2</BoldText>
+          </th>
+          <td>
+            <Text>4, 5</Text>
+          </td>
+          <td>
+            <Text>
+              a=4 <br />
+              b=5
+            </Text>
+          </td>
+        </TestCaseItemTableRow>
+        <TestCaseItemTableRow>
+          <th>
+            <BoldText>3</BoldText>
+          </th>
+          <td>
+            <Text>4, 5</Text>
+          </td>
+          <td>
+            <Text>
+              a=4 <br />
+              b=5
+            </Text>
+          </td>
+        </TestCaseItemTableRow>
         {/* TODO: 테스트 케이스 추가 과정 디자인 요청 & 작업 */}
-      </TestCaseList>
+      </TestCaseTable>
       <AddTestCaseButton
         onClick={() => {
           alert("add");
@@ -130,28 +156,26 @@ const HorizontalLine = styled.hr<{
   height: 1px;
 `;
 
-const TestCaseList = styled.ol`
-  p {
-    text-align: center;
-  }
+const TestCaseTable = styled.table`
   margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 13px;
+  gap: 10px;
 `;
 
-const ListHeader = styled.div`
+const TestCaseTableRow = styled.tr`
   display: grid;
-  grid-template-columns: 24px 1fr 1fr;
-  padding: 0 19px;
+  grid-template-columns: 2fr 11fr 11fr;
+  gap: 10px;
 `;
-
-const ListItem = styled.li`
-  display: grid;
-  grid-template-columns: 24px 1fr 1fr;
-  padding: 7px 19px;
-  background-color: #f6f6f6;
-  border-radius: 6px;
+const TestCaseHeaderTableRow = styled(TestCaseTableRow)``;
+const TestCaseItemTableRow = styled(TestCaseTableRow)`
+  > th,
+  td {
+    background-color: #f6f6f6;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
 `;
 
 const AddTestCaseButton = styled.button`
