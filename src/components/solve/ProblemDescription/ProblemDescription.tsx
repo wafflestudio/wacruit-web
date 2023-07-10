@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import useModal from "./useModal";
 import Modal from "./Modal";
-import { useEffect } from "react";
+// import {
+//   TestCaseHeaderTableRow,
+//   TestCaseItemTableRow,
+//   TestCaseTable,
+// } from "./TestCaseTable";
+import { BoldText, HorizontalLine, Text } from "./styledComponents";
+import TestCaseTable from "./TestCaseTable";
 
 interface Props {
   problemNumber: number;
@@ -13,7 +19,7 @@ export default function ProblemDescription(props: Props) {
     // TODO: 데이터 api 연결
     <Section>
       <Modal handle={modalHandle}>
-        <div></div>
+        <div>1231312</div>
       </Modal>
       <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
       <Text>
@@ -21,46 +27,14 @@ export default function ProblemDescription(props: Props) {
         출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
         입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.
       </Text>
-      <HorizontalLine $marginTopInPX="25px" $marginBottomInPX="14px" />
+      <HorizontalLine margin="25px 0 14px 0" />
 
       <BoldText>제한사항</BoldText>
       <Text>-100,000 ≤ a, b ≤ 100,000</Text>
-      <HorizontalLine $marginTopInPX="17px" $marginBottomInPX="14px" />
+      <HorizontalLine margin="17px 0 14px 0" />
 
       <BoldText>입출력 예시</BoldText>
-      <TestCaseTable>
-        <tbody>
-          <TestCaseHeaderTableRow>
-            <th>
-              <BoldText>#</BoldText>
-            </th>
-            <th>
-              <BoldText>Input</BoldText>
-            </th>
-            <th>
-              <BoldText>Output</BoldText>
-            </th>
-          </TestCaseHeaderTableRow>
-          {/* TODO: 임시조치 */}
-          {[1, 2, 3].map((idx) => (
-            <TestCaseItemTableRow key={idx}>
-              <th>
-                <BoldText>{idx}</BoldText>
-              </th>
-              <td>
-                <Text>4, 5</Text>
-              </td>
-              <td>
-                <Text>
-                  a=4
-                  <br />
-                  b=5
-                </Text>
-              </td>
-            </TestCaseItemTableRow>
-          ))}
-        </tbody>
-      </TestCaseTable>
+      <TestCaseTable />
       <AddTestCaseButton
         onClick={() => {
           modalHandle.openModal();
@@ -100,68 +74,18 @@ const Section = styled.section`
   flex: 1;
 
   * {
-    margin: 0;
     padding: 0;
     font-family: Pretendard, sans-serif;
     color: #323232;
-    list-style-type: none;
-    text-decoration: none;
-    border-collapse: collapse;
     box-sizing: border-box;
-  }
-
-  a {
-    text-decoration: inherit;
-    color: inherit;
   }
 `;
 
 const ProblemTitle = styled.h1`
+  margin: 0;
   font-weight: bold;
   font-size: 40px;
   margin-bottom: 28px;
-`;
-
-const Text = styled.p`
-  font-size: 18px;
-  line-height: 160%;
-`;
-
-const BoldText = styled(Text)`
-  font-weight: bold;
-`;
-
-const HorizontalLine = styled.hr<{
-  $marginTopInPX?: string;
-  $marginBottomInPX?: string;
-}>`
-  margin-top: ${(props) => props.$marginTopInPX || 0};
-  margin-bottom: ${(props) => props.$marginBottomInPX || 0};
-  height: 1px;
-`;
-
-const TestCaseTable = styled.table`
-  margin-top: 16px;
-  > tbody {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-`;
-
-const TestCaseTableRow = styled.tr`
-  display: grid;
-  grid-template-columns: 2fr 11fr 11fr;
-  gap: 10px;
-`;
-const TestCaseHeaderTableRow = styled(TestCaseTableRow)``;
-const TestCaseItemTableRow = styled(TestCaseTableRow)`
-  > th,
-  td {
-    background-color: #f6f6f6;
-    padding: 10px 15px;
-    border-radius: 5px;
-  }
 `;
 
 const AddTestCaseButton = styled.button`
@@ -188,6 +112,7 @@ const AddTestCaseButton = styled.button`
   }
 
   > p {
+    margin: 0;
     font-weight: 500;
   }
 
