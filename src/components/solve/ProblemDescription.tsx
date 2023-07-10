@@ -33,49 +33,22 @@ export default function ProblemDescription(props: Props) {
             <BoldText>Output</BoldText>
           </th>
         </TestCaseHeaderTableRow>
-        <TestCaseItemTableRow>
-          <th>
-            <BoldText>1</BoldText>
-          </th>
-          <td>
-            <Text>4, 5</Text>
-          </td>
-          <td>
-            <Text>
-              a=4 <br />
-              b=5
-            </Text>
-          </td>
-        </TestCaseItemTableRow>
-        <TestCaseItemTableRow>
-          <th>
-            <BoldText>2</BoldText>
-          </th>
-          <td>
-            <Text>4, 5</Text>
-          </td>
-          <td>
-            <Text>
-              a=4 <br />
-              b=5
-            </Text>
-          </td>
-        </TestCaseItemTableRow>
-        <TestCaseItemTableRow>
-          <th>
-            <BoldText>3</BoldText>
-          </th>
-          <td>
-            <Text>4, 5</Text>
-          </td>
-          <td>
-            <Text>
-              a=4 <br />
-              b=5
-            </Text>
-          </td>
-        </TestCaseItemTableRow>
-        {/* TODO: 테스트 케이스 추가 과정 디자인 요청 & 작업 */}
+        {/* TODO: 임시조치 */}
+        {[1, 2, 3].map((idx) => (
+          <TestCaseItemTableRow>
+            <th>
+              <BoldText>{idx}</BoldText>
+            </th>
+            <td>
+              <Text>4, 5</Text>
+            </td>
+            <td>
+              <Text>
+                <pre>{`a=4\nb=5`}</pre>
+              </Text>
+            </td>
+          </TestCaseItemTableRow>
+        ))}
       </TestCaseTable>
       <AddTestCaseButton
         onClick={() => {
@@ -96,12 +69,12 @@ const Section = styled.section`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 37px; // border-left 15px, border-right 15px를 뺀 7px가 보이는 두께
+    width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
   }
   &::-webkit-scrollbar-thumb {
     background: #373737;
-    border-radius: 30px;
-    border: 15px solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
+    border-radius: 10px;
+    border: 5px solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
     // 스크롤바의 border-radius까지 figma대로 구현하려면 위처럼 상하좌우 전체에 border를 주고 border-radius를 적용시켜야 함.
   }
   // 스크롤바 위아래 여백
@@ -109,7 +82,7 @@ const Section = styled.section`
   &::-webkit-scrollbar-button:vertical:end:decrement // 아래 여백
   {
     display: block;
-    height: 13px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 15px 있으므로 13px만
+    height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
   }
 
   /* Solve page layout */
