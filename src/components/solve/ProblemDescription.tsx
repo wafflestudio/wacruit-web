@@ -11,38 +11,39 @@ export default function ProblemDescription(props: Props) {
       <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
       <Text>
         정수 a와 b가 주어집니다. 각 수를 입력받아 입출력 예와 같은 형식으로
-        출력하는 코드를 작성해 보세요.
+        출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
+        입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.
       </Text>
       <HorizontalLine $marginTopInPX="30px" />
 
-      <Text $heading>제한사항</Text>
+      <BoldText>제한사항</BoldText>
       <Text>-100,000 ≤ a, b ≤ 100,000</Text>
       <HorizontalLine $marginTopInPX="20px" />
 
-      <Text $heading>입출력 예시</Text>
+      <BoldText>입출력 예시</BoldText>
       <TestCaseList>
         <ListHeader>
           <div></div>
-          <Text $heading>Input</Text>
-          <Text $heading>Output</Text>
+          <BoldText>Input</BoldText>
+          <BoldText>Output</BoldText>
         </ListHeader>
         {/* TODO: map 함수로 array => ListItem */}
         <ListItem>
-          <Text $heading>#1</Text>
+          <BoldText>#1</BoldText>
           <Text>4, 5</Text>
           <Text>
             a=4 <br /> b=5
           </Text>
         </ListItem>
         <ListItem>
-          <Text $heading>#2</Text>
+          <BoldText>#2</BoldText>
           <Text>4, 5</Text>
           <Text>
             a=4 <br /> b=5
           </Text>
         </ListItem>
         <ListItem>
-          <Text $heading>#3</Text>
+          <BoldText>#3</BoldText>
           <Text>4, 5</Text>
           <Text>
             a=4 <br /> b=5
@@ -67,10 +68,23 @@ const Section = styled.section`
   border-radius: 5px;
   padding: 28px 26px;
   overflow-y: auto;
-  /* TODO: 스크롤바 디자인 */
-  /* &::-webkit-scrollbar {
-    display: none;
-  } */
+
+  &::-webkit-scrollbar {
+    width: 37px; // border-left 15px, border-right 15px를 뺀 7px가 보이는 두께
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #373737;
+    border-radius: 30px;
+    border: 15px solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
+    // 스크롤바의 border-radius까지 figma대로 구현하려면 위처럼 상하좌우 전체에 border를 주고 border-radius를 적용시켜야 함.
+  }
+  // 스크롤바 위아래 여백
+  &::-webkit-scrollbar-button:vertical:start:decrement, // 위 여백
+  &::-webkit-scrollbar-button:vertical:end:decrement // 아래 여백
+  {
+    display: block;
+    height: 13px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 15px 있으므로 13px만
+  }
 
   /* Solve page layout */
   flex: 1;
@@ -78,7 +92,7 @@ const Section = styled.section`
   * {
     margin: 0;
     padding: 0;
-    font-family: Inter;
+    font-family: Pretendard;
     color: #323232;
     list-style-type: none;
     text-decoration: none;
@@ -93,20 +107,24 @@ const Section = styled.section`
 `;
 
 const ProblemTitle = styled.h1`
-  font-weight: 600;
-  font-size: 47px;
+  font-weight: bold;
+  font-size: 40px;
   margin-bottom: 33px;
 `;
 
-const Text = styled.p<{ $heading?: boolean }>`
-  font-weight: ${(props) => (props.$heading ? 600 : 500)};
-  font-size: 21px;
+const Text = styled.p`
+  font-size: 18px;
   line-height: 160%;
+`;
+
+const BoldText = styled(Text)`
+  font-weight: bold;
 `;
 
 const HorizontalLine = styled.hr<{ $marginTopInPX?: string }>`
   margin-top: ${(props) => props.$marginTopInPX || 0};
   margin-bottom: 17px;
+  height: 1px;
 `;
 
 const TestCaseList = styled.ol`
