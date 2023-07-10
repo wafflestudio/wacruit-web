@@ -14,11 +14,11 @@ export default function ProblemDescription(props: Props) {
         출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
         입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.
       </Text>
-      <HorizontalLine $marginTopInPX="30px" />
+      <HorizontalLine $marginTopInPX="25px" $marginBottomInPX="14px" />
 
       <BoldText>제한사항</BoldText>
       <Text>-100,000 ≤ a, b ≤ 100,000</Text>
-      <HorizontalLine $marginTopInPX="20px" />
+      <HorizontalLine $marginTopInPX="17px" $marginBottomInPX="14px" />
 
       <BoldText>입출력 예시</BoldText>
       <TestCaseList>
@@ -50,15 +50,15 @@ export default function ProblemDescription(props: Props) {
           </Text>
         </ListItem>
         {/* TODO: 테스트 케이스 추가 과정 디자인 요청 & 작업 */}
-        <AddTestCaseButton
-          onClick={() => {
-            alert("add");
-          }}
-        >
-          <img src="/icon/AddTestCase.svg" alt="+" />
-          <Text>테스트 케이스 추가하기</Text>
-        </AddTestCaseButton>
       </TestCaseList>
+      <AddTestCaseButton
+        onClick={() => {
+          alert("add");
+        }}
+      >
+        <img src="/icon/AddTestCase.svg" alt="+" />
+        <Text>테스트 케이스 추가하기</Text>
+      </AddTestCaseButton>
     </Section>
   );
 }
@@ -109,7 +109,7 @@ const Section = styled.section`
 const ProblemTitle = styled.h1`
   font-weight: bold;
   font-size: 40px;
-  margin-bottom: 33px;
+  margin-bottom: 28px;
 `;
 
 const Text = styled.p`
@@ -121,9 +121,12 @@ const BoldText = styled(Text)`
   font-weight: bold;
 `;
 
-const HorizontalLine = styled.hr<{ $marginTopInPX?: string }>`
+const HorizontalLine = styled.hr<{
+  $marginTopInPX?: string;
+  $marginBottomInPX?: string;
+}>`
   margin-top: ${(props) => props.$marginTopInPX || 0};
-  margin-bottom: 17px;
+  margin-bottom: ${(props) => props.$marginBottomInPX || 0};
   height: 1px;
 `;
 
@@ -131,7 +134,7 @@ const TestCaseList = styled.ol`
   p {
     text-align: center;
   }
-  margin-top: 13px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 13px;
@@ -152,17 +155,29 @@ const ListItem = styled.li`
 `;
 
 const AddTestCaseButton = styled.button`
-  align-self: flex-end;
-  width: 275px;
-  height: 46px;
+  box-sizing: border-box;
+  float: right;
+  margin-top: 16px;
+  padding: 8px;
+  width: 238px;
+  height: 39px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
 
   background-color: #fff;
   border: 2px solid #373737;
   border-radius: 6px;
   cursor: pointer;
+
+  > img {
+    width: 24px;
+    height: 24px;
+  }
+
+  > p {
+    font-weight: 600;
+  }
 `;
