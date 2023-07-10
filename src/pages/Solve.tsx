@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import ProblemDescription from "../components/solve/ProblemDescription.tsx";
+import ProblemDescription from "../components/solve/ProblemDescription/ProblemDescription.tsx";
 import CodeEditor from "../components/solve/CodeEditor.tsx";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
