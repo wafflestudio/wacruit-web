@@ -1,13 +1,20 @@
 import styled from "styled-components";
+import useModal from "./useModal";
+import Modal from "./Modal";
+import { useEffect } from "react";
 
 interface Props {
   problemNumber: number;
 }
 
 export default function ProblemDescription(props: Props) {
+  const modalHandle = useModal();
   return (
     // TODO: 데이터 api 연결
     <Section>
+      <Modal handle={modalHandle}>
+        <div></div>
+      </Modal>
       <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
       <Text>
         정수 a와 b가 주어집니다. 각 수를 입력받아 입출력 예와 같은 형식으로
@@ -22,37 +29,41 @@ export default function ProblemDescription(props: Props) {
 
       <BoldText>입출력 예시</BoldText>
       <TestCaseTable>
-        <TestCaseHeaderTableRow>
-          <th>
-            <BoldText>#</BoldText>
-          </th>
-          <th>
-            <BoldText>Input</BoldText>
-          </th>
-          <th>
-            <BoldText>Output</BoldText>
-          </th>
-        </TestCaseHeaderTableRow>
-        {/* TODO: 임시조치 */}
-        {[1, 2, 3].map((idx) => (
-          <TestCaseItemTableRow>
+        <tbody>
+          <TestCaseHeaderTableRow>
             <th>
-              <BoldText>{idx}</BoldText>
+              <BoldText>#</BoldText>
             </th>
-            <td>
-              <Text>4, 5</Text>
-            </td>
-            <td>
-              <Text>
-                <pre>{`a=4\nb=5`}</pre>
-              </Text>
-            </td>
-          </TestCaseItemTableRow>
-        ))}
+            <th>
+              <BoldText>Input</BoldText>
+            </th>
+            <th>
+              <BoldText>Output</BoldText>
+            </th>
+          </TestCaseHeaderTableRow>
+          {/* TODO: 임시조치 */}
+          {[1, 2, 3].map((idx) => (
+            <TestCaseItemTableRow key={idx}>
+              <th>
+                <BoldText>{idx}</BoldText>
+              </th>
+              <td>
+                <Text>4, 5</Text>
+              </td>
+              <td>
+                <Text>
+                  a=4
+                  <br />
+                  b=5
+                </Text>
+              </td>
+            </TestCaseItemTableRow>
+          ))}
+        </tbody>
       </TestCaseTable>
       <AddTestCaseButton
         onClick={() => {
-          alert("add");
+          modalHandle.openModal();
         }}
       >
         <img src="/icon/AddTestCase.svg" alt="+" />
@@ -131,9 +142,11 @@ const HorizontalLine = styled.hr<{
 
 const TestCaseTable = styled.table`
   margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  > tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 const TestCaseTableRow = styled.tr`
@@ -176,5 +189,9 @@ const AddTestCaseButton = styled.button`
 
   > p {
     font-weight: 500;
+  }
+
+  &:hover {
+    background-color: #e6e6e6;
   }
 `;
