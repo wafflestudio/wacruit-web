@@ -105,7 +105,7 @@ const Section = styled.section`
 `;
 
 const Header = styled.h3`
-  background: url("/image/trapzoid.svg");
+  background: url("/image/TabHeader.svg");
 
   display: flex;
   align-items: center;

@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProblemDescription from "../components/solve/ProblemDescription.tsx";
-import CodeEditor from "../components/solve/CodeEditor.tsx";
+import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable, {
   DragResizableRef,
 } from "../components/solve/DragResizable.tsx";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 function safeNum(_n: string | undefined) {
   const n = Number(_n);
@@ -16,6 +16,7 @@ function safeNum(_n: string | undefined) {
 export default function Solve() {
   const params = useParams();
   const dragResizableRef = useRef<DragResizableRef>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const problemNumber = safeNum(params.problem_number);
   const handleRunTest = () => {
@@ -39,13 +40,13 @@ export default function Solve() {
           </Link>
         </TopNav>
         <Row>
-          <Col>
+          <Col width={isFullScreen ? "0" : "auto"}>
             <ProblemDescription problemNumber={problemNumber} />
           </Col>
           <Col>
             <Col>
               <CodeEditor
-                onFullscreenClick={() => dragResizableRef.current?.minimize()}
+                onFullscreenClick={() => setIsFullScreen((v) => !v)}
               />
               <DragResizable initialHeight={300} ref={dragResizableRef}>
                 <TestResultConsole />
@@ -106,11 +107,12 @@ const Row = styled.div`
   padding: 0 16px 16px;
   min-height: 0;
 `;
-const Col = styled.div`
+const Col = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  width: ${(props) => props.width ?? "auto"};
 `;
 const BottomNav = styled.nav`
   display: flex;
