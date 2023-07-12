@@ -32,12 +32,7 @@ export default function TestCaseModal({
     <Article>
       <Nav>
         <CloseButton onClick={onClose}>
-          <img
-            src="/public/icon/CloseModal.svg"
-            alt="X"
-            width="35px"
-            height="35px"
-          />
+          <img src="/icon/CloseModal.svg" alt="X" width="35px" height="35px" />
         </CloseButton>
       </Nav>
 
