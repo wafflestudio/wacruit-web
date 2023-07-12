@@ -13,26 +13,24 @@ export default function LanguageSelection(props: Props) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Wrapper>
-      <Button onClick={() => setIsOpen(!isOpen)}>
+      <ListToggleButton onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
         <span>{props.language}</span>
         <img src="/icon/OpenSelect.svg" alt="▼" />
-      </Button>
+      </ListToggleButton>
       {isOpen && (
         <List>
           {options.map((option) => (
             <li>
-              <button
+              <ListItemButton
+                $selected={props.language === option}
                 key={option}
                 onClick={() => {
                   setIsOpen(false);
                   props.onChange(option);
                 }}
               >
-                {props.language === option && (
-                  <img src="/icon/Check.svg" alt="✓" width={16} />
-                )}
                 <span>{option}</span>
-              </button>
+              </ListItemButton>
             </li>
           ))}
         </List>
@@ -43,21 +41,16 @@ export default function LanguageSelection(props: Props) {
 
 const Wrapper = styled.div`
   position: relative;
-  height: 32px;
-
-  color: #342d29;
-  font-size: 16px;
+  width: 128px;
+  height: fit-content;
 `;
 
 const Button = styled.button`
-  width: 128px;
-  height: 100%;
+  width: 100%;
+  height: 35px;
 
-  background: white;
   cursor: pointer;
-
-  border: 4px solid #373737;
-  border-radius: 5px;
+  font-weight: 600;
 
   display: flex;
   align-items: center;
@@ -68,12 +61,32 @@ const Button = styled.button`
   }
 `;
 
+const ListToggleButton = styled(Button)<{ $isOpen: boolean }>`
+  background: white;
+  border: 4px solid #373737;
+  border-radius: 5px;
+  position: relative;
+
+  img {
+    transform: rotate(${({ $isOpen }) => ($isOpen ? "-180deg" : "0deg")});
+  }
+`;
+
+const ListItemButton = styled(Button)<{ $selected: boolean }>`
+  border: none;
+  background: ${({ $selected }) => ($selected ? "#E6E6E6" : "white")};
+
+  &:hover {
+    background: #e6e6e6;
+  }
+`;
+
 const List = styled.ul`
   position: absolute;
-  top: calc(100% + 2px);
+  box-sizing: border-box;
+  top: calc(100% - 5px);
   left: 0;
   width: 100%;
-  box-sizing: border-box;
 
   margin: 0;
   padding: 0;
@@ -82,21 +95,6 @@ const List = styled.ul`
   background: white;
   border: 4px solid #373737;
   border-radius: 5px;
-
-  button {
-    width: 100%;
-    text-align: left;
-    position: relative;
-    padding-left: 20px;
-
-    border: none;
-    background: none;
-    color: #373737;
-    cursor: pointer;
-
-    img {
-      position: absolute;
-      left: 4px;
-    }
-  }
+  max-height: 200px;
+  overflow-y: auto;
 `;
