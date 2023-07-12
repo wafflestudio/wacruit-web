@@ -63,7 +63,7 @@ export default function ProblemDescription(props: Props) {
         }}
       >
         <img src="/icon/AddTestCase.svg" alt="+" />
-        <Text>테스트 케이스 추가하기</Text>
+        <Text as="div">테스트 케이스 추가하기</Text>
       </AddTestCaseButton>
     </Section>
   );
@@ -133,7 +133,7 @@ const AddTestCaseButton = styled.button`
     height: 24px;
   }
 
-  > p {
+  > div {
     margin: 0;
     font-weight: 500;
   }
