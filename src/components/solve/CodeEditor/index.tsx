@@ -9,7 +9,8 @@ import EditorToggle from "./EditorToggle.tsx";
 import LanguageSelection, { Language } from "./LanguageSelection.tsx";
 
 interface Props {
-  onFullscreenClick: () => void;
+  isFullScreen: boolean;
+  setIsFullScreen: (isFullScreen: boolean) => void;
 }
 
 const languages: Record<Language, LanguageSupport> = {
@@ -18,7 +19,7 @@ const languages: Record<Language, LanguageSupport> = {
   Javascript: javascript(),
 };
 
-export default function CodeEditor(props: Props) {
+export default function CodeEditor({ isFullScreen, setIsFullScreen }: Props) {
   const [language, setLanguage] = useLanguage();
   const [isEditorOpen, setIsEditorOpen] = useState(true);
   const [code, setCode] = useCode(language);
@@ -35,7 +36,10 @@ export default function CodeEditor(props: Props) {
       <EditorWrapper ref={(elem) => setContainer(elem ?? undefined)} />
       <Header>
         <span>Script</span>
-        <FullscreenButton onClick={props.onFullscreenClick} />
+        <FullscreenButton
+          onClick={() => setIsFullScreen(!isFullScreen)}
+          $isFullScreen={isFullScreen}
+        />
       </Header>
       <LanguageSelection
         language={language}
@@ -138,11 +142,14 @@ const EditorWrapper = styled.div`
   grid-column: 1 / 5;
 `;
 
-const FullscreenButton = styled.button`
+const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`
   width: 20px;
   height: 20px;
 
   border: none;
-  background: url("/icon/FullScreen.svg");
+  background: url("${(props) =>
+    props.$isFullScreen
+      ? "/icon/ExitFullScreen.svg"
+      : "/icon/FullScreen.svg"}");
   cursor: pointer;
 `;

@@ -3,10 +3,8 @@ import styled from "styled-components";
 import ProblemDescription from "../components/solve/ProblemDescription.tsx";
 import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
-import DragResizable, {
-  DragResizableRef,
-} from "../components/solve/DragResizable.tsx";
-import { useRef, useState } from "react";
+import DragResizable from "../components/solve/DragResizable.tsx";
+import { useState } from "react";
 
 function safeNum(_n: string | undefined) {
   const n = Number(_n);
@@ -15,7 +13,6 @@ function safeNum(_n: string | undefined) {
 
 export default function Solve() {
   const params = useParams();
-  const dragResizableRef = useRef<DragResizableRef>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const problemNumber = safeNum(params.problem_number);
@@ -39,16 +36,17 @@ export default function Solve() {
             Back
           </Link>
         </TopNav>
-        <Row>
-          <Col width={isFullScreen ? "0" : "auto"}>
+        <Row $collapseLeft={isFullScreen}>
+          <Col>
             <ProblemDescription problemNumber={problemNumber} />
           </Col>
           <Col>
             <Col>
               <CodeEditor
-                onFullscreenClick={() => setIsFullScreen((v) => !v)}
+                isFullScreen={isFullScreen}
+                setIsFullScreen={setIsFullScreen}
               />
-              <DragResizable initialHeight={300} ref={dragResizableRef}>
+              <DragResizable initialHeight={300}>
                 <TestResultConsole />
               </DragResizable>
             </Col>
@@ -100,19 +98,27 @@ const TopNav = styled.nav`
     text-decoration: none;
   }
 `;
-const Row = styled.div`
+const Row = styled.div<{ $collapseLeft?: boolean }>`
   display: flex;
   flex: 1;
-  gap: 16px;
+  gap: ${(props) => (props.$collapseLeft ? "0" : "16px")};
   padding: 0 16px 16px;
   min-height: 0;
+  & > :first-child {
+    ${(props) =>
+      props.$collapseLeft &&
+      `
+      flex: 0;
+      opacity: 0;`}
+    transition: ease 0.3s;
+  }
 `;
-const Col = styled.div<{ width?: string }>`
+const Col = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  width: ${(props) => props.width ?? "auto"};
+  min-width: 0;
 `;
 const BottomNav = styled.nav`
   display: flex;
