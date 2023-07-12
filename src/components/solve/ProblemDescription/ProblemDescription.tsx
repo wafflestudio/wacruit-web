@@ -22,9 +22,9 @@ export interface TestCase {
 
 export default function ProblemDescription(props: Props) {
   const defaultTestCases: TestCase[] = [
-    { input: "4, 5", output: "a=4<br/>b=5" },
-    { input: "4, 5", output: "a=4<br/>b=5" },
-    { input: "4, 5", output: "a=4<br/>b=5" },
+    { input: "4, 5", output: "a=4\nb=5" },
+    { input: "4, 5", output: "a=4\nb=5" },
+    { input: "4, 5", output: "a=4\nb=5" },
   ];
   const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
 

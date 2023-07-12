@@ -30,20 +30,25 @@ export default function TestCaseTable({
         {defaultTestCases.map((testCaseItem, idx) => (
           <TableItem key={idx}>
             <BoldText as="th">{idx + 1}</BoldText>
-            <Text as="td">4, 5</Text>
-            <Text as="td">
-              a=4
-              <br />
-              b=5
-            </Text>
+            <td>
+              <Text as="pre">{testCaseItem.input}</Text>
+            </td>
+            <td>
+              <Text as="pre">{testCaseItem.output}</Text>
+            </td>
           </TableItem>
         ))}
 
         {/* custom test cases */}
-        {customTestCases.length !== 0 && <HorizontalLine margin="20px 0" />}
-        {customTestCases?.map((testCaseItem, idx) => (
+        {customTestCases.length !== 0 && (
+          <tr style={{ width: "100%" }}>
+            <td style={{ display: "block", width: "100%" }}>
+              <HorizontalLine margin="5px 0" />
+            </td>
+          </tr>
+        )}
+        {customTestCases.map((testCaseItem, idx) => (
           <TableItem key={idx}>
-            {/* TODO: 아래 3+idx 업데이트 */}
             <BoldText as="th">{defaultTestCases.length + idx + 1}</BoldText>
             <td>
               <Text as="pre">{testCaseItem.input}</Text>
