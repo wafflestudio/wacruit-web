@@ -23,10 +23,7 @@ export default function TestCaseModal({
   defaultTestCases,
   customTestCases,
 }: TestCaseModalProps) {
-  const [count, setCount] = useState<number>(0);
-  const [inputOutputData, setInputOutputData] = useState<TestCase[]>(
-    new Array(20).fill({ input: "", output: "" }),
-  );
+  const [inputOutputData, setInputOutputData] = useState<TestCase[]>([]);
 
   return (
     <Article>
@@ -46,17 +43,17 @@ export default function TestCaseModal({
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
         {/* add testcase textareas */}
-        {count !== 0 && (
+        {inputOutputData.length !== 0 && (
           <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
             <tbody>
-              {Array.from(Array(count).keys()).map((idx) => (
+              {inputOutputData.map((data, idx) => (
                 <TableItem key={idx}>
                   <BoldText as="th">
                     {defaultTestCases.length + customTestCases.length + idx + 1}
                   </BoldText>
                   <td>
                     <TestCaseInput
-                      value={inputOutputData[idx].input}
+                      value={data.input}
                       onChange={(e) => {
                         setInputOutputData(
                           inputOutputData.map((_, i) =>
@@ -70,7 +67,7 @@ export default function TestCaseModal({
                   </td>
                   <td>
                     <TestCaseInput
-                      value={inputOutputData[idx].output}
+                      value={data.output}
                       onChange={(e) => {
                         setInputOutputData(
                           inputOutputData.map((_, i) =>
@@ -89,16 +86,18 @@ export default function TestCaseModal({
         )}
 
         {/* custom test case는 최대 20개 */}
-        <AddTestCaseButton
-          onClick={() =>
-            setCount((prev) =>
-              prev + customTestCases.length + 1 > 20 ? prev : prev + 1,
-            )
-          }
-          marginTop={Boolean(count) || customTestCases.length !== 0}
-        >
-          <Text>테스트 케이스 추가하기</Text>
-        </AddTestCaseButton>
+        {inputOutputData.length <= 20 && (
+          <AddTestCaseButton
+            onClick={() =>
+              setInputOutputData((prev) => [...prev, { input: "", output: "" }])
+            }
+            marginTop={
+              inputOutputData.length !== 0 || customTestCases.length !== 0
+            }
+          >
+            <Text>테스트 케이스 추가하기</Text>
+          </AddTestCaseButton>
+        )}
 
         <SubmitButton
           onClick={() => {
