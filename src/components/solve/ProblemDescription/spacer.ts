@@ -1,7 +1,7 @@
-export type spacerProps = {
+export type SpacerProps = {
   margin?: string;
 };
 
-export const spacer = (props: spacerProps) => ({
+export const spacer = (props: SpacerProps) => ({
   margin: props.margin || 0,
 });
