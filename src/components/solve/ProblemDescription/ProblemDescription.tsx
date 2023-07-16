@@ -1,11 +1,6 @@
 import styled from "styled-components";
 import useModal from "./useModal";
 import Modal from "./Modal";
-// import {
-//   TestCaseHeaderTableRow,
-//   TestCaseItemTableRow,
-//   TestCaseTable,
-// } from "./TestCaseTable";
 import { BoldText, HorizontalLine, Text } from "./styledComponents";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
@@ -75,6 +70,7 @@ const Section = styled.section`
   padding: 28px 26px;
   overflow-y: auto;
 
+  /* scrollbar css start */
   &::-webkit-scrollbar {
     width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
   }
@@ -91,26 +87,23 @@ const Section = styled.section`
     display: block;
     height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
   }
+  /* scrollbar css end */
 
   /* Solve page layout */
   flex: 1;
 
   * {
     color: #323232;
-    box-sizing: border-box;
   }
 `;
 
 const ProblemTitle = styled.h1`
-  margin: 0;
   font-weight: bold;
   font-size: 40px;
   margin-bottom: 28px;
 `;
 
 const AddTestCaseButton = styled.button`
-  padding: 0;
-  box-sizing: border-box;
   float: right;
   margin-top: 16px;
   padding: 8px;
@@ -133,7 +126,6 @@ const AddTestCaseButton = styled.button`
   }
 
   > div {
-    margin: 0;
     font-weight: 500;
   }
 

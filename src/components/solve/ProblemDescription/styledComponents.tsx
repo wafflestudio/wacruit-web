@@ -1,30 +1,29 @@
 import { styled } from "styled-components";
-import { spacer, spacerProps } from "./spacer";
+import { spacer, SpacerProps } from "./spacer";
 
-export const Text = styled.p<spacerProps>`
-  margin: 0;
+export const Text = styled.p<SpacerProps>`
+  ${spacer}
   font-size: 18px;
   line-height: 160%;
-  ${spacer}
 `;
 
 export const BoldText = styled(Text)`
   font-weight: bold;
 `;
 
-export const HorizontalLine = styled.hr<spacerProps>`
-  height: 1px;
+export const HorizontalLine = styled.hr<SpacerProps>`
   ${spacer}
+  height: 1px;
 `;
 
-export const Table = styled.table<spacerProps>`
+export const Table = styled.table<SpacerProps>`
+  ${spacer}
   width: 100%;
   > tbody {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  ${spacer}
 `;
 
 export const TableHeader = styled.tr`

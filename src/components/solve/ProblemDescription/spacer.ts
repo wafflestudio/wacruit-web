@@ -3,5 +3,5 @@ export type SpacerProps = {
 };
 
 export const spacer = (props: SpacerProps) => ({
-  margin: props.margin || 0,
+  margin: props?.margin,
 });
