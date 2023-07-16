@@ -3,10 +3,10 @@ import { TestCase } from "./ProblemDescription";
 import { BoldText, TableItem } from "./styledComponents";
 import { styled } from "styled-components";
 
-type TestCaseInputProps = {
+interface TestCaseInputProps {
   data: string;
   onTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-};
+}
 
 function TestCaseInput({ data, onTextareaChange }: TestCaseInputProps) {
   /* code start: textarea 내용 길이에 따라 자동높이조절 */
@@ -66,11 +66,11 @@ const TestCaseInputTextarea = styled.textarea`
   }
 `;
 
-type TestCaseInputsProps = {
+interface TestCaseInputsProps {
   newCustomTestCaseInputs: TestCase[];
   startIdx: number;
   setNewCustomTestCaseInputs: Dispatch<SetStateAction<TestCase[]>>;
-};
+}
 
 export default function TestCaseInputs({
   newCustomTestCaseInputs,

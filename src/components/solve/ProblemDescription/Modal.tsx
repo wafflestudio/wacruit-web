@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ModalState } from "./useModal";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface ModalProps {
   handle: ReturnType<
@@ -10,7 +10,7 @@ interface ModalProps {
       closeModal: () => void;
     }
   >;
-  children: React.ReactNode;
+  children: ReactNode;
   onBackgroundClicked?: () => void;
 }
 

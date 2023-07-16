@@ -12,12 +12,12 @@ import {
 } from "react";
 import TestCaseInputs from "./TestCaseInputs";
 
-type TestCaseModalProps = {
+interface TestCaseModalProps {
   setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
   onClose: () => void;
   defaultTestCases: TestCase[];
   customTestCases: TestCase[];
-};
+}
 
 export default function TestCaseModal({
   setCustomTestCases,
@@ -172,6 +172,7 @@ const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
   background: #f6f6f6;
   border: none;
   border-radius: 5px;
+  color: #373737;
   cursor: pointer;
   &:hover {
     background: #e6e6e6;
@@ -191,6 +192,7 @@ const SubmitButton = styled.button`
   line-height: 160%;
   letter-spacing: 5%;
   background: #f0745f;
+  color: #323232;
   cursor: pointer;
   &:active {
     box-shadow: 2px 2px #323232;
