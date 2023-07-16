@@ -30,6 +30,12 @@ export const TableHeader = styled.tr`
   display: grid;
   grid-template-columns: 60px 1fr 1fr;
   gap: 10px;
+  > td {
+    > pre {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  }
 `;
 
 export const TableItem = styled(TableHeader)`
