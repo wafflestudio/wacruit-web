@@ -16,6 +16,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Union } from "../../../types/commonTypes";
 
 type TestCaseModalProps = {
   setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
@@ -55,6 +56,24 @@ export default function TestCaseModal({
   }, [newCustomTestCaseInputs, scrollToBottom]);
   /* end */
 
+  /* code start: new testcase textarea들의 높이를 길이에 따라 자동높이조절 */
+  const inputDataTypes = ["input", "output"] as const;
+  type InputDataTypes = Union<typeof inputDataTypes>;
+
+  const getRefIdx = (idx: number, inputDatatype: InputDataTypes) =>
+    inputDatatype === "input" ? 2 * idx : 2 * idx + 1;
+
+  const textAreasRef = useRef<HTMLTextAreaElement[]>([]);
+
+  // 각 textarea 태그의 onChange에 넣을 함수
+  // 내용 길이에 따라 자동높이조절함수
+  const handleResizeHeight = useCallback((refIdx: number) => {
+    const textArea = textAreasRef.current[refIdx];
+    textArea.style.height = "auto"; // 높이 줄이기 위해 필요
+    textArea.style.height = `${textArea.scrollHeight}px`; // 높이 늘리기 위해 필요
+  }, []);
+  /* end */
+
   return (
     <Article>
       <Nav>
@@ -86,6 +105,10 @@ export default function TestCaseModal({
                   </BoldText>
                   <td>
                     <TestCaseInput
+                      ref={(el) =>
+                        el &&
+                        (textAreasRef.current[getRefIdx(idx, "input")] = el)
+                      }
                       rows={1}
                       value={newCustomTestCaseInput.input}
                       onChange={(e) => {
@@ -95,6 +118,7 @@ export default function TestCaseModal({
                             i === idx ? { ..._, input: e.target.value } : _,
                           ),
                         );
+                        handleResizeHeight(getRefIdx(idx, "input"));
                       }}
                       placeholder="입력값을 입력해주세요."
                       spellCheck="false"
@@ -102,6 +126,10 @@ export default function TestCaseModal({
                   </td>
                   <td>
                     <TestCaseInput
+                      ref={(el) =>
+                        el &&
+                        (textAreasRef.current[getRefIdx(idx, "output")] = el)
+                      }
                       rows={1}
                       value={newCustomTestCaseInput.output}
                       onChange={(e) => {
@@ -111,6 +139,7 @@ export default function TestCaseModal({
                             i === idx ? { ..._, output: e.target.value } : _,
                           ),
                         );
+                        handleResizeHeight(getRefIdx(idx, "output"));
                       }}
                       placeholder="출력값을 입력해주세요."
                       spellCheck="false"
