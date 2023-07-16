@@ -30,7 +30,7 @@ export default function TestCaseModal({
   defaultTestCases,
   customTestCases,
 }: TestCaseModalProps) {
-  const [inputOutputData, setInputOutputData] = useState<TestCase[]>([]);
+  const [newCustomTestCases, setNewCustomTestCases] = useState<TestCase[]>([]);
 
   /* start: '테스트 케이스 추가하기' button click 시 scroll event */
   const scrollRef = useRef<HTMLButtonElement>(null);
@@ -39,18 +39,18 @@ export default function TestCaseModal({
     () => scrollRef.current?.scrollIntoView(true),
     [],
   );
-  // '테스트 케이스 추가하기' button click => inputOutputData 변경 => scroll to bottom
+  // '테스트 케이스 추가하기' button click => newCustomTestCases 변경 => scroll to bottom
   useEffect(() => {
     scrollToBottom();
-  }, [inputOutputData, scrollToBottom]);
+  }, [newCustomTestCases, scrollToBottom]);
   /* end: '테스트 케이스 추가하기' button click 시 scroll event */
 
   const addCustomTestCase = useCallback(() => {
-    const validData: TestCase[] = inputOutputData.filter(
+    const validData: TestCase[] = newCustomTestCases.filter(
       (data) => data.input !== "" && data.output != "",
     );
     setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
-  }, [inputOutputData, setCustomTestCases]);
+  }, [newCustomTestCases, setCustomTestCases]);
 
   return (
     <Article>
@@ -70,10 +70,10 @@ export default function TestCaseModal({
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
         {/* add testcase textareas */}
-        {inputOutputData.length !== 0 && (
+        {newCustomTestCases.length !== 0 && (
           <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
             <tbody>
-              {inputOutputData.map((data, idx) => (
+              {newCustomTestCases.map((data, idx) => (
                 <TableItem key={idx}>
                   <BoldText as="th">
                     {defaultTestCases.length + customTestCases.length + idx + 1}
@@ -83,8 +83,8 @@ export default function TestCaseModal({
                       rows={1}
                       value={data.input}
                       onChange={(e) => {
-                        setInputOutputData(
-                          inputOutputData.map((_, i) =>
+                        setNewCustomTestCases(
+                          newCustomTestCases.map((_, i) =>
                             i === idx ? { ..._, input: e.target.value } : _,
                           ),
                         );
@@ -98,8 +98,8 @@ export default function TestCaseModal({
                       rows={1}
                       value={data.output}
                       onChange={(e) => {
-                        setInputOutputData(
-                          inputOutputData.map((_, i) =>
+                        setNewCustomTestCases(
+                          newCustomTestCases.map((_, i) =>
                             i === idx ? { ..._, output: e.target.value } : _,
                           ),
                         );
@@ -116,14 +116,14 @@ export default function TestCaseModal({
 
         {/* custom test case는 최대 20개. */}
         {/* 현재 20개 미만인 경우에만 '테스트 케이스 추가' 버튼 렌더 */}
-        {inputOutputData.length <= 20 && (
+        {newCustomTestCases.length <= 20 && (
           <AddTestCaseButton
             $marginTop={
-              inputOutputData.length !== 0 || customTestCases.length !== 0
+              newCustomTestCases.length !== 0 || customTestCases.length !== 0
             }
             onClick={() => {
-              // InputOutputData length+=1
-              setInputOutputData((prev) => [
+              // NewCustomTestCases length+=1
+              setNewCustomTestCases((prev) => [
                 ...prev,
                 { input: "", output: "" },
               ]);
