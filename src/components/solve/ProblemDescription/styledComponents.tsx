@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import { spacer, spacerProps } from "./spacer";
+import { spacer, SpacerProps } from "./spacer";
 
-export const Text = styled.p<spacerProps>`
+export const Text = styled.p<SpacerProps>`
   margin: 0;
   font-size: 18px;
   line-height: 160%;
@@ -12,12 +12,12 @@ export const BoldText = styled(Text)`
   font-weight: bold;
 `;
 
-export const HorizontalLine = styled.hr<spacerProps>`
+export const HorizontalLine = styled.hr<SpacerProps>`
   height: 1px;
   ${spacer}
 `;
 
-export const Table = styled.table<spacerProps>`
+export const Table = styled.table<SpacerProps>`
   width: 100%;
   > tbody {
     display: flex;
