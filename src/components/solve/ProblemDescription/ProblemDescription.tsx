@@ -70,7 +70,7 @@ const Section = styled.section`
   padding: 28px 26px;
   overflow-y: auto;
 
-  /* scrollbar css start */
+  /* start: scrollbar css design */
   &::-webkit-scrollbar {
     width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
   }
@@ -87,7 +87,7 @@ const Section = styled.section`
     display: block;
     height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
   }
-  /* scrollbar css end */
+  /* end: scrollbar css design */
 
   /* Solve page layout */
   flex: 1;
