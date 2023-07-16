@@ -14,6 +14,7 @@ import TestCaseInputs from "./TestCaseInputs";
 
 interface TestCaseModalProps {
   setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
+  deleteCustomTestCase: (idx: number) => void;
   onClose: () => void;
   defaultTestCases: TestCase[];
   customTestCases: TestCase[];
@@ -21,6 +22,7 @@ interface TestCaseModalProps {
 
 export default function TestCaseModal({
   setCustomTestCases,
+  deleteCustomTestCase,
   onClose,
   defaultTestCases,
   customTestCases,
@@ -63,6 +65,7 @@ export default function TestCaseModal({
         <TestCaseTable
           defaultTestCases={defaultTestCases}
           customTestCases={customTestCases}
+          deleteCustomTestCase={deleteCustomTestCase}
         />
 
         {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable component에 hr 구분선이 없다 */}

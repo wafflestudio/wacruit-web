@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import { BoldText, HorizontalLine, Text } from "./styledComponents";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface Props {
   problemNumber: number;
@@ -22,6 +22,11 @@ export default function ProblemDescription(props: Props) {
     { input: "4, 5", output: "a=4\nb=5" },
   ];
   const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+  const deleteCustomTestCase = useCallback(
+    (deleteIdx: number) =>
+      setCustomTestCases((prev) => prev.filter((_, idx) => deleteIdx !== idx)),
+    [setCustomTestCases],
+  );
 
   const modalHandle = useModal();
   return (
@@ -30,6 +35,7 @@ export default function ProblemDescription(props: Props) {
       <Modal handle={modalHandle}>
         <TestCaseModal
           setCustomTestCases={setCustomTestCases}
+          deleteCustomTestCase={deleteCustomTestCase}
           onClose={modalHandle.closeModal}
           defaultTestCases={defaultTestCases}
           customTestCases={customTestCases}
@@ -51,6 +57,7 @@ export default function ProblemDescription(props: Props) {
       <TestCaseTable
         defaultTestCases={defaultTestCases}
         customTestCases={customTestCases}
+        deleteCustomTestCase={deleteCustomTestCase}
       />
       <AddTestCaseButton
         onClick={() => {
