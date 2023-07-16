@@ -118,8 +118,10 @@ export default function TestCaseModal({
 }
 
 const Article = styled.article`
-  // TODO : 크기 반응형으로
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 290px;
+  height: 53%;
 `;
 
 const Nav = styled.nav`
@@ -143,8 +145,8 @@ const CloseButton = styled.button`
 `;
 
 const Main = styled.div`
-  // TODO : 크기 반응형으로
-  height: 646px;
+  width: 100%;
+  max-height: 646px;
   padding: 30px;
   display: flex;
   flex-direction: column;

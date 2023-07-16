@@ -43,6 +43,7 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   background: rgba(0, 0, 0, 0.6);
   z-index: 1;
   animation: modal-container-appear 300ms;
+  overflow: auto;
 
   ${(props) =>
     props.state === "closing" &&
@@ -55,4 +56,6 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   }
 `;
 
-const ModalDiv = styled.div``;
+const ModalDiv = styled.div`
+  min-width: 62.5%;
+`;
