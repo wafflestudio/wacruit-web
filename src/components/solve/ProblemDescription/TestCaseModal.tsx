@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import TestCaseTable from "./TestCaseTable";
 import { TestCase } from "./ProblemDescription";
-import {
-  BoldText,
-  HorizontalLine,
-  Table,
-  TableItem,
-  Text,
-} from "./styledComponents";
+import { HorizontalLine, Table, Text } from "./styledComponents";
 import {
   Dispatch,
   SetStateAction,
@@ -16,7 +10,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Union } from "../../../types/commonTypes";
+import TestCaseInputs from "./TestCaseInputs";
 
 type TestCaseModalProps = {
   setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
@@ -56,24 +50,6 @@ export default function TestCaseModal({
   }, [newCustomTestCaseInputs, scrollToBottom]);
   /* end */
 
-  /* code start: new testcase textarea들의 높이를 길이에 따라 자동높이조절 */
-  const inputDataTypes = ["input", "output"] as const;
-  type InputDataTypes = Union<typeof inputDataTypes>;
-
-  const getRefIdx = (idx: number, inputDatatype: InputDataTypes) =>
-    inputDatatype === "input" ? 2 * idx : 2 * idx + 1;
-
-  const textAreasRef = useRef<HTMLTextAreaElement[]>([]);
-
-  // 각 textarea 태그의 onChange에 넣을 함수
-  // 내용 길이에 따라 자동높이조절함수
-  const handleResizeHeight = useCallback((refIdx: number) => {
-    const textArea = textAreasRef.current[refIdx];
-    textArea.style.height = "auto"; // 높이 줄이기 위해 필요
-    textArea.style.height = `${textArea.scrollHeight}px`; // 높이 늘리기 위해 필요
-  }, []);
-  /* end */
-
   return (
     <Article>
       <Nav>
@@ -93,67 +69,20 @@ export default function TestCaseModal({
         {/* 해당 경우에만 따로 구분선 추가 */}
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
-        {/* textareas table for new custom test cases */}
+        {/* textareas table*/}
         {newCustomTestCaseInputs.length !== 0 && (
           // 추가된 customeTestCase가 아직 없는 경우만 디자인을 위해 margin-top 적용
           <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
-            <tbody>
-              {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
-                <TableItem key={idx}>
-                  <BoldText as="th">
-                    {defaultTestCases.length + customTestCases.length + idx + 1}
-                  </BoldText>
-                  <td>
-                    <TestCaseInput
-                      ref={(el) =>
-                        el &&
-                        (textAreasRef.current[getRefIdx(idx, "input")] = el)
-                      }
-                      rows={1}
-                      value={newCustomTestCaseInput.input}
-                      onChange={(e) => {
-                        setNewCustomTestCaseInputs(
-                          // 바뀐 부분의 input prop만 수정
-                          newCustomTestCaseInputs.map((_, i) =>
-                            i === idx ? { ..._, input: e.target.value } : _,
-                          ),
-                        );
-                        handleResizeHeight(getRefIdx(idx, "input"));
-                      }}
-                      placeholder="입력값을 입력해주세요."
-                      spellCheck="false"
-                    />
-                  </td>
-                  <td>
-                    <TestCaseInput
-                      ref={(el) =>
-                        el &&
-                        (textAreasRef.current[getRefIdx(idx, "output")] = el)
-                      }
-                      rows={1}
-                      value={newCustomTestCaseInput.output}
-                      onChange={(e) => {
-                        // 바뀐 부분의 output prop만 수정
-                        setNewCustomTestCaseInputs(
-                          newCustomTestCaseInputs.map((_, i) =>
-                            i === idx ? { ..._, output: e.target.value } : _,
-                          ),
-                        );
-                        handleResizeHeight(getRefIdx(idx, "output"));
-                      }}
-                      placeholder="출력값을 입력해주세요."
-                      spellCheck="false"
-                    />
-                  </td>
-                </TableItem>
-              ))}
-            </tbody>
+            <TestCaseInputs
+              newCustomTestCaseInputs={newCustomTestCaseInputs}
+              startIdx={defaultTestCases.length + customTestCases.length + 1}
+              setNewCustomTestCaseInputs={setNewCustomTestCaseInputs}
+            />
           </Table>
         )}
 
-        {/* custom test case는 최대 20개. */}
-        {/* 현재 20개 미만인 경우에만 '테스트 케이스 추가' 버튼 렌더 */}
-        {newCustomTestCaseInputs.length <= 20 && (
+        {/* '테스트 케이스 추가' button */}
+        {newCustomTestCaseInputs.length <= 20 && ( // custom test case는 최대 20개
           <AddTestCaseButton
             $marginTop={
               newCustomTestCaseInputs.length !== 0 ||
@@ -246,34 +175,6 @@ const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
   cursor: pointer;
   &:hover {
     background: #e6e6e6;
-  }
-`;
-
-const TestCaseInput = styled.textarea`
-  padding: 0;
-  width: 100%;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  line-height: 160%;
-  resize: none;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &::placeholder {
-    color: #a1a1a1;
-  }
-
-  &:focus {
-    outline: none;
-    background: #e6e6e6;
-    text-decoration-line: none;
-    &::placeholder {
-      color: transparent;
-    }
   }
 `;
 
