@@ -43,10 +43,10 @@ export default function TestCaseModal({
   }, [newCustomTestCaseInputs, setCustomTestCases]);
 
   /* code start: '테스트 케이스 추가하기' button click 시 scroll event */
-  const scrollRef = useRef<HTMLButtonElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
   const scrollToBottom = useCallback(
-    // scrollRef가 가능한 한 화면의 위에 오도록 아래로 scroll
-    () => scrollRef.current?.scrollIntoView(true),
+    // submitButton이 가능한 한 화면의 위에 오도록 아래로 scroll
+    () => submitButtonRef.current?.scrollIntoView(true),
     [],
   );
   // '테스트 케이스 추가하기' button click => newCustomTestCaseInputs 변경 => scroll to bottom
@@ -143,7 +143,7 @@ export default function TestCaseModal({
         )}
 
         <SubmitButton
-          ref={scrollRef}
+          ref={submitButtonRef}
           onClick={() => {
             addNewCustomTestCase();
             onClose();
