@@ -40,7 +40,7 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(52, 30, 26, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 1;
   animation: modal-container-appear 300ms;
 
