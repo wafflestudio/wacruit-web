@@ -8,7 +8,14 @@ import {
   TableItem,
   Text,
 } from "./styledComponents";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type TestCaseModalProps = {
   setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
@@ -24,6 +31,26 @@ export default function TestCaseModal({
   customTestCases,
 }: TestCaseModalProps) {
   const [inputOutputData, setInputOutputData] = useState<TestCase[]>([]);
+
+  /* start: '테스트 케이스 추가하기' button click 시 scroll event */
+  const scrollRef = useRef<HTMLButtonElement>(null);
+  const scrollToBottom = useCallback(
+    // scrollRef가 가능한 한 화면의 위에 오도록 아래로 scroll
+    () => scrollRef.current?.scrollIntoView(true),
+    [],
+  );
+  // '테스트 케이스 추가하기' button click => inputOutputData 변경 => scroll to bottom
+  useEffect(() => {
+    scrollToBottom();
+  }, [inputOutputData, scrollToBottom]);
+  /* end: '테스트 케이스 추가하기' button click 시 scroll event */
+
+  const addCustomTestCase = useCallback(() => {
+    const validData: TestCase[] = inputOutputData.filter(
+      (data) => data.input !== "" && data.output != "",
+    );
+    setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
+  }, [inputOutputData, setCustomTestCases]);
 
   return (
     <Article>
@@ -53,6 +80,7 @@ export default function TestCaseModal({
                   </BoldText>
                   <td>
                     <TestCaseInput
+                      rows={1}
                       value={data.input}
                       onChange={(e) => {
                         setInputOutputData(
@@ -67,6 +95,7 @@ export default function TestCaseModal({
                   </td>
                   <td>
                     <TestCaseInput
+                      rows={1}
                       value={data.output}
                       onChange={(e) => {
                         setInputOutputData(
@@ -85,26 +114,29 @@ export default function TestCaseModal({
           </Table>
         )}
 
-        {/* custom test case는 최대 20개 */}
+        {/* custom test case는 최대 20개. */}
+        {/* 현재 20개 미만인 경우에만 '테스트 케이스 추가' 버튼 렌더 */}
         {inputOutputData.length <= 20 && (
           <AddTestCaseButton
-            onClick={() =>
-              setInputOutputData((prev) => [...prev, { input: "", output: "" }])
-            }
-            marginTop={
+            $marginTop={
               inputOutputData.length !== 0 || customTestCases.length !== 0
             }
+            onClick={() => {
+              // InputOutputData length+=1
+              setInputOutputData((prev) => [
+                ...prev,
+                { input: "", output: "" },
+              ]);
+            }}
           >
             <Text>테스트 케이스 추가하기</Text>
           </AddTestCaseButton>
         )}
 
         <SubmitButton
+          ref={scrollRef}
           onClick={() => {
-            const newData: TestCase[] = inputOutputData.filter(
-              (data) => data.input !== "" && data.output != "",
-            );
-            setCustomTestCases((prev: TestCase[]) => [...prev, ...newData]);
+            addCustomTestCase();
             onClose();
           }}
         >
@@ -116,8 +148,8 @@ export default function TestCaseModal({
 }
 
 const Article = styled.article`
+  // TODO : 크기 반응형으로
   width: 1200px;
-  height: 655px;
 `;
 
 const Nav = styled.nav`
@@ -141,7 +173,8 @@ const CloseButton = styled.button`
 `;
 
 const Main = styled.div`
-  height: 601px;
+  // TODO : 크기 반응형으로
+  height: 646px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -163,9 +196,9 @@ const Title = styled.h1`
   font-size: 40px;
 `;
 
-const AddTestCaseButton = styled.button<{ marginTop: boolean }>`
+const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
   padding: 0;
-  margin-top: ${(props) => (props.marginTop ? "10px" : 0)};
+  margin-top: ${(props) => (props.$marginTop ? "10px" : 0)};
   width: 100%;
   height: 70px;
   min-height: 70px;
@@ -179,8 +212,8 @@ const AddTestCaseButton = styled.button<{ marginTop: boolean }>`
 `;
 
 const TestCaseInput = styled.textarea`
+  padding: 0;
   width: 100%;
-  height: 100%;
   background: transparent;
   border: none;
   font-size: 18px;
