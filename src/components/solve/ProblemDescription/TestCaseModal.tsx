@@ -34,7 +34,15 @@ export default function TestCaseModal({
     TestCase[]
   >([]);
 
-  /* start: '테스트 케이스 추가하기' button click 시 scroll event */
+  const addNewCustomTestCase = useCallback(() => {
+    // input & output 모두 빈칸이 아닌 데이터만 추가
+    const validData: TestCase[] = newCustomTestCaseInputs.filter(
+      (data) => data.input !== "" && data.output != "",
+    );
+    setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
+  }, [newCustomTestCaseInputs, setCustomTestCases]);
+
+  /* code start: '테스트 케이스 추가하기' button click 시 scroll event */
   const scrollRef = useRef<HTMLButtonElement>(null);
   const scrollToBottom = useCallback(
     // scrollRef가 가능한 한 화면의 위에 오도록 아래로 scroll
@@ -45,15 +53,7 @@ export default function TestCaseModal({
   useEffect(() => {
     scrollToBottom();
   }, [newCustomTestCaseInputs, scrollToBottom]);
-  /* end: '테스트 케이스 추가하기' button click 시 scroll event */
-
-  const addCustomTestCase = useCallback(() => {
-    // input & output 모두 빈칸이 아닌 데이터만 추가
-    const validData: TestCase[] = newCustomTestCaseInputs.filter(
-      (data) => data.input !== "" && data.output != "",
-    );
-    setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
-  }, [newCustomTestCaseInputs, setCustomTestCases]);
+  /* end */
 
   return (
     <Article>
@@ -145,7 +145,7 @@ export default function TestCaseModal({
         <SubmitButton
           ref={scrollRef}
           onClick={() => {
-            addCustomTestCase();
+            addNewCustomTestCase();
             onClose();
           }}
         >
