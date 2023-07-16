@@ -4,13 +4,13 @@ import styled from "styled-components";
 export default function Header() {
   return (
     <Container>
-      <Link to=".">
+      <Link to="/">
         <img src={"/icon/rookie/logo.png"} height={27} />
       </Link>
       <Buttons>
         <Link to=".">공지사항</Link>
-        <Link to=".">지원페이지</Link>
-        <Link to=".">로그아웃</Link>
+        <Link to="/rookie">지원페이지</Link>
+        <Link to="/">로그아웃</Link>
       </Buttons>
     </Container>
   );
@@ -30,6 +30,7 @@ const Container = styled.header`
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  font-family: Pretendard, sans-serif;
 `;
 
 const Buttons = styled.div`

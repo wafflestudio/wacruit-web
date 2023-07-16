@@ -6,3 +6,9 @@ export type MockProblemResult = {
   submitted: boolean;
   correct: boolean;
 };
+
+export type MockResumeQuestionaire = {
+  index: number;
+  question: string;
+  answer: string | null;
+};
