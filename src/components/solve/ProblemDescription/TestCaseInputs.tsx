@@ -2,13 +2,22 @@ import { Dispatch, SetStateAction, useCallback, useRef } from "react";
 import { TestCase } from "./ProblemDescription";
 import { BoldText, TableItem } from "./styledComponents";
 import { styled } from "styled-components";
+import { Union } from "../../../types/commonTypes";
+
+const inputDataTypes = ["input", "output"] as const;
+type InputDataType = Union<typeof inputDataTypes>;
 
 interface TestCaseInputProps {
   data: string;
+  dataType: InputDataType;
   onTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-function TestCaseInput({ data, onTextareaChange }: TestCaseInputProps) {
+function TestCaseInput({
+  data,
+  dataType,
+  onTextareaChange,
+}: TestCaseInputProps) {
   /* code start: textarea 내용 길이에 따라 자동높이조절 */
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -34,7 +43,9 @@ function TestCaseInput({ data, onTextareaChange }: TestCaseInputProps) {
         }}
         rows={1}
         value={data}
-        placeholder="입력값을 입력해주세요."
+        placeholder={`${
+          dataType === "input" ? "입력" : "출력"
+        }값을 입력해주세요.`}
         spellCheck="false"
       />
     </td>
@@ -80,8 +91,6 @@ export default function TestCaseInputs({
   startIdx,
   setNewCustomTestCaseInputs,
 }: TestCaseInputsProps) {
-  const inputDataTypes = ["input", "output"] as const;
-
   return (
     <tbody>
       {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
@@ -91,6 +100,7 @@ export default function TestCaseInputs({
             <TestCaseInput
               key={dataType}
               data={newCustomTestCaseInput[dataType]}
+              dataType={dataType}
               onTextareaChange={(e) => {
                 setNewCustomTestCaseInputs(
                   // 바뀐 부분의 dataType prop만 수정
