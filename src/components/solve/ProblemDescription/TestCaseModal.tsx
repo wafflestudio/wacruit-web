@@ -30,7 +30,9 @@ export default function TestCaseModal({
   defaultTestCases,
   customTestCases,
 }: TestCaseModalProps) {
-  const [newCustomTestCases, setNewCustomTestCases] = useState<TestCase[]>([]);
+  const [newCustomTestCaseInputs, setNewCustomTestCaseInputs] = useState<
+    TestCase[]
+  >([]);
 
   /* start: '테스트 케이스 추가하기' button click 시 scroll event */
   const scrollRef = useRef<HTMLButtonElement>(null);
@@ -39,18 +41,19 @@ export default function TestCaseModal({
     () => scrollRef.current?.scrollIntoView(true),
     [],
   );
-  // '테스트 케이스 추가하기' button click => newCustomTestCases 변경 => scroll to bottom
+  // '테스트 케이스 추가하기' button click => newCustomTestCaseInputs 변경 => scroll to bottom
   useEffect(() => {
     scrollToBottom();
-  }, [newCustomTestCases, scrollToBottom]);
+  }, [newCustomTestCaseInputs, scrollToBottom]);
   /* end: '테스트 케이스 추가하기' button click 시 scroll event */
 
   const addCustomTestCase = useCallback(() => {
-    const validData: TestCase[] = newCustomTestCases.filter(
+    // input & output 모두 빈칸이 아닌 데이터만 추가
+    const validData: TestCase[] = newCustomTestCaseInputs.filter(
       (data) => data.input !== "" && data.output != "",
     );
     setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
-  }, [newCustomTestCases, setCustomTestCases]);
+  }, [newCustomTestCaseInputs, setCustomTestCases]);
 
   return (
     <Article>
@@ -67,13 +70,16 @@ export default function TestCaseModal({
           customTestCases={customTestCases}
         />
 
+        {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable component에 hr 구분선이 없다 */}
+        {/* 해당 경우에만 따로 구분선 추가 */}
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
-        {/* add testcase textareas */}
-        {newCustomTestCases.length !== 0 && (
+        {/* textareas table for new custom test cases */}
+        {newCustomTestCaseInputs.length !== 0 && (
+          // 추가된 customeTestCase가 아직 없는 경우만 디자인을 위해 margin-top 적용
           <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
             <tbody>
-              {newCustomTestCases.map((data, idx) => (
+              {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
                 <TableItem key={idx}>
                   <BoldText as="th">
                     {defaultTestCases.length + customTestCases.length + idx + 1}
@@ -81,10 +87,11 @@ export default function TestCaseModal({
                   <td>
                     <TestCaseInput
                       rows={1}
-                      value={data.input}
+                      value={newCustomTestCaseInput.input}
                       onChange={(e) => {
-                        setNewCustomTestCases(
-                          newCustomTestCases.map((_, i) =>
+                        setNewCustomTestCaseInputs(
+                          // 바뀐 부분의 input prop만 수정
+                          newCustomTestCaseInputs.map((_, i) =>
                             i === idx ? { ..._, input: e.target.value } : _,
                           ),
                         );
@@ -96,10 +103,11 @@ export default function TestCaseModal({
                   <td>
                     <TestCaseInput
                       rows={1}
-                      value={data.output}
+                      value={newCustomTestCaseInput.output}
                       onChange={(e) => {
-                        setNewCustomTestCases(
-                          newCustomTestCases.map((_, i) =>
+                        // 바뀐 부분의 output prop만 수정
+                        setNewCustomTestCaseInputs(
+                          newCustomTestCaseInputs.map((_, i) =>
                             i === idx ? { ..._, output: e.target.value } : _,
                           ),
                         );
@@ -116,14 +124,15 @@ export default function TestCaseModal({
 
         {/* custom test case는 최대 20개. */}
         {/* 현재 20개 미만인 경우에만 '테스트 케이스 추가' 버튼 렌더 */}
-        {newCustomTestCases.length <= 20 && (
+        {newCustomTestCaseInputs.length <= 20 && (
           <AddTestCaseButton
             $marginTop={
-              newCustomTestCases.length !== 0 || customTestCases.length !== 0
+              newCustomTestCaseInputs.length !== 0 ||
+              customTestCases.length !== 0
             }
             onClick={() => {
-              // NewCustomTestCases length+=1
-              setNewCustomTestCases((prev) => [
+              // 입력을 저장할 새 index 추가
+              setNewCustomTestCaseInputs((prev) => [
                 ...prev,
                 { input: "", output: "" },
               ]);
