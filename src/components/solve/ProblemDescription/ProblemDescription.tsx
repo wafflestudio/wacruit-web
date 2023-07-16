@@ -96,7 +96,6 @@ const Section = styled.section`
   flex: 1;
 
   * {
-    font-family: Pretendard, sans-serif;
     color: #323232;
     box-sizing: border-box;
   }
