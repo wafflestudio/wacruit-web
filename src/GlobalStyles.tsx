@@ -17,6 +17,5 @@ const GlobalStyles = createGlobalStyle`
       color: inherit;
     }
   `;
-// ${{ ...reset, "font-family": "Pretendard" }}
 
 export default GlobalStyles;
