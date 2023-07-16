@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { spacer, SpacerProps } from "./spacer";
+import { spacer, SpacerProps } from "../../../lib/spacer";
 
 export const Text = styled.p<SpacerProps>`
   ${spacer}
