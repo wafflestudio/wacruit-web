@@ -20,9 +20,12 @@ function TestCaseInput({ data, onTextareaChange }: TestCaseInputProps) {
     }
   }, []);
   /* end */
+  const onTdClick = useCallback(() => {
+    textareaRef.current?.focus();
+  }, []);
 
   return (
-    <td>
+    <td onClick={onTdClick} style={{ cursor: "text" }}>
       <TestCaseInputTextarea
         ref={textareaRef}
         onChange={(e) => {
