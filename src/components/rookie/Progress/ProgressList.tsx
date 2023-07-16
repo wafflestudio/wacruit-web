@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ProgressCard } from "./ProgressCard";
+import { EmptyProgressCard, ProgressCard } from "./ProgressCard";
 import { useQuery } from "react-query";
 import {
   MockProblemResult,
@@ -7,7 +7,12 @@ import {
 } from "../../../mocks/types/types";
 
 export function ProgressList() {
-  const { data: results } = useQuery<{
+  const {
+    data: results,
+    isLoading,
+    isFetching,
+    isRefetching,
+  } = useQuery<{
     resume: MockResumeResult;
     problems: MockProblemResult[];
   }>({
@@ -17,6 +22,17 @@ export function ProgressList() {
         .then((res) => res.json())
         .then((data) => data),
   });
+
+  if (isLoading || isFetching || isRefetching) {
+    return (
+      <List>
+        <EmptyProgressCard />
+        <EmptyProgressCard />
+        <EmptyProgressCard />
+        <EmptyProgressCard />
+      </List>
+    );
+  }
 
   if (!results) {
     return <div />;

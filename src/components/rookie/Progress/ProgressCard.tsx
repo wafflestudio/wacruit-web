@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 
 type ProgressCardProps =
   | {
@@ -69,6 +69,10 @@ export function ProgressCard({
   );
 }
 
+export function EmptyProgressCard() {
+  return <Empty />;
+}
+
 const Card = styled.li<{
   $theme: "red" | "green" | "gray" | "resumeRed" | "resumeGreen";
 }>`
@@ -116,6 +120,29 @@ const Card = styled.li<{
         ? "linear-gradient(180deg, #FFDED9 0%, #F6F6F6 46.88%);"
         : "#f6f6f6"};
   }
+`;
+
+const Blink = keyframes`
+  0% {
+    background-color: color.$gray;
+  }
+  100% {
+    background-color: #a4a4a4;
+  }
+`;
+
+const Empty = styled.li`
+  position: relative;
+  box-sizing: border-box;
+  width: 280px;
+  height: 193px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #d1d1d1;
+  cursor: pointer;
+  border: 1px solid #d1d1d1;
+  background: #fff;
+  animation: ${Blink} 1s ease-in-out infinite alternate;
 `;
 
 const Name = styled.h1`
