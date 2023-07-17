@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import TestCaseTable from "./TestCaseTable";
-import { TestCase } from "./ProblemDescription";
-import { HorizontalLine, Table, Text } from "./styledComponents";
+import { HorizontalLine, Table, TestCase, Text } from "./common";
 import { useCallback, useEffect, useRef, useState } from "react";
 import TestCaseInputs from "./TestCaseInputs";
 

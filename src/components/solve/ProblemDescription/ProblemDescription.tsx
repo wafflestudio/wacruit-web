@@ -1,18 +1,13 @@
 import styled from "styled-components";
 import useModal from "./useModal";
 import Modal from "./Modal";
-import { BoldText, HorizontalLine, Text } from "./styledComponents";
+import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback, useState } from "react";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
-}
-
-export interface TestCase {
-  input: string;
-  output: string;
 }
 
 export default function ProblemDescription({

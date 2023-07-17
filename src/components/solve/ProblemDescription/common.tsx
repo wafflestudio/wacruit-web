@@ -1,6 +1,11 @@
 import { styled } from "styled-components";
 import { spacer, SpacerProps } from "../../../lib/spacer";
 
+export interface TestCase {
+  input: string;
+  output: string;
+}
+
 export const Text = styled.p<SpacerProps>`
   ${spacer}
   font-size: 18px;

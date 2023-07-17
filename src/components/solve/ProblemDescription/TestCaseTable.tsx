@@ -5,9 +5,9 @@ import {
   Table,
   TableHeader,
   TableItem,
+  TestCase,
   Text,
-} from "./styledComponents";
-import { TestCase } from "./ProblemDescription";
+} from "./common";
 import { ReactNode, useState } from "react";
 
 interface DeletableTableItemProps {

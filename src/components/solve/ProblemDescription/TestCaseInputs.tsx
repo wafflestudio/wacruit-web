@@ -5,8 +5,7 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { TestCase } from "./ProblemDescription";
-import { BoldText, TableItem } from "./styledComponents";
+import { BoldText, TableItem, TestCase } from "./common";
 import { styled } from "styled-components";
 import { Union } from "../../../types/commonTypes";
 
