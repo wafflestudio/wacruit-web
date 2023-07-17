@@ -18,7 +18,7 @@ export default function ProblemDescription({
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
   ];
-  const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+  const [customTestCases, setCustomTestCases] = useCustomTestCases();
 
   const deleteCustomTestCase = useCallback(
     (deleteIdx: number) =>
@@ -80,6 +80,34 @@ export default function ProblemDescription({
     </Section>
   );
 }
+
+/* code start: 커스텀 테스트 케이스도 localStorage에 저장하며 사용한다 */
+const CUSTOM_TEST_CASES_KEY = "customTestCases";
+
+function getStoredCustomTestCases() {
+  const storedCustomTestCases: TestCase[] = JSON.parse(
+    localStorage.getItem(CUSTOM_TEST_CASES_KEY) || "[]",
+  );
+  return storedCustomTestCases;
+}
+
+function useCustomTestCases() {
+  const [customTestCases, setCustomTestCases] = useState<TestCase[]>(
+    getStoredCustomTestCases,
+  );
+
+  const _setCustomTestCases = useCallback(
+    (param: TestCase[] | ((prev: TestCase[]) => TestCase[])) => {
+      const newTestCases: TestCase[] =
+        typeof param === "function" ? param(customTestCases) : param;
+      setCustomTestCases(newTestCases);
+      localStorage.setItem(CUSTOM_TEST_CASES_KEY, JSON.stringify(newTestCases));
+    },
+    [customTestCases],
+  );
+  return [customTestCases, _setCustomTestCases] as const;
+}
+/* end */
 
 const Section = styled.section`
   border: 4px solid #373737;
