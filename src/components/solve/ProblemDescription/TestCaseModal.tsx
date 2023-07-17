@@ -2,18 +2,11 @@ import styled from "styled-components";
 import TestCaseTable from "./TestCaseTable";
 import { TestCase } from "./ProblemDescription";
 import { HorizontalLine, Table, Text } from "./styledComponents";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import TestCaseInputs from "./TestCaseInputs";
 
 interface TestCaseModalProps {
-  setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
+  addNewCustomTestCase: (newInputs: TestCase[]) => void;
   deleteCustomTestCase: (idx: number) => void;
   onClose: () => void;
   defaultTestCases: TestCase[];
@@ -21,7 +14,7 @@ interface TestCaseModalProps {
 }
 
 export default function TestCaseModal({
-  setCustomTestCases,
+  addNewCustomTestCase,
   deleteCustomTestCase,
   onClose,
   defaultTestCases,
@@ -31,22 +24,14 @@ export default function TestCaseModal({
     TestCase[]
   >([]);
 
-  const addNewCustomTestCase = useCallback(() => {
-    // input & output 모두 빈칸이 아닌 데이터만 추가
-    const validData: TestCase[] = newCustomTestCaseInputs.filter(
-      (data) => data.input !== "" && data.output != "",
-    );
-    setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
-  }, [newCustomTestCaseInputs, setCustomTestCases]);
-
-  /* code start: '테스트 케이스 추가하기' button click 시 scroll event */
+  /* code start: '테스트 케이스 추가하기' 버튼 클릭시 스크롤도 가장 아래로 내려준다 */
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const scrollToBottom = useCallback(
-    // submitButton이 가능한 한 화면의 위에 오도록 아래로 scroll
+    // submitButton이 가능한 한 화면의 위에 오도록 아래로 스크롤
     () => submitButtonRef.current?.scrollIntoView(true),
     [],
   );
-  // '테스트 케이스 추가하기' button click => newCustomTestCaseInputs 변경 => scroll to bottom
+  // '테스트 케이스 추가하기' 버튼 클릭 => newCustomTestCaseInputs 변경 => 스크롤
   useEffect(() => {
     scrollToBottom();
   }, [newCustomTestCaseInputs, scrollToBottom]);
@@ -68,7 +53,7 @@ export default function TestCaseModal({
           deleteCustomTestCase={deleteCustomTestCase}
         />
 
-        {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable component에 hr 구분선이 없다 */}
+        {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable 컴포넌트에 hr 구분선이 없다 */}
         {/* 해당 경우에만 따로 구분선 추가 */}
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
@@ -84,7 +69,7 @@ export default function TestCaseModal({
           </Table>
         )}
 
-        {/* '테스트 케이스 추가' button */}
+        {/* '테스트 케이스 추가' 버튼 */}
         {newCustomTestCaseInputs.length <= 20 && ( // custom test case는 최대 20개
           <AddTestCaseButton
             $marginTop={
@@ -106,7 +91,7 @@ export default function TestCaseModal({
         <SubmitButton
           ref={submitButtonRef}
           onClick={() => {
-            addNewCustomTestCase();
+            addNewCustomTestCase(newCustomTestCaseInputs);
             onClose();
           }}
         >

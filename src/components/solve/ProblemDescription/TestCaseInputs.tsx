@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useCallback, useRef } from "react";
+import {
+  ChangeEventHandler,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useRef,
+} from "react";
 import { TestCase } from "./ProblemDescription";
 import { BoldText, TableItem } from "./styledComponents";
 import { styled } from "styled-components";
@@ -10,7 +16,7 @@ type InputDataType = Union<typeof inputDataTypes>;
 interface TestCaseInputProps {
   data: string;
   dataType: InputDataType;
-  onTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onTextareaChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 function TestCaseInput({
@@ -20,15 +26,16 @@ function TestCaseInput({
 }: TestCaseInputProps) {
   /* code start: textarea 내용 길이에 따라 자동높이조절 */
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const handleResizeHeight = useCallback(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = "auto"; // 높이 줄이기 위해 필요
-      textarea.style.height = `${textarea.scrollHeight}px`; // 높이 늘리기 위해 필요
+      textarea.style.height = "auto"; // 내용이 줄어들었을 때 높이 줄이기 위해 필요
+      textarea.style.height = `${textarea.scrollHeight}px`; // 내용이 넘칠 때 높이 늘리기 위해 필요
     }
   }, []);
   /* end */
+
+  // td를 클릭해도 내부 textarea를 focus해준다
   const onTdClick = useCallback(() => {
     textareaRef.current?.focus();
   }, []);
@@ -96,6 +103,7 @@ export default function TestCaseInputs({
       {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
         <TableItem key={idx}>
           <BoldText as="th">{startIdx + idx}</BoldText>
+          {/* const inputDataTypes = ["input", "output"] as const; */}
           {inputDataTypes.map((dataType) => (
             <TestCaseInput
               key={dataType}

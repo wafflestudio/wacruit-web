@@ -6,7 +6,7 @@ import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback, useState } from "react";
 
-interface Props {
+interface ProblemDescriptionProps {
   problemNumber: number;
 }
 
@@ -15,33 +15,48 @@ export interface TestCase {
   output: string;
 }
 
-export default function ProblemDescription(props: Props) {
+export default function ProblemDescription({
+  problemNumber,
+}: ProblemDescriptionProps) {
   const defaultTestCases: TestCase[] = [
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
   ];
   const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+
   const deleteCustomTestCase = useCallback(
     (deleteIdx: number) =>
       setCustomTestCases((prev) => prev.filter((_, idx) => deleteIdx !== idx)),
     [setCustomTestCases],
   );
 
+  const addNewCustomTestCase = useCallback(
+    (newInputs: TestCase[]) => {
+      // input & output 모두 빈칸이 아닌 데이터만 추가
+      const validData: TestCase[] = newInputs.filter(
+        (data) => data.input !== "" && data.output != "",
+      );
+      setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
+    },
+    [setCustomTestCases],
+  );
+
   const modalHandle = useModal();
+
   return (
     // TODO: 데이터 api 연결
     <Section>
       <Modal handle={modalHandle}>
         <TestCaseModal
-          setCustomTestCases={setCustomTestCases}
+          addNewCustomTestCase={addNewCustomTestCase}
           deleteCustomTestCase={deleteCustomTestCase}
           onClose={modalHandle.closeModal}
           defaultTestCases={defaultTestCases}
           customTestCases={customTestCases}
         />
       </Modal>
-      <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
+      <ProblemTitle>문제 {problemNumber}</ProblemTitle>
       <Text>
         정수 a와 b가 주어집니다. 각 수를 입력받아 입출력 예와 같은 형식으로
         출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
