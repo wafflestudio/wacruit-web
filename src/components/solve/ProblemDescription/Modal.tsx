@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ModalState } from "./useModal";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface ModalProps {
   handle: ReturnType<
