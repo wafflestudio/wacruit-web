@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Rookie from "./pages/Rookie";
 import Solve from "./pages/Solve";
+import GlobalStyles from "./GlobalStyles";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV === "development") {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <GlobalStyles />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>,
