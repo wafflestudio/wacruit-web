@@ -12,6 +12,43 @@ import { Union } from "../../../types/commonTypes";
 const inputDataTypes = ["input", "output"] as const;
 type InputDataType = Union<typeof inputDataTypes>;
 
+interface TestCaseInputsProps {
+  newCustomTestCaseInputs: TestCase[];
+  startIdx: number;
+  setNewCustomTestCaseInputs: Dispatch<SetStateAction<TestCase[]>>;
+}
+
+export default function TestCaseInputs({
+  newCustomTestCaseInputs,
+  startIdx,
+  setNewCustomTestCaseInputs,
+}: TestCaseInputsProps) {
+  return (
+    <tbody>
+      {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
+        <TableItem key={idx}>
+          <BoldText as="th">{startIdx + idx}</BoldText>
+          {inputDataTypes.map((dataType) => (
+            <TestCaseInput
+              key={dataType}
+              data={newCustomTestCaseInput[dataType]}
+              dataType={dataType}
+              onTextareaChange={(e) => {
+                setNewCustomTestCaseInputs(
+                  // 바뀐 부분의 dataType prop만 수정
+                  newCustomTestCaseInputs.map((_, i) => {
+                    return i === idx ? { ..._, [dataType]: e.target.value } : _;
+                  }),
+                );
+              }}
+            />
+          ))}
+        </TableItem>
+      ))}
+    </tbody>
+  );
+}
+
 interface TestCaseInputProps {
   data: string;
   dataType: InputDataType;
@@ -85,41 +122,3 @@ const TestCaseInputTextarea = styled.textarea`
     }
   }
 `;
-
-interface TestCaseInputsProps {
-  newCustomTestCaseInputs: TestCase[];
-  startIdx: number;
-  setNewCustomTestCaseInputs: Dispatch<SetStateAction<TestCase[]>>;
-}
-
-export default function TestCaseInputs({
-  newCustomTestCaseInputs,
-  startIdx,
-  setNewCustomTestCaseInputs,
-}: TestCaseInputsProps) {
-  return (
-    <tbody>
-      {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
-        <TableItem key={idx}>
-          <BoldText as="th">{startIdx + idx}</BoldText>
-          {/* const inputDataTypes = ["input", "output"] as const; */}
-          {inputDataTypes.map((dataType) => (
-            <TestCaseInput
-              key={dataType}
-              data={newCustomTestCaseInput[dataType]}
-              dataType={dataType}
-              onTextareaChange={(e) => {
-                setNewCustomTestCaseInputs(
-                  // 바뀐 부분의 dataType prop만 수정
-                  newCustomTestCaseInputs.map((_, i) => {
-                    return i === idx ? { ..._, [dataType]: e.target.value } : _;
-                  }),
-                );
-              }}
-            />
-          ))}
-        </TableItem>
-      ))}
-    </tbody>
-  );
-}
