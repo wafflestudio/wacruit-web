@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { keyframes, styled } from "styled-components";
+import asset from "./progressCardAsset";
 
 type ProgressCardProps =
   | {
@@ -26,36 +27,17 @@ export function ProgressCard({
   to,
 }: ProgressCardProps) {
   const navigate = useNavigate();
-  /* icons and descriptions by status */
-  const { iconSrc, iconAlt, theme, description } = useMemo(
-    () =>
-      type === "resume"
-        ? ({
-            //resume
-            theme: submit ? "resumeGreen" : "resumeRed",
-            iconSrc: submit
-              ? "/icon/rookie/Check.svg"
-              : "/icon/rookie/Pencil.svg",
-            iconAlt: submit ? "제출 완료" : "미제출",
-            description: submit ? "제출 완료" : "미제출",
-          } as const)
-        : ({
-            //problem
-            theme: submit ? (correct ? "green" : "red") : "gray",
-            iconSrc: submit
-              ? correct
-                ? "/icon/rookie/Check.svg"
-                : "/icon/rookie/X.svg"
-              : "/icon/rookie/Code.svg",
-            iconAlt: submit ? (correct ? "정답" : "오답") : "미제출",
-            description: submit
-              ? correct
-                ? "정답입니다!"
-                : "오답입니다."
-              : "미제출",
-          } as const),
-    [type, submit, correct],
-  );
+  const { iconSrc, iconAlt, theme, description } = useMemo(() => {
+    //resume
+    if (type === "resume")
+      return submit ? asset.resumeSubmit : asset.resumeNotSubmit;
+    //problem (default)
+    return submit
+      ? correct
+        ? asset.problemSubmitCorrect
+        : asset.problemSubmitNotCorrect
+      : asset.problemNotSubmit;
+  }, [type, submit, correct]);
 
   return (
     <Card $theme={theme} onClick={() => navigate(to)}>
@@ -151,6 +133,7 @@ const Name = styled.h1`
   margin-top: 16px;
   margin-bottom: 7px;
 `;
+
 const Description = styled.p`
   color: #737373;
   font-size: 14px;
