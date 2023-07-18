@@ -5,10 +5,23 @@ import Introduce from "../components/home/Introduce";
 import Member from "../components/home/Member";
 import Service from "../components/home/Service";
 import ToHomePage from "../components/home/ToHomePage";
+import useModal from "../components/Modal/useModal";
+import Modal from "../components/Modal/Modal";
+import NotificationModal from "../components/Modal/NotificationModal";
+import { useEffect } from "react";
 
 export default function Home() {
+  const modalHandle = useModal();
+
+  useEffect(() => {
+    modalHandle.openModal();
+  }, []);
+
   return (
     <main style={{ minWidth: "920px" }}>
+      <Modal handle={modalHandle} onBackgroundClicked={() => void 0}>
+        <NotificationModal closeModal={modalHandle.closeModal} />
+      </Modal>
       <Banner />
       <Introduce />
       <Member />
