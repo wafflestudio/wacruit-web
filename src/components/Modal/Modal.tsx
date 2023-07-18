@@ -12,18 +12,21 @@ interface ModalProps {
   >;
   children: ReactNode;
   onBackgroundClicked?: () => void;
+  modalContainerBackgroundColor?: string;
 }
 
 export default function Modal({
   handle,
   children,
   onBackgroundClicked,
+  modalContainerBackgroundColor,
 }: ModalProps) {
   return (
     handle.state !== "closed" && (
       <ModalContainer
         onClick={onBackgroundClicked ?? handle.closeModal}
         state={handle.state}
+        backgroundcolor={modalContainerBackgroundColor}
       >
         <ModalDiv onClick={(e) => e.stopPropagation()}>{children}</ModalDiv>
       </ModalContainer>
@@ -31,7 +34,10 @@ export default function Modal({
   );
 }
 
-const ModalContainer = styled.div<{ state: ModalState }>`
+const ModalContainer = styled.div<{
+  state: ModalState;
+  backgroundcolor: string;
+}>`
   position: fixed;
   left: 0;
   top: 0;

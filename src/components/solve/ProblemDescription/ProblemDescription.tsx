@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import useModal from "./useModal";
-import Modal from "./Modal";
+import useModal from "../../Modal/useModal";
+import Modal from "../../Modal/Modal";
 import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
