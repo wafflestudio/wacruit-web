@@ -26,6 +26,11 @@ export default function Rookie() {
             alt="&rarr;"
             width={20}
           />
+          <img
+            src="/icon/rookie/AnnounceRightArrowWhite.svg"
+            alt="&rarr;"
+            width={20}
+          />
         </div>
       </AnnouncementButton>
       <BottomContainer>
@@ -102,6 +107,10 @@ const AnnouncementButton = styled.button`
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+
+    > img:last-child {
+      display: none;
+    }
   }
 
   &:hover {
@@ -109,6 +118,12 @@ const AnnouncementButton = styled.button`
     background: #fff;
     > div {
       background: #f0745f;
+      > img:first-child {
+        display: none;
+      }
+      > img:last-child {
+        display: inline;
+      }
     }
   }
 `;
