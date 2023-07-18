@@ -28,13 +28,14 @@ export default function Rookie() {
           />
         </div>
       </AnnouncementButton>
-      <div>
+      <BottomContainer>
         <ProgressList />
         <Caution>
           아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
           완료됩니다.
+          <CancelButton>지원 취소</CancelButton>
         </Caution>
-      </div>
+      </BottomContainer>
     </Main>
   );
 }
@@ -45,6 +46,7 @@ const Main = styled.main`
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 650px), 30px);
+  padding-bottom: 30px;
 `;
 
 const Title = styled.h1`
@@ -111,11 +113,29 @@ const AnnouncementButton = styled.button`
   }
 `;
 
+const BottomContainer = styled.div`
+  display: inline-block;
+`;
+
 const Caution = styled.div`
+  position: relative;
   color: #515151;
   font-size: 18px;
   font-weight: 400;
   line-height: 160%; /* 28.8px */
   letter-spacing: 0.72px;
   margin-top: 25px;
+`;
+
+const CancelButton = styled.button`
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  margin-top: 153px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c4c4c4;
+  font: inherit;
+  text-decoration-line: underline;
 `;
