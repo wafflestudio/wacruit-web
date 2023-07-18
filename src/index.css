@@ -9,3 +9,7 @@
 body {
   margin: 0;
 }
+
+body, button {
+  font-family: "Pretendard", sans-serif;
+}

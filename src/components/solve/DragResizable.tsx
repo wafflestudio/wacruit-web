@@ -9,14 +9,14 @@ interface Props {
 // 높이 조절 손잡이의 크기
 const HANDLE_HEIGHT = 20;
 
-// 최대로 늘리더라도 남겨놓을 최소한의 공간
-const MIN_SPACE = 20;
+// 최대로 늘리더라도 남겨놓을 최소한의 공간: 20 + 에디터 헤더 높이
+const MIN_SPACE = 20 + 47;
 
 export default function DragResizable(props: Props) {
   /*
-   드래그 중에는 element의 style.height를 직접 조절하고,
-   드래그가 끝나면 state에 반영한다.
-  */
+ 드래그 중에는 element의 style.height를 직접 조절하고,
+ 드래그가 끝나면 state에 반영한다.
+*/
 
   const container = useRef<HTMLDivElement>(null);
   // 드래그가 시작될 때 설정되는 값들
