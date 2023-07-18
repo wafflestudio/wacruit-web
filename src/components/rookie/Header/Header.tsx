@@ -7,11 +7,11 @@ export default function Header() {
       <Link to="/">
         <img src={"/icon/rookie/logo.png"} height={27} />
       </Link>
-      <Buttons>
+      <Nav>
         <Link to=".">공지사항</Link>
         <Link to="/rookie">지원페이지</Link>
         <Link to="/">로그아웃</Link>
-      </Buttons>
+      </Nav>
     </Container>
   );
 }
@@ -33,7 +33,7 @@ const Container = styled.header`
   font-family: Pretendard, sans-serif;
 `;
 
-const Buttons = styled.div`
+const Nav = styled.nav`
   display: flex;
   gap: 48px;
   > a {
