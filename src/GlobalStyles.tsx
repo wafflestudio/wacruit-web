@@ -13,8 +13,13 @@ const GlobalStyles = createGlobalStyle`
     }
   }
   a {
-      text-decoration: none;
-      color: inherit;
+    text-decoration: none;
+    color: inherit;
+  }
+  button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
   }
 `;
 
