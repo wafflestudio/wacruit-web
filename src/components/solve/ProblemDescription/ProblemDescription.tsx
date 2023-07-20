@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
@@ -18,7 +18,10 @@ export default function ProblemDescription({
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
   ];
-  const [customTestCases, setCustomTestCases] = useCustomTestCases();
+  const CUSTOM_TEST_CASES_KEY = `customTestCasesOfProblemNumber${problemNumber}`;
+  const [customTestCases, setCustomTestCases] = useCustomTestCases(
+    CUSTOM_TEST_CASES_KEY,
+  );
 
   const deleteCustomTestCase = useCallback(
     (deleteIdx: number) =>
@@ -82,30 +85,27 @@ export default function ProblemDescription({
 }
 
 /* code start: 커스텀 테스트 케이스도 localStorage에 저장하며 사용한다 */
-const CUSTOM_TEST_CASES_KEY = "customTestCases";
 
-function getStoredCustomTestCases() {
-  const storedCustomTestCases: TestCase[] = JSON.parse(
-    localStorage.getItem(CUSTOM_TEST_CASES_KEY) || "[]",
+function useCustomTestCases(customTestCasesKey: string) {
+  const storedCustomTestCases: TestCase[] = useMemo(
+    () => JSON.parse(localStorage.getItem(customTestCasesKey) || "[]"),
+    [customTestCasesKey],
   );
-  return storedCustomTestCases;
-}
 
-function useCustomTestCases() {
   const [customTestCases, setCustomTestCases] = useState<TestCase[]>(
-    getStoredCustomTestCases,
+    storedCustomTestCases,
   );
 
-  const _setCustomTestCases = useCallback(
+  const setCustomTestCasesWithLocalStorage = useCallback(
     (param: TestCase[] | ((prev: TestCase[]) => TestCase[])) => {
       const newTestCases: TestCase[] =
         typeof param === "function" ? param(customTestCases) : param;
       setCustomTestCases(newTestCases);
-      localStorage.setItem(CUSTOM_TEST_CASES_KEY, JSON.stringify(newTestCases));
+      localStorage.setItem(customTestCasesKey, JSON.stringify(newTestCases));
     },
-    [customTestCases],
+    [customTestCases, customTestCasesKey],
   );
-  return [customTestCases, _setCustomTestCases] as const;
+  return [customTestCases, setCustomTestCasesWithLocalStorage] as const;
 }
 /* end */
 
