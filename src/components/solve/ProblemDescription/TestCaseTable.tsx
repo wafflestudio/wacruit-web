@@ -1,21 +1,24 @@
 import {
   BoldText,
+  DeletableTableItem,
   HorizontalLine,
   Table,
   TableHeader,
   TableItem,
+  TestCase,
   Text,
-} from "./styledComponents";
-import { TestCase } from "./ProblemDescription";
+} from "./common";
 
 interface TestCaseTableProps {
   defaultTestCases: TestCase[];
   customTestCases: TestCase[];
+  deleteCustomTestCase: (idx: number) => void;
 }
 
 export default function TestCaseTable({
   defaultTestCases,
   customTestCases,
+  deleteCustomTestCase,
 }: TestCaseTableProps) {
   return (
     <Table>
@@ -39,7 +42,7 @@ export default function TestCaseTable({
           </TableItem>
         ))}
 
-        {/* custom test cases */}
+        {/* horizontal line */}
         {customTestCases.length !== 0 && (
           <tr style={{ width: "100%" }}>
             <td style={{ display: "block", width: "100%" }}>
@@ -47,16 +50,21 @@ export default function TestCaseTable({
             </td>
           </tr>
         )}
+
+        {/* custom test cases */}
         {customTestCases.map((testCaseItem, idx) => (
-          <TableItem key={idx}>
-            <BoldText as="th">{defaultTestCases.length + idx + 1}</BoldText>
+          <DeletableTableItem
+            key={idx}
+            index={defaultTestCases.length + idx + 1}
+            deleteItem={() => deleteCustomTestCase(idx)}
+          >
             <td>
               <Text as="pre">{testCaseItem.input}</Text>
             </td>
             <td>
               <Text as="pre">{testCaseItem.output}</Text>
             </td>
-          </TableItem>
+          </DeletableTableItem>
         ))}
       </tbody>
     </Table>

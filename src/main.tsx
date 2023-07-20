@@ -4,6 +4,7 @@ import "./index.css";
 import initMocks from "./mocks/index";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home";
 import Rookie from "./pages/Rookie";
 import Solve from "./pages/Solve";
@@ -42,6 +43,7 @@ if (process.env.NODE_ENV === "development") {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <GlobalStyles />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>,

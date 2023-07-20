@@ -1,29 +1,40 @@
 import styled from "styled-components";
 import TestCaseTable from "./TestCaseTable";
-import { TestCase } from "./ProblemDescription";
-import {
-  BoldText,
-  HorizontalLine,
-  Table,
-  TableItem,
-  Text,
-} from "./styledComponents";
-import { Dispatch, SetStateAction, useState } from "react";
+import { HorizontalLine, Table, TestCase, Text } from "./common";
+import { useCallback, useEffect, useRef, useState } from "react";
+import TestCaseInputs from "./TestCaseInputs";
 
-type TestCaseModalProps = {
-  setCustomTestCases: Dispatch<SetStateAction<TestCase[]>>;
+interface TestCaseModalProps {
+  addNewCustomTestCase: (newInputs: TestCase[]) => void;
+  deleteCustomTestCase: (idx: number) => void;
   onClose: () => void;
   defaultTestCases: TestCase[];
   customTestCases: TestCase[];
-};
+}
 
 export default function TestCaseModal({
-  setCustomTestCases,
+  addNewCustomTestCase,
+  deleteCustomTestCase,
   onClose,
   defaultTestCases,
   customTestCases,
 }: TestCaseModalProps) {
-  const [inputOutputData, setInputOutputData] = useState<TestCase[]>([]);
+  const [newCustomTestCaseInputs, setNewCustomTestCaseInputs] = useState<
+    TestCase[]
+  >([]);
+
+  /* code start: '테스트 케이스 추가하기' 버튼 클릭시 스크롤도 가장 아래로 내려준다 */
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const scrollToBottom = useCallback(
+    // submitButton이 가능한 한 화면의 위에 오도록 아래로 스크롤
+    () => submitButtonRef.current?.scrollIntoView(true),
+    [],
+  );
+  // '테스트 케이스 추가하기' 버튼 클릭 => newCustomTestCaseInputs 변경 => 스크롤
+  useEffect(() => {
+    scrollToBottom();
+  }, [newCustomTestCaseInputs, scrollToBottom]);
+  /* end */
 
   return (
     <Article>
@@ -38,73 +49,48 @@ export default function TestCaseModal({
         <TestCaseTable
           defaultTestCases={defaultTestCases}
           customTestCases={customTestCases}
+          deleteCustomTestCase={deleteCustomTestCase}
         />
 
+        {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable 컴포넌트에 hr 구분선이 없다 */}
+        {/* 해당 경우에만 따로 구분선 추가 */}
         {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
 
-        {/* add testcase textareas */}
-        {inputOutputData.length !== 0 && (
+        {/* textareas table*/}
+        {newCustomTestCaseInputs.length !== 0 && (
+          // 추가된 customeTestCase가 아직 없는 경우만 디자인을 위해 margin-top 적용
           <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
-            <tbody>
-              {inputOutputData.map((data, idx) => (
-                <TableItem key={idx}>
-                  <BoldText as="th">
-                    {defaultTestCases.length + customTestCases.length + idx + 1}
-                  </BoldText>
-                  <td>
-                    <TestCaseInput
-                      value={data.input}
-                      onChange={(e) => {
-                        setInputOutputData(
-                          inputOutputData.map((_, i) =>
-                            i === idx ? { ..._, input: e.target.value } : _,
-                          ),
-                        );
-                      }}
-                      placeholder="입력값을 입력해주세요."
-                      spellCheck="false"
-                    />
-                  </td>
-                  <td>
-                    <TestCaseInput
-                      value={data.output}
-                      onChange={(e) => {
-                        setInputOutputData(
-                          inputOutputData.map((_, i) =>
-                            i === idx ? { ..._, output: e.target.value } : _,
-                          ),
-                        );
-                      }}
-                      placeholder="출력값을 입력해주세요."
-                      spellCheck="false"
-                    />
-                  </td>
-                </TableItem>
-              ))}
-            </tbody>
+            <TestCaseInputs
+              newCustomTestCaseInputs={newCustomTestCaseInputs}
+              startIdx={defaultTestCases.length + customTestCases.length + 1}
+              setNewCustomTestCaseInputs={setNewCustomTestCaseInputs}
+            />
           </Table>
         )}
 
-        {/* custom test case는 최대 20개 */}
-        {inputOutputData.length <= 20 && (
+        {/* '테스트 케이스 추가' 버튼 */}
+        {customTestCases.length + newCustomTestCaseInputs.length < 20 && ( // custom test case는 최대 20개
           <AddTestCaseButton
-            onClick={() =>
-              setInputOutputData((prev) => [...prev, { input: "", output: "" }])
+            $marginTop={
+              newCustomTestCaseInputs.length !== 0 ||
+              customTestCases.length !== 0
             }
-            marginTop={
-              inputOutputData.length !== 0 || customTestCases.length !== 0
-            }
+            onClick={() => {
+              // 입력을 저장할 새 index 추가
+              setNewCustomTestCaseInputs((prev) => [
+                ...prev,
+                { input: "", output: "" },
+              ]);
+            }}
           >
             <Text>테스트 케이스 추가하기</Text>
           </AddTestCaseButton>
         )}
 
         <SubmitButton
+          ref={submitButtonRef}
           onClick={() => {
-            const newData: TestCase[] = inputOutputData.filter(
-              (data) => data.input !== "" && data.output != "",
-            );
-            setCustomTestCases((prev: TestCase[]) => [...prev, ...newData]);
+            addNewCustomTestCase(newCustomTestCaseInputs);
             onClose();
           }}
         >
@@ -116,8 +102,10 @@ export default function TestCaseModal({
 }
 
 const Article = styled.article`
-  width: 1200px;
-  height: 655px;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 290px;
+  height: 53%;
 `;
 
 const Nav = styled.nav`
@@ -141,7 +129,8 @@ const CloseButton = styled.button`
 `;
 
 const Main = styled.div`
-  height: 601px;
+  width: 100%;
+  max-height: 646px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -163,46 +152,19 @@ const Title = styled.h1`
   font-size: 40px;
 `;
 
-const AddTestCaseButton = styled.button<{ marginTop: boolean }>`
+const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
   padding: 0;
-  margin-top: ${(props) => (props.marginTop ? "10px" : 0)};
+  margin-top: ${(props) => (props.$marginTop ? "10px" : 0)};
   width: 100%;
   height: 70px;
   min-height: 70px;
   background: #f6f6f6;
   border: none;
   border-radius: 5px;
+  color: #373737;
   cursor: pointer;
   &:hover {
     background: #e6e6e6;
-  }
-`;
-
-const TestCaseInput = styled.textarea`
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  line-height: 160%;
-  resize: none;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &::placeholder {
-    color: #a1a1a1;
-  }
-
-  &:focus {
-    outline: none;
-    background: #e6e6e6;
-    text-decoration-line: none;
-    &::placeholder {
-      color: transparent;
-    }
   }
 `;
 
@@ -219,6 +181,7 @@ const SubmitButton = styled.button`
   line-height: 160%;
   letter-spacing: 5%;
   background: #f0745f;
+  color: #323232;
   cursor: pointer;
   &:active {
     box-shadow: 2px 2px #323232;
