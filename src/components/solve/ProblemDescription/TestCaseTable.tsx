@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
 import {
   BoldText,
+  DeletableTableItem,
   HorizontalLine,
   Table,
   TableHeader,
@@ -8,7 +8,6 @@ import {
   TestCase,
   Text,
 } from "./common";
-import { ReactNode, useState } from "react";
 
 interface TestCaseTableProps {
   defaultTestCases: TestCase[];
@@ -71,82 +70,3 @@ export default function TestCaseTable({
     </Table>
   );
 }
-
-interface DeletableTableItemProps {
-  index: number;
-  deleteItem: () => void;
-  children: ReactNode;
-}
-
-function DeletableTableItem({
-  index,
-  deleteItem,
-  children,
-}: DeletableTableItemProps) {
-  const [isHover, setIsHover] = useState<boolean>(false);
-
-  return (
-    <DeletableTableRow
-      onMouseEnter={() => {
-        setIsHover(true);
-      }}
-      onMouseLeave={() => {
-        setIsHover(false);
-      }}
-    >
-      <Th>
-        {isHover ? (
-          <button onClick={deleteItem}>삭제</button>
-        ) : (
-          <BoldText>{index}</BoldText>
-        )}
-      </Th>
-      {children}
-    </DeletableTableRow>
-  );
-}
-
-const DeletableTableRow = styled(TableHeader)`
-  td {
-    background-color: #f6f6f6;
-    padding: 10px 15px;
-    border-radius: 5px;
-  }
-`;
-
-const Th = styled.th`
-  background-color: transparent;
-  > button,
-  p {
-    width: 100%;
-    height: 100%;
-    color: #323232;
-    border-radius: 5px;
-    animation: appear 300ms;
-    @keyframes appear {
-      from {
-        opacity: 0;
-      }
-    }
-  }
-  > button {
-    display: block;
-    padding: 13.5px 17.5px;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 160%;
-    letter-spacing: 5%;
-    border: none;
-    background-color: #f0745f;
-    transition: 0.3s;
-    &:hover {
-      transition: inherit;
-      background-color: #e6e6e6;
-      cursor: pointer;
-    }
-  }
-  > p {
-    padding: 10px 15px;
-    background-color: #f6f6f6;
-  }
-`;

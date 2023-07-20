@@ -5,7 +5,7 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { BoldText, TableItem, TestCase } from "./common";
+import { DeletableTableItem, TestCase } from "./common";
 import { styled } from "styled-components";
 import { Union } from "../../../types/commonTypes";
 
@@ -23,11 +23,22 @@ export default function TestCaseInputs({
   startIdx,
   setNewCustomTestCaseInputs,
 }: TestCaseInputsProps) {
+  const deleteNewCustomTestCaseInput = useCallback(
+    (deleteIdx: number) =>
+      setNewCustomTestCaseInputs((prev) =>
+        prev.filter((_, idx) => deleteIdx !== idx),
+      ),
+    [setNewCustomTestCaseInputs],
+  );
+
   return (
     <tbody>
       {newCustomTestCaseInputs.map((newCustomTestCaseInput, idx) => (
-        <TableItem key={idx}>
-          <BoldText as="th">{startIdx + idx}</BoldText>
+        <DeletableTableItem
+          key={idx}
+          index={startIdx + idx}
+          deleteItem={() => deleteNewCustomTestCaseInput(idx)}
+        >
           {inputDataTypes.map((dataType) => (
             <TestCaseInput
               key={dataType}
@@ -43,7 +54,7 @@ export default function TestCaseInputs({
               }}
             />
           ))}
-        </TableItem>
+        </DeletableTableItem>
       ))}
     </tbody>
   );
