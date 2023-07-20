@@ -4,10 +4,11 @@ import "./index.css";
 import initMocks from "./mocks/index";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home";
 import Rookie from "./pages/Rookie";
 import Solve from "./pages/Solve";
-import GlobalStyles from "./GlobalStyles";
+import Resume from "./pages/Resume";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
   {
     path: "/rookie",
     element: <Rookie />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: "/rookie/resume",
+    element: <Resume />,
     errorElement: <div>error</div>,
   },
   {
