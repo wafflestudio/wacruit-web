@@ -69,7 +69,7 @@ export default function TestCaseModal({
         )}
 
         {/* '테스트 케이스 추가' 버튼 */}
-        {newCustomTestCaseInputs.length <= 20 && ( // custom test case는 최대 20개
+        {customTestCases.length + newCustomTestCaseInputs.length < 20 && ( // custom test case는 최대 20개
           <AddTestCaseButton
             $marginTop={
               newCustomTestCaseInputs.length !== 0 ||
