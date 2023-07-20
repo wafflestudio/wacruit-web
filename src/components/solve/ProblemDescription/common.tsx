@@ -115,7 +115,7 @@ const DeletableTh = styled.th`
   }
   > button {
     display: block;
-    padding: 13.5px 17.5px;
+    padding: 13.2px 17.5px;
     font-size: 14px;
     font-weight: bold;
     line-height: 160%;
