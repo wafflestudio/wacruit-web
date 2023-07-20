@@ -103,7 +103,6 @@ const TestCaseInputTextarea = styled.textarea`
   font-size: 18px;
   line-height: 160%;
   resize: none;
-  overflow-y: auto;
 
   &::-webkit-scrollbar {
     display: none;
