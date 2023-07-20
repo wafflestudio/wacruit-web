@@ -4,6 +4,7 @@ import ProblemDescription from "../components/solve/ProblemDescription/ProblemDe
 import CodeEditor from "../components/solve/CodeEditor.tsx";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
+import { useState } from "react";
 
 function safeNum(_n: string | undefined) {
   const n = Number(_n);
@@ -12,6 +13,7 @@ function safeNum(_n: string | undefined) {
 
 export default function Solve() {
   const params = useParams();
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const problemNumber = safeNum(params.problem_number);
   const handleRunTest = () => {
@@ -34,13 +36,16 @@ export default function Solve() {
             Back
           </Link>
         </TopNav>
-        <Row>
+        <Row $collapseLeft={isFullScreen}>
           <Col>
             <ProblemDescription problemNumber={problemNumber} />
           </Col>
           <Col>
             <Col>
-              <CodeEditor />
+              <CodeEditor
+                isFullScreen={isFullScreen}
+                setIsFullScreen={setIsFullScreen}
+              />
               <DragResizable initialHeight={300}>
                 <TestResultConsole />
               </DragResizable>
@@ -93,18 +98,27 @@ const TopNav = styled.nav`
     text-decoration: none;
   }
 `;
-const Row = styled.div`
+const Row = styled.div<{ $collapseLeft?: boolean }>`
   display: flex;
   flex: 1;
-  gap: 16px;
+  gap: ${(props) => (props.$collapseLeft ? "0" : "16px")};
   padding: 0 16px 16px;
   min-height: 0;
+  & > :first-child {
+    ${(props) =>
+      props.$collapseLeft &&
+      `
+      flex: 0;
+      opacity: 0;`}
+    transition: ease 0.3s;
+  }
 `;
 const Col = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  min-width: 0;
 `;
 const BottomNav = styled.nav`
   display: flex;
