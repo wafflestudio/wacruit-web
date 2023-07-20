@@ -96,6 +96,9 @@ const DeletableTableRow = styled(TableHeader)`
     padding: 10px 15px;
     border-radius: 5px;
   }
+  > td:focus-within {
+    background-color: #e6e6e6;
+  }
 `;
 
 const DeletableTh = styled.th`
