@@ -46,18 +46,11 @@ const ModalContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1;
-  animation: modal-container-appear 300ms;
-  overflow: auto;
-=======
   z-index: 1;
   animation: modal-container-appear 300ms;
   ${(props) => ({
     "background-color": props.backgroundColor,
   })};
->>>>>>> deaeeab (UPDATE : ModalContainer background-color param 처리)
 
   ${(props) =>
     props.state === "closing" &&
