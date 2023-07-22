@@ -63,6 +63,4 @@ const ModalContainer = styled.div<{
   }
 `;
 
-const ModalDiv = styled.div`
-  min-width: 62.5%;
-`;
+const ModalDiv = styled.div``;
