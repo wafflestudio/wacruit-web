@@ -46,7 +46,10 @@ export default function ProblemDescription({
   return (
     // TODO: 데이터 api 연결
     <Section>
-      <Modal handle={modalHandle}>
+      <Modal
+        handle={modalHandle}
+        modalContainerBackgroundColor={"rgba(0, 0, 0, 0.6)"}
+      >
         <TestCaseModal
           addNewCustomTestCase={addNewCustomTestCase}
           deleteCustomTestCase={deleteCustomTestCase}

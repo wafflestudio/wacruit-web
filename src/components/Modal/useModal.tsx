@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Union } from "../../../types/commonTypes";
+import { Union } from "../../types/commonTypes";
 
 const modalStates = ["open", "closed", "closing"] as const;
 export type ModalState = Union<typeof modalStates>;
