@@ -12,3 +12,8 @@ export type MockResumeQuestionaire = {
   question: string;
   answer: string | null;
 };
+
+export type MockApplyNumber = {
+  rookie: number;
+  designer: number;
+};

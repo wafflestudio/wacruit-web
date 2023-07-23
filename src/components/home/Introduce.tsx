@@ -58,6 +58,24 @@ const IntroduceTop = styled.div`
       color: #fff;
       font-family: Jalnan;
       font-size: 32px;
+      -webkit-text-stroke: 2px #8b3c2e;
+      font-weight: 700;
+      text-shadow: calc(0.5px * 1) 0 0 #8b3c2e,
+        calc(0.5px * 0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
+        calc(0.5px * 0.7071) calc(0.5px * 0.7071) 0 #8b3c2e,
+        calc(0.5px * 0.3827) calc(0.5px * 0.9239) 0 #8b3c2e,
+        0 calc(0.5px * 1) 0 #8b3c2e,
+        calc(0.5px * -0.3827) calc(0.5px * 0.9239) 0 #8b3c2e,
+        calc(0.5px * -0.7071) calc(0.5px * 0.7071) 0 #8b3c2e,
+        calc(0.5px * -0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
+        calc(0.5px * -1) 0 0 #8b3c2e,
+        calc(0.5px * -0.9239) calc(0.5px * -0.3827) 0 #8b3c2e,
+        calc(0.5px * -0.7071) calc(0.5px * -0.7071) 0 #8b3c2e,
+        calc(0.5px * -0.3827) calc(0.5px * -0.9239) 0 #8b3c2e,
+        0 calc(0.5px * -1) 0 #8b3c2e,
+        calc(0.5px * 0.3827) calc(0.5px * -0.9239) 0 #8b3c2e,
+        calc(0.5px * 0.7071) calc(0.5px * -0.7071) 0 #8b3c2e,
+        calc(0.5px * 0.9239) calc(0.5px * -0.3827) 0 #8b3c2e;
     }
   }
   p {
