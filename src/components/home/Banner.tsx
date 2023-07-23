@@ -6,7 +6,39 @@ export default function Banner() {
       <BackGround></BackGround>
       <ForeGround>
         <BannerText>
-          와플스튜디오 <br /> <span>리쿠르팅</span> 시작합니다!
+          <img
+            style={{ position: "absolute", right: "-70px", top: "-20px" }}
+            src="./image/ReadingGlass.svg"
+            alt="Glass"
+          />
+          <img
+            style={{ position: "absolute", left: "48px", bottom: "100px" }}
+            src="./image/Eyes.svg"
+            alt="Eyes"
+          />
+          <img
+            style={{ position: "absolute", left: "-150px", bottom: "60px" }}
+            src="./image/MousePointer.svg"
+            alt="Mouse"
+          />
+          <img
+            style={{ position: "absolute", left: "28px", bottom: "170px" }}
+            src="./image/Star/Star20.svg"
+            alt="Star"
+          />
+          <img
+            style={{ position: "absolute", left: "-8px", bottom: "185px" }}
+            src="./image/Star/Star30.svg"
+            alt="Star"
+          />
+          <img
+            style={{ position: "absolute", right: "-70px", top: "-60px" }}
+            src="./image/Star/Star40.svg"
+            alt="Star"
+          />
+          <h1 style={{ zIndex: "1" }}>
+            와플스튜디오 <br /> <span>리쿠르팅</span> 시작합니다!
+          </h1>
         </BannerText>
         <FlipClock></FlipClock>
       </ForeGround>
@@ -38,26 +70,94 @@ const ForeGround = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 60px;
 `;
 
-const BannerText = styled.h1`
-  color: #fff;
-  font-family: Jalnan;
-  font-size: 64px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-align: center;
+const BannerText = styled.div`
+  display: flex;
+  position: relative;
 
-  -webkit-text-stroke: 1px #292929;
-  text-shadow: -2px 0px #292929, 2px 0px #292929, 0px 2px #292929,
-    0px -2px #292929;
-
-  span {
-    color: #f0745f;
+  h1 {
+    color: #fff;
     font-family: Jalnan;
-    font-size: 84px;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    text-shadow: calc(5px * 1) 0 0 #292929,
+      calc(5px * 0.9239) calc(5px * 0.3827) 0 #292929,
+      calc(5px * 0.7071) calc(5px * 0.7071) 0 #292929,
+      calc(5px * 0.3827) calc(5px * 0.9239) 0 #292929, 0 calc(5px * 1) 0 #292929,
+      calc(5px * -0.3827) calc(5px * 0.9239) 0 #292929,
+      calc(5px * -0.7071) calc(5px * 0.7071) 0 #292929,
+      calc(5px * -0.9239) calc(5px * 0.3827) 0 #292929,
+      calc(5px * -1) 0 0 #292929,
+      calc(5px * -0.9239) calc(5px * -0.3827) 0 #292929,
+      calc(5px * -0.7071) calc(5px * -0.7071) 0 #292929,
+      calc(5px * -0.3827) calc(5px * -0.9239) 0 #292929,
+      0 calc(5px * -1) 0 #292929,
+      calc(5px * 0.3827) calc(5px * -0.9239) 0 #292929,
+      calc(5px * 0.7071) calc(5px * -0.7071) 0 #292929,
+      calc(5px * 0.9239) calc(5px * -0.3827) 0 #292929,
+      //
+      calc(5px * 1 + 12px) -7px 0 #292929,
+      calc(5px * 0.9239 + 12px) calc(5px * 0.3827 - 7px) 0 #292929,
+      calc(5px * 0.7071 + 12px) calc(5px * 0.7071 - 7px) 0 #292929,
+      calc(5px * 0.3827 + 12px) calc(5px * 0.9239 - 7px) 0 #292929,
+      12px calc(5px * 1 - 7px) 0 #292929,
+      calc(5px * -0.3827 + 12px) calc(5px * 0.9239 - 7px) 0 #292929,
+      calc(5px * -0.7071 + 12px) calc(5px * 0.7071 - 7px) 0 #292929,
+      calc(5px * -0.9239 + 12px) calc(5px * 0.3827 - 7px) 0 #292929,
+      calc(5px * -1 + 12px) -7px 0 #292929,
+      calc(5px * -0.9239 + 12px) calc(5px * -0.3827 - 7px) 0 #292929,
+      calc(5px * -0.7071 + 12px) calc(5px * -0.7071 - 7px) 0 #292929,
+      calc(5px * -0.3827 + 12px) calc(5px * -0.9239 - 7px) 0 #292929,
+      12px calc(5px * -1 - 7px) 0 #292929,
+      calc(5px * 0.3827 + 12px) calc(5px * -0.9239 - 7px) 0 #292929,
+      calc(5px * 0.7071 + 12px) calc(5px * -0.7071 - 7px) 0 #292929,
+      calc(5px * 0.9239 + 12px) calc(5px * -0.3827 - 7px) 0 #292929;
+
+    span {
+      color: #f0745f;
+      font-family: Jalnan;
+      font-size: 84px;
+      text-shadow: calc(5px * 1) 0 0 #671f13,
+        calc(5px * 0.9239) calc(5px * 0.3827) 0 #671f13,
+        calc(5px * 0.7071) calc(5px * 0.7071) 0 #671f13,
+        calc(5px * 0.3827) calc(5px * 0.9239) 0 #671f13,
+        0 calc(5px * 1) 0 #671f13,
+        calc(5px * -0.3827) calc(5px * 0.9239) 0 #671f13,
+        calc(5px * -0.7071) calc(5px * 0.7071) 0 #671f13,
+        calc(5px * -0.9239) calc(5px * 0.3827) 0 #671f13,
+        calc(5px * -1) 0 0 #671f13,
+        calc(5px * -0.9239) calc(5px * -0.3827) 0 #671f13,
+        calc(5px * -0.7071) calc(5px * -0.7071) 0 #671f13,
+        calc(5px * -0.3827) calc(5px * -0.9239) 0 #671f13,
+        0 calc(5px * -1) 0 #671f13,
+        calc(5px * 0.3827) calc(5px * -0.9239) 0 #671f13,
+        calc(5px * 0.7071) calc(5px * -0.7071) 0 #671f13,
+        calc(5px * 0.9239) calc(5px * -0.3827) 0 #671f13,
+        //
+        calc(5px * 1 + 12px) -7px 0 #671f13,
+        calc(5px * 0.9239 + 12px) calc(5px * 0.3827 - 7px) 0 #671f13,
+        calc(5px * 0.7071 + 12px) calc(5px * 0.7071 - 7px) 0 #671f13,
+        calc(5px * 0.3827 + 12px) calc(5px * 0.9239 - 7px) 0 #671f13,
+        12px calc(5px * 1 - 7px) 0 #671f13,
+        calc(5px * -0.3827 + 12px) calc(5px * 0.9239 - 7px) 0 #671f13,
+        calc(5px * -0.7071 + 12px) calc(5px * 0.7071 - 7px) 0 #671f13,
+        calc(5px * -0.9239 + 12px) calc(5px * 0.3827 - 7px) 0 #671f13,
+        calc(5px * -1 + 12px) -7px 0 #671f13,
+        calc(5px * -0.9239 + 12px) calc(5px * -0.3827 - 7px) 0 #671f13,
+        calc(5px * -0.7071 + 12px) calc(5px * -0.7071 - 7px) 0 #671f13,
+        calc(5px * -0.3827 + 12px) calc(5px * -0.9239 - 7px) 0 #671f13,
+        12px calc(5px * -1 - 7px) 0 #671f13,
+        calc(5px * 0.3827 + 12px) calc(5px * -0.9239 - 7px) 0 #671f13,
+        calc(5px * 0.7071 + 12px) calc(5px * -0.7071 - 7px) 0 #671f13,
+        calc(5px * 0.9239 + 12px) calc(5px * -0.3827 - 7px) 0 #671f13;
+    }
   }
 `;
 

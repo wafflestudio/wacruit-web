@@ -4,12 +4,27 @@ import { useState } from "react";
 import { LockIcon } from "../../../public/image/LockIcon";
 import { Stroke } from "../../../public/image/Stroke";
 import CalenderInner from "./CalenderInner";
+import { useQuery } from "react-query";
+import { MockApplyNumber } from "../../mocks/types/types";
 
 export default function Apply() {
-  const [field, setField] = useState("ROOKIE");
+  const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
+    "ROOKIE",
+  );
+
+  const { status, data } = useQuery<MockApplyNumber>({
+    queryKey: ["applyNumber", field],
+    queryFn: () =>
+      fetch("/apply/number")
+        .then((res) => res.json())
+        .then((data) => {
+          return data;
+        }),
+  });
 
   return (
     <Section>
+      <BackGround></BackGround>
       <SectionNumber>#4</SectionNumber>
       <SectionTitle>
         <h1>
@@ -49,15 +64,39 @@ export default function Apply() {
             <p>S</p>
           </DayWeek>
           <Stroke />
-          <CalenderInner></CalenderInner>
+          <CalenderInner select={field}></CalenderInner>
           <ApplyButton>
             <p>
-              <span>NN</span>명 지원 중
+              {status !== "loading" && status === "success" && (
+                <span>
+                  {field === "ROOKIE" ? data?.rookie : data?.designer}{" "}
+                </span>
+              )}{" "}
+              명 지원 중
             </p>
             <button>지원하러가기!</button>
           </ApplyButton>
         </CalenderArea>
       </ApplyCalender>
+      <Share>
+        <ShareText>
+          <h1>
+            와플스튜디오 <br /> <span>리쿠르팅</span> 공유하기
+          </h1>
+          <p>와플스튜디오 루키회원 모집을 주변에 소문내주세요! </p>
+        </ShareText>
+        <ShareButton>
+          <ShareIcon>
+            <img src={"./image/Instagram.svg"} alt="share" />
+          </ShareIcon>
+          <ShareIcon>
+            <img src={"./image/Share.svg"} alt="share" />
+          </ShareIcon>
+          <ShareIcon>
+            <img src={"./image/KakaoTalk.svg"} alt="share" />
+          </ShareIcon>
+        </ShareButton>
+      </Share>
     </Section>
   );
 }
@@ -65,12 +104,21 @@ export default function Apply() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  background: #fffcf5;
   padding: 100px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const BackGround = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fffcf5;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 `;
 
 const ApplyCalender = styled.div`
@@ -175,4 +223,53 @@ const ApplyButton = styled.div`
 
     cursor: pointer;
   }
+`;
+
+const Share = styled.div`
+  margin-top: 126px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const ShareText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h1 {
+    color: #434343;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 140%; /* 42px */
+    span {
+      color: #f0745f;
+      font-family: Jalnan;
+    }
+  }
+  p {
+    color: #837c6d;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 140%; /* 25.2px */
+  }
+`;
+
+const ShareButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 42px;
+`;
+const ShareIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #f0745f;
+  cursor: pointer;
 `;

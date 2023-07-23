@@ -84,6 +84,7 @@ const ActivityCard = styled.div`
   width: 100%;
   border-radius: 29px;
   border: 1px solid #bd8379;
+
   background-color: #ffffff;
   display: flex;
   flex-direction: row;
@@ -106,6 +107,7 @@ const CardTitle = styled.div`
 `;
 
 const CardDescription = styled.div`
+  flex: 1 1 0;
   color: #857977;
   font-size: 18px;
   font-weight: 500;
