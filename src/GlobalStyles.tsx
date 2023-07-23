@@ -12,15 +12,25 @@ const GlobalStyles = createGlobalStyle`
       border-collapse: collapse;
     }
   }
+  
   a {
     text-decoration: none;
     color: inherit;
   }
+
   button {
     background-color: transparent;
     border: none;
     padding: 0;
   }
+
+   @font-face {
+    font-family: 'Jalnan';
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff")
+      format("woff");
+    font-weight: normal;
+    font-style: normal;
+  } 
 `;
 
 export default GlobalStyles;
