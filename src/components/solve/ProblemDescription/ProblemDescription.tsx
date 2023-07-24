@@ -1,46 +1,60 @@
 import styled from "styled-components";
 import useModal from "./useModal";
 import Modal from "./Modal";
-// import {
-//   TestCaseHeaderTableRow,
-//   TestCaseItemTableRow,
-//   TestCaseTable,
-// } from "./TestCaseTable";
-import { BoldText, HorizontalLine, Text } from "./styledComponents";
+import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-interface Props {
+interface ProblemDescriptionProps {
   problemNumber: number;
 }
 
-export interface TestCase {
-  input: string;
-  output: string;
-}
-
-export default function ProblemDescription(props: Props) {
+export default function ProblemDescription({
+  problemNumber,
+}: ProblemDescriptionProps) {
   const defaultTestCases: TestCase[] = [
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
     { input: "4, 5", output: "a=4\nb=5" },
   ];
-  const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
+  const CUSTOM_TEST_CASES_KEY = `customTestCasesOfProblemNumber${problemNumber}`;
+  const [customTestCases, setCustomTestCases] = useCustomTestCases(
+    CUSTOM_TEST_CASES_KEY,
+  );
+
+  const deleteCustomTestCase = useCallback(
+    (deleteIdx: number) =>
+      setCustomTestCases((prev) => prev.filter((_, idx) => deleteIdx !== idx)),
+    [setCustomTestCases],
+  );
+
+  const addNewCustomTestCase = useCallback(
+    (newInputs: TestCase[]) => {
+      // input & output 모두 빈칸이 아닌 데이터만 추가
+      const validData: TestCase[] = newInputs.filter(
+        (data) => data.input !== "" && data.output != "",
+      );
+      setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
+    },
+    [setCustomTestCases],
+  );
 
   const modalHandle = useModal();
+
   return (
     // TODO: 데이터 api 연결
     <Section>
       <Modal handle={modalHandle}>
         <TestCaseModal
-          setCustomTestCases={setCustomTestCases}
+          addNewCustomTestCase={addNewCustomTestCase}
+          deleteCustomTestCase={deleteCustomTestCase}
           onClose={modalHandle.closeModal}
           defaultTestCases={defaultTestCases}
           customTestCases={customTestCases}
         />
       </Modal>
-      <ProblemTitle>문제 {props.problemNumber}</ProblemTitle>
+      <ProblemTitle>문제 {problemNumber}</ProblemTitle>
       <Text>
         정수 a와 b가 주어집니다. 각 수를 입력받아 입출력 예와 같은 형식으로
         출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
@@ -56,6 +70,7 @@ export default function ProblemDescription(props: Props) {
       <TestCaseTable
         defaultTestCases={defaultTestCases}
         customTestCases={customTestCases}
+        deleteCustomTestCase={deleteCustomTestCase}
       />
       <AddTestCaseButton
         onClick={() => {
@@ -69,12 +84,38 @@ export default function ProblemDescription(props: Props) {
   );
 }
 
+/* code start: 커스텀 테스트 케이스도 localStorage에 저장하며 사용한다 */
+
+function useCustomTestCases(customTestCasesKey: string) {
+  const storedCustomTestCases: TestCase[] = useMemo(
+    () => JSON.parse(localStorage.getItem(customTestCasesKey) || "[]"),
+    [customTestCasesKey],
+  );
+
+  const [customTestCases, setCustomTestCases] = useState<TestCase[]>(
+    storedCustomTestCases,
+  );
+
+  const setCustomTestCasesWithLocalStorage = useCallback(
+    (param: TestCase[] | ((prev: TestCase[]) => TestCase[])) => {
+      const newTestCases: TestCase[] =
+        typeof param === "function" ? param(customTestCases) : param;
+      setCustomTestCases(newTestCases);
+      localStorage.setItem(customTestCasesKey, JSON.stringify(newTestCases));
+    },
+    [customTestCases, customTestCasesKey],
+  );
+  return [customTestCases, setCustomTestCasesWithLocalStorage] as const;
+}
+/* end */
+
 const Section = styled.section`
   border: 4px solid #373737;
   border-radius: 5px;
   padding: 28px 26px;
   overflow-y: auto;
 
+  /* code start: scrollbar css design */
   &::-webkit-scrollbar {
     width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
   }
@@ -91,27 +132,23 @@ const Section = styled.section`
     display: block;
     height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
   }
+  /* end */
 
   /* Solve page layout */
   flex: 1;
 
   * {
-    font-family: Pretendard, sans-serif;
     color: #323232;
-    box-sizing: border-box;
   }
 `;
 
 const ProblemTitle = styled.h1`
-  margin: 0;
   font-weight: bold;
   font-size: 40px;
   margin-bottom: 28px;
 `;
 
 const AddTestCaseButton = styled.button`
-  padding: 0;
-  box-sizing: border-box;
   float: right;
   margin-top: 16px;
   padding: 8px;
@@ -134,7 +171,6 @@ const AddTestCaseButton = styled.button`
   }
 
   > div {
-    margin: 0;
     font-weight: 500;
   }
 

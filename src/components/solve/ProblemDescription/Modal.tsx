@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ModalState } from "./useModal";
-import React from "react";
+import { ReactNode } from "react";
 
 interface ModalProps {
   handle: ReturnType<
@@ -10,7 +10,7 @@ interface ModalProps {
       closeModal: () => void;
     }
   >;
-  children: React.ReactNode;
+  children: ReactNode;
   onBackgroundClicked?: () => void;
 }
 
@@ -40,9 +40,10 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(52, 30, 26, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 1;
   animation: modal-container-appear 300ms;
+  overflow: auto;
 
   ${(props) =>
     props.state === "closing" &&
@@ -55,4 +56,6 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   }
 `;
 
-const ModalDiv = styled.div``;
+const ModalDiv = styled.div`
+  min-width: 62.5%;
+`;
