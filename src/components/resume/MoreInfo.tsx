@@ -1,14 +1,23 @@
 import styled from "styled-components";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Scrollbar, { ScrollbarRef } from "./Scrollbar.tsx";
 
 type Props = {
   value: MoreInfoInput;
   onChange: (value: MoreInfoInput) => void;
 };
 
-const admissionOptions = Array.from({ length: 14 }, (_, i) => 23 - i).map(
-  (i) => `${i}학번`,
-);
+const admissionOptions = [
+  ...Array.from({ length: 10 }, (_, i) => 23 - i).map((i) => `${i}학번`),
+  "기타",
+];
 
 const Context = createContext({} as Props);
 export default function MoreInfo(props: Props) {
@@ -74,32 +83,67 @@ type LabeledSelectProps = {
 function LabeledSelect({ children, k, options }: LabeledSelectProps) {
   const { value, onChange } = useContext(Context);
   const [isOpen, setIsOpen] = useState(false);
-  const makeOptionClickHandler = (option: string) => {
-    return () => {
+  const makeOptionClickHandler = (option: string): MouseEventHandler => {
+    return (e) => {
+      e.preventDefault();
       onChange({ ...value, [k]: option });
       setIsOpen(false);
     };
   };
+  const scrollbarRef = useRef<ScrollbarRef>(null);
+  const selectedRef = useRef<HTMLButtonElement>(null);
+  const optionsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const options = optionsRef.current;
+    const scrollbar = scrollbarRef.current;
+    if (!options) return;
+
+    scrollbar?.handleScroll(options);
+    const observer = new ResizeObserver(() => {
+      scrollbar?.handleScroll(options);
+    });
+    observer.observe(options);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const options = optionsRef.current;
+    const selected = selectedRef.current;
+    if (!(options && selected)) return;
+
+    options.scrollTop = Math.max(selected.offsetTop - 80, 0);
+  }, []);
+
   return (
     <Label k={k} onClick={(e) => e.preventDefault()}>
       <span>{children}</span>
-      <CurrentOption onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
+      <CurrentOption
+        onClick={() => setIsOpen(!isOpen)}
+        $isOpen={isOpen}
+        onBlur={(e) => {
+          if (!optionsRef.current?.contains(e.relatedTarget)) setIsOpen(false);
+        }}
+      >
         <span>{value[k].length > 0 ? value[k] : "선택"}</span>
         <img src="/icon/OpenSelect.svg" alt="▼" />
       </CurrentOption>
-      {isOpen && (
-        <Options>
-          {options.map((option) => (
-            <Option
-              key={option}
-              onClick={makeOptionClickHandler(option)}
-              $selected={option === value[k]}
-            >
-              {option}
-            </Option>
-          ))}
-        </Options>
-      )}
+      <Options
+        onScroll={(e) => scrollbarRef.current?.handleScroll(e.currentTarget)}
+        ref={optionsRef}
+        $isOpen={isOpen}
+      >
+        {options.map((option) => (
+          <Option
+            key={option}
+            onClick={makeOptionClickHandler(option)}
+            $selected={option === value[k]}
+            ref={option === value[k] ? selectedRef : undefined}
+          >
+            {option}
+          </Option>
+        ))}
+        <Scrollbar ref={scrollbarRef} />
+      </Options>
     </Label>
   );
 }
@@ -125,6 +169,7 @@ const Container = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   gap: 16px;
+  margin-bottom: 130px;
 `;
 
 const Label = styled.label<{
@@ -168,16 +213,23 @@ const Sep = styled.hr`
   height: 100%;
 `;
 
-const Options = styled.ul`
+const Options = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   top: calc(100% - 1px);
   background: white;
   border: 1px solid #404040;
   border-radius: 0 0 2px 2px;
   width: 100%;
+  max-height: 200px;
+  overflow: auto;
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const Option = styled.li<{ $selected: boolean }>`
+const Option = styled.button<{ $selected: boolean }>`
   font-size: 16px;
   padding: 0 12px;
   height: 40px;
@@ -185,6 +237,7 @@ const Option = styled.li<{ $selected: boolean }>`
   align-items: center;
   cursor: pointer;
   background-color: ${(props) => (props.$selected ? "#d9d9d9" : "white")};
+  width: 100%;
 `;
 
 const CurrentOption = styled.button<{ $isOpen: boolean }>`
@@ -199,4 +252,9 @@ const CurrentOption = styled.button<{ $isOpen: boolean }>`
   font-size: 16px;
   padding: 0 12px;
   cursor: pointer;
+
+  img {
+    transform: ${(props) =>
+      props.$isOpen ? "rotate(180deg)" : "rotate(0deg)"};
+  }
 `;

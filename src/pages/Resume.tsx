@@ -133,6 +133,7 @@ const Questionaires = styled.ul`
   width: 100%;
   padding: 0;
   list-style: none;
+  margin-bottom: 100px;
 `;
 const Buttons = styled.div`
   width: 100%;
@@ -152,6 +153,11 @@ const SaveButton = styled.button`
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
+
+  transition: background 0.2s ease-in-out;
+  &:hover {
+    background: #e6e6e6;
+  }
 `;
 const SubmitButton = styled.button`
   display: inline-flex;
@@ -165,4 +171,10 @@ const SubmitButton = styled.button`
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
+
+  transition: background 0.2s ease-in-out;
+  &:hover {
+    background: #fff;
+    color: #f0745f;
+  }
 `;
