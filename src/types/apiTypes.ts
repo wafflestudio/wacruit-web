@@ -11,7 +11,7 @@ export type Recruiting = {
   }[];
 };
 
-export type RecruitingItem = Pick<
+export type RecruitingSummary = Pick<
   Recruiting,
   "id" | "name" | "is_active" | "from_date"
 > & { applicant_count: number };

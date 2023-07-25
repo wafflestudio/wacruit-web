@@ -1,4 +1,4 @@
-import { Recruiting } from "../../types/apiTypes";
+import { Recruiting, RecruitingSummary } from "../../types/apiTypes";
 
 const recruiting: Recruiting[] = [
   {
@@ -41,7 +41,9 @@ const recruiting: Recruiting[] = [
   },
 ];
 
-export const toMockRecruitingItem = (recruiting: Recruiting) => ({
+export const toMockRecruitingItem = (
+  recruiting: Recruiting,
+): RecruitingSummary => ({
   id: recruiting.id,
   name: recruiting.name,
   is_active: recruiting.is_active,
