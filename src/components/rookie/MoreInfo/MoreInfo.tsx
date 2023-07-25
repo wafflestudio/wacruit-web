@@ -21,13 +21,13 @@ export default function MoreInfo(props: MoreInfoProps) {
         <LabeledInput k="major" placeholder="컴퓨터공학부">
           학과/부
         </LabeledInput>
-        <LabeledInput k="github_id" placeholder="id">
+        <LabeledInput k="githubId" placeholder="id">
           깃허브 아이디
         </LabeledInput>
-        <LabeledInput k="slack_email" placeholder="example@gmail.com">
+        <LabeledInput k="slackEmail" placeholder="example@gmail.com">
           슬랙 초대 이메일
         </LabeledInput>
-        <LabeledInput k="notion_email" placeholder="example@gmail.com">
+        <LabeledInput k="notionEmail" placeholder="example@gmail.com">
           노션 초대 이메일
         </LabeledInput>
         <Sep />
@@ -47,9 +47,9 @@ export default function MoreInfo(props: MoreInfoProps) {
 export const Container = styled.div`
   display: grid;
   grid-template-areas:
-    "admission  status sep github_id"
-    "university .      sep slack_email"
-    "college    .      sep notion_email"
+    "admission  status sep githubId"
+    "university .      sep slackEmail"
+    "college    .      sep notionEmail"
     "major      .      sep .";
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;

@@ -16,9 +16,9 @@ export default function Resume() {
     university: "",
     college: "",
     major: "",
-    github_id: "",
-    slack_email: "",
-    notion_email: "",
+    githubId: "",
+    slackEmail: "",
+    notionEmail: "",
   });
   const { data: results } = useQuery<MockResumeQuestionaire[]>({
     queryKey: ["resume"],
@@ -77,7 +77,7 @@ export default function Resume() {
       </Questionaires>
       <Title>추가 정보 입력</Title>
       <Description>모든 문항은 필수 응답 항목입니다.</Description>
-      <MoreInfo value={moreInfoInput} onChange={(v) => setMoreInfoInput(v)} />
+      <MoreInfo value={moreInfoInput} onChange={setMoreInfoInput} />
       <Buttons>
         <SaveButton>임시저장</SaveButton>
         <SubmitButton

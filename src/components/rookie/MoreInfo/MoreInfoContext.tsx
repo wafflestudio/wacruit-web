@@ -13,7 +13,7 @@ export type MoreInfoInput = {
   university: string;
   college: string;
   major: string;
-  github_id: string;
-  slack_email: string;
-  notion_email: string;
+  githubId: string;
+  slackEmail: string;
+  notionEmail: string;
 };
