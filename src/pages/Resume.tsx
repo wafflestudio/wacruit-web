@@ -4,10 +4,21 @@ import QuestionaireInput from "../components/rookie/QuestionaireInput/Questionai
 import { MockResumeQuestionaire } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useState } from "react";
+import MoreInfo, { MoreInfoInput } from "../components/resume/MoreInfo";
 
 export default function Resume() {
   const queryClient = useQueryClient();
   const [resumeInput, setResumeInput] = useState<string[] | null>(null);
+  const [moreInfoInput, setMoreInfoInput] = useState<MoreInfoInput>({
+    admission: "",
+    status: "",
+    university: "",
+    college: "",
+    major: "",
+    github_id: "",
+    slack_email: "",
+    notion_email: "",
+  });
   const { data: results } = useQuery<MockResumeQuestionaire[]>({
     queryKey: ["resume"],
     queryFn: () =>
@@ -63,6 +74,9 @@ export default function Resume() {
           <div />
         )}
       </Questionaires>
+      <Title>추가 정보 입력</Title>
+      <Description>모든 문항은 필수 응답 항목입니다.</Description>
+      <MoreInfo value={moreInfoInput} onChange={(v) => setMoreInfoInput(v)} />
       <Buttons>
         <SaveButton>임시저장</SaveButton>
         <SubmitButton
