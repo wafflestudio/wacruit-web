@@ -20,17 +20,16 @@ const Scrollbar = forwardRef((_, ref: ForwardedRef<ScrollbarRef>) => {
       parentRef.current = elem;
       if (!divRef.current) return;
       const { scrollTop, scrollHeight, clientHeight } = elem;
-      if (scrollHeight <= clientHeight) {
-        divRef.current.style.display = "none";
-      } else {
-        const scrollBottom = scrollHeight - scrollTop - clientHeight;
-        divRef.current.style.top = `${
-          scrollTop + (scrollTop / scrollHeight) * clientHeight
-        }px`;
-        divRef.current.style.bottom = `${
-          -scrollTop + (scrollBottom / scrollHeight) * clientHeight
-        }px`;
-      }
+      if (scrollHeight <= clientHeight) return;
+
+      const scrollBottom = scrollHeight - scrollTop - clientHeight;
+      divRef.current.style.top = `${
+        scrollTop + (scrollTop / scrollHeight) * clientHeight
+      }px`;
+      divRef.current.style.bottom = `${
+        -scrollTop + (scrollBottom / scrollHeight) * clientHeight
+      }px`;
+      divRef.current.style.display = "block";
     },
   }));
   useEffect(() => {
@@ -69,8 +68,9 @@ const BarWrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  width: 5px;
-  background: #ccc;
-  border-radius: 5px;
-  margin: 5px 0;
+  width: 0;
+  border: 2.5px solid #404040;
+  border-radius: 2.5px;
+  margin: 9.5px 7.5px;
+  display: none;
 `;
