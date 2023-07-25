@@ -4,7 +4,8 @@ import QuestionaireInput from "../components/rookie/QuestionaireInput/Questionai
 import { MockResumeQuestionaire } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useState } from "react";
-import MoreInfo, { MoreInfoInput } from "../components/resume/MoreInfo";
+import MoreInfo from "../components/rookie/MoreInfo/MoreInfo";
+import { MoreInfoInput } from "../components/rookie/MoreInfo/MoreInfoContext.tsx";
 
 export default function Resume() {
   const queryClient = useQueryClient();
