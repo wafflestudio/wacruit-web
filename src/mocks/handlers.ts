@@ -4,6 +4,7 @@ import { userHandler } from "./handler/userHandler";
 import { HomeHandler } from "./handler/homeHandler";
 import { recruitingHandler } from "./handler/recruitingHandler";
 import { problemHandler } from "./handler/problemHandler";
+import { resumeHandler } from "./handler/resumeHandler";
 
 export const handlers: RestHandler[] = [
   ...sampleHandler,
@@ -11,4 +12,5 @@ export const handlers: RestHandler[] = [
   ...userHandler,
   ...recruitingHandler,
   ...problemHandler,
+  ...resumeHandler,
 ];
