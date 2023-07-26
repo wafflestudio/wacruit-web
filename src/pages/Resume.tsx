@@ -105,7 +105,7 @@ function useSubmit() {
     (data: { userInfo: UserInfo; questionaire: MockResumeQuestionaire[] }) =>
       Promise.all([
         fetch("/api/v1/users/me", {
-          method: "POST",
+          method: "PUT",
           body: JSON.stringify(data.userInfo),
         }),
         fetch("/me/resume", {

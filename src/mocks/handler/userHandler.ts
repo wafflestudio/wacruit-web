@@ -60,7 +60,7 @@ const userInfo: RestHandler = rest.get(
   },
 );
 
-const submitUserInfo: RestHandler = rest.post(
+const submitUserInfo: RestHandler = rest.put(
   "/api/v1/users/me",
   async (req, res, ctx) => {
     const data = await req.json();
