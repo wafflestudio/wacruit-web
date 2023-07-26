@@ -27,7 +27,7 @@ const recruiting: Recruiting[] = [
   },
   {
     id: 1,
-    name: "2023 디자이너 전ㅇ",
+    name: "2023 디자이너 전형",
     is_active: true,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
