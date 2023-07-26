@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
 import { useState } from "react";
 import { LockIcon } from "../../../public/image/LockIcon";
-import { Stroke } from "../../../public/image/Stroke";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
 import { MockApplyNumber } from "../../mocks/types/types";
@@ -14,12 +13,7 @@ export default function Apply() {
 
   const { status, data } = useQuery<MockApplyNumber>({
     queryKey: ["applyNumber", field],
-    queryFn: () =>
-      fetch("/apply/number")
-        .then((res) => res.json())
-        .then((data) => {
-          return data;
-        }),
+    queryFn: () => fetch("/apply/number").then((res) => res.json()),
   });
 
   return (
@@ -63,7 +57,7 @@ export default function Apply() {
             <p>F</p>
             <p>S</p>
           </DayWeek>
-          <Stroke />
+          <img src={"/image/home/Stroke.svg"} />
           <CalenderInner select={field}></CalenderInner>
           <ApplyButton>
             <p>
@@ -71,7 +65,7 @@ export default function Apply() {
                 <span>
                   {field === "ROOKIE" ? data?.rookie : data?.designer}{" "}
                 </span>
-              )}{" "}
+              )}
               명 지원 중
             </p>
             <button>지원하러가기!</button>
@@ -87,13 +81,13 @@ export default function Apply() {
         </ShareText>
         <ShareButton>
           <ShareIcon>
-            <img src={"./image/Instagram.svg"} alt="share" />
+            <img src={"/image/home/share/Instagram.svg"} alt="share" />
           </ShareIcon>
           <ShareIcon>
-            <img src={"./image/Share.svg"} alt="share" />
+            <img src={"/image/home/share/Share.svg"} alt="share" />
           </ShareIcon>
           <ShareIcon>
-            <img src={"./image/KakaoTalk.svg"} alt="share" />
+            <img src={"/image/home/share/KakaoTalk.svg"} alt="share" />
           </ShareIcon>
         </ShareButton>
       </Share>

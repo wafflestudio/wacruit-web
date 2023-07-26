@@ -13,7 +13,7 @@ export default function Member() {
       </SectionTitle>
       <MemberCardArea>
         <MemberCard
-          image={"/image/Rookie.svg"}
+          image={"/image/home/members/Rookie.svg"}
           title={["루키", "Rookie"]}
           description={[
             "서비스 개발에 필요한 지식을 쌓는 인원",
@@ -21,7 +21,7 @@ export default function Member() {
           ]}
         ></MemberCard>
         <MemberCard
-          image={"/image/Programmer.svg"}
+          image={"/image/home/members/Programmer.svg"}
           title={["개발자", "Programmer"]}
           description={[
             "서비스 기획 및 개발하는 인원",
@@ -29,7 +29,7 @@ export default function Member() {
           ]}
         ></MemberCard>
         <MemberCard
-          image={"/image/Designer.svg"}
+          image={"/image/home/members/Designer.svg"}
           title={["디자이너", "Designer"]}
           description={[
             "서비스 UI/UX 디자인을 하는 인원",

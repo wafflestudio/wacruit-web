@@ -11,14 +11,14 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
         {select === "ROOKIE" && (
           <img
             style={{ width: "100%", height: "100%" }}
-            src={"./image/Rookie.svg"}
+            src={"/image/home/members/Rookie.svg"}
             alt="rookie"
           />
         )}
         {select === "DESIGNER" && (
           <img
             style={{ width: "100%", height: "100%" }}
-            src={"./image/Designer.svg"}
+            src={"/image/home/members/Designer.svg"}
             alt="rookie"
           />
         )}
@@ -52,7 +52,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             <h1>지원방법 및 일정</h1>
             <Step>
               <StepImage>
-                <img src={"./image/Paper.svg"} alt="step1" />
+                <img src={"/image/home/process/Paper.svg"} alt="step1" />
               </StepImage>
               <StepDescription>
                 <span>STEP 01</span>
@@ -62,7 +62,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             </Step>
             <Step>
               <StepImage>
-                <img src={"./image/Siren.svg"} alt="step2" />
+                <img src={"/image/home/process/Siren.svg"} alt="step2" />
               </StepImage>
               <StepDescription>
                 <span>STEP 02</span>
@@ -75,7 +75,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             </Step>
             <Step>
               <StepImage>
-                <img src={"./image/People.svg"} alt="step2" />
+                <img src={"/image/home/process/People.svg"} alt="step2" />
               </StepImage>
               <StepDescription>
                 <span>STEP 03</span>
@@ -119,7 +119,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             <h1>지원방법 및 일정</h1>
             <Step>
               <StepImage>
-                <img src={"./image/Paper.svg"} alt="step1" />
+                <img src={"/image/home/process/Paper.svg"} alt="step1" />
               </StepImage>
               <StepDescription>
                 <span>STEP 01</span>
@@ -129,7 +129,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             </Step>
             <Step>
               <StepImage>
-                <img src={"./image/Siren.svg"} alt="step2" />
+                <img src={"/image/home/process/Siren.svg"} alt="step2" />
               </StepImage>
               <StepDescription>
                 <span>STEP 02</span>
@@ -142,7 +142,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
             </Step>
             <Step>
               <StepImage>
-                <img src={"./image/People.svg"} alt="step2" />
+                <img src={"/image/home/process/People.svg"} alt="step2" />
               </StepImage>
               <StepDescription>
                 <span>STEP 03</span>

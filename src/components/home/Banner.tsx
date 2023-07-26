@@ -8,32 +8,32 @@ export default function Banner() {
         <BannerText>
           <img
             style={{ position: "absolute", right: "-70px", top: "-20px" }}
-            src="./image/ReadingGlass.svg"
+            src="/image/home/banner/ReadingGlass.svg"
             alt="Glass"
           />
           <img
             style={{ position: "absolute", left: "48px", bottom: "100px" }}
-            src="./image/Eyes.svg"
+            src="/image/home/banner/Eyes.svg"
             alt="Eyes"
           />
           <img
             style={{ position: "absolute", left: "-150px", bottom: "60px" }}
-            src="./image/MousePointer.svg"
+            src="/image/home/banner/MousePointer.svg"
             alt="Mouse"
           />
           <img
             style={{ position: "absolute", left: "28px", bottom: "170px" }}
-            src="./image/Star/Star20.svg"
+            src="/image/home/stars/Star20.svg"
             alt="Star"
           />
           <img
             style={{ position: "absolute", left: "-8px", bottom: "185px" }}
-            src="./image/Star/Star30.svg"
+            src="/image/home/stars/Star30.svg"
             alt="Star"
           />
           <img
             style={{ position: "absolute", right: "-70px", top: "-60px" }}
-            src="./image/Star/Star40.svg"
+            src="/image/home/stars/Star40.svg"
             alt="Star"
           />
           <h1 style={{ zIndex: "1" }}>
