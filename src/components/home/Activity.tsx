@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SectionNumber, SectionTitle } from "./style";
+import { SectionNumber, SectionTitle } from "./common";
 import { WaffleIcon } from "../../../public/image/WaffleIcon";
 
 export default function Activity() {

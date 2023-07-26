@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SectionNumber, SectionTitle } from "./style";
+import { SectionNumber, SectionTitle } from "./common";
 
 export default function Member() {
   return (

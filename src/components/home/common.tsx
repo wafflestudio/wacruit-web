@@ -3,11 +3,9 @@ import styled from "styled-components";
 export const SectionNumber = styled.div`
   display: inline-flex;
   margin-bottom: 10px;
-  padding: 3px 18px;
-  justify-content: center;
+  padding: 5px 18px 1px 18px;
   border-radius: 28.5px;
   border: 1px solid #f0745f;
-
   color: #f0745f;
   font-family: Jalnan;
   font-size: 20px;

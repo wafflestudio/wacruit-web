@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SectionNumber, SectionTitle } from "./style";
+import { SectionNumber, SectionTitle } from "./common";
 import { useState } from "react";
 import { LockIcon } from "../../../public/image/LockIcon";
 import { Stroke } from "../../../public/image/Stroke";
