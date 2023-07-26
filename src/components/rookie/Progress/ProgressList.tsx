@@ -1,29 +1,14 @@
 import styled from "styled-components";
 import { EmptyProgressCard, ProgressCard } from "./ProgressCard";
-import { useQuery } from "react-query";
-import {
-  MockProblemResult,
-  MockResumeResult,
-} from "../../../mocks/types/types";
+import { Recruiting } from "../../../types/apiTypes";
 
-export function ProgressList() {
-  const {
-    data: results,
-    isLoading,
-    isFetching,
-    isRefetching,
-  } = useQuery<{
-    resume: MockResumeResult;
-    problems: MockProblemResult[];
-  }>({
-    queryKey: ["result"],
-    queryFn: () =>
-      fetch("/me/result")
-        .then((res) => res.json())
-        .then((data) => data),
-  });
+type ProgressListProps = {
+  problems: Recruiting["problems"];
+  isLoading: boolean;
+};
 
-  if (isLoading || isFetching || isRefetching) {
+export function ProgressList({ problems, isLoading }: ProgressListProps) {
+  if (isLoading) {
     return (
       <List>
         <EmptyProgressCard />
@@ -34,7 +19,7 @@ export function ProgressList() {
     );
   }
 
-  if (!results) {
+  if (!problems) {
     return <div />;
   }
 
@@ -43,17 +28,17 @@ export function ProgressList() {
       <ProgressCard
         type="resume"
         title="자기소개서"
-        submit={results.resume.submitted}
+        submit={false}
         correct={null}
         to="./resume"
       />
-      {results.problems.map(({ index, submitted, correct }) => (
+      {problems.map(({ id, num, status }) => (
         <ProgressCard
           type="problem"
-          title={`문제 ${index}`}
-          submit={submitted}
-          correct={correct}
-          to={`../solve/${index}`}
+          title={`문제 ${num}`}
+          submit={status !== "미제출"}
+          correct={status === "성공"}
+          to={`./solve/${id}`}
         />
       ))}
     </List>
