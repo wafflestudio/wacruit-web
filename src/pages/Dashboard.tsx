@@ -4,7 +4,6 @@ import Header from "../components/rookie/Header/Header";
 import { useParams } from "react-router-dom";
 import { getRecruitingById } from "../apis/recruiting";
 import { useQuery } from "react-query";
-import { useEffect } from "react";
 
 export default function Dashboard() {
   const params = useParams();
