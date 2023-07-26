@@ -58,3 +58,37 @@ export type ProblemSubmissionResponse = {
     memory: number;
   }[];
 };
+
+/**
+ * Resume
+ */
+
+export type Resume = {
+  id: number;
+  user_id: number;
+  recruiting_id: Recruiting["id"];
+  question_id: number;
+  created_at: string;
+  updated_at: string;
+  answer: string;
+  user: {
+    id: 0;
+    sso_id: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    email: string;
+    department: string;
+    college: string;
+    university: string;
+    github_email: string;
+    slack_email: string;
+    notion_email: string;
+  };
+};
+
+export type ResumeSubmissionRequest = {
+  recruiting_id: number;
+  question_id: number;
+  answer: string;
+}[];
