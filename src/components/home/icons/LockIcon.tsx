@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PropsType {
   color?: string;
   width: number;

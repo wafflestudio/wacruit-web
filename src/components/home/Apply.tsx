@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
 import { useState } from "react";
-import { LockIcon } from "../../../public/image/LockIcon";
+import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
 import { MockApplyNumber } from "../../mocks/types/types";
