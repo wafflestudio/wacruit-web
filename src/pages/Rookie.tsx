@@ -7,7 +7,7 @@ import MarkDownRenderer from "../lib/MarkdownRenderer";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
-
+import MarkDownRenderer from "../lib/MarkdownRenderer";
 /**
  * ! Deprecated
  */
