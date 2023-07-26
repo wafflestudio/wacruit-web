@@ -1,22 +1,37 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/rookie/Header/Header";
+import MarkDownRenderer from "../lib/MarkdownRenderer";
 
 export default function Rookie() {
   return (
     <Main>
       <Header />
-      <Title>루키 지원 페이지</Title>
-      <Description>와플스튜디오의 21.5기 루키를 모집합니다.</Description>
+      <MarkDownRenderer
+        StyledComponent={Title}
+        markdownString={`루키 지원 페이지`}
+      />
+      <MarkDownRenderer
+        StyledComponent={Description}
+        markdownString={`와플스튜디오의 21.5기 루키를 모집합니다.`}
+      />
       <Information>
         <div>
-          <span>지원 기간 </span> 8월 5일(금) - 8월 14일(일) 23:59
+          <span>지원 기간 </span>
+          <MarkDownRenderer
+            markdownString={`8월 5일(금) - 8월 14일(일) 23:59`}
+          />
         </div>
         <div>
-          <span>지원 방법 </span> 하단 자기소개서 제출 및 문제 풀이를 모두
-          완료해주세요.
+          <span>지원 방법 </span>
+          <MarkDownRenderer
+            markdownString={`하단 자기소개서 제출 및 문제 풀이를 모두
+            완료해주세요.`}
+          />
         </div>
-        <div>*합격자 발표는 8월 15일 이메일로 알려드립니다.</div>
+        <MarkDownRenderer
+          markdownString={`*합격자 발표는 8월 15일 이메일로 알려드립니다.`}
+        />
       </Information>
       <AnnouncementButton>
         공지 및 변경사항 안내
@@ -81,6 +96,9 @@ const Information = styled.div`
   span {
     color: #b44f3d;
     font-weight: 600;
+  }
+  p {
+    display: inline-block;
   }
 `;
 
