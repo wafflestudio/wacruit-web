@@ -1,4 +1,4 @@
-import { MockResumeQuestionaire } from "../types/types";
+import { MockResumeQuestionaire, UserInfo } from "../types/types";
 
 let resume: MockResumeQuestionaire[] = [
   {
@@ -23,4 +23,21 @@ export const hasSubmitMockResume = () =>
 export const getMockResume = () => resume;
 export const setMockResume = (data: MockResumeQuestionaire[]) => {
   resume = data;
+};
+
+let userInfo: UserInfo = {
+  admission: "",
+  college: "",
+  githubId: "",
+  major: "",
+  notionEmail: "",
+  slackEmail: "",
+  status: "",
+  university: "",
+};
+
+export const getMockUserInfo = () => userInfo;
+
+export const setMockUserInfo = (data: UserInfo) => {
+  userInfo = data;
 };

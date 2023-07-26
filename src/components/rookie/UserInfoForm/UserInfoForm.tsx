@@ -1,4 +1,7 @@
-import { MoreInfoContext, MoreInfoProps } from "./MoreInfoContext.tsx";
+import {
+  UserInfoFormContext,
+  UserInfoFormProps,
+} from "./UserInfoFormContext.tsx";
 import { LabeledSelect } from "./LabeledSelect.tsx";
 import { LabeledInput } from "./LabeledInput.tsx";
 import styled from "styled-components";
@@ -8,9 +11,9 @@ const admissionOptions = [
   ...Array.from({ length: 10 }, (_, i) => 23 - i).map((i) => `${i}학번`),
   "기타",
 ];
-export default function MoreInfo(props: MoreInfoProps) {
+export default function UserInfoForm(props: UserInfoFormProps) {
   return (
-    <MoreInfoContext.Provider value={props}>
+    <UserInfoFormContext.Provider value={props}>
       <Container>
         <LabeledInput k="university" placeholder="서울대학교">
           대학교
@@ -40,7 +43,7 @@ export default function MoreInfo(props: MoreInfoProps) {
           소속 상태
         </LabeledSelect>
       </Container>
-    </MoreInfoContext.Provider>
+    </UserInfoFormContext.Provider>
   );
 }
 

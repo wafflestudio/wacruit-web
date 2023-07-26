@@ -1,18 +1,20 @@
-import { MoreInfoContext, MoreInfoInput } from "./MoreInfoContext.tsx";
+import { UserInfoFormContext } from "./UserInfoFormContext.tsx";
 import { useContext, useEffect, useRef, useState } from "react";
 import Scrollbar from "./Scrollbar.tsx";
 import styled from "styled-components";
 import { Label } from "./Label.ts";
 
+import { UserInfo } from "../../../mocks/types/types.ts";
+
 type LabeledSelectProps = {
   children: string;
-  k: keyof MoreInfoInput;
+  k: keyof UserInfo;
   options: string[];
 };
 
 // Select에서 사용되는 value는 선택되지 않은 경우 "", 선택된 경우 해당 옵션의 string
 export function LabeledSelect({ children, k, options }: LabeledSelectProps) {
-  const { value, onChange } = useContext(MoreInfoContext);
+  const { value, onChange } = useContext(UserInfoFormContext);
   const [isOpen, setIsOpen] = useState(false);
   const optionsRef = useRef<HTMLDivElement>(null);
 

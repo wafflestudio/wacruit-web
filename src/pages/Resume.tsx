@@ -1,25 +1,14 @@
 import styled from "styled-components";
 import Header from "../components/rookie/Header/Header";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
-import { MockResumeQuestionaire } from "../mocks/types/types";
+import { MockResumeQuestionaire, UserInfo } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useState } from "react";
-import MoreInfo from "../components/rookie/MoreInfo/MoreInfo";
-import { MoreInfoInput } from "../components/rookie/MoreInfo/MoreInfoContext.tsx";
+import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 
 export default function Resume() {
-  const queryClient = useQueryClient();
   const [resumeInput, setResumeInput] = useState<string[] | null>(null);
-  const [moreInfoInput, setMoreInfoInput] = useState<MoreInfoInput>({
-    admission: "",
-    status: "",
-    university: "",
-    college: "",
-    major: "",
-    githubId: "",
-    slackEmail: "",
-    notionEmail: "",
-  });
+  const [userInfoInput, setUserInfoInput] = useUserInfo();
   const { data: results } = useQuery<MockResumeQuestionaire[]>({
     queryKey: ["resume"],
     queryFn: () =>
@@ -34,19 +23,7 @@ export default function Resume() {
           return data;
         }),
   });
-  const { mutate } = useMutation(
-    (data: MockResumeQuestionaire[]) =>
-      fetch("/me/resume", { method: "POST", body: JSON.stringify(data) }),
-    {
-      onSuccess: () => {
-        alert("제출에 성공했습니다");
-        queryClient.invalidateQueries(["resume"]);
-      },
-      onError: () => {
-        alert("제출에 실패했습니다");
-      },
-    },
-  );
+  const submit = useSubmit();
 
   return (
     <Main>
@@ -77,7 +54,9 @@ export default function Resume() {
       </Questionaires>
       <Title>추가 정보 입력</Title>
       <Description>모든 문항은 필수 응답 항목입니다.</Description>
-      <MoreInfo value={moreInfoInput} onChange={setMoreInfoInput} />
+      {userInfoInput && (
+        <UserInfoForm value={userInfoInput} onChange={setUserInfoInput} />
+      )}
       <Buttons>
         <SaveButton>임시저장</SaveButton>
         <SubmitButton
@@ -85,14 +64,16 @@ export default function Resume() {
             if (
               resumeInput &&
               results &&
-              resumeInput.length === results.length
+              resumeInput.length === results.length &&
+              userInfoInput
             ) {
-              mutate(
-                results.map((result, i) => ({
+              submit({
+                userInfo: userInfoInput,
+                questionaire: results.map((result, i) => ({
                   ...result,
                   answer: resumeInput[i],
                 })),
-              );
+              });
             }
           }}
         >
@@ -101,6 +82,49 @@ export default function Resume() {
       </Buttons>
     </Main>
   );
+}
+
+function useUserInfo() {
+  const [userInfoInput, setUserInfoInput] = useState<UserInfo | null>(null);
+  useQuery<UserInfo>({
+    queryKey: ["userInfo"],
+    queryFn: () =>
+      fetch("/api/v1/users/me")
+        .then((res) => res.json())
+        .then((data: UserInfo) => {
+          setUserInfoInput(data);
+          return data;
+        }),
+  });
+  return [userInfoInput, setUserInfoInput] as const;
+}
+
+function useSubmit() {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    (data: { userInfo: UserInfo; questionaire: MockResumeQuestionaire[] }) =>
+      Promise.all([
+        fetch("/api/v1/users/me", {
+          method: "POST",
+          body: JSON.stringify(data.userInfo),
+        }),
+        fetch("/me/resume", {
+          method: "POST",
+          body: JSON.stringify(data.questionaire),
+        }),
+      ]),
+    {
+      onSuccess: () => {
+        alert("제출에 성공했습니다");
+        void queryClient.invalidateQueries(["userInfo"]);
+        void queryClient.invalidateQueries(["resume"]);
+      },
+      onError: () => {
+        alert("제출에 실패했습니다");
+      },
+    },
+  );
+  return mutate;
 }
 
 const Main = styled.main`

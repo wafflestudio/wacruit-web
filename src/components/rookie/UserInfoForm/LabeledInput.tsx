@@ -1,16 +1,18 @@
 import { useContext } from "react";
-import { MoreInfoContext, MoreInfoInput } from "./MoreInfoContext.tsx";
+import { UserInfoFormContext } from "./UserInfoFormContext.tsx";
 
 import { Label } from "./Label.ts";
 
+import { UserInfo } from "../../../mocks/types/types.ts";
+
 type LabeledInputProps = {
   children: string;
-  k: keyof MoreInfoInput;
+  k: keyof UserInfo;
   placeholder?: string;
 };
 
 export function LabeledInput({ k, children, placeholder }: LabeledInputProps) {
-  const { value, onChange } = useContext(MoreInfoContext);
+  const { value, onChange } = useContext(UserInfoFormContext);
   return (
     <Label k={k}>
       <span>{children}</span>

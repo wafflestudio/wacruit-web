@@ -3,8 +3,15 @@ import {
   MockProblemResult,
   MockResumeQuestionaire,
   MockResumeResult,
+  UserInfo,
 } from "../types/types";
-import { getMockResume, hasSubmitMockResume, setMockResume } from "../db/user";
+import {
+  getMockResume,
+  getMockUserInfo,
+  hasSubmitMockResume,
+  setMockResume,
+  setMockUserInfo,
+} from "../db/user";
 
 /**
  * ! Deprecated
@@ -45,4 +52,27 @@ const submitResume: RestHandler = rest.post(
   },
 );
 
-export const userHandler = [result, resume, submitResume];
+const userInfo: RestHandler = rest.get(
+  "/api/v1/users/me",
+  async (req, res, ctx) => {
+    const response: UserInfo = getMockUserInfo();
+    return res(ctx.status(200), ctx.delay(), ctx.json(response));
+  },
+);
+
+const submitUserInfo: RestHandler = rest.post(
+  "/api/v1/users/me",
+  async (req, res, ctx) => {
+    const data = await req.json();
+    setMockUserInfo(data);
+    return res(ctx.status(200), ctx.delay(), ctx.json({ isSuccess: true }));
+  },
+);
+
+export const userHandler = [
+  result,
+  resume,
+  submitResume,
+  userInfo,
+  submitUserInfo,
+];
