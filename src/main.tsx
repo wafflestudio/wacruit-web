@@ -6,9 +6,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home";
-import Rookie from "./pages/Rookie";
 import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
+import Recruit from "./pages/Recruit";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -20,19 +21,18 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: "/rookie",
-    element: <Rookie />,
+    path: "/recruit/:recruit_id",
+    element: <Recruit />,
     errorElement: <div>error</div>,
-  },
-  {
-    path: "/rookie/resume",
-    element: <Resume />,
-    errorElement: <div>error</div>,
-  },
-  {
-    path: "/solve/:problem_number",
-    element: <Solve />,
-    errorElement: <div>error</div>,
+    children: [
+      { path: "resume", element: <Resume /> },
+      { path: "solve/:problem_number", element: <Solve /> },
+      { path: "announcement", element: <div>announcement</div> },
+      {
+        path: "",
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 

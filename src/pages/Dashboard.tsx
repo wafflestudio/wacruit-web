@@ -2,10 +2,11 @@ import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/rookie/Header/Header";
 import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
+import { useQuery } from "react-query";
+import { useEffect } from "react";
 
-export default function Rookie() {
+export default function Dashboard() {
   const params = useParams();
   const { data: recruiting, isFetching } = useQuery({
     queryKey: ["recruit", params.recruit_id],
@@ -15,7 +16,7 @@ export default function Rookie() {
   return (
     <Main>
       <Header />
-      <Title>루키 지원 페이지</Title>
+      <Title>{recruiting ? recruiting.name : "불러오는 중..."}</Title>
       <Description>와플스튜디오의 21.5기 루키를 모집합니다.</Description>
       <Information>
         <div>
