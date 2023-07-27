@@ -1,8 +1,21 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/rookie/Header/Header";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getRecruitingById } from "../apis/recruiting";
+
+/**
+ * ! Deprecated
+ */
 
 export default function Rookie() {
+  const params = useParams();
+  const { data: recruiting, isFetching } = useQuery({
+    queryKey: ["recruit", params.recruit_id],
+    queryFn: () => getRecruitingById(Number(params.recruit_id)),
+  });
+
   return (
     <Main>
       <Header />
@@ -34,7 +47,10 @@ export default function Rookie() {
         </div>
       </AnnouncementButton>
       <BottomContainer>
-        <ProgressList />
+        <ProgressList
+          problems={recruiting ? recruiting.problems : []}
+          isLoading={isFetching}
+        />
         <Caution>
           아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
           완료됩니다.
