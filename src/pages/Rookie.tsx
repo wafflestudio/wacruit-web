@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
 
+/**
+ * ! Deprecated
+ */
+
 export default function Rookie() {
   const params = useParams();
   const { data: recruiting, isFetching } = useQuery({

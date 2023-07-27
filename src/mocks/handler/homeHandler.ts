@@ -1,6 +1,10 @@
 import { rest, RestHandler } from "msw";
 import { MockApplyNumber } from "../types/types";
 
+/**
+ * ! Deprecated
+ */
+
 const apply: RestHandler = rest.get("/apply/number", (req, res, ctx) => {
   const response: MockApplyNumber = {
     rookie: Math.floor(Math.random() * 100),
