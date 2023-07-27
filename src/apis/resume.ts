@@ -1,10 +1,24 @@
-import { Recruiting, ResumeSubmissionRequest } from "../types/apiTypes";
+import {
+  ResumeQuestion,
+  Resume,
+  ResumeSubmissionCreate,
+} from "../types/apiTypes";
 import { getRequest, postRequest, putRequest } from "./utility";
 
-export const getMyResume = () => getRequest<Recruiting[]>(`/resumes/my`);
+export const getMyResumes = (recruiting_id: number) =>
+  getRequest<{ items: Resume[] }>(`/recruiting/${recruiting_id}/resumes`);
 
-export const postResume = (data: ResumeSubmissionRequest) =>
-  postRequest(`resumes`, data);
+export const postResume = (
+  recruiting_id: number,
+  data: ResumeSubmissionCreate[],
+) => postRequest(`/recruiting/${recruiting_id}/resumes`, data);
 
-export const putResume = (data: ResumeSubmissionRequest) =>
-  putRequest(`resumes`, data);
+export const putResume = (
+  recruiting_id: number,
+  data: ResumeSubmissionCreate[],
+) => putRequest(`/recruiting/${recruiting_id}/resumes`, data);
+
+export const getQuestions = (recruiting_id: number) =>
+  getRequest<{ items: ResumeQuestion[] }>(
+    `/recruiting/${recruiting_id}/questions`,
+  );

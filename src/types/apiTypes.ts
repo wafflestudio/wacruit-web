@@ -87,11 +87,19 @@ export type Resume = {
   };
 };
 
-export type ResumeSubmissionRequest = {
-  recruiting_id: number;
+export type ResumeSubmissionCreate = {
   question_id: number;
   answer: string;
-}[];
+};
+
+export type ResumeQuestion = {
+  recruiting_id: number;
+  question_num: number;
+  content: string;
+  content_limit: number;
+  created_at: string;
+  updated_at: string;
+};
 
 /**
  * Announcement
