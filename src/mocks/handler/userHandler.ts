@@ -6,6 +6,10 @@ import {
 } from "../types/types";
 import { getMockResume, hasSubmitMockResume, setMockResume } from "../db/user";
 
+/**
+ * ! Deprecated
+ */
+
 const getRandomProblemResult = (index: number): MockProblemResult => {
   const seed = Math.random();
   return {
