@@ -92,3 +92,15 @@ export type ResumeSubmissionRequest = {
   question_id: number;
   answer: string;
 }[];
+
+/**
+ * Announcement
+ */
+
+export type Announcement = {
+  id: number;
+  title: string;
+  content: string;
+  created_at: string; //Date로 변환 가능
+  updated_at: string; //Date로 변환 가능
+};
