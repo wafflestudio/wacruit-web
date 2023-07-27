@@ -29,3 +29,14 @@ export const putRequest = <Response>(
     headers: { ...defaultPostHeader, ...header },
     body: JSON.stringify(body),
   }).then((res) => res.json());
+
+export const patchRequest = <Response>(
+  url: string,
+  body: object,
+  header: HeadersInit = {},
+): Promise<Response> =>
+  fetch(url, {
+    method: "PATCH",
+    headers: { ...defaultPostHeader, ...header },
+    body: JSON.stringify(body),
+  }).then((res) => res.json());

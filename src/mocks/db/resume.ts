@@ -3,21 +3,7 @@ import {
   ResumeQuestion,
   ResumeSubmissionCreate,
 } from "../../types/apiTypes";
-
-const resumeUser: Resume["user"] = {
-  id: 0,
-  sso_id: "sample",
-  first_name: "와플",
-  last_name: "김",
-  phone_number: "01012345678",
-  email: "test@wafflestudio.com",
-  department: "",
-  college: "",
-  university: "",
-  github_email: "",
-  slack_email: "",
-  notion_email: "",
-};
+import { user } from "./user.ts";
 
 const resume: Resume[][] = [
   [
@@ -29,7 +15,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 1,
@@ -39,7 +25,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 2,
@@ -49,7 +35,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
   ],
   [
@@ -61,7 +47,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 1,
@@ -71,7 +57,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 2,
@@ -81,7 +67,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
   ],
 ];

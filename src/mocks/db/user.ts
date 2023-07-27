@@ -1,43 +1,21 @@
-import { MockResumeQuestionaire, UserInfo } from "../types/types";
+import { User } from "../../types/apiTypes.ts";
 
-let resume: MockResumeQuestionaire[] = [
-  {
-    index: 1,
-    question: "지원 동기를 500자 이내로 서술해주세요.",
-    answer: null,
-  },
-  {
-    index: 2,
-    question: "지원 동기를 500자 이내로 서술해주세요.",
-    answer: null,
-  },
-  {
-    index: 3,
-    question: "지원 동기를 500자 이내로 서술해주세요.",
-    answer: null,
-  },
-];
+export const getMockUser = () => user;
 
-export const hasSubmitMockResume = () =>
-  !(resume.filter(({ answer }) => answer === null).length > 0);
-export const getMockResume = () => resume;
-export const setMockResume = (data: MockResumeQuestionaire[]) => {
-  resume = data;
+export const setMockUser = (data: User) => {
+  user = data;
 };
-
-let userInfo: UserInfo = {
-  admission: "",
+export let user: User = {
+  id: 0,
+  sso_id: "sample",
+  first_name: "와플",
+  last_name: "김",
+  phone_number: "01012345678",
+  email: "test@wafflestudio.com",
+  department: "",
   college: "",
-  githubId: "",
-  major: "",
-  notionEmail: "",
-  slackEmail: "",
-  status: "",
   university: "",
-};
-
-export const getMockUserInfo = () => userInfo;
-
-export const setMockUserInfo = (data: UserInfo) => {
-  userInfo = data;
+  github_email: "",
+  slack_email: "",
+  notion_email: "",
 };

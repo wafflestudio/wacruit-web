@@ -1,29 +1,32 @@
 import styled from "styled-components";
 import Header from "../components/rookie/Header/Header";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
-import { MockResumeQuestionaire, UserInfo } from "../mocks/types/types";
+import { UserInfo } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
+import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";
+import { useParams } from "react-router-dom";
+import { getUser, patchUser } from "../apis/user.ts";
+import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
 
 export default function Resume() {
+  const { recruit_id } = useParams<{ recruit_id: string }>();
+  const questions = useQuery({
+    queryKey: ["resume/question"],
+    queryFn: () => getQuestions(Number(recruit_id)),
+  });
   const [resumeInput, setResumeInput] = useState<string[] | null>(null);
   const [userInfoInput, setUserInfoInput] = useUserInfo();
-  const { data: results } = useQuery<MockResumeQuestionaire[]>({
+  const resume = useQuery({
     queryKey: ["resume"],
     queryFn: () =>
-      fetch("/me/resume")
-        .then((res) => res.json())
-        .then((data) => {
-          setResumeInput(
-            (data as MockResumeQuestionaire[]).map(
-              ({ answer }) => answer ?? "",
-            ),
-          );
-          return data;
-        }),
+      getMyResumes(Number(recruit_id)).then((data) => {
+        setResumeInput(data.items.map(({ answer }) => answer ?? ""));
+        return data;
+      }),
   });
-  const submit = useSubmit();
+  const submit = useSubmit(Number(recruit_id));
 
   return (
     <Main>
@@ -31,23 +34,22 @@ export default function Resume() {
       <Title>자기소개서</Title>
       <Description>모든 문항에 성실히 응답해주세요.</Description>
       <Questionaires>
-        {results && resumeInput ? (
-          results.map(({ index, question }, i) => (
-            <QuestionaireInput
-              key={index}
-              index={index}
-              question={question}
-              max={500}
-              value={resumeInput[i]}
-              onChange={(e) => {
-                setResumeInput([
-                  ...resumeInput.slice(0, i),
-                  e.target.value,
-                  ...resumeInput.slice(i + 1),
-                ]);
-              }}
-            />
-          ))
+        {questions.data && resumeInput ? (
+          questions.data.items.map(
+            ({ question_num, content, content_limit }, i) => (
+              <QuestionaireInput
+                index={question_num}
+                question={content}
+                max={content_limit}
+                value={resumeInput[i]}
+                onChange={(e) => {
+                  const copy = [...resumeInput];
+                  copy[i] = e.target.value;
+                  setResumeInput(copy);
+                }}
+              />
+            ),
+          )
         ) : (
           <div />
         )}
@@ -61,15 +63,10 @@ export default function Resume() {
         <SaveButton>임시저장</SaveButton>
         <SubmitButton
           onClick={() => {
-            if (
-              resumeInput &&
-              results &&
-              resumeInput.length === results.length &&
-              userInfoInput
-            ) {
+            if (resumeInput && resume.data && userInfoInput) {
               submit({
                 userInfo: userInfoInput,
-                questionaire: results.map((result, i) => ({
+                questionaire: resume.data.items.map((result, i) => ({
                   ...result,
                   answer: resumeInput[i],
                 })),
@@ -86,32 +83,40 @@ export default function Resume() {
 
 function useUserInfo() {
   const [userInfoInput, setUserInfoInput] = useState<UserInfo | null>(null);
-  useQuery<UserInfo>({
+  useQuery({
     queryKey: ["userInfo"],
     queryFn: () =>
-      fetch("/api/v1/users/me")
-        .then((res) => res.json())
-        .then((data: UserInfo) => {
-          setUserInfoInput(data);
-          return data;
-        }),
+      getUser().then((data) => {
+        setUserInfoInput({
+          admission: "",
+          college: data.college,
+          githubId: data.github_email,
+          major: data.department,
+          notionEmail: data.notion_email,
+          slackEmail: data.slack_email,
+          status: "",
+          university: data.university,
+        });
+        return data;
+      }),
   });
   return [userInfoInput, setUserInfoInput] as const;
 }
 
-function useSubmit() {
+function useSubmit(recruiting_id: number) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (data: { userInfo: UserInfo; questionaire: MockResumeQuestionaire[] }) =>
+    (data: { userInfo: UserInfo; questionaire: ResumeSubmissionCreate[] }) =>
       Promise.all([
-        fetch("/api/v1/users/me", {
-          method: "PUT",
-          body: JSON.stringify(data.userInfo),
+        patchUser({
+          college: data.userInfo.college,
+          department: data.userInfo.major,
+          github_email: data.userInfo.githubId,
+          notion_email: data.userInfo.notionEmail,
+          slack_email: data.userInfo.slackEmail,
+          university: data.userInfo.university,
         }),
-        fetch("/me/resume", {
-          method: "POST",
-          body: JSON.stringify(data.questionaire),
-        }),
+        putResume(recruiting_id, data.questionaire),
       ]),
     {
       onSuccess: () => {

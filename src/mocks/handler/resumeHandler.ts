@@ -12,7 +12,7 @@ const myResume: RestHandler = rest.get(
     const { recruiting_id } = req.params;
     const data = getMyMockResume(Number(recruiting_id));
     if (!data) res(ctx.status(404), ctx.delay());
-    return res(ctx.status(200), ctx.delay(), ctx.json(data));
+    return res(ctx.status(200), ctx.delay(), ctx.json({ items: data }));
   },
 );
 
@@ -24,11 +24,11 @@ const postResume: RestHandler = rest.post(
     setMyMockResume(Number(recruiting_id), requestBody);
     const data = getMyMockResume(Number(recruiting_id));
     if (!data) res(ctx.status(404), ctx.delay());
-    return res(ctx.status(200), ctx.delay(), ctx.json(data));
+    return res(ctx.status(200), ctx.delay(), ctx.json({ items: data }));
   },
 );
 
-const putResume: RestHandler = rest.post(
+const putResume: RestHandler = rest.put(
   "/recruiting/:recruiting_id/resumes",
   async (req, res, ctx) => {
     const requestBody = (await req.json()) as ResumeSubmissionCreate[];

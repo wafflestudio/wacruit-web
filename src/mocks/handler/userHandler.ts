@@ -1,17 +1,6 @@
 import { rest, RestHandler } from "msw";
-import {
-  MockProblemResult,
-  MockResumeQuestionaire,
-  MockResumeResult,
-  UserInfo,
-} from "../types/types";
-import {
-  getMockResume,
-  getMockUserInfo,
-  hasSubmitMockResume,
-  setMockResume,
-  setMockUserInfo,
-} from "../db/user";
+import { MockProblemResult, MockResumeResult } from "../types/types";
+import { getMockUser, setMockUser } from "../db/user";
 
 /**
  * ! Deprecated
@@ -28,7 +17,7 @@ const getRandomProblemResult = (index: number): MockProblemResult => {
 const result: RestHandler = rest.get("/me/result", (req, res, ctx) => {
   const response: { resume: MockResumeResult; problems: MockProblemResult[] } =
     {
-      resume: { submitted: hasSubmitMockResume() },
+      resume: { submitted: false },
       problems: [
         getRandomProblemResult(1),
         getRandomProblemResult(2),
@@ -38,41 +27,18 @@ const result: RestHandler = rest.get("/me/result", (req, res, ctx) => {
   return res(ctx.status(200), ctx.delay(), ctx.json(response));
 });
 
-const resume: RestHandler = rest.get("/me/resume", (req, res, ctx) => {
-  const response: MockResumeQuestionaire[] = getMockResume();
+const userInfo: RestHandler = rest.get("/users/me", async (req, res, ctx) => {
+  const response = getMockUser();
   return res(ctx.status(200), ctx.delay(), ctx.json(response));
 });
 
-const submitResume: RestHandler = rest.post(
-  "/me/resume",
+const submitUserInfo: RestHandler = rest.patch(
+  "/users/me",
   async (req, res, ctx) => {
     const data = await req.json();
-    setMockResume(data);
-    return res(ctx.status(200), ctx.delay(), ctx.json({ isSuccess: true }));
+    setMockUser({ ...getMockUser(), ...data });
+    return res(ctx.status(200), ctx.delay(), ctx.json(getMockUser()));
   },
 );
 
-const userInfo: RestHandler = rest.get(
-  "/api/v1/users/me",
-  async (req, res, ctx) => {
-    const response: UserInfo = getMockUserInfo();
-    return res(ctx.status(200), ctx.delay(), ctx.json(response));
-  },
-);
-
-const submitUserInfo: RestHandler = rest.put(
-  "/api/v1/users/me",
-  async (req, res, ctx) => {
-    const data = await req.json();
-    setMockUserInfo(data);
-    return res(ctx.status(200), ctx.delay(), ctx.json({ isSuccess: true }));
-  },
-);
-
-export const userHandler = [
-  result,
-  resume,
-  submitResume,
-  userInfo,
-  submitUserInfo,
-];
+export const userHandler = [result, userInfo, submitUserInfo];
