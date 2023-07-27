@@ -14,27 +14,27 @@ export default function Member() {
       <MemberCardArea>
         <MemberCard
           image={"/image/home/members/Rookie.svg"}
-          title={["루키", "Rookie"]}
-          description={[
-            "서비스 개발에 필요한 지식을 쌓는 인원",
-            "한 학기 동안 세미나, 과제, 프로젝트를 진행하며 모든 과정 이수 시 정회원으로 승격됩니다.",
-          ]}
+          title={{ kor: "루키", eng: "Rookie" }}
+          description={{
+            main: "서비스 개발에 필요한 지식을 쌓는 인원",
+            sub: "한 학기 동안 세미나, 과제, 프로젝트를 진행하며 모든 과정 이수 시 정회원으로 승격됩니다.",
+          }}
         ></MemberCard>
         <MemberCard
           image={"/image/home/members/Programmer.svg"}
-          title={["개발자", "Programmer"]}
-          description={[
-            "서비스 기획 및 개발하는 인원",
-            "자율적으로 팀을 구성하여 활동할 수 있습니다.",
-          ]}
+          title={{ kor: "개발자", eng: "Programmer" }}
+          description={{
+            main: "서비스 기획 및 개발하는 인원",
+            sub: "자율적으로 팀을 구성하여 활동할 수 있습니다.",
+          }}
         ></MemberCard>
         <MemberCard
           image={"/image/home/members/Designer.svg"}
-          title={["디자이너", "Designer"]}
-          description={[
-            "서비스 UI/UX 디자인을 하는 인원",
-            "팀에 참여하여 서비스 기획 및 디자인을 맡습니다.",
-          ]}
+          title={{ kor: "디자이너", eng: "Designer" }}
+          description={{
+            main: "서비스 UI/UX 디자인을 하는 인원",
+            sub: "팀에 참여하여 서비스 기획 및 디자인을 맡습니다.",
+          }}
         ></MemberCard>
       </MemberCardArea>
     </Section>
@@ -61,8 +61,8 @@ const MemberCardArea = styled.div`
 
 interface MemberCardProps {
   image: string;
-  title: string[];
-  description: string[];
+  title: { kor: string; eng: string };
+  description: { main: string; sub: string };
 }
 
 const MemberCard = ({ image, title, description }: MemberCardProps) => {
@@ -72,12 +72,12 @@ const MemberCard = ({ image, title, description }: MemberCardProps) => {
         <img style={{ objectFit: "cover" }} src={image} alt="rookie" />
       </ImageArea>
       <ImageText>
-        <h1>{title[0]}</h1>
-        <p>{title[1]}</p>
+        <h1>{title.kor}</h1>
+        <p>{title.eng}</p>
       </ImageText>
       <Description>
-        <h1>{description[0]}</h1>
-        <p>{description[1]}</p>
+        <h1>{description.main}</h1>
+        <p>{description.sub}</p>
       </Description>
     </CardContainer>
   );
