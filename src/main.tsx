@@ -27,13 +27,13 @@ const router = createBrowserRouter([
     children: [
       { path: "resume", element: <Resume /> },
       { path: "solve/:problem_number", element: <Solve /> },
-      { path: "announcement", element: <div>announcement</div> },
       {
         path: "",
         element: <Dashboard />,
       },
     ],
   },
+  { path: "announcement", element: <div>announcement</div> },
 ]);
 
 if (process.env.NODE_ENV === "development") {
