@@ -1,18 +1,21 @@
-import { useQuery } from "react-query";
+import Activity from "../components/home/Activity";
+import Apply from "../components/home/Apply";
+import Banner from "../components/home/Banner";
+import Introduce from "../components/home/Introduce";
+import Member from "../components/home/Member";
+import Service from "../components/home/Service";
+import ToHomePage from "../components/home/ToHomePage";
 
 export default function Home() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["ping"],
-    queryFn: () =>
-      fetch("/ping")
-        .then((res) => res.json())
-        .then((data) => data.data),
-  });
-
   return (
-    <main>
-      Home
-      <div>ping: {isLoading ? "loading..." : error ? "error" : data}</div>
+    <main style={{ minWidth: "920px" }}>
+      <Banner />
+      <Introduce />
+      <Member />
+      <Activity />
+      <Service />
+      <Apply />
+      <ToHomePage />
     </main>
   );
 }
