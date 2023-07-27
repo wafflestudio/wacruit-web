@@ -8,23 +8,6 @@ type CardProps = {
   description: string;
 };
 
-function Card({ title, description }: CardProps) {
-  const [hover, setHover] = useState(false);
-  return (
-    <ActivityCard
-      $hover={hover}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <CardTitle>
-        <WaffleIcon size={31} color={hover ? "#FFFFFF" : "#F0745F"} />
-        {title}
-      </CardTitle>
-      <CardDescription>{description}</CardDescription>
-    </ActivityCard>
-  );
-}
-
 export default function Activity() {
   return (
     <Section>
@@ -81,6 +64,23 @@ const ActivityCardArea = styled.div`
   align-items: center;
   gap: 32px;
 `;
+
+function Card({ title, description }: CardProps) {
+  const [hover, setHover] = useState(false);
+  return (
+    <ActivityCard
+      $hover={hover}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <CardTitle>
+        <WaffleIcon size={31} color={hover ? "#FFFFFF" : "#F0745F"} />
+        {title}
+      </CardTitle>
+      <CardDescription>{description}</CardDescription>
+    </ActivityCard>
+  );
+}
 
 const ActivityCard = styled.div<{ $hover: boolean }>`
   padding: 30px 34px;
