@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: "/recruit/:recruit_id",
+    path: "/recruiting/:recruit_id",
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [
