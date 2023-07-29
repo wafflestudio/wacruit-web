@@ -4,6 +4,7 @@ import Header from "../components/rookie/Header/Header";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
+import MarkDownRenderer from "../lib/MarkdownRenderer";
 
 /**
  * ! Deprecated
@@ -16,20 +17,25 @@ export default function Rookie() {
     queryFn: () => getRecruitingById(Number(params.recruit_id)),
   });
 
+  const markDownTexts = {
+    title: `루키 지원 페이지`,
+    subTitle: `와플스튜디오의 21.5기 루키를 모집합니다.`,
+    information: `<span style="color: #b44f3d; font-weight: 600;">지원 기간 </span>8월 5일(금) - 8월 14일(일) 23:59  
+    <span style="color: #b44f3d; font-weight: 600;">지원 방법 </span>하단 자기소개서 제출 및 문제 풀이를 모두 완료해주세요.  
+    *합격자 발표는 8월 15일 이메일로 알려드립니다.`,
+  };
+
   return (
     <Main>
       <Header />
-      <Title>루키 지원 페이지</Title>
-      <Description>와플스튜디오의 21.5기 루키를 모집합니다.</Description>
+      <Title>
+        <MarkDownRenderer markdownString={markDownTexts.title} />
+      </Title>
+      <Description>
+        <MarkDownRenderer markdownString={markDownTexts.subTitle} />
+      </Description>
       <Information>
-        <div>
-          <span>지원 기간 </span> 8월 5일(금) - 8월 14일(일) 23:59
-        </div>
-        <div>
-          <span>지원 방법 </span> 하단 자기소개서 제출 및 문제 풀이를 모두
-          완료해주세요.
-        </div>
-        <div>*합격자 발표는 8월 15일 이메일로 알려드립니다.</div>
+        <MarkDownRenderer markdownString={markDownTexts.information} />
       </Information>
       <AnnouncementButton>
         공지 및 변경사항 안내
@@ -94,10 +100,6 @@ const Information = styled.div`
   line-height: 170%; /* 30.6px */
   letter-spacing: 0.72px;
   margin-bottom: 34px;
-  span {
-    color: #b44f3d;
-    font-weight: 600;
-  }
 `;
 
 const AnnouncementButton = styled.button`
