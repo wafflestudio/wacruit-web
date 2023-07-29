@@ -1,5 +1,5 @@
-import { Announcement } from "../types/apiTypes";
+import { TAnnouncement } from "../types/apiTypes";
 import { getRequest } from "./utility";
 
 export const getAllAnnouncements = () =>
-  getRequest<Announcement[]>("/announcements");
+  getRequest<TAnnouncement[]>("/announcements");

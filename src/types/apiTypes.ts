@@ -97,7 +97,7 @@ export type ResumeSubmissionRequest = {
  * Announcement
  */
 
-export type Announcement = {
+export type TAnnouncement = {
   id: number;
   title: string;
   content: string;
