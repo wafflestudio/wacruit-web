@@ -1,17 +1,19 @@
 import { styled } from "styled-components";
 import Header from "../components/rookie/Header/Header";
-import { useState } from "react";
-import closedlistItemIcon from "/icon/announcement/ClosedListItem.svg";
-import openlistItemIcon from "/icon/announcement/OpenListItem.svg";
+import { MouseEventHandler, useState } from "react";
+import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
+import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
 import { TAnnouncement } from "../types/apiTypes";
 import { useQuery } from "react-query";
 import { getAllAnnouncements } from "../apis/announcement";
+import MarkDownRenderer from "../lib/MarkdownRenderer";
 
 export default function Announcement() {
   const { data: announcements } = useQuery<TAnnouncement[]>({
     queryKey: ["announcement"],
     queryFn: () => getAllAnnouncements().then((res) => res.reverse()),
   });
+  const [openedAnnouncementId, setOpenedAnnouncementId] = useState<number>();
 
   return (
     <>
@@ -30,7 +32,18 @@ export default function Announcement() {
             <div></div>
           </ListHeaderRow>
           {announcements?.map((announcement) => (
-            <ListItem announcement={announcement} />
+            <ListItem
+              announcement={announcement}
+              isOpened={announcement.id === openedAnnouncementId}
+              nothingOpened={!openedAnnouncementId}
+              handleOnClick={() => {
+                setOpenedAnnouncementId(
+                  announcement.id === openedAnnouncementId
+                    ? undefined
+                    : announcement.id,
+                );
+              }}
+            />
           ))}
         </AnnouncementList>
         {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
@@ -41,24 +54,34 @@ export default function Announcement() {
 
 type ListItemProps = {
   announcement: TAnnouncement;
+  isOpened: boolean;
+  nothingOpened: boolean;
+  handleOnClick: MouseEventHandler<HTMLLIElement>;
 };
 
-function ListItem({ announcement }: ListItemProps) {
+function ListItem({
+  announcement,
+  isOpened,
+  nothingOpened,
+  handleOnClick,
+}: ListItemProps) {
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
-  const [isClicked, setIsClicked] = useState(false);
-  const { id, title, updated_at, created_at } = announcement;
+  const { id, title, content, updated_at, created_at } = announcement;
   return (
     <ListItemRow
-      onClick={() => {
-        setIsClicked((prev) => !prev);
-      }}
+      onClick={handleOnClick}
+      isOpened={isOpened}
+      nothingOpened={nothingOpened}
     >
       <p>{id + 1}</p>
-      <p>{title}</p>
+      <p>
+        {title}
+        {isOpened && <MarkDownRenderer markdownString={content} />}
+      </p>
       <p>{(updated_at || created_at).slice(0, 10).split("-").join(".")}</p>
       <div>
         <img
-          src={isClicked ? openlistItemIcon : closedlistItemIcon}
+          src={isOpened ? openedListItemIcon : closedListItemIcon}
           style={{ width: "21px", height: "12px" }}
         />
       </div>
@@ -94,7 +117,7 @@ const AnnouncementList = styled.ol`
   min-width: 970px;
 `;
 
-const ListRow = styled.li`
+const ListRow = styled.li<{ isOpened?: boolean; nothingOpened?: boolean }>`
   display: grid;
   grid-template-columns: 9fr 68fr 17fr 7fr;
   font-size: 20px;
@@ -120,6 +143,9 @@ const ListHeaderRow = styled(ListRow)`
 const ListItemRow = styled(ListRow)`
   cursor: pointer;
   color: #3c3c3c;
+  ${({ isOpened }) => isOpened && { color: "#222222", "font-weight": 500 }}
+  ${({ isOpened, nothingOpened }) =>
+    !nothingOpened && !isOpened && { color: "#9c9c9c" }}
   padding: 30px 0 32px 0;
 
   > p:first-child {
@@ -127,6 +153,14 @@ const ListItemRow = styled(ListRow)`
   }
   > p:nth-child(2) {
     font-weight: 500;
+    ${({ isOpened }) => isOpened && { "font-weight": 600 }}
+    > p {
+      margin-top: 46px;
+      font-size: 18px;
+      font-weight: normal;
+      line-height: 185%;
+      color: #373737;
+    }
   }
   > div:nth-child(4) {
     padding: 0 38%;
