@@ -110,7 +110,7 @@ const AnnouncementButton = styled.button`
   gap: 10px;
   padding: 10px 20px;
   background: #f0745f;
-  border: 0;
+  border: #f0745f 1px solid;
   border-radius: 5px;
   color: #fff;
   font-size: 18px;
