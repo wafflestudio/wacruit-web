@@ -24,6 +24,7 @@ export default function NotificationModal({
         </ImageContainer>
         <Title>{notificationData.title}</Title>
         <MainText>{notificationData.main}</MainText>
+        {/* TODO : 주소 연결 */}
         <Link to="./">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
@@ -37,9 +38,12 @@ export default function NotificationModal({
 }
 
 const Article = styled.article`
-  position: relative;
+  position: fixed;
+  top: 124px;
+  left: 164px;
   max-width: 405px;
   border-radius: 15px;
+  background-color: #fff;
 `;
 const ContentsWapper = styled.div`
   display: flex;
