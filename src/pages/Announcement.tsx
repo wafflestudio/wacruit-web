@@ -35,7 +35,7 @@ export default function Announcement() {
             <ListItem
               announcement={announcement}
               isOpened={announcement.id === openedAnnouncementId}
-              nothingOpened={!openedAnnouncementId}
+              nothingOpened={openedAnnouncementId === undefined}
               handleOnClick={() => {
                 setOpenedAnnouncementId(
                   announcement.id === openedAnnouncementId
@@ -67,6 +67,7 @@ function ListItem({
 }: ListItemProps) {
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
   const { id, title, content, updated_at, created_at } = announcement;
+  console.log(id, isOpened, nothingOpened);
   return (
     <ListItemRow
       onClick={handleOnClick}
@@ -143,7 +144,7 @@ const ListHeaderRow = styled(ListRow)`
 const ListItemRow = styled(ListRow)`
   cursor: pointer;
   color: #3c3c3c;
-  ${({ isOpened }) => isOpened && { color: "#222222", "font-weight": 500 }}
+  ${({ isOpened }) => isOpened && { color: "#222222", "font-weight": "500" }}
   ${({ isOpened, nothingOpened }) =>
     !nothingOpened && !isOpened && { color: "#9c9c9c" }}
   padding: 30px 0 32px 0;
@@ -153,7 +154,7 @@ const ListItemRow = styled(ListRow)`
   }
   > p:nth-child(2) {
     font-weight: 500;
-    ${({ isOpened }) => isOpened && { "font-weight": 600 }}
+    ${({ isOpened }) => isOpened && { "font-weight": "600" }}
     > p {
       margin-top: 46px;
       font-size: 18px;
