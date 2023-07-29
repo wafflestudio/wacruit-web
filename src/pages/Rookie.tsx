@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
 import MarkDownRenderer from "../lib/MarkdownRenderer";
+
 /**
  * ! Deprecated
  */
@@ -15,6 +16,7 @@ export default function Rookie() {
     queryKey: ["recruit", params.recruit_id],
     queryFn: () => getRecruitingById(Number(params.recruit_id)),
   });
+
   const markDownTexts = {
     title: `루키 지원 페이지`,
     subTitle: `와플스튜디오의 21.5기 루키를 모집합니다.`,
