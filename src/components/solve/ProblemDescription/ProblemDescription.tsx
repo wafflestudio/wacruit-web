@@ -56,19 +56,19 @@ export default function ProblemDescription({
         />
       </Modal>
       <ProblemTitle>문제 {problemNumber}</ProblemTitle>
-      <MarkDownRenderer
-        StyledComponent={Text}
-        markdownString={`정수 a와 b가 주어집니다. 각 수를 입력받아 입출력 예와 같은 형식으로
-          출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를 입력받아
-          입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.`}
-      />
+      <Text>
+        <MarkDownRenderer
+          markdownString={`정수 a와 b가 주어집니다. 수를 입력받아 입출력 예와 같은 형식으로
+          출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를
+          입력받아 입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.`}
+        />
+      </Text>
       <HorizontalLine margin="25px 0 14px 0" />
 
       <BoldText>제한사항</BoldText>
-      <MarkDownRenderer
-        StyledComponent={Text}
-        markdownString={`-100,000 ≤ a, b ≤ 100,000`}
-      />
+      <Text>
+        <MarkDownRenderer markdownString={`-100,000 ≤ a, b ≤ 100,000`} />
+      </Text>
       <HorizontalLine margin="17px 0 14px 0" />
 
       <BoldText margin="0 0 16px 0">입출력 예시</BoldText>
