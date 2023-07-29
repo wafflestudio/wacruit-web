@@ -11,15 +11,19 @@ import NotificationModal from "../components/Modal/NotificationModal";
 import { useEffect } from "react";
 
 export default function Home() {
-  const modalHandle = useModal();
+  const modalHandle = useModal(0);
 
   useEffect(() => {
     modalHandle.openModal();
   }, []);
 
   return (
-    <main style={{ minWidth: "920px" }}>
-      <Modal handle={modalHandle} onBackgroundClicked={() => void 0}>
+    <main>
+      <Modal
+        handle={modalHandle}
+        onBackgroundClicked={() => void 0}
+        modalContainerBackgroundColor="rgba(0, 0, 0, 0.15)"
+      >
         <NotificationModal closeModal={modalHandle.closeModal} />
       </Modal>
       <Banner />
