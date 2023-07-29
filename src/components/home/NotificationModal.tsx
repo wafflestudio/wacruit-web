@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 
 type NotificationModalProps = {
   closeModal: () => void;
+  setDontShowModalDate: (date: number) => void;
 };
 
 export default function NotificationModal({
   closeModal,
+  setDontShowModalDate,
 }: NotificationModalProps) {
   const notificationData = {
     title: "시스템 점검 일정 안내",
@@ -28,8 +30,14 @@ export default function NotificationModal({
         <Link to="./">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
-        {/* TODO: 오늘 그만보기 onClick 작업 */}
-        <Button onClick={closeModal}>오늘 그만보기</Button>
+        <Button
+          onClick={() => {
+            closeModal();
+            setDontShowModalDate(new Date().getDate());
+          }}
+        >
+          오늘 그만보기
+        </Button>
         <DivideLine />
         <Button onClick={closeModal}>닫기</Button>
       </ButtonWrapper>

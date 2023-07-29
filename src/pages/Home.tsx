@@ -11,12 +11,22 @@ import NotificationModal from "../components/home/NotificationModal";
 import { useEffect } from "react";
 import Header from "../components/rookie/Header/Header";
 
+const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";
+
 export default function Home() {
   const modalHandle = useModal(0);
+  const DONT_SHOW_MODAL_DATE = Number(
+    localStorage.getItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE),
+  );
 
   useEffect(() => {
-    modalHandle.openModal();
-  }, []);
+    if (!DONT_SHOW_MODAL_DATE) {
+      modalHandle.openModal();
+    } else if (new Date().getDate() > DONT_SHOW_MODAL_DATE) {
+      modalHandle.openModal();
+      localStorage.setItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE, "");
+    }
+  });
 
   return (
     <>
@@ -27,7 +37,15 @@ export default function Home() {
           onBackgroundClicked={() => void 0}
           modalContainerBackgroundColor="rgba(0, 0, 0, 0.15)"
         >
-          <NotificationModal closeModal={modalHandle.closeModal} />
+          <NotificationModal
+            closeModal={modalHandle.closeModal}
+            setDontShowModalDate={(date: number) => {
+              localStorage.setItem(
+                LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE,
+                date.toString(),
+              );
+            }}
+          />
         </Modal>
         <Banner />
         <Introduce />
