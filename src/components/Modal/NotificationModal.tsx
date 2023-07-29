@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 type NotificationModalProps = {
   closeModal: () => void;
@@ -8,13 +9,12 @@ export default function NotificationModal({
   closeModal,
 }: NotificationModalProps) {
   const notificationData = {
-    title: "모집일정 변경사항",
-    titleDescription: "학사 내 사정으로 인한",
-    main: `공지사항공지사항 공지사항공지사항 공지사항 공
-    공지사항공지사항공지사항공지사항
-    공지사항공지사항\n
-    공지사항공지사항공지사항공지사항공지사항공
-    공지사항공지사항공지사항공지사항`,
+    title: "시스템 점검 일정 안내",
+    main: `자기소개서는 500자 이내의
+간단한 문항 두 가지로 구성되어 있습니다.
+코딩 테스트는 지원 기간 막바지에는
+트래픽이 몰려서 사이트가 불안정해질 수 있으니,
+여유를 가지고 시간을 내서 푸시는 것을 권장드려요!`,
   };
   return (
     <Article>
@@ -22,9 +22,9 @@ export default function NotificationModal({
         <ImageContainer>
           <img src="/icon/Notification.svg" alt="" />
         </ImageContainer>
-        <TitleDescription>{notificationData.titleDescription}</TitleDescription>
         <Title>{notificationData.title}</Title>
         <MainText>{notificationData.main}</MainText>
+        <Link to="./">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
         {/* TODO: 오늘 그만보기 onClick 작업 */}
@@ -37,58 +37,45 @@ export default function NotificationModal({
 }
 
 const Article = styled.article`
-  /* TODO: GlobalStyles pr 머지 후 아래 내용 삭제 */
-  * {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    box-sizing: border-box;
-    list-style-type: none;
-    text-decoration: none;
-    border-collapse: collapse;
-  }
-  margin: 0;
-  box-sizing: border-box;
-
   position: relative;
-  max-width: 406px;
-  border: 1px solid #000;
+  max-width: 405px;
   border-radius: 15px;
 `;
 const ContentsWapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 27px 45px 61px 45px;
+  padding: 49px 43px 75px;
   border-radius: 15px;
+  > a {
+    margin-top: 35px;
+    line-height: 170%;
+    font-size: 16px;
+    color: #737373;
+    text-decoration: underline;
+    text-underline-position: under;
+  }
 `;
 const ImageContainer = styled.div`
-  width: 54px;
-  height: "54px";
-`;
-const TitleDescription = styled.h2`
-  margin-top: 15px;
-  font-size: 14px;
-  letter-spacing: 3%;
-  color: #707070;
+  width: 56px;
+  height: "56px";
+  margin-bottom: 11px;
 `;
 const Title = styled.h1`
-  margin-top: 3px;
-  font-size: 32px;
-  font-weight: 600;
-  color: #1e1e1e;
+  font-size: 30px;
+  font-weight: bold;
+  color: #222222;
+  line-height: 140%;
+  text-align: center;
 `;
 const MainText = styled.p`
   white-space: pre-wrap;
-  margin-top: 38px;
-  font-size: 14px;
-  letter-spacing: 3%;
-  line-height: 150%;
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 170%;
+  letter-spacing: 0;
   text-align: center;
-  color: #575757;
+  color: #737373;
 `;
 const ButtonWrapper = styled.div`
   height: 73px;
