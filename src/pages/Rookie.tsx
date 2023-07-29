@@ -1,9 +1,6 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/rookie/Header/Header";
-<<<<<<< HEAD
-import MarkDownRenderer from "../lib/MarkdownRenderer";
-=======
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
@@ -11,7 +8,6 @@ import MarkDownRenderer from "../lib/MarkdownRenderer";
 /**
  * ! Deprecated
  */
->>>>>>> 4f5941c (Feat/routing (#12))
 
 export default function Rookie() {
   const params = useParams();
