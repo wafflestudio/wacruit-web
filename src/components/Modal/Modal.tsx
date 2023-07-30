@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ModalState } from "./useModal";
 import { ReactNode } from "react";
+import { zIndex } from "../../lib/zIndex";
 
 interface ModalProps {
   handle: ReturnType<
@@ -12,18 +13,21 @@ interface ModalProps {
   >;
   children: ReactNode;
   onBackgroundClicked?: () => void;
+  modalContainerBackgroundColor?: string;
 }
 
 export default function Modal({
   handle,
   children,
   onBackgroundClicked,
+  modalContainerBackgroundColor,
 }: ModalProps) {
   return (
     handle.state !== "closed" && (
       <ModalContainer
         onClick={onBackgroundClicked ?? handle.closeModal}
         state={handle.state}
+        backgroundColor={modalContainerBackgroundColor || "transparent"}
       >
         <ModalDiv onClick={(e) => e.stopPropagation()}>{children}</ModalDiv>
       </ModalContainer>
@@ -31,7 +35,10 @@ export default function Modal({
   );
 }
 
-const ModalContainer = styled.div<{ state: ModalState }>`
+const ModalContainer = styled.div<{
+  state: ModalState;
+  backgroundColor: string;
+}>`
   position: fixed;
   left: 0;
   top: 0;
@@ -40,10 +47,11 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1;
+  z-index: ${zIndex.modal};
   animation: modal-container-appear 300ms;
-  overflow: auto;
+  ${(props) => ({
+    "background-color": props.backgroundColor,
+  })};
 
   ${(props) =>
     props.state === "closing" &&
@@ -56,6 +64,4 @@ const ModalContainer = styled.div<{ state: ModalState }>`
   }
 `;
 
-const ModalDiv = styled.div`
-  min-width: 62.5%;
-`;
+const ModalDiv = styled.div``;

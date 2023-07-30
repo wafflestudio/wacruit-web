@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import useModal from "./useModal";
-import Modal from "./Modal";
+import useModal from "../../Modal/useModal";
+import Modal from "../../Modal/Modal";
 import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseTable from "./TestCaseTable";
 import TestCaseModal from "./TestCaseModal";
@@ -46,7 +46,10 @@ export default function ProblemDescription({
   return (
     // TODO: 데이터 api 연결
     <Section>
-      <Modal handle={modalHandle}>
+      <Modal
+        handle={modalHandle}
+        modalContainerBackgroundColor={"rgba(0, 0, 0, 0.6)"}
+      >
         <TestCaseModal
           addNewCustomTestCase={addNewCustomTestCase}
           deleteCustomTestCase={deleteCustomTestCase}

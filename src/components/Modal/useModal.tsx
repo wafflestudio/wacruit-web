@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Union } from "../../../types/commonTypes";
+import { Union } from "../../types/commonTypes";
 
 const modalStates = ["open", "closed", "closing"] as const;
 export type ModalState = Union<typeof modalStates>;
 
-export default function useModal(afterClosed = () => void 0) {
+export default function useModal(
+  closingTime = 300,
+  afterClosed = () => void 0,
+) {
   const [state, setState] = useState<ModalState>("closed");
 
   const openModal = useCallback(() => {
@@ -17,8 +20,8 @@ export default function useModal(afterClosed = () => void 0) {
     timeoutId.current = window.setTimeout(() => {
       setState("closed");
       afterClosed();
-    }, 300);
-  }, [afterClosed]);
+    }, closingTime);
+  }, [afterClosed, closingTime]);
 
   // clean up timeout on unmount
   useEffect(() => () => window.clearTimeout(timeoutId.current), []);

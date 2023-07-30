@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { zIndex } from "../../../lib/zIndex";
 
 export default function Header() {
   return (
@@ -20,7 +21,7 @@ const Container = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: ${zIndex.header};
   width: 100%;
   height: 7vh;
   display: flex;
