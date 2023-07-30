@@ -12,6 +12,7 @@ import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard";
 import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
+import { useMSW } from "./apis/environment";
 
 const queryClient = new QueryClient();
 
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
   { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" && useMSW) {
   await initMocks();
 }
 
