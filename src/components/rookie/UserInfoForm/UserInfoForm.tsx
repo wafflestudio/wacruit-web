@@ -5,32 +5,41 @@ import {
 import { LabeledSelect } from "./LabeledSelect.tsx";
 import { LabeledInput } from "./LabeledInput.tsx";
 import styled from "styled-components";
+import { forwardRef } from "react";
 
 const admissionOptions = [
   // 23학번 아래 10개 학번 + 기타
   ...Array.from({ length: 10 }, (_, i) => 23 - i).map((i) => `${i}학번`),
   "기타",
 ];
-export default function UserInfoForm(props: UserInfoFormProps) {
-  return (
+const UserInfoForm = forwardRef<HTMLFormElement, UserInfoFormProps>(
+  (props, ref) => (
     <UserInfoFormContext.Provider value={props}>
-      <Container>
-        <LabeledInput name="university" placeholder="서울대학교">
+      <Container onSubmit={(e) => e.preventDefault()} ref={ref}>
+        <LabeledInput name="university" placeholder="서울대학교" maxLength={50}>
           대학교
         </LabeledInput>
-        <LabeledInput name="college" placeholder="공과대학">
+        <LabeledInput name="college" placeholder="공과대학" maxLength={50}>
           단과대
         </LabeledInput>
-        <LabeledInput name="major" placeholder="컴퓨터공학부">
+        <LabeledInput name="major" placeholder="컴퓨터공학부" maxLength={50}>
           학과/부
         </LabeledInput>
         <LabeledInput name="githubId" placeholder="id">
           깃허브 아이디
         </LabeledInput>
-        <LabeledInput name="slackEmail" placeholder="example@gmail.com">
+        <LabeledInput
+          name="slackEmail"
+          placeholder="example@gmail.com"
+          type="email"
+        >
           슬랙 초대 이메일
         </LabeledInput>
-        <LabeledInput name="notionEmail" placeholder="example@gmail.com">
+        <LabeledInput
+          name="notionEmail"
+          placeholder="example@gmail.com"
+          type="email"
+        >
           노션 초대 이메일
         </LabeledInput>
         <Sep />
@@ -44,10 +53,11 @@ export default function UserInfoForm(props: UserInfoFormProps) {
         </LabeledSelect>
       </Container>
     </UserInfoFormContext.Provider>
-  );
-}
+  ),
+);
+export default UserInfoForm;
 
-export const Container = styled.div`
+export const Container = styled.form`
   display: grid;
   grid-template-areas:
     "admission  status sep githubId"

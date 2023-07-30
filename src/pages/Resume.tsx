@@ -3,10 +3,10 @@ import Header from "../components/rookie/Header/Header";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
 import { UserInfo } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUser, patchUser } from "../apis/user.ts";
 import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
 
@@ -26,7 +26,29 @@ export default function Resume() {
         return data;
       }),
   });
-  const submit = useSubmit(Number(recruit_id));
+  const putResume = useSubmit(Number(recruit_id));
+  const navigate = useNavigate();
+  const submit = (options?: Parameters<typeof putResume>[1]) => {
+    if (
+      resumeInput &&
+      resume.data &&
+      userInfoInput &&
+      userInfoFormRef.current?.reportValidity()
+    ) {
+      putResume(
+        {
+          userInfo: userInfoInput,
+          questionaire: resume.data.items.map((result, i) => ({
+            ...result,
+            answer: resumeInput[i],
+          })),
+        },
+        options,
+      );
+    }
+  };
+
+  const userInfoFormRef = useRef<HTMLFormElement>(null);
 
   return (
     <Main>
@@ -57,22 +79,33 @@ export default function Resume() {
       <Title>추가 정보 입력</Title>
       <Description>모든 문항은 필수 응답 항목입니다.</Description>
       {userInfoInput && (
-        <UserInfoForm value={userInfoInput} onChange={setUserInfoInput} />
+        <UserInfoForm
+          value={userInfoInput}
+          onChange={setUserInfoInput}
+          ref={userInfoFormRef}
+        />
       )}
       <Buttons>
-        <SaveButton>임시저장</SaveButton>
-        <SubmitButton
+        <SaveButton
           onClick={() => {
-            if (resumeInput && resume.data && userInfoInput) {
-              submit({
-                userInfo: userInfoInput,
-                questionaire: resume.data.items.map((result, i) => ({
-                  ...result,
-                  answer: resumeInput[i],
-                })),
-              });
-            }
+            submit({
+              onSuccess: () => alert("저장되었습니다."),
+              onError: () => alert("오류가 발생했습니다."),
+            });
           }}
+        >
+          임시저장
+        </SaveButton>
+        <SubmitButton
+          onClick={() =>
+            submit({
+              onSuccess: () => {
+                alert("제출되었습니다.");
+                navigate(`/recruiting/${recruit_id}`);
+              },
+              onError: () => alert("오류가 발생했습니다."),
+            })
+          }
         >
           제출하기
         </SubmitButton>
@@ -120,12 +153,9 @@ function useSubmit(recruiting_id: number) {
       ]),
     {
       onSuccess: () => {
-        alert("제출에 성공했습니다");
         void queryClient.invalidateQueries(["userInfo"]);
         void queryClient.invalidateQueries(["resume"]);
-      },
-      onError: () => {
-        alert("제출에 실패했습니다");
+        void queryClient.invalidateQueries(["recruit"]);
       },
     },
   );
