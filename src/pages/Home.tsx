@@ -18,12 +18,11 @@ export default function Home() {
   const DONT_SHOW_MODAL_DATE = Number(
     localStorage.getItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE),
   );
-  console.log(new Date().getDate(), DONT_SHOW_MODAL_DATE);
 
   useEffect(() => {
     if (!DONT_SHOW_MODAL_DATE) {
       modalHandle.openModal();
-    } else if (new Date().getDate() > DONT_SHOW_MODAL_DATE) {
+    } else if (new Date().getDate() !== DONT_SHOW_MODAL_DATE) {
       modalHandle.openModal();
       localStorage.setItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE, "");
     }
