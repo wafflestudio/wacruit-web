@@ -99,6 +99,10 @@ const Option = styled.button<{ $selected: boolean }>`
   font-size: 16px;
   cursor: pointer;
   background-color: ${(props) => (props.$selected ? "#d9d9d9" : "white")};
+
+  &:hover {
+    background-color: ${(props) => (props.$selected ? "#d9d9d9" : "#f2f2f2")};
+  }
 `;
 
 const CurrentOption = styled.button<{ $isOpen: boolean }>`
