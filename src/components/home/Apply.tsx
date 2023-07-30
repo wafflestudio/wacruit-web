@@ -69,7 +69,13 @@ export default function Apply() {
               )}
               명 지원 중
             </p>
-            <button>지원하러가기!</button>
+            <button
+              onClick={() => {
+                location.href = `https://sso.wafflestudio.com/?redirect_uri=https://wacruit-dev.wafflestudio.com`;
+              }}
+            >
+              지원하러가기!
+            </button>
           </ApplyButton>
         </CalenderArea>
       </ApplyCalender>

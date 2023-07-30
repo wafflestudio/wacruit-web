@@ -10,6 +10,7 @@ import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard";
+import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: "/recruiting/:recruit_id",
+    path: "recruiting/:recruit_id",
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "announcement", element: <Announcement /> },
+  { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 
 if (process.env.NODE_ENV === "development") {
