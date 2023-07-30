@@ -7,13 +7,22 @@ import { TAnnouncement } from "../types/apiTypes";
 import { useQuery } from "react-query";
 import { getAllAnnouncements } from "../apis/announcement";
 import MarkDownRenderer from "../lib/MarkdownRenderer";
+import { Union } from "../types/commonTypes";
+
+const listItemStates = [
+  "nothingSelected",
+  "isSelected",
+  "SomethingElseSelected",
+] as const;
+type ListItemState = Union<typeof listItemStates>;
 
 export default function Announcement() {
   const { data: announcements } = useQuery<TAnnouncement[]>({
     queryKey: ["announcement"],
     queryFn: () => getAllAnnouncements().then((res) => res.reverse()),
   });
-  const [openedAnnouncementId, setOpenedAnnouncementId] = useState<number>();
+  const [selectedAnnouncementId, setSelectedAnnouncementId] =
+    useState<number>();
 
   return (
     <>
@@ -31,26 +40,32 @@ export default function Announcement() {
             <p>등록일</p>
             <div></div>
           </ListHeaderRow>
-          {announcements && announcements.length === 0 ? (
-            announcements.map((announcement) => (
-              <ListItem
-                announcement={announcement}
-                isOpened={announcement.id === openedAnnouncementId}
-                nothingOpened={openedAnnouncementId === undefined}
-                handleOnClick={() => {
-                  setOpenedAnnouncementId(
-                    announcement.id === openedAnnouncementId
-                      ? undefined
-                      : announcement.id,
-                  );
-                }}
-              />
-            ))
-          ) : (
-            <NoAnnouncements>
-              <p>등록된 공지사항이 없습니다.</p>
-            </NoAnnouncements>
-          )}
+          {announcements &&
+            (announcements.length === 0 ? (
+              <NoAnnouncements>
+                <p>등록된 공지사항이 없습니다.</p>
+              </NoAnnouncements>
+            ) : (
+              announcements.map((announcement) => (
+                <ListItem
+                  announcement={announcement}
+                  listItemState={
+                    selectedAnnouncementId === undefined
+                      ? "nothingSelected"
+                      : announcement.id === selectedAnnouncementId
+                      ? "isSelected"
+                      : "SomethingElseSelected"
+                  }
+                  handleOnClick={() => {
+                    setSelectedAnnouncementId(
+                      announcement.id === selectedAnnouncementId
+                        ? undefined
+                        : announcement.id,
+                    );
+                  }}
+                />
+              ))
+            ))}
         </AnnouncementList>
         {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
       </Main>
@@ -60,35 +75,34 @@ export default function Announcement() {
 
 type ListItemProps = {
   announcement: TAnnouncement;
-  isOpened: boolean;
-  nothingOpened: boolean;
+  listItemState: ListItemState;
   handleOnClick: MouseEventHandler<HTMLLIElement>;
 };
 
 function ListItem({
   announcement,
-  isOpened,
-  nothingOpened,
+  listItemState,
   handleOnClick,
 }: ListItemProps) {
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
   const { id, title, content, updated_at, created_at } = announcement;
-  console.log(id, isOpened, nothingOpened);
   return (
-    <ListItemRow
-      onClick={handleOnClick}
-      isOpened={isOpened}
-      nothingOpened={nothingOpened}
-    >
+    <ListItemRow onClick={handleOnClick} listItemState={listItemState}>
       <p>{id + 1}</p>
       <p>
         {title}
-        {isOpened && <MarkDownRenderer markdownString={content} />}
+        {listItemState === "isSelected" && (
+          <MarkDownRenderer markdownString={content} />
+        )}
       </p>
       <p>{(updated_at || created_at).slice(0, 10).split("-").join(".")}</p>
       <div>
         <img
-          src={isOpened ? openedListItemIcon : closedListItemIcon}
+          src={
+            listItemState === "isSelected"
+              ? openedListItemIcon
+              : closedListItemIcon
+          }
           style={{ width: "21px", height: "12px" }}
         />
       </div>
@@ -124,7 +138,7 @@ const AnnouncementList = styled.ol`
   min-width: 970px;
 `;
 
-const ListRow = styled.li<{ isOpened?: boolean; nothingOpened?: boolean }>`
+const ListRow = styled.li<{ listItemState?: ListItemState }>`
   display: grid;
   grid-template-columns: 9fr 68fr 17fr 7fr;
   font-size: 20px;
@@ -150,9 +164,13 @@ const ListHeaderRow = styled(ListRow)`
 const ListItemRow = styled(ListRow)`
   cursor: pointer;
   color: #3c3c3c;
-  ${({ isOpened }) => isOpened && { color: "#222222", "font-weight": "500" }}
-  ${({ isOpened, nothingOpened }) =>
-    !nothingOpened && !isOpened && { color: "#9c9c9c" }}
+  ${({ listItemState }) =>
+    listItemState === "isSelected" && {
+      color: "#222222",
+      "font-weight": "500",
+    }}
+  ${({ listItemState }) =>
+    listItemState === "SomethingElseSelected" && { color: "#9c9c9c" }}
   padding: 30px 0 32px 0;
 
   > p:first-child {
@@ -160,7 +178,8 @@ const ListItemRow = styled(ListRow)`
   }
   > p:nth-child(2) {
     font-weight: 500;
-    ${({ isOpened }) => isOpened && { "font-weight": "600" }}
+    ${({ listItemState }) =>
+      listItemState === "isSelected" && { "font-weight": "600" }}
     > p {
       margin-top: 46px;
       font-size: 18px;
