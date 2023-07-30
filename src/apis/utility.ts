@@ -1,8 +1,6 @@
 import { baseURL } from "./environment";
 
-const defaultCommonHeader = {
-  "Access-Control-Allow-Origin": "*",
-};
+const defaultCommonHeader = {};
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
