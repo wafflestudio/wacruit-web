@@ -3,9 +3,9 @@
 import styled from "styled-components";
 
 export const Label = styled.label<{
-  k: string;
+  name: string;
 }>`
-  grid-area: ${(props) => props.k};
+  grid-area: ${(props) => props.name};
 
   position: relative;
 

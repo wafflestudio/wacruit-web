@@ -15,31 +15,31 @@ export default function UserInfoForm(props: UserInfoFormProps) {
   return (
     <UserInfoFormContext.Provider value={props}>
       <Container>
-        <LabeledInput k="university" placeholder="서울대학교">
+        <LabeledInput name="university" placeholder="서울대학교">
           대학교
         </LabeledInput>
-        <LabeledInput k="college" placeholder="공과대학">
+        <LabeledInput name="college" placeholder="공과대학">
           단과대
         </LabeledInput>
-        <LabeledInput k="major" placeholder="컴퓨터공학부">
+        <LabeledInput name="major" placeholder="컴퓨터공학부">
           학과/부
         </LabeledInput>
-        <LabeledInput k="githubId" placeholder="id">
+        <LabeledInput name="githubId" placeholder="id">
           깃허브 아이디
         </LabeledInput>
-        <LabeledInput k="slackEmail" placeholder="example@gmail.com">
+        <LabeledInput name="slackEmail" placeholder="example@gmail.com">
           슬랙 초대 이메일
         </LabeledInput>
-        <LabeledInput k="notionEmail" placeholder="example@gmail.com">
+        <LabeledInput name="notionEmail" placeholder="example@gmail.com">
           노션 초대 이메일
         </LabeledInput>
         <Sep />
 
         {/* 선택 창이 다른 입력보다 위에 렌더링 되어야하므로 뒤쪽에 배치 */}
-        <LabeledSelect k="admission" options={admissionOptions}>
+        <LabeledSelect name="admission" options={admissionOptions}>
           학번
         </LabeledSelect>
-        <LabeledSelect k="status" options={["재학", "휴학", "졸업", "기타"]}>
+        <LabeledSelect name="status" options={["재학", "휴학", "졸업", "기타"]}>
           소속 상태
         </LabeledSelect>
       </Container>

@@ -8,12 +8,12 @@ import { UserInfo } from "../../../mocks/types/types.ts";
 
 type LabeledSelectProps = {
   children: string;
-  k: keyof UserInfo;
+  name: keyof UserInfo;
   options: string[];
 };
 
 // Select에서 사용되는 value는 선택되지 않은 경우 "", 선택된 경우 해당 옵션의 string
-export function LabeledSelect({ children, k, options }: LabeledSelectProps) {
+export function LabeledSelect({ children, name, options }: LabeledSelectProps) {
   const { value, onChange } = useContext(UserInfoFormContext);
   const [isOpen, setIsOpen] = useState(false);
   const optionsRef = useRef<HTMLDivElement>(null);
@@ -33,7 +33,7 @@ export function LabeledSelect({ children, k, options }: LabeledSelectProps) {
   }, []);
 
   return (
-    <Label k={k} onClick={(e) => e.preventDefault()}>
+    <Label name={name} onClick={(e) => e.preventDefault()}>
       <span>{children}</span>
       <CurrentOption
         onClick={() => setIsOpen(!isOpen)}
@@ -43,7 +43,7 @@ export function LabeledSelect({ children, k, options }: LabeledSelectProps) {
           if (!optionsRef.current?.contains(e.relatedTarget)) setIsOpen(false);
         }}
       >
-        <span>{value[k].length > 0 ? value[k] : "선택"}</span>
+        <span>{value[name].length > 0 ? value[name] : "선택"}</span>
         <img src="/icon/OpenSelect.svg" alt="▼" />
       </CurrentOption>
 
@@ -53,11 +53,11 @@ export function LabeledSelect({ children, k, options }: LabeledSelectProps) {
           <Option
             key={option}
             onClick={() => {
-              onChange({ ...value, [k]: option });
+              onChange({ ...value, [name]: option });
               setIsOpen(false);
             }}
-            $selected={option === value[k]}
-            ref={option === value[k] ? selectedRef : undefined}
+            $selected={option === value[name]}
+            ref={option === value[name] ? selectedRef : undefined}
           >
             {option}
           </Option>

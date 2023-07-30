@@ -7,18 +7,22 @@ import { UserInfo } from "../../../mocks/types/types.ts";
 
 type LabeledInputProps = {
   children: string;
-  k: keyof UserInfo;
+  name: keyof UserInfo;
   placeholder?: string;
 };
 
-export function LabeledInput({ k, children, placeholder }: LabeledInputProps) {
+export function LabeledInput({
+  name,
+  children,
+  placeholder,
+}: LabeledInputProps) {
   const { value, onChange } = useContext(UserInfoFormContext);
   return (
-    <Label k={k}>
+    <Label name={name}>
       <span>{children}</span>
       <input
-        value={value[k]}
-        onChange={(e) => onChange({ ...value, [k]: e.target.value })}
+        value={value[name]}
+        onChange={(e) => onChange({ ...value, [name]: e.target.value })}
         placeholder={placeholder}
       />
     </Label>
