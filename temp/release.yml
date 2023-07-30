@@ -1,7 +1,7 @@
 # Release 배포용 CI/CD workflow.
 # 실제 배포 시 이 두 줄을 제외한 모든 줄의 주석을 해제하세요!
 
-# name: Dev CICD
+# name: Release CICD
 # on:
 #   push:
 #     branches: main
