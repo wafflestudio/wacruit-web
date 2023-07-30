@@ -10,6 +10,7 @@ import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard";
+import Announcement from "./pages/Announcement";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "announcement", element: <div>announcement</div> },
+  { path: "announcement", element: <Announcement /> },
 ]);
 
 if (process.env.NODE_ENV === "development") {

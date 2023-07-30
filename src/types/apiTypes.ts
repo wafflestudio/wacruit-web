@@ -121,7 +121,7 @@ export type ResumeQuestion = {
  * Announcement
  */
 
-export type Announcement = {
+export type TAnnouncement = {
   id: number;
   title: string;
   content: string;
