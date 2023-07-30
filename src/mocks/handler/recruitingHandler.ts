@@ -5,13 +5,16 @@ import {
   toMockRecruitingItem,
 } from "../db/recruiting";
 
-const allRecruitings: RestHandler = rest.get("/recruiting", (req, res, ctx) => {
-  const data = getAllMockRecruitings().map(toMockRecruitingItem);
-  return res(ctx.status(200), ctx.delay(), ctx.json(data));
-});
+const allRecruitings: RestHandler = rest.get(
+  "/recruitings",
+  (req, res, ctx) => {
+    const data = getAllMockRecruitings().map(toMockRecruitingItem);
+    return res(ctx.status(200), ctx.delay(), ctx.json(data));
+  },
+);
 
 const recruiting: RestHandler = rest.get(
-  "/recruiting/:recruiting_id",
+  "/recruitings/:recruiting_id",
   (req, res, ctx) => {
     const id = req.params.recruiting_id;
     const data = getMockRecruiting(Number(id));
