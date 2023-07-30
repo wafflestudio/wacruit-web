@@ -1,7 +1,7 @@
-name: Test CICD
+name: Dev CICD
 on:
   push:
-    branches: cicd
+    branches: main
 jobs:
   Build:
     runs-on: ubuntu-latest
