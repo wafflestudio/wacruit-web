@@ -5,6 +5,7 @@ import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
 import { MockApplyNumber } from "../../mocks/types/types";
+import { zIndex } from "../../lib/zIndex";
 
 export default function Apply() {
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
@@ -112,7 +113,7 @@ const BackGround = styled.div`
   background: #fffcf5;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: ${zIndex.background};
 `;
 
 const ApplyCalender = styled.div`

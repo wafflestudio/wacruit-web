@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ModalState } from "./useModal";
 import { ReactNode } from "react";
+import { zIndex } from "../../lib/zIndex";
 
 interface ModalProps {
   handle: ReturnType<
@@ -46,7 +47,7 @@ const ModalContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: ${zIndex.modal};
   animation: modal-container-appear 300ms;
   ${(props) => ({
     "background-color": props.backgroundColor,
