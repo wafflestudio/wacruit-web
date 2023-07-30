@@ -1,2 +1,4 @@
-export const baseURL = "https://wacruit-dev.wafflestudio.com/api/v1";
-export const useMSW = false;
+export const useMSW = true;
+export const baseURL = useMSW
+  ? ""
+  : "https://wacruit-dev.wafflestudio.com/api/v1";
