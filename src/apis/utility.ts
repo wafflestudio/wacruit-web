@@ -1,6 +1,10 @@
 import { baseURL } from "./environment";
 
-const defaultCommonHeader = {};
+const sampleToken = "";
+
+const defaultCommonHeader = {
+  Authorization: `Bearer ${sampleToken}`,
+};
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
@@ -10,7 +14,7 @@ export const getRequest = <Response>(
   url: string,
   header: HeadersInit = {},
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, { ...defaultCommonHeader, headers: header }).then(
+  fetch(`${baseURL}/${url}`, { ...defaultCommonHeader, headers: header }).then(
     (res) => res.json(),
   );
 
@@ -19,7 +23,7 @@ export const postRequest = <Response>(
   body: object,
   header: HeadersInit = {},
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${baseURL}/${url}`, {
     method: "POST",
     headers: { ...defaultCommonHeader, ...defaultPostHeader, ...header },
     body: JSON.stringify(body),
@@ -30,7 +34,7 @@ export const putRequest = <Response>(
   body: object,
   header: HeadersInit = {},
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${baseURL}/${url}`, {
     method: "PUT",
     headers: { ...defaultCommonHeader, ...defaultPostHeader, ...header },
     body: JSON.stringify(body),

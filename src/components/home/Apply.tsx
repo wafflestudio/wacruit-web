@@ -6,6 +6,7 @@ import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
 import { MockApplyNumber } from "../../mocks/types/types";
 import { zIndex } from "../../lib/zIndex";
+import { ssoRedirectURI } from "../../apis/environment";
 
 export default function Apply() {
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
@@ -71,7 +72,9 @@ export default function Apply() {
             </p>
             <button
               onClick={() => {
-                location.href = `https://sso.wafflestudio.com/?redirect_uri=https://wacruit-dev.wafflestudio.com`;
+                location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
+                  0,
+                )}`;
               }}
             >
               지원하러가기!

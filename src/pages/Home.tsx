@@ -23,7 +23,7 @@ export default function Home() {
 
   useQuery({
     queryKey: ["dummy"],
-    queryFn: () => getRequest("/dummy").then(console.log),
+    queryFn: () => getRequest("dummy").then(console.log),
   });
 
   useEffect(() => {

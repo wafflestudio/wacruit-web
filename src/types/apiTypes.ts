@@ -128,3 +128,10 @@ export type TAnnouncement = {
   created_at: string; //Date로 변환 가능
   updated_at: string; //Date로 변환 가능
 };
+
+export type UserRegisterRequest = {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+};
