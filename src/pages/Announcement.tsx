@@ -31,20 +31,26 @@ export default function Announcement() {
             <p>등록일</p>
             <div></div>
           </ListHeaderRow>
-          {announcements?.map((announcement) => (
-            <ListItem
-              announcement={announcement}
-              isOpened={announcement.id === openedAnnouncementId}
-              nothingOpened={openedAnnouncementId === undefined}
-              handleOnClick={() => {
-                setOpenedAnnouncementId(
-                  announcement.id === openedAnnouncementId
-                    ? undefined
-                    : announcement.id,
-                );
-              }}
-            />
-          ))}
+          {announcements && announcements.length === 0 ? (
+            announcements.map((announcement) => (
+              <ListItem
+                announcement={announcement}
+                isOpened={announcement.id === openedAnnouncementId}
+                nothingOpened={openedAnnouncementId === undefined}
+                handleOnClick={() => {
+                  setOpenedAnnouncementId(
+                    announcement.id === openedAnnouncementId
+                      ? undefined
+                      : announcement.id,
+                  );
+                }}
+              />
+            ))
+          ) : (
+            <NoAnnouncements>
+              <p>등록된 공지사항이 없습니다.</p>
+            </NoAnnouncements>
+          )}
         </AnnouncementList>
         {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
       </Main>
@@ -165,5 +171,19 @@ const ListItemRow = styled(ListRow)`
   }
   > div:nth-child(4) {
     padding: 0 38%;
+  }
+`;
+
+const NoAnnouncements = styled.div`
+  border-bottom: 1px solid #c9c9c9;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > p {
+    color: #3c3c3c;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 140%;
   }
 `;
