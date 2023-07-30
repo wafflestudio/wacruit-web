@@ -1,9 +1,38 @@
+import { Union } from "./commonTypes";
+import { supportedLanguages } from "./constants";
+
+/**
+ * User
+ */
+
+export type User = {
+  id: number;
+  sso_id: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  department: string;
+  college: string;
+  university: string;
+  github_email: string;
+  slack_email: string;
+  notion_email: string;
+};
+
+export type UserUpdate = Pick<
+  User,
+  | "department"
+  | "college"
+  | "university"
+  | "github_email"
+  | "slack_email"
+  | "notion_email"
+>;
+
 /**
  * Recruiting
  */
-
-import { Union } from "./commonTypes";
-import { supportedLanguages } from "./constants";
 
 export type Recruiting = {
   id: number;
@@ -71,27 +100,22 @@ export type Resume = {
   created_at: string;
   updated_at: string;
   answer: string;
-  user: {
-    id: 0;
-    sso_id: string;
-    first_name: string;
-    last_name: string;
-    phone_number: string;
-    email: string;
-    department: string;
-    college: string;
-    university: string;
-    github_email: string;
-    slack_email: string;
-    notion_email: string;
-  };
+  user: User;
 };
 
-export type ResumeSubmissionRequest = {
-  recruiting_id: number;
+export type ResumeSubmissionCreate = {
   question_id: number;
   answer: string;
-}[];
+};
+
+export type ResumeQuestion = {
+  recruiting_id: number;
+  question_num: number;
+  content: string;
+  content_limit: number;
+  created_at: string;
+  updated_at: string;
+};
 
 /**
  * Announcement

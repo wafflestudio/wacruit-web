@@ -17,3 +17,14 @@ export type MockApplyNumber = {
   rookie: number;
   designer: number;
 };
+
+export type UserInfo = {
+  admission: string;
+  status: string;
+  university: string;
+  college: string;
+  major: string;
+  githubId: string;
+  slackEmail: string;
+  notionEmail: string;
+};

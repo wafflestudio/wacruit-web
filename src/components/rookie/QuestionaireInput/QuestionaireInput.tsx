@@ -47,6 +47,10 @@ const TextArea = styled.textarea`
   background: #f6f6f6;
   resize: none;
   font: inherit;
+  &:focus {
+    background: #e6e6e6;
+    outline: none;
+  }
 `;
 const Count = styled.div`
   position: absolute;

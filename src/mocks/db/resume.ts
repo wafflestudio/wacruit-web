@@ -1,19 +1,9 @@
-import { Resume, ResumeSubmissionRequest } from "../../types/apiTypes";
-
-const resumeUser: Resume["user"] = {
-  id: 0,
-  sso_id: "sample",
-  first_name: "와플",
-  last_name: "김",
-  phone_number: "01012345678",
-  email: "test@wafflestudio.com",
-  department: "",
-  college: "",
-  university: "",
-  github_email: "",
-  slack_email: "",
-  notion_email: "",
-};
+import {
+  Resume,
+  ResumeQuestion,
+  ResumeSubmissionCreate,
+} from "../../types/apiTypes";
+import { user } from "./user.ts";
 
 const resume: Resume[][] = [
   [
@@ -25,7 +15,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 1,
@@ -35,7 +25,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 2,
@@ -45,7 +35,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
   ],
   [
@@ -57,7 +47,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 1,
@@ -67,7 +57,7 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
     },
     {
       id: 2,
@@ -77,7 +67,62 @@ const resume: Resume[][] = [
       created_at: "2021-08-04T00:00:00.000Z",
       updated_at: "2021-08-04T00:00:00.000Z",
       answer: "",
-      user: resumeUser,
+      user: user,
+    },
+  ],
+];
+
+const questions: ResumeQuestion[][] = [
+  [
+    {
+      recruiting_id: 0,
+      question_num: 1,
+      content: "지원동기를 500자 이내로 서술해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
+    },
+    {
+      recruiting_id: 0,
+      question_num: 2,
+      content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
+    },
+    {
+      recruiting_id: 0,
+      question_num: 3,
+      content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
+    },
+  ],
+  [
+    {
+      recruiting_id: 1,
+      question_num: 1,
+      content: "지원동기를 500자 이내로 서술해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
+    },
+    {
+      recruiting_id: 1,
+      question_num: 2,
+      content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
+    },
+    {
+      recruiting_id: 1,
+      question_num: 3,
+      content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
+      content_limit: 500,
+      created_at: "2021-08-04T00:00:00.000Z",
+      updated_at: "2021-08-04T00:00:00.000Z",
     },
   ],
 ];
@@ -86,7 +131,7 @@ export const getMyMockResume = (recruitingId: number) => resume[recruitingId];
 
 export const setMyMockResume = (
   recruitingId: number,
-  data: ResumeSubmissionRequest,
+  data: ResumeSubmissionCreate[],
 ) => {
   resume[recruitingId] = resume[recruitingId].map((resume) => {
     if (data.map((data) => data.question_id).includes(resume.question_id)) {
@@ -101,3 +146,6 @@ export const setMyMockResume = (
     }
   });
 };
+
+export const getMockQuestions = (recruitingId: number) =>
+  questions[recruitingId];

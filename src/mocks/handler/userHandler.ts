@@ -1,10 +1,6 @@
 import { rest, RestHandler } from "msw";
-import {
-  MockProblemResult,
-  MockResumeQuestionaire,
-  MockResumeResult,
-} from "../types/types";
-import { getMockResume, hasSubmitMockResume, setMockResume } from "../db/user";
+import { MockProblemResult, MockResumeResult } from "../types/types";
+import { getMockUser, setMockUser } from "../db/user";
 
 /**
  * ! Deprecated
@@ -21,7 +17,7 @@ const getRandomProblemResult = (index: number): MockProblemResult => {
 const result: RestHandler = rest.get("/me/result", (req, res, ctx) => {
   const response: { resume: MockResumeResult; problems: MockProblemResult[] } =
     {
-      resume: { submitted: hasSubmitMockResume() },
+      resume: { submitted: false },
       problems: [
         getRandomProblemResult(1),
         getRandomProblemResult(2),
@@ -31,18 +27,18 @@ const result: RestHandler = rest.get("/me/result", (req, res, ctx) => {
   return res(ctx.status(200), ctx.delay(), ctx.json(response));
 });
 
-const resume: RestHandler = rest.get("/me/resume", (req, res, ctx) => {
-  const response: MockResumeQuestionaire[] = getMockResume();
+const userInfo: RestHandler = rest.get("/users/me", async (req, res, ctx) => {
+  const response = getMockUser();
   return res(ctx.status(200), ctx.delay(), ctx.json(response));
 });
 
-const submitResume: RestHandler = rest.post(
-  "/me/resume",
+const submitUserInfo: RestHandler = rest.patch(
+  "/users/me",
   async (req, res, ctx) => {
     const data = await req.json();
-    setMockResume(data);
-    return res(ctx.status(200), ctx.delay(), ctx.json({ isSuccess: true }));
+    setMockUser({ ...getMockUser(), ...data });
+    return res(ctx.status(200), ctx.delay(), ctx.json(getMockUser()));
   },
 );
 
-export const userHandler = [result, resume, submitResume];
+export const userHandler = [result, userInfo, submitUserInfo];

@@ -1,22 +1,53 @@
 import { RestHandler, rest } from "msw";
-import { getMyMockResume, setMyMockResume } from "../db/resume";
-import { ResumeSubmissionRequest } from "../../types/apiTypes";
+import {
+  getMockQuestions,
+  getMyMockResume,
+  setMyMockResume,
+} from "../db/resume";
+import { ResumeSubmissionCreate } from "../../types/apiTypes";
 
-const myResume: RestHandler = rest.get("/resumes/my", (req, res, ctx) => {
-  const data = getMyMockResume(0);
-  return res(ctx.status(200), ctx.delay(), ctx.json(data));
-});
+const myResume: RestHandler = rest.get(
+  "/recruiting/:recruiting_id/resumes",
+  (req, res, ctx) => {
+    const { recruiting_id } = req.params;
+    const data = getMyMockResume(Number(recruiting_id));
+    if (!data) res(ctx.status(404), ctx.delay());
+    return res(ctx.status(200), ctx.delay(), ctx.json({ items: data }));
+  },
+);
 
-const postResume: RestHandler = rest.post("/resumes", async (req, res, ctx) => {
-  const requestBody = (await req.json()) as ResumeSubmissionRequest;
-  setMyMockResume(0, requestBody);
-  return res(ctx.status(200), ctx.delay(), ctx.json(getMyMockResume(0)));
-});
+const postResume: RestHandler = rest.post(
+  "/recruiting/:recruiting_id/resumes",
+  async (req, res, ctx) => {
+    const requestBody = (await req.json()) as ResumeSubmissionCreate[];
+    const { recruiting_id } = req.params;
+    setMyMockResume(Number(recruiting_id), requestBody);
+    const data = getMyMockResume(Number(recruiting_id));
+    if (!data) res(ctx.status(404), ctx.delay());
+    return res(ctx.status(200), ctx.delay(), ctx.json({ items: data }));
+  },
+);
 
-const putResume: RestHandler = rest.post("/resumes", async (req, res, ctx) => {
-  const requestBody = (await req.json()) as ResumeSubmissionRequest;
-  setMyMockResume(0, requestBody);
-  return res(ctx.status(200), ctx.delay(), ctx.json(getMyMockResume(0)));
-});
+const putResume: RestHandler = rest.put(
+  "/recruiting/:recruiting_id/resumes",
+  async (req, res, ctx) => {
+    const requestBody = (await req.json()) as ResumeSubmissionCreate[];
+    const { recruiting_id } = req.params;
+    setMyMockResume(Number(recruiting_id), requestBody);
+    const data = getMyMockResume(Number(recruiting_id));
+    if (!data) res(ctx.status(404), ctx.delay());
+    return res(ctx.status(200), ctx.delay(), ctx.json(data));
+  },
+);
 
-export const resumeHandler = [myResume, postResume, putResume];
+const getQuestions: RestHandler = rest.get(
+  "/recruiting/:recruiting_id/questions",
+  (req, res, ctx) => {
+    const { recruiting_id } = req.params;
+    const data = getMockQuestions(Number(recruiting_id));
+    if (!data) res(ctx.status(404), ctx.delay());
+    return res(ctx.status(200), ctx.delay(), ctx.json({ items: data }));
+  },
+);
+
+export const resumeHandler = [myResume, postResume, putResume, getQuestions];
