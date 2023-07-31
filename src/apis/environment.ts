@@ -3,5 +3,5 @@ export const baseURL =
     ? ""
     : "https://wacruit-dev.wafflestudio.com/api/v1";
 
-export const ssoRedirectURI = (recruitId: number) =>
+export const ssoRedirectURI = (recruitId: number | "home") =>
   `https://wacruit-dev.wafflestudio.com/sso/${recruitId}`;

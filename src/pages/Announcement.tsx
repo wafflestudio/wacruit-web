@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import Header from "../components/rookie/Header/Header";
+import Header from "../components/home/Header/Header";
 import { MouseEventHandler, useState } from "react";
 import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
 import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";

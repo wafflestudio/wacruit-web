@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Header from "../components/rookie/Header/Header";
+import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
 import { UserInfo } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";

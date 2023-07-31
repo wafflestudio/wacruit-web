@@ -10,7 +10,7 @@ import useModal from "../components/Modal/useModal";
 import Modal from "../components/Modal/Modal";
 import NotificationModal from "../components/home/NotificationModal";
 import { useEffect } from "react";
-import Header from "../components/rookie/Header/Header";
+import Header from "../components/home/Header/Header";
 import { getRequest } from "../apis/utility";
 
 const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";

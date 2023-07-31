@@ -5,9 +5,10 @@ import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
 import { zIndex } from "../../lib/zIndex";
-import { getAllRecruitings, getRecruitingById } from "../../apis/recruiting";
+import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";
 import { ssoRedirectURI } from "../../apis/environment";
+import { checkAuth } from "../../apis/auth";
 
 export default function Apply() {
   const navigate = useNavigate();
@@ -17,19 +18,24 @@ export default function Apply() {
   const { status, data } = useQuery({
     queryKey: ["recruiting"],
     queryFn: getAllRecruitings,
+    staleTime: 1000 * 60,
+    retry: 3,
   });
 
   const onApply = useCallback(async (recruit_id: number) => {
     /**
      * @TODO authPing으로 교체
      */
-    const isLoggedIn = await getRecruitingById(1)
-      .then(() => true)
-      .catch(() => false);
+    const auth = await checkAuth();
 
-    if (isLoggedIn) {
+    if (auth === "valid") {
       navigate(`/recruiting/${recruit_id}`);
-    } else {
+      return;
+    }
+    if (auth === "need_register") {
+      navigate(`/sso/${recruit_id}`);
+    }
+    if (auth === "invalid") {
       location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
         recruit_id,
       )}`;
