@@ -10,8 +10,8 @@ export default function Header() {
   const { data: authState } = useQuery({
     queryKey: ["auth"],
     queryFn: () => checkAuth(),
-    staleTime: 1000 * 60,
-    retry: 5,
+    staleTime:5000,
+    retry: 0,
   });
 
   if (!authState) {

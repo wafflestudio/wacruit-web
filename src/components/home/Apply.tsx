@@ -8,7 +8,7 @@ import { zIndex } from "../../lib/zIndex";
 import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";
 import { ssoRedirectURI } from "../../apis/environment";
-import { checkAuth } from "../../apis/auth";
+import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
   const navigate = useNavigate();
@@ -36,9 +36,7 @@ export default function Apply() {
       navigate(`/sso/${recruit_id}`);
     }
     if (auth === "invalid") {
-      location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
-        recruit_id,
-      )}`;
+     tryLogin(recruit_id);
     }
   }, []);
 

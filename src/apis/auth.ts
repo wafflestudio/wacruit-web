@@ -1,5 +1,6 @@
 import { Cookies } from "react-cookie";
 import { getRecruitingById } from "./recruiting";
+import { ssoRedirectURI } from "./environment";
 
 const SSO_COOKIE_KEY = "waffle.access-token";
 const TOKEN_KEY = "wacruit";
@@ -37,6 +38,12 @@ export const saveSsoToken = () => {
   if (token) {
     setToken(token);
   }
+};
+
+export const tryLogin = (recruit_id:number|"home") => {
+      location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
+        recruit_id,
+      )}`;
 };
 
 export const checkAuth = async (): Promise<
