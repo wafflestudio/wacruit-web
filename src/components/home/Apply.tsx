@@ -7,7 +7,6 @@ import { useQuery } from "react-query";
 import { zIndex } from "../../lib/zIndex";
 import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";
-import { ssoRedirectURI } from "../../apis/environment";
 import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
@@ -36,7 +35,7 @@ export default function Apply() {
       navigate(`/sso/${recruit_id}`);
     }
     if (auth === "invalid") {
-     tryLogin(recruit_id);
+      tryLogin(recruit_id);
     }
   }, []);
 

@@ -8,7 +8,7 @@ import MarkDownRenderer from "../lib/MarkdownRenderer";
 import { Recruiting } from "../types/apiTypes";
 
 const recruitingQuery = (id: number) => ({
-  queryKey: ["recruiting", id],
+  queryKey: ["recruiting", "detail", id],
   queryFn: () => getRecruitingById(id),
   staleTime: 1000 * 60 * 60,
 });
