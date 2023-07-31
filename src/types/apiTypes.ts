@@ -34,17 +34,19 @@ export type UserUpdate = Pick<
  * Recruiting
  */
 
+type ProblemStatus = {
+  //id: number;
+  num: number;
+  status: number;
+};
+
 export type Recruiting = {
   id: number;
   name: string;
   is_active: boolean;
   from_date: string;
   description: string;
-  problems: {
-    id: number;
-    num: number;
-    status: "미제출" | "채점중" | "성공" | "실패";
-  }[];
+  problem_status: ProblemStatus[];
 };
 
 export type RecruitingSummary = Pick<

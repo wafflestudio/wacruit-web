@@ -33,7 +33,7 @@ export default function Dashboard() {
         <MarkDownRenderer markdownString={markDownTexts.subTitle} />
       </Description>
       <Information>
-        <MarkDownRenderer markdownString={markDownTexts.information} />
+        <MarkDownRenderer markdownString={recruiting?.description ?? ""} />
       </Information>
       <AnnouncementButton>
         공지 및 변경사항 안내
@@ -52,7 +52,7 @@ export default function Dashboard() {
       </AnnouncementButton>
       <BottomContainer>
         <ProgressList
-          problems={recruiting ? recruiting.problems : []}
+          problems={recruiting ? recruiting.problem_status : []}
           isLoading={isFetching}
         />
         <Caution>
