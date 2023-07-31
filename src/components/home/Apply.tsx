@@ -1,22 +1,40 @@
 import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
-import { MockApplyNumber } from "../../mocks/types/types";
 import { zIndex } from "../../lib/zIndex";
+import { getAllRecruitings, getRecruitingById } from "../../apis/recruiting";
+import { useNavigate } from "react-router-dom";
 import { ssoRedirectURI } from "../../apis/environment";
 
 export default function Apply() {
+  const navigate = useNavigate();
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
     "ROOKIE",
   );
-
-  const { status, data } = useQuery<MockApplyNumber>({
-    queryKey: ["applyNumber", field],
-    queryFn: () => fetch("/apply/number").then((res) => res.json()),
+  const { status, data } = useQuery({
+    queryKey: ["recruiting"],
+    queryFn: getAllRecruitings,
   });
+
+  const onApply = useCallback(async (recruit_id: number) => {
+    /**
+     * @TODO authPing으로 교체
+     */
+    const isLoggedIn = await getRecruitingById(1)
+      .then(() => true)
+      .catch(() => false);
+
+    if (isLoggedIn) {
+      navigate(`/recruiting/${recruit_id}`);
+    } else {
+      location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
+        recruit_id,
+      )}`;
+    }
+  }, []);
 
   return (
     <Section>
@@ -65,18 +83,14 @@ export default function Apply() {
             <p>
               {status !== "loading" && status === "success" && (
                 <span>
-                  {field === "ROOKIE" ? data?.rookie : data?.designer}{" "}
+                  {field === "ROOKIE"
+                    ? data?.items[0].applicant_count
+                    : data?.items[1].applicant_count}
                 </span>
               )}
               명 지원 중
             </p>
-            <button
-              onClick={() => {
-                location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
-                  0,
-                )}`;
-              }}
-            >
+            <button onClick={() => onApply(field === "ROOKIE" ? 1 : 2)}>
               지원하러가기!
             </button>
           </ApplyButton>

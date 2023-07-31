@@ -21,6 +21,9 @@ export default function Home() {
     localStorage.getItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE),
   );
 
+  /**
+   * @TODO Release 시 삭제
+   */
   useQuery({
     queryKey: ["dummy"],
     queryFn: () => getRequest("/dummy").then(console.log),

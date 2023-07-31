@@ -5,8 +5,10 @@ export const setToken = (token: string) => {
 };
 
 export const getToken = (): string => {
-  if (import.meta.env.VITE_EXTERNAL_TOKEN) {
-    return `Bearer ${import.meta.env.VITE_EXTERNAL_TOKEN}`;
+  const externalToken = import.meta.env.VITE_EXTERNAL_AUTH_TOKEN;
+
+  if (externalToken) {
+    return `Bearer ${externalToken}`;
   } else {
     const token = sessionStorage.getItem(TOKEN_KEY);
     return `Bearer ${token ?? ""}`;

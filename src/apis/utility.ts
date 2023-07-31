@@ -16,9 +16,9 @@ export const getRequest = <Response>(
     headers: {
       ...defaultCommonHeader,
       ...header,
-      ...(authorized ? {} : { Authorization: getToken() }),
+      ...(authorized ? { Authorization: getToken() } : {}),
     },
-  }).then((res) => res.json());
+  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
 
 export const postRequest = <Response>(
   url: string,
@@ -32,10 +32,10 @@ export const postRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? {} : { Authorization: getToken() }),
+      ...(authorized ? { Authorization: getToken() } : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => res.json());
+  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
 
 export const putRequest = <Response>(
   url: string,
@@ -49,10 +49,10 @@ export const putRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? {} : { Authorization: getToken() }),
+      ...(authorized ? { Authorization: getToken() } : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => res.json());
+  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
 
 export const patchRequest = <Response>(
   url: string,
@@ -66,7 +66,7 @@ export const patchRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? {} : { Authorization: getToken() }),
+      ...(authorized ? { Authorization: getToken() } : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => res.json());
+  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
