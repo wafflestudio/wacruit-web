@@ -9,10 +9,12 @@ import MarkDownRenderer from "../../../lib/MarkdownRenderer";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
+  problemMarkdown: string;
 }
 
 export default function ProblemDescription({
   problemNumber,
+  problemMarkdown,
 }: ProblemDescriptionProps) {
   const defaultTestCases: TestCase[] = [
     { input: "4, 5", output: "a=4\nb=5" },
@@ -60,11 +62,7 @@ export default function ProblemDescription({
       </Modal>
       <ProblemTitle>문제 {problemNumber}</ProblemTitle>
       <Text>
-        <MarkDownRenderer
-          markdownString={`정수 a와 b가 주어집니다. 수를 입력받아 입출력 예와 같은 형식으로
-          출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를
-          입력받아 입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.`}
-        />
+        <MarkDownRenderer markdownString={problemMarkdown} />
       </Text>
       <HorizontalLine margin="25px 0 14px 0" />
 
