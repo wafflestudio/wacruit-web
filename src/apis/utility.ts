@@ -1,10 +1,7 @@
+import { getToken } from "./auth";
 import { baseURL } from "./environment";
 
-const sampleToken = "";
-
-const defaultCommonHeader = {
-  Authorization: `Bearer ${sampleToken}`,
-};
+const defaultCommonHeader = {};
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
@@ -13,19 +10,30 @@ const defaultPostHeader = {
 export const getRequest = <Response>(
   url: string,
   header: HeadersInit = {},
+  authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}/${url}`, { ...defaultCommonHeader, headers: header }).then(
-    (res) => res.json(),
-  );
+  fetch(`${baseURL}${url}`, {
+    headers: {
+      ...defaultCommonHeader,
+      ...header,
+      ...(authorized ? {} : { Authorization: getToken() }),
+    },
+  }).then((res) => res.json());
 
 export const postRequest = <Response>(
   url: string,
   body: object,
   header: HeadersInit = {},
+  authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}/${url}`, {
+  fetch(`${baseURL}${url}`, {
     method: "POST",
-    headers: { ...defaultCommonHeader, ...defaultPostHeader, ...header },
+    headers: {
+      ...defaultCommonHeader,
+      ...defaultPostHeader,
+      ...header,
+      ...(authorized ? {} : { Authorization: getToken() }),
+    },
     body: JSON.stringify(body),
   }).then((res) => res.json());
 
@@ -33,10 +41,16 @@ export const putRequest = <Response>(
   url: string,
   body: object,
   header: HeadersInit = {},
+  authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}/${url}`, {
+  fetch(`${baseURL}${url}`, {
     method: "PUT",
-    headers: { ...defaultCommonHeader, ...defaultPostHeader, ...header },
+    headers: {
+      ...defaultCommonHeader,
+      ...defaultPostHeader,
+      ...header,
+      ...(authorized ? {} : { Authorization: getToken() }),
+    },
     body: JSON.stringify(body),
   }).then((res) => res.json());
 
@@ -44,9 +58,15 @@ export const patchRequest = <Response>(
   url: string,
   body: object,
   header: HeadersInit = {},
+  authorized = true,
 ): Promise<Response> =>
-  fetch(url, {
+  fetch(`${baseURL}${url}`, {
     method: "PATCH",
-    headers: { ...defaultPostHeader, ...header },
+    headers: {
+      ...defaultCommonHeader,
+      ...defaultPostHeader,
+      ...header,
+      ...(authorized ? {} : { Authorization: getToken() }),
+    },
     body: JSON.stringify(body),
   }).then((res) => res.json());

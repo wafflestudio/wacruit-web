@@ -7,4 +7,4 @@ import { UserRegisterRequest } from "../types/apiTypes";
 import { postRequest } from "./utility";
 
 export const postUser = (data: UserRegisterRequest) =>
-  postRequest(`users`, data);
+  postRequest(`/users`, data);
