@@ -4,6 +4,7 @@ import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "react-query";
 import { checkAuth, deleteSsoToken } from "../../../apis/auth";
 import { ssoRedirectURI } from "../../../apis/environment";
+import { getAllAnnouncements } from "../../../apis/announcement";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -11,6 +12,13 @@ export default function Header() {
     queryKey: ["auth"],
     queryFn: () => checkAuth(),
     staleTime: 1000 * 60 * 60,
+    retry: 0,
+  });
+  useQuery({
+    queryKey: ["announcement"],
+    queryFn: () => getAllAnnouncements(),
+    refetchInterval: 1000 * 5,
+    staleTime: Infinity,
     retry: 0,
   });
 
@@ -43,7 +51,7 @@ export default function Header() {
             로그아웃
           </button>
           <Link to="/">지원페이지</Link>
-          <Link to=".">공지사항</Link>
+          <Link to="/announcement">공지사항 </Link>
         </Nav>
       ) : (
         <Nav>
