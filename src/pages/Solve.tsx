@@ -8,23 +8,20 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { getProblemById } from "../apis/problem.ts";
 
-function safeNum(_n: string | undefined) {
-  const n = Number(_n);
-  return Number.isSafeInteger(n) ? n : null;
-}
-
 export default function Solve() {
   const params = useParams();
   const {
     data: problem,
     isLoading,
     isError,
+    isIdle,
   } = useQuery({
     queryKey: ["problem", params.problem_number],
     queryFn: () => getProblemById(Number(params.problem_number)),
+    staleTime: 1000 * 60 * 60,
+    retry: 1,
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const problemNumber = safeNum(params.problem_number);
 
   const handleRunTest = () => {
     alert("테스트 실행");
@@ -37,11 +34,7 @@ export default function Solve() {
    * @TODO 에러처리
    */
 
-  if (problemNumber === null) {
-    return <main>invalid problem number</main>;
-  }
-
-  if (isLoading) {
+  if (isLoading || isIdle) {
     return <main>loading...</main>;
   }
 
@@ -61,8 +54,8 @@ export default function Solve() {
         <Row $collapseLeft={isFullScreen}>
           <Col>
             <ProblemDescription
-              problemNumber={problemNumber}
-              problemMarkdown={problem?.body ?? ""}
+              problemNumber={problem.num}
+              problemMarkdown={problem.body}
             />
           </Col>
           <Col>
