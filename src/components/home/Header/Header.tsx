@@ -2,8 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "react-query";
-import { checkAuth, deleteSsoToken } from "../../../apis/auth";
-import { ssoRedirectURI } from "../../../apis/environment";
+import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";
 
@@ -75,20 +74,23 @@ export default function Header() {
         <Nav>
           <NavButton
             onClick={() => {
-              location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
-                "home",
-              )}`;
+              tryLogin("home");
             }}
           >
             로그인
           </NavButton>
-          <NavButton onMouseEnter={() => setShowApply(true)}>
+          <NavButton
+            onMouseEnter={() => setShowApply(true)}
+            onMouseLeave={() => setShowApply(false)}
+          >
             <img src={"/icon/header/Apply.svg"} />
             지원페이지
-            <ApplyList>
-              <div>루키</div>
-              <div>디자이너</div>
-            </ApplyList>
+            {showApply && (
+              <ApplyList>
+                <NavButton onClick={() => tryLogin(1)}>루키</NavButton>
+                <NavButton onClick={() => tryLogin(2)}>디자이너</NavButton>
+              </ApplyList>
+            )}
           </NavButton>
           <NavLink to="/">
             <img src={"/icon/header/Alarm.svg"} />
@@ -159,6 +161,15 @@ const ApplyList = styled.div`
   padding: 10px 0;
 
   > a {
+    display: block;
+    padding: 10px 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+  > button {
     display: block;
     padding: 10px 0;
     cursor: pointer;
