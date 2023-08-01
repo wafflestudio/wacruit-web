@@ -7,22 +7,28 @@ import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser, patchUser } from "../apis/user.ts";
+import { getUser } from "../apis/user.ts";
 import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
-  const questions = useQuery({
-    queryKey: ["resume/question"],
-    queryFn: () => getQuestions(Number(recruit_id)),
-  });
+
   const [resumeInput, setResumeInput] = useState<string[] | null>(null);
   const [userInfoInput, setUserInfoInput] = useUserInfo();
+  const questions = useQuery({
+    queryKey: ["resume/question"],
+    queryFn: () =>
+      getQuestions(Number(recruit_id)).then((data) => {
+        setResumeInput(data.items.map(() => ""));
+        return data;
+      }),
+  });
   const resume = useQuery({
     queryKey: ["resume"],
     queryFn: () =>
       getMyResumes(Number(recruit_id)).then((data) => {
-        setResumeInput(data.items.map(({ answer }) => answer ?? ""));
+        // Todo: resume 답안이 존재할 경우 resumeInput의 초기값으로 넣기
+        //setResumeInput(data.items.map(({ answer }) => answer ?? ""));
         return data;
       }),
   });
@@ -32,12 +38,12 @@ export default function Resume() {
     if (
       resumeInput &&
       resume.data &&
-      userInfoInput &&
+      //userInfoInput &&
       userInfoFormRef.current?.reportValidity()
     ) {
       putResume(
         {
-          userInfo: userInfoInput,
+          //userInfo: userInfoInput,
           questionaire: resume.data.items.map((result, i) => ({
             ...result,
             answer: resumeInput[i],
@@ -119,19 +125,34 @@ function useUserInfo() {
   useQuery({
     queryKey: ["userInfo"],
     queryFn: () =>
-      getUser().then((data) => {
-        setUserInfoInput({
-          admission: "",
-          college: data.college,
-          githubId: data.github_email,
-          major: data.department,
-          notionEmail: data.notion_email,
-          slackEmail: data.slack_email,
-          status: "",
-          university: data.university,
-        });
-        return data;
-      }),
+      getUser()
+        .then((data) => {
+          setUserInfoInput({
+            admission: "",
+            college: data.college,
+            githubId: data.github_email,
+            major: data.department,
+            notionEmail: data.notion_email,
+            slackEmail: data.slack_email,
+            status: "",
+            university: data.university,
+          });
+          return data;
+        })
+        .catch(() => {
+          setUserInfoInput({
+            admission: "",
+            college: "",
+            githubId: "",
+            major: "",
+            notionEmail: "",
+            slackEmail: "",
+            status: "",
+            university: "",
+          });
+        }),
+    retry: 0,
+    staleTime: 1000 * 60 * 60,
   });
   return [userInfoInput, setUserInfoInput] as const;
 }
@@ -139,8 +160,9 @@ function useUserInfo() {
 function useSubmit(recruiting_id: number) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (data: { userInfo: UserInfo; questionaire: ResumeSubmissionCreate[] }) =>
+    (data: { questionaire: ResumeSubmissionCreate[] }) =>
       Promise.all([
+        /*
         patchUser({
           college: data.userInfo.college,
           department: data.userInfo.major,
@@ -149,6 +171,7 @@ function useSubmit(recruiting_id: number) {
           slack_email: data.userInfo.slackEmail,
           university: data.userInfo.university,
         }),
+        */
         putResume(recruiting_id, data.questionaire),
       ]),
     {
