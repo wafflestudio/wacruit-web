@@ -33,8 +33,6 @@ export const deleteSsoToken = () => {
 
 export const saveSsoToken = () => {
   const token = getCookie();
-  console.log(cookies);
-  console.log(token);
   if (token) {
     setToken(token);
   }
