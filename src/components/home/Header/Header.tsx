@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { checkAuth, deleteSsoToken } from "../../../apis/auth";
 import { ssoRedirectURI } from "../../../apis/environment";
 import { getAllAnnouncements } from "../../../apis/announcement";
+import { useState } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Header() {
     staleTime: 1000 * 60 * 60,
     retry: 0,
   });
+  const [showApply, setShowApply] = useState(false);
   useQuery({
     queryKey: ["announcement"],
     queryFn: () => getAllAnnouncements(),
@@ -42,20 +44,36 @@ export default function Header() {
       </Link>
       {authState === "valid" ? (
         <Nav>
-          <button
+          <NavButton
             onClick={() => {
               deleteSsoToken();
               navigate("/");
             }}
           >
+            <img src={"/icon/header/Logout.svg"} />
             로그아웃
-          </button>
-          <Link to="/">지원페이지</Link>
-          <Link to="/announcement">공지사항 </Link>
+          </NavButton>
+          <NavButton
+            onMouseEnter={() => setShowApply(true)}
+            onMouseLeave={() => setShowApply(false)}
+          >
+            <img src={"/icon/header/Apply.svg"} />
+            지원페이지
+            {showApply && (
+              <ApplyList>
+                <NavLink to={"/recruiting/1"}>루키</NavLink>
+                <NavLink to={"/recruiting/2"}>디자이너</NavLink>
+              </ApplyList>
+            )}
+          </NavButton>
+          <NavLink to="/announcement">
+            <img src={"/icon/header/Alarm.svg"} />
+            공지사항
+          </NavLink>
         </Nav>
       ) : (
         <Nav>
-          <button
+          <NavButton
             onClick={() => {
               location.href = `https://sso-dev.wafflestudio.com/?redirect_uri=${ssoRedirectURI(
                 "home",
@@ -63,9 +81,19 @@ export default function Header() {
             }}
           >
             로그인
-          </button>
-          <Link to="/">지원페이지</Link>
-          <Link to="/">공지사항</Link>
+          </NavButton>
+          <NavButton onMouseEnter={() => setShowApply(true)}>
+            <img src={"/icon/header/Apply.svg"} />
+            지원페이지
+            <ApplyList>
+              <div>루키</div>
+              <div>디자이너</div>
+            </ApplyList>
+          </NavButton>
+          <NavLink to="/">
+            <img src={"/icon/header/Alarm.svg"} />
+            공지사항
+          </NavLink>
         </Nav>
       )}
     </Container>
@@ -92,18 +120,51 @@ const Container = styled.header`
 const Nav = styled.nav`
   display: flex;
   gap: 48px;
-  > a {
-    color: #000;
-    font: inherit;
-    font-weight: 700;
-    font-size: 18px;
-    text-decoration: none;
+  color: #222;
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const NavLink = styled(Link)`
+  position: relative;
+  display: inline-flex;
+  gap: 5px;
+  font: inherit;
+  color: inherit;
+  > img {
+    height: 18px;
   }
-  > button {
-    color: #000;
-    font: inherit;
-    font-weight: 700;
-    font-size: 18px;
-    text-decoration: none;
+`;
+
+const NavButton = styled.button`
+  position: relative;
+  display: inline-flex;
+  gap: 5px;
+  font: inherit;
+  color: inherit;
+  > img {
+    height: 18px;
+  }
+`;
+
+const ApplyList = styled.div`
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 5px;
+  background: #fff;
+  padding: 10px 0;
+
+  > a {
+    display: block;
+    padding: 10px 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
   }
 `;

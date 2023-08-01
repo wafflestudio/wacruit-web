@@ -34,6 +34,7 @@ const router = createBrowserRouter([
         path: "",
         element: <Dashboard />,
         loader: dashboardLoader(queryClient),
+        errorElement: <div>리크루팅을 찾을 수 없습니다</div>,
       },
     ],
   },
