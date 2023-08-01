@@ -30,20 +30,20 @@ export default function Apply() {
       <ApplyCalender>
         <SelectField>
           <Select
-            active={field === "ROOKIE"}
-            isLock={false}
+            $active={field === "ROOKIE"}
+            $isLock={false}
             onClick={() => setField("ROOKIE")}
           >
             루키(ROOKIE)
           </Select>
           <Select
-            active={field === "DESIGNER"}
-            isLock={false}
+            $active={field === "DESIGNER"}
+            $isLock={false}
             onClick={() => setField("DESIGNER")}
           >
             디자이너(DESIGNER)
           </Select>
-          <Select active={field === "PROGRAMMER"} isLock={true}>
+          <Select $active={field === "PROGRAMMER"} $isLock={true}>
             <LockIcon width={21} height={23} />
             개발자(PROGRAMMER)
           </Select>
@@ -129,7 +129,7 @@ const SelectField = styled.div`
   flex-direction: row;
 `;
 
-const Select = styled.div<{ active: boolean; isLock: boolean }>`
+const Select = styled.div<{ $active: boolean; $isLock: boolean }>`
   padding: 30px 0px;
   flex: 1;
   border-radius: 15px 15px 0px 0px;
@@ -145,10 +145,10 @@ const Select = styled.div<{ active: boolean; isLock: boolean }>`
   align-items: center;
   gap: 8px;
 
-  cursor: ${(props) => (props.isLock ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.$isLock ? "not-allowed" : "pointer")};
 
-  background: ${(props) => (props.active ? "#f0745f" : "#EDE5D1")};
-  color: ${(props) => (props.active ? "#fff" : "#B7B1A2")};
+  background: ${(props) => (props.$active ? "#f0745f" : "#EDE5D1")};
+  color: ${(props) => (props.$active ? "#fff" : "#B7B1A2")};
 
   transition: all 0.15s ease-in-out;
 `;
