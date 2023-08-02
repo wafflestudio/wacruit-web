@@ -7,21 +7,18 @@ const recruiting: Recruiting[] = [
     is_active: true,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
-    problems: [
+    problem_status: [
       {
-        id: 0,
         num: 1,
-        status: "미제출",
+        status: 0,
       },
       {
-        id: 1,
         num: 2,
-        status: "미제출",
+        status: 0,
       },
       {
-        id: 2,
         num: 3,
-        status: "미제출",
+        status: 0,
       },
     ],
   },
@@ -31,11 +28,10 @@ const recruiting: Recruiting[] = [
     is_active: true,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
-    problems: [
+    problem_status: [
       {
-        id: 0,
         num: 1,
-        status: "미제출",
+        status: 0,
       },
     ],
   },

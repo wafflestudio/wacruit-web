@@ -9,8 +9,10 @@ import Home from "./pages/Home";
 import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
-import Dashboard from "./pages/Dashboard";
+import Dashboard, { dashboardLoader } from "./pages/Dashboard";
+import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
+import { CookiesProvider } from "react-cookie";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +24,7 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: "/recruiting/:recruit_id",
+    path: "recruiting/:recruit_id",
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [
@@ -31,21 +33,26 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Dashboard />,
+        loader: dashboardLoader(queryClient),
+        errorElement: <div>리크루팅을 찾을 수 없습니다</div>,
       },
     ],
   },
   { path: "announcement", element: <Announcement /> },
+  { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 
-if (process.env.NODE_ENV === "development") {
+if (import.meta.env.DEV && import.meta.env.VITE_API_TYPE === "MSW") {
   await initMocks();
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyles />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </CookiesProvider>
   </React.StrictMode>,
 );

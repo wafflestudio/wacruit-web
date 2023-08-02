@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import Header from "../components/rookie/Header/Header";
+import Header from "../components/home/Header/Header";
 import { MouseEventHandler, useState } from "react";
 import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
 import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
@@ -17,9 +17,10 @@ const listItemStates = [
 type ListItemState = Union<typeof listItemStates>;
 
 export default function Announcement() {
-  const { data: announcements } = useQuery<TAnnouncement[]>({
+  const { data: announcements } = useQuery({
     queryKey: ["announcement"],
-    queryFn: () => getAllAnnouncements().then((res) => res.reverse()),
+    queryFn: () => getAllAnnouncements(),
+    staleTime: 1,
   });
   const [selectedAnnouncementId, setSelectedAnnouncementId] =
     useState<number>();

@@ -5,17 +5,24 @@ import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
 import { useState } from "react";
-
-function safeNum(_n: string | undefined) {
-  const n = Number(_n);
-  return Number.isSafeInteger(n) ? n : null;
-}
+import { useQuery } from "react-query";
+import { getProblemById } from "../apis/problem.ts";
 
 export default function Solve() {
   const params = useParams();
+  const {
+    data: problem,
+    isLoading,
+    isError,
+    isIdle,
+  } = useQuery({
+    queryKey: ["problem", params.problem_number],
+    queryFn: () => getProblemById(Number(params.problem_number)),
+    staleTime: 1000 * 60 * 60,
+    retry: 1,
+  });
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const problemNumber = safeNum(params.problem_number);
   const handleRunTest = () => {
     alert("테스트 실행");
   };
@@ -23,8 +30,16 @@ export default function Solve() {
     alert("제출하기");
   };
 
-  if (problemNumber === null) {
-    return <main>invalid problem number</main>;
+  /**
+   * @TODO 에러처리
+   */
+
+  if (isLoading || isIdle) {
+    return <main>loading...</main>;
+  }
+
+  if (isError) {
+    return <main>problem not found</main>;
   }
 
   return (
@@ -38,7 +53,10 @@ export default function Solve() {
         </TopNav>
         <Row $collapseLeft={isFullScreen}>
           <Col>
-            <ProblemDescription problemNumber={problemNumber} />
+            <ProblemDescription
+              problemNumber={problem.num}
+              problemMarkdown={problem.body}
+            />
           </Col>
           <Col>
             <Col>

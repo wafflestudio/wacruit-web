@@ -1,21 +1,43 @@
 import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
 import { useQuery } from "react-query";
-import { MockApplyNumber } from "../../mocks/types/types";
 import { zIndex } from "../../lib/zIndex";
+import { getAllRecruitings } from "../../apis/recruiting";
+import { useNavigate } from "react-router-dom";
+import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
+  const navigate = useNavigate();
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
     "ROOKIE",
   );
-
-  const { status, data } = useQuery<MockApplyNumber>({
-    queryKey: ["applyNumber", field],
-    queryFn: () => fetch("/apply/number").then((res) => res.json()),
+  const { status, data } = useQuery({
+    queryKey: ["recruiting"],
+    queryFn: getAllRecruitings,
+    staleTime: 1000 * 60,
+    retry: 3,
   });
+
+  const onApply = useCallback(async (recruit_id: number) => {
+    /**
+     * @TODO authPing으로 교체
+     */
+    const auth = await checkAuth();
+
+    if (auth === "valid") {
+      navigate(`/recruiting/${recruit_id}`);
+      return;
+    }
+    if (auth === "need_register") {
+      navigate(`/sso/${recruit_id}`);
+    }
+    if (auth === "invalid") {
+      tryLogin(recruit_id);
+    }
+  }, []);
 
   return (
     <Section>
@@ -64,12 +86,16 @@ export default function Apply() {
             <p>
               {status !== "loading" && status === "success" && (
                 <span>
-                  {field === "ROOKIE" ? data?.rookie : data?.designer}{" "}
+                  {field === "ROOKIE"
+                    ? data?.items[0].applicant_count
+                    : data?.items[1].applicant_count}
                 </span>
               )}
               명 지원 중
             </p>
-            <button>지원하러가기!</button>
+            <button onClick={() => onApply(field === "ROOKIE" ? 1 : 2)}>
+              지원하러가기!
+            </button>
           </ApplyButton>
         </CalenderArea>
       </ApplyCalender>

@@ -1,18 +1,19 @@
 import styled from "styled-components";
 import useModal from "../../Modal/useModal";
 import Modal from "../../Modal/Modal";
-import { BoldText, HorizontalLine, TestCase, Text } from "./common";
-import TestCaseTable from "./TestCaseTable";
+import { HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback, useMemo, useState } from "react";
 import MarkDownRenderer from "../../../lib/MarkdownRenderer";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
+  problemMarkdown: string;
 }
 
 export default function ProblemDescription({
   problemNumber,
+  problemMarkdown,
 }: ProblemDescriptionProps) {
   const defaultTestCases: TestCase[] = [
     { input: "4, 5", output: "a=4\nb=5" },
@@ -59,27 +60,24 @@ export default function ProblemDescription({
         />
       </Modal>
       <ProblemTitle>문제 {problemNumber}</ProblemTitle>
-      <Text>
-        <MarkDownRenderer
-          markdownString={`정수 a와 b가 주어집니다. 수를 입력받아 입출력 예와 같은 형식으로
-          출력하는 코드를 작성해 보세요. 정수 a와 b가 주어집니다. 각 수를
-          입력받아 입출력 예와 같은 형식으로 출력하는 코드를 작성해 보세요.`}
-        />
-      </Text>
+      <StyledMarkdownText>
+        <MarkDownRenderer markdownString={problemMarkdown} />
+      </StyledMarkdownText>
       <HorizontalLine margin="25px 0 14px 0" />
-
+      {/**
+      // TODO: 문제설명 마크다운에 디자인 추가
       <BoldText>제한사항</BoldText>
       <Text>
         <MarkDownRenderer markdownString={`-100,000 ≤ a, b ≤ 100,000`} />
       </Text>
       <HorizontalLine margin="17px 0 14px 0" />
-
       <BoldText margin="0 0 16px 0">입출력 예시</BoldText>
       <TestCaseTable
         defaultTestCases={defaultTestCases}
         customTestCases={customTestCases}
         deleteCustomTestCase={deleteCustomTestCase}
       />
+      */}
       <AddTestCaseButton
         onClick={() => {
           modalHandle.openModal();
@@ -184,5 +182,50 @@ const AddTestCaseButton = styled.button`
 
   &:hover {
     background-color: #e6e6e6;
+  }
+`;
+
+const StyledMarkdownText = styled(Text)`
+  h1 {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 160%;
+  }
+  h2 {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 160%;
+  }
+  h3 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 160%;
+  }
+  p {
+    font-size: 18px;
+  }
+  em {
+    font-style: italic !important;
+  }
+  strong {
+    font-weight: bold;
+  }
+  ul {
+    li {
+      list-style: inside disc;
+    }
+  }
+  ol {
+    li {
+      list-style: inside decimal;
+    }
+  }
+  code {
+    background: rgba(135, 131, 120, 0.15);
+    padding: 0.2em 0.4em;
+    font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
+      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
+    color: #f0745f;
+    border-radius: 3px;
   }
 `;

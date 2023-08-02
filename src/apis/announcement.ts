@@ -2,4 +2,6 @@ import { TAnnouncement } from "../types/apiTypes";
 import { getRequest } from "./utility";
 
 export const getAllAnnouncements = () =>
-  getRequest<TAnnouncement[]>("/announcements");
+  getRequest<{ items: TAnnouncement[] }>("/announcements/", {}, false).then(
+    (res) => res.items.reverse(),
+  );

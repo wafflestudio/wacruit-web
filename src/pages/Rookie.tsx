@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
-import Header from "../components/rookie/Header/Header";
+import Header from "../components/home/Header/Header";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
@@ -54,7 +54,7 @@ export default function Rookie() {
       </AnnouncementButton>
       <BottomContainer>
         <ProgressList
-          problems={recruiting ? recruiting.problems : []}
+          problems={recruiting ? recruiting.problem_status : []}
           isLoading={isFetching}
         />
         <Caution>
