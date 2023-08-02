@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Countdown from "./Countdown";
 
 export default function Banner() {
   return (
@@ -40,7 +41,9 @@ export default function Banner() {
             와플스튜디오 <br /> <span>리쿠르팅</span> 시작합니다!
           </h1>
         </BannerText>
-        <FlipClock></FlipClock>
+        <FlipClockContainer>
+          <Countdown />
+        </FlipClockContainer>
       </ForeGround>
     </Section>
   );
@@ -161,8 +164,10 @@ const BannerText = styled.div`
   }
 `;
 
-const FlipClock = styled.div`
+const FlipClockContainer = styled.div`
   width: 860px;
   height: 150px;
-  background-color: #f0745f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
