@@ -26,8 +26,8 @@ export default function Modal({
     handle.state !== "closed" && (
       <ModalContainer
         onClick={onBackgroundClicked ?? handle.closeModal}
-        state={handle.state}
-        backgroundColor={modalContainerBackgroundColor || "transparent"}
+        $state={handle.state}
+        $backgroundColor={modalContainerBackgroundColor || "transparent"}
       >
         <ModalDiv onClick={(e) => e.stopPropagation()}>{children}</ModalDiv>
       </ModalContainer>
@@ -36,8 +36,8 @@ export default function Modal({
 }
 
 const ModalContainer = styled.div<{
-  state: ModalState;
-  backgroundColor: string;
+  $state: ModalState;
+  $backgroundColor: string;
 }>`
   position: fixed;
   left: 0;
@@ -50,11 +50,11 @@ const ModalContainer = styled.div<{
   z-index: ${zIndex.modal};
   animation: modal-container-appear 300ms;
   ${(props) => ({
-    "background-color": props.backgroundColor,
+    "background-color": props.$backgroundColor,
   })};
 
   ${(props) =>
-    props.state === "closing" &&
+    props.$state === "closing" &&
     `opacity: 0; transition: 300ms; *{pointer-events: none;}`}
 
   @keyframes modal-container-appear {
