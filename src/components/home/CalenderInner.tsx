@@ -68,7 +68,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
                 <span>STEP 02</span>
                 <h1>루키회원 합격자 발표</h1>
                 <p>
-                  합격자 발표는 8월 18일(금) 리쿠르팅 사이트로 공개될
+                  합격자 발표는 8월 18일(금) 리크루팅 사이트로 공개될
                   예정입니다.
                 </p>
               </StepDescription>
@@ -135,7 +135,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
                 <span>STEP 02</span>
                 <h1>디자이너 회원 합격자 발표</h1>
                 <p>
-                  합격자 발표는 8월 18일(금) 리쿠르팅 사이트로 공개될
+                  합격자 발표는 8월 18일(금) 리크루팅 사이트로 공개될
                   예정입니다.
                 </p>
               </StepDescription>

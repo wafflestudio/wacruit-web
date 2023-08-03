@@ -38,7 +38,7 @@ export default function Banner() {
             alt="Star"
           />
           <h1 style={{ zIndex: "1" }}>
-            와플스튜디오 <br /> <span>리쿠르팅</span> 시작합니다!
+            와플스튜디오 <br /> <span>리크루팅</span> 시작합니다!
           </h1>
         </BannerText>
         <FlipClockContainer>

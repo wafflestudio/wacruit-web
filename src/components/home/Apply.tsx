@@ -102,7 +102,7 @@ export default function Apply() {
       <Share>
         <ShareText>
           <h1>
-            와플스튜디오 <br /> <span>리쿠르팅</span> 공유하기
+            와플스튜디오 <br /> <span>리크루팅</span> 공유하기
           </h1>
           <p>와플스튜디오 루키회원 모집을 주변에 소문내주세요! </p>
         </ShareText>
