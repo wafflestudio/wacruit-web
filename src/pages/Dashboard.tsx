@@ -35,19 +35,21 @@ export default function Dashboard() {
       <Header />
       <Title>
         <MarkdownRenderer
-          markdownString={recruiting ? recruiting.name : "불러오는 중..."}
+          markdownString={recruiting.name}
           StyledWrapper={TitleMarkdownStyledWrapper}
         />
       </Title>
       <Description>
         <MarkdownRenderer
-          markdownString={markDownTexts.subTitle}
+          markdownString={`와플스튜디오의 21.5기 ${
+            recruiting.id === 1 ? "루키" : "디자이너"
+          }를 모집합니다.`}
           StyledWrapper={DescriptionMarkdownStyledWrapper}
         />
       </Description>
       <Information>
         <MarkdownRenderer
-          markdownString={recruiting?.description ?? ""}
+          markdownString={recruiting.description}
           StyledWrapper={InformationMarkdownStyledWrapper}
         />
       </Information>
