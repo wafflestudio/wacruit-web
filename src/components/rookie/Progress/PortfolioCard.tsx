@@ -3,6 +3,7 @@ import asset from "./progressCardAsset";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deletePortfolioFile,
   deletePortfolioLink,
   getPortfolioFiles,
   getPortfolioLinks,
@@ -82,6 +83,21 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   },
                   (e) => console.log(e),
                 );
+            } else {
+              deletePortfolioFile(files.items[0].portfolio_name).then(
+                () =>
+                  postPortfolioFile(targetFile.name)
+                    .then((res) => {
+                      putPortfolioFileToS3(res.presigned_url, targetFile);
+                    })
+                    .then(
+                      () => {
+                        queryClient.invalidateQueries(["portfolio", "files"]);
+                      },
+                      (e) => console.log(e),
+                    ),
+                (e) => console.log(e),
+              );
             }
           }}
         />

@@ -18,6 +18,15 @@ export const postPortfolioFile = (fileName: string) =>
     `/portfolios/file/url/upload/?file_name=${fileName}`,
     {},
   );
+export const deletePortfolioFile = (fileName: string) =>
+  deleteRequest(`/portfolios/file/delete/?file_name=${fileName}`, {});
 
 export const putPortfolioFileToS3 = (presignedUrl: string, file: File) =>
-  putRequest(presignedUrl, file, {}, false);
+  putRequest(
+    presignedUrl,
+    file,
+    {
+      "Content-Type": "application/pdf",
+    },
+    false,
+  );
