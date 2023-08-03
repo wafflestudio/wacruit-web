@@ -32,7 +32,7 @@ export default function TestResultConsole(props: Props) {
         {props.error.map((err, i) => (
           <li key={i}>
             <h4>에러 {i + 1}</h4>
-            <p>{err}</p>
+            <pre>{err}</pre>
           </li>
         ))}
       </ul>
