@@ -67,7 +67,7 @@ export default function Dashboard() {
           isDesigner={recruiting.id === 2}
         />
         <Caution>
-          아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
+          위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
           완료됩니다.
           <CancelButton>지원 취소</CancelButton>
         </Caution>
