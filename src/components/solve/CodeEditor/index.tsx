@@ -21,10 +21,11 @@ export default function CodeEditor({
   language,
 }: Props) {
   // const [isEditorOpen, setIsEditorOpen] = useState(true);
+  const lang = languageSupports[language];
   const { setContainer } = useCodeMirror({
     height: "100%",
     style: { height: "100%" },
-    extensions: [languageSupports[language]],
+    extensions: lang ? [lang] : [],
     value: code,
     onChange: (v) => setCode(v),
   });

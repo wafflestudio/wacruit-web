@@ -21,6 +21,12 @@ export default function TestResultConsole(props: Props) {
             <Status $code={result.status.id}>
               결과: {result.status.description}
             </Status>
+            {result.stdout && (
+              <details>
+                <summary>출력</summary>
+                <pre>{result.stdout}</pre>
+              </details>
+            )}
           </li>
         ))}
         {props.error.map((err, i) => (

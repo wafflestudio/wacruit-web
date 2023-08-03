@@ -3,17 +3,22 @@ import { cpp } from "@codemirror/lang-cpp";
 import { javascript } from "@codemirror/lang-javascript";
 import { useCallback, useState } from "react";
 import { LanguageSupport } from "@codemirror/language";
+import { java } from "@codemirror/lang-java";
 
-export const languages = ["Python", "C++", "Javascript"] as const;
+export const languages = ["C", "C++", "Java", "Javascript", "Python"] as const;
 export type Language = (typeof languages)[number];
-export const languageSupports: Record<Language, LanguageSupport> = {
-  Python: python(),
+export const languageSupports: Record<Language, LanguageSupport | null> = {
+  C: cpp(),
   "C++": cpp(),
+  Java: java(),
   Javascript: javascript(),
+  Python: python(),
 };
 
 export const languageCodes: Record<Language, number> = {
+  C: 100,
   "C++": 101,
+  Java: 102,
   Javascript: 103,
   Python: 104,
 };

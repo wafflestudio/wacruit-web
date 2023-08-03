@@ -76,6 +76,7 @@ export default function Solve() {
             }
             break;
           case "error":
+            console.log(data);
             flushSync(() => {
               setSubmitError((prev) => [...prev, data.detail]);
             });
