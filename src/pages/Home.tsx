@@ -21,7 +21,7 @@ export default function Home() {
   const { data: latestAnnouncement } = useQuery({
     queryKey: ["announcement"],
     queryFn: () => getAllAnnouncements().then((res) => res[0]),
-    refetchInterval: 1000 * 5,
+    refetchInterval: 1000 * 60,
     staleTime: Infinity,
     retry: 0,
   });
