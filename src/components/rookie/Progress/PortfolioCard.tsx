@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import asset from "./progressCardAsset";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPortfolioFiles, getPortfolioLinks } from "../../../apis/portfolio";
 
 type PortfolioCardProps = {
   submit: boolean;
@@ -11,6 +13,23 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
     [submit],
   );
+
+  const { data: files } = useQuery({
+    queryKey: ["portfolio", "files"],
+    queryFn: () => getPortfolioFiles(),
+    staleTime: Infinity,
+  });
+  const { data: links } = useQuery({
+    queryKey: ["portfolio", "links"],
+    queryFn: () => getPortfolioLinks(),
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    console.log(files);
+    console.log(links);
+  }, [files, links]);
+
   return (
     <Card $submit={submit}>
       <InfoSection>
