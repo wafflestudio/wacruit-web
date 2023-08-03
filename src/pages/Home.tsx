@@ -19,7 +19,7 @@ const LOCAL_STORAGE_KEY_LATEST_ANNOUNCEMENT_ID = "latestAnnouncementId";
 export default function Home() {
   const modalHandle = useModal(0);
   const { data: latestAnnouncement } = useQuery({
-    queryKey: ["announcement"],
+    queryKey: ["announcement", "latest"],
     queryFn: () => getAllAnnouncements().then((res) => res[0]),
     refetchInterval: 1000 * 60,
     staleTime: Infinity,

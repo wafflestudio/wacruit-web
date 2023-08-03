@@ -18,7 +18,7 @@ type ListItemState = Union<typeof listItemStates>;
 
 export default function Announcement() {
   const { data: announcements } = useQuery({
-    queryKey: ["announcement"],
+    queryKey: ["announcement", "all"],
     queryFn: () => getAllAnnouncements(),
     staleTime: 1,
   });
