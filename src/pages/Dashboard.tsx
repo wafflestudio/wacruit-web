@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import {
   DashboardLoaderReturnType,
+  myResumeQuery,
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
 
@@ -14,7 +15,11 @@ export default function Dashboard() {
   const initialData = useLoaderData() as DashboardLoaderReturnType;
   const { data: recruiting } = useQuery({
     ...recruitingDetailQuery(Number(params.recruit_id)),
-    initialData: initialData,
+    initialData: initialData.recruiting,
+  });
+  const { data: resume } = useQuery({
+    ...myResumeQuery(Number(params.recruit_id)),
+    initialData: initialData.resume,
   });
 
   const markDownTexts = {
@@ -64,6 +69,7 @@ export default function Dashboard() {
       <BottomContainer>
         <ProgressList
           problems={recruiting.problem_status}
+          hasResume={resume.items.length > 0}
           isDesigner={recruiting.id === 2}
         />
         <Caution>

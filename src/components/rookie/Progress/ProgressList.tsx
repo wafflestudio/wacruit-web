@@ -4,16 +4,21 @@ import { Recruiting } from "../../../types/apiTypes";
 
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
+  hasResume: boolean;
   isDesigner: boolean;
 };
 
-export function ProgressList({ problems, isDesigner }: ProgressListProps) {
+export function ProgressList({
+  problems,
+  hasResume,
+  isDesigner,
+}: ProgressListProps) {
   return (
     <List>
       <ProgressCard
         type="resume"
         title="자기소개서"
-        submit={false}
+        submit={hasResume}
         correct={null}
         to="./resume"
       />
