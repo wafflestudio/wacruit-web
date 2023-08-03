@@ -39,7 +39,6 @@ export default function Sso() {
   useEffect(() => {
     saveSsoToken();
     checkAuth().then((authState) => {
-      console.log(authState);
       if (authState === "invalid") {
         alert("다시 로그인해주세요");
         navigate("/");

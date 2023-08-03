@@ -6,9 +6,11 @@ import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
+import { useQueryClient } from "react-query";
 
 export default function Header() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [showApply, setShowApply] = useState(false);
 
   /**
@@ -53,6 +55,7 @@ export default function Header() {
           <NavButton
             onClick={() => {
               deleteSsoToken();
+              queryClient.invalidateQueries(["auth"]);
               navigate("/");
             }}
           >
