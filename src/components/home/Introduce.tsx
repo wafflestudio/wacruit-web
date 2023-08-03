@@ -5,7 +5,8 @@ export default function Introduce() {
     <Section>
       <IntroduceTop>
         <h1>
-          와플스튜디오에서 <span>'21.5기 신입회원'</span> 을 모집합니다!
+          와플스튜디오에서 <span>&lsquo;21.5기 신입회원&rsquo;</span> 을
+          모집합니다!
         </h1>
         <p>
           와플스튜디오는 개발자들의 커뮤니티를 형성하고, 다양한 프로젝트와
@@ -58,7 +59,7 @@ const IntroduceTop = styled.div`
       color: #fff;
       font-family: Jalnan;
       font-size: 32px;
-      -webkit-text-stroke: 1px #8b3c2e;
+      -webkit-text-stroke: 2px #8b3c2e;
       font-weight: 700;
       text-shadow: calc(0.5px * 1) 0 0 #8b3c2e,
         calc(0.5px * 0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
