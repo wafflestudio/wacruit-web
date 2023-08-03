@@ -1,4 +1,3 @@
-/*
 export const baseURL =
   import.meta.env.VITE_API_TYPE === "MSW"
     ? ""
@@ -11,10 +10,10 @@ export const ssoLoginURL =
 
 export const ssoRedirectURI = (recruitId: number | "home") =>
   `https://wacruit-dev.wafflestudio.com/sso/${recruitId}`;
- */
-export const baseURL = "https://wacruit.wafflestudio.com/api/v1";
 
-export const ssoLoginURL = "https://sso.wafflestudio.com/?redirect_uri=";
+// export const baseURL = "https://wacruit.wafflestudio.com/api/v1";
 
-export const ssoRedirectURI = (recruitId: number | "home") =>
-  `https://wacruit.wafflestudio.com/sso/${recruitId}`;
+// export const ssoLoginURL = "https://sso.wafflestudio.com/?redirect_uri=";
+
+// export const ssoRedirectURI = (recruitId: number | "home") =>
+//   `https://wacruit.wafflestudio.com/sso/${recruitId}`;
