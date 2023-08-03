@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllAnnouncements } from "../../apis/announcement";
 
 type NotificationModalProps = {
   closeModal: () => void;
@@ -10,23 +12,21 @@ export default function NotificationModal({
   closeModal,
   setDontShowModalDate,
 }: NotificationModalProps) {
-  const notificationData = {
-    title: "지원 일자 변경 안내",
-    main: `웹사이트 상의 문제로 인해
-    8월 4일 (금) 정오부터 리크루팅을 시작하도록 하겠습니다. 
-    지원자 여러분들께 불편을 드려 죄송합니다.
-    `,
-  };
+  const { data: latestAnnouncement } = useQuery({
+    queryKey: ["announcement"],
+    queryFn: () => getAllAnnouncements().then((res) => res[0]),
+    staleTime: 1,
+  });
   return (
     <Article>
       <ContentsWapper>
         <ImageContainer>
           <img src="/icon/Notification.svg" alt="" />
         </ImageContainer>
-        <Title>{notificationData.title}</Title>
-        <MainText>{notificationData.main}</MainText>
-        {/* TODO : 주소 연결 */}
-        <Link to="./">자세히보기</Link>
+        <Title>{latestAnnouncement?.title}</Title>
+        <MainText>{latestAnnouncement?.content}</MainText>
+        {/* TODO : 오류 해결 */}
+        <Link to="/announcement/">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
         <Button
@@ -48,7 +48,7 @@ const Article = styled.article`
   position: fixed;
   top: 124px;
   left: 164px;
-  max-width: 405px;
+  width: 405px;
   border-radius: 15px;
   background-color: #fff;
 `;
