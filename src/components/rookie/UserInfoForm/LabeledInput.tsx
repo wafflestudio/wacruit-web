@@ -3,11 +3,11 @@ import { UserInfoFormContext } from "./UserInfoFormContext.tsx";
 
 import { Label } from "./Label.ts";
 
-import { UserInfo } from "../../../mocks/types/types.ts";
+import { UserInvitationEmails, UserUpdate } from "../../../types/apiTypes.ts";
 
 type LabeledInputProps = {
   children: string;
-  name: keyof UserInfo;
+  name: keyof (UserUpdate & UserInvitationEmails);
   placeholder?: string;
   maxLength?: number;
   type?: "text" | "email";

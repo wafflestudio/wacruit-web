@@ -1,53 +1,48 @@
 import styled from "styled-components";
 import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
-import { UserInfo } from "../mocks/types/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
-import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";
-import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../apis/user.ts";
-import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
+import { postResume, putResume } from "../apis/resume.ts";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import {
+  ResumeSubmissionCreate,
+  UserInvitationEmails,
+  UserUpdate,
+} from "../types/apiTypes.ts";
+import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
+import { patchUser, patchUserInvitationEmails } from "../apis/user.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
+  const initialData = useLoaderData() as ResumeLoaderReturnType;
+  const [resumeInput, setResumeInput] = useState(initialData.initialInputs);
+  const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
 
-  const [resumeInput, setResumeInput] = useState<string[] | null>(null);
-  const [userInfoInput, setUserInfoInput] = useUserInfo();
-  const questions = useQuery({
-    queryKey: ["resume/question"],
-    queryFn: () =>
-      getQuestions(Number(recruit_id)).then((data) => {
-        setResumeInput(data.items.map(() => ""));
-        return data;
-      }),
-  });
-  const resume = useQuery({
-    queryKey: ["resume"],
-    queryFn: () =>
-      getMyResumes(Number(recruit_id)).then((data) => {
-        // Todo: resume 답안이 존재할 경우 resumeInput의 초기값으로 넣기
-        //setResumeInput(data.items.map(({ answer }) => answer ?? ""));
-        return data;
-      }),
-  });
-  const putResume = useSubmit(Number(recruit_id));
+  const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
   const navigate = useNavigate();
   const submit = (options?: Parameters<typeof putResume>[1]) => {
-    if (
-      resumeInput &&
-      resume.data &&
-      //userInfoInput &&
-      userInfoFormRef.current?.reportValidity()
-    ) {
+    if (userInfoFormRef.current?.reportValidity()) {
       putResume(
         {
           //userInfo: userInfoInput,
-          questionaire: resume.data.items.map((result, i) => ({
-            ...result,
-            answer: resumeInput[i],
-          })),
+          questionaire: resumeInput
+            .filter((pureInput) => pureInput.answer.length > 0)
+            .map((input) => ({
+              question_id: input.question_id,
+              answer: input.answer,
+            })),
+          userInfo: {
+            university: userInfoInput.university,
+            college: userInfoInput.college,
+            department: userInfoInput.department,
+          },
+          invitation: {
+            github_email: userInfoInput.github_email,
+            slack_email: userInfoInput.slack_email,
+            notion_email: userInfoInput.notion_email,
+          },
         },
         options,
       );
@@ -62,35 +57,39 @@ export default function Resume() {
       <Title>자기소개서</Title>
       <Description>모든 문항에 성실히 응답해주세요.</Description>
       <Questionaires>
-        {questions.data && resumeInput ? (
-          questions.data.items.map(
-            ({ question_num, content, content_limit }, i) => (
-              <QuestionaireInput
-                index={question_num}
-                question={content}
-                max={content_limit}
-                value={resumeInput[i]}
-                onChange={(e) => {
-                  const copy = [...resumeInput];
-                  copy[i] = e.target.value;
-                  setResumeInput(copy);
-                }}
-              />
-            ),
-          )
-        ) : (
-          <div />
+        {resumeInput.map(
+          (
+            {
+              question_id,
+              question_num,
+              question_content,
+              content_limit,
+              answer,
+            },
+            i,
+          ) => (
+            <QuestionaireInput
+              key={question_id}
+              index={question_num}
+              question={question_content}
+              max={content_limit}
+              value={answer}
+              onChange={(e) => {
+                const copy = [...resumeInput];
+                copy[i] = { ...copy[i], answer: e.target.value };
+                setResumeInput(copy);
+              }}
+            />
+          ),
         )}
       </Questionaires>
       <Title>추가 정보 입력</Title>
       <Description>모든 문항은 필수 응답 항목입니다.</Description>
-      {userInfoInput && (
-        <UserInfoForm
-          value={userInfoInput}
-          onChange={setUserInfoInput}
-          ref={userInfoFormRef}
-        />
-      )}
+      <UserInfoForm
+        value={userInfoInput}
+        onChange={setUserInfoInput}
+        ref={userInfoFormRef}
+      />
       <Buttons>
         <SaveButton
           onClick={() => {
@@ -120,65 +119,35 @@ export default function Resume() {
   );
 }
 
-function useUserInfo() {
-  const [userInfoInput, setUserInfoInput] = useState<UserInfo | null>(null);
-  useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () =>
-      getUser()
-        .then((data) => {
-          setUserInfoInput({
-            admission: "",
-            college: data.college,
-            githubId: data.github_email,
-            major: data.department,
-            notionEmail: data.notion_email,
-            slackEmail: data.slack_email,
-            status: "",
-            university: data.university,
-          });
-          return data;
-        })
-        .catch(() => {
-          setUserInfoInput({
-            admission: "",
-            college: "",
-            githubId: "",
-            major: "",
-            notionEmail: "",
-            slackEmail: "",
-            status: "",
-            university: "",
-          });
-        }),
-    retry: 0,
-    staleTime: 1000 * 60 * 60,
-  });
-  return [userInfoInput, setUserInfoInput] as const;
-}
-
-function useSubmit(recruiting_id: number) {
+function useSubmit(recruiting_id: number, isNewResume: boolean) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (data: { questionaire: ResumeSubmissionCreate[] }) =>
+    (data: {
+      questionaire: ResumeSubmissionCreate[];
+      userInfo: UserUpdate;
+      invitation: UserInvitationEmails;
+    }) =>
       Promise.all([
-        /*
         patchUser({
-          college: data.userInfo.college,
-          department: data.userInfo.major,
-          github_email: data.userInfo.githubId,
-          notion_email: data.userInfo.notionEmail,
-          slack_email: data.userInfo.slackEmail,
           university: data.userInfo.university,
+          college: data.userInfo.college,
+          department: data.userInfo.department,
         }),
-        */
-        putResume(recruiting_id, data.questionaire),
+        patchUserInvitationEmails({
+          github_email: data.invitation.github_email,
+          notion_email: data.invitation.notion_email,
+          slack_email: data.invitation.slack_email,
+        }),
+        isNewResume
+          ? postResume(recruiting_id, data.questionaire)
+          : putResume(recruiting_id, data.questionaire),
       ]),
     {
       onSuccess: () => {
-        void queryClient.invalidateQueries(["userInfo"]);
-        void queryClient.invalidateQueries(["resume"]);
-        void queryClient.invalidateQueries(["recruit"]);
+        void queryClient.invalidateQueries(["user", "information"]);
+        void queryClient.invalidateQueries(["user", "invitation"]);
+        void queryClient.invalidateQueries(["resume", "answer"]);
+        void queryClient.invalidateQueries(["recruiting", "detail"]);
       },
     },
   );

@@ -7,13 +7,13 @@ import { getMyResumes } from "../../apis/resume";
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
   queryFn: () => getRecruitingById(id),
-  staleTime: 1000 * 60 * 60,
+  staleTime: Infinity,
 });
 
 export const myResumeQuery = (id: number) => ({
   queryKey: ["resume", "answer", id],
   queryFn: () => getMyResumes(id),
-  staleTime: 1000 * 60 * 60,
+  staleTime: Infinity,
 });
 
 export const dashboardLoader =

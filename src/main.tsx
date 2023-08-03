@@ -14,6 +14,7 @@ import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { CookiesProvider } from "react-cookie";
 import { dashboardLoader } from "./pages/Loader/DashboardLoader";
+import { resumeLoader } from "./pages/Loader/ResumeLoader";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [
-      { path: "resume", element: <Resume /> },
+      {
+        path: "resume",
+        element: <Resume />,
+        loader: resumeLoader(queryClient),
+        errorElement: <div>자기소개서 에러</div>,
+      },
       { path: "solve/:problem_number", element: <Solve /> },
       {
         path: "",

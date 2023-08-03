@@ -4,11 +4,11 @@ import Scrollbar from "./Scrollbar.tsx";
 import styled from "styled-components";
 import { Label } from "./Label.ts";
 
-import { UserInfo } from "../../../mocks/types/types.ts";
+import { UserInvitationEmails, UserUpdate } from "../../../types/apiTypes.ts";
 
 type LabeledSelectProps = {
   children: string;
-  name: keyof UserInfo;
+  name: keyof (UserUpdate & UserInvitationEmails);
   options: string[];
 };
 
