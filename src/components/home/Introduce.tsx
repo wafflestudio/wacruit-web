@@ -21,10 +21,10 @@ export default function Introduce() {
         </BottomLine>
         <BottomLine>
           <div>지원분야</div>
-          <div>루키(Rookie) & 디자이너(Designer)</div>
-        </BottomLine>
-        <BottomLine>
-          <p>-개발자(Programmer) 모집 공지는 추후에 올라올 예정입니다-</p>
+          <div>
+            <div>루키(Rookie) & 디자이너(Designer)</div>
+            <p>-개발자(Programmer) 모집 공지는 추후에 올라올 예정입니다-</p>
+          </div>
         </BottomLine>
       </IntroduceBottom>
     </Section>
@@ -34,7 +34,7 @@ export default function Introduce() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 64px 0;
+  padding: 60px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +58,7 @@ const IntroduceTop = styled.div`
       color: #fff;
       font-family: Jalnan;
       font-size: 32px;
-      -webkit-text-stroke: 2px #8b3c2e;
+      -webkit-text-stroke: 1px #8b3c2e;
       font-weight: 700;
       text-shadow: calc(0.5px * 1) 0 0 #8b3c2e,
         calc(0.5px * 0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
@@ -90,15 +90,16 @@ const IntroduceTop = styled.div`
 const IntroduceBottom = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 22px;
 `;
 
 const BottomLine = styled.div`
   display: flex;
+  align-items: flex-start;
   gap: 20px;
 
   & > div:nth-child(1) {
-    padding: 3px 15px;
+    padding: 4px 15px;
     border-radius: 11.5px;
     border: 1px solid #8b3c2e;
     background: #fff;
@@ -115,6 +116,15 @@ const BottomLine = styled.div`
     color: #fff;
     font-size: 18px;
     font-weight: 600;
+    line-height: 180%;
+
+    & > p {
+      color: #fff6f6;
+      font-family: Pretendard;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 180%;
+    }
   }
 
   & > p {

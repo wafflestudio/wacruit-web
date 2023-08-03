@@ -1,6 +1,6 @@
 import { Cookies } from "react-cookie";
-import { getRecruitingById } from "./recruiting";
 import { ssoLoginURL, ssoRedirectURI } from "./environment";
+import { getRequest } from "./utility";
 
 const SSO_COOKIE_KEY = "waffle.access-token";
 const TOKEN_KEY = "wacruit";
@@ -42,15 +42,20 @@ export const tryLogin = (recruit_id: number | "home") => {
   location.href = `${ssoLoginURL}${ssoRedirectURI(recruit_id)}`;
 };
 
-export const checkAuth = async (): Promise<
-  "invalid" | "valid" | "need_register"
-> => {
-  const result = await getRecruitingById(1).then(
-    () => "valid" as const,
-    (error) =>
-      error.detail === "권한이 없습니다."
-        ? ("need_register" as const)
-        : ("invalid" as const),
+export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
+  getRequest<{ signup: boolean }>("/users").then(
+    (res) => {
+      return res.signup ? ("valid" as const) : ("need_register" as const);
+    },
+    () => "invalid" as const,
   );
-  return result;
+
+export const checkSSO = (): Promise<boolean> => {
+  saveSsoToken();
+  return getRequest<{ signup: boolean }>("/users").then(
+    (res) => {
+      return res.signup;
+    },
+    (e) => Promise.reject(e),
+  );
 };

@@ -9,14 +9,17 @@ const recruiting: Recruiting[] = [
     description: "어쩌고 저쩌고",
     problem_status: [
       {
+        id: 1,
         num: 1,
         status: 0,
       },
       {
+        id: 2,
         num: 2,
         status: 0,
       },
       {
+        id: 3,
         num: 3,
         status: 0,
       },
@@ -30,6 +33,7 @@ const recruiting: Recruiting[] = [
     description: "어쩌고 저쩌고",
     problem_status: [
       {
+        id: 4,
         num: 1,
         status: 0,
       },

@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import Activity from "../components/home/Activity";
 import Apply from "../components/home/Apply";
 import Banner from "../components/home/Banner";
@@ -11,7 +10,6 @@ import Modal from "../components/Modal/Modal";
 import NotificationModal from "../components/home/NotificationModal";
 import { useEffect } from "react";
 import Header from "../components/home/Header/Header";
-import { getRequest } from "../apis/utility";
 
 const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";
 
@@ -20,14 +18,6 @@ export default function Home() {
   const DONT_SHOW_MODAL_DATE = Number(
     localStorage.getItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE),
   );
-
-  /**
-   * @TODO Release 시 삭제
-   */
-  useQuery({
-    queryKey: ["dummy"],
-    queryFn: () => getRequest("/dummy").then(console.log),
-  });
 
   useEffect(() => {
     if (!DONT_SHOW_MODAL_DATE) {

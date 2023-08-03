@@ -23,7 +23,6 @@ export default function Solve() {
     data: problem,
     isLoading,
     isError,
-    isIdle,
   } = useQuery({
     queryKey: ["problem", problemNumber],
     queryFn: () => getProblemById(problemNumber),
@@ -79,7 +78,7 @@ export default function Solve() {
    * @TODO 에러처리
    */
 
-  if (isLoading || isIdle) {
+  if (isLoading) {
     return <main>loading...</main>;
   }
 

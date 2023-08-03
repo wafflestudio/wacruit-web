@@ -2,33 +2,24 @@ import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
 import { useLoaderData, useParams } from "react-router-dom";
-import { getRecruitingById } from "../apis/recruiting";
-import { QueryClient, useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
-import { Recruiting } from "../types/apiTypes";
-
-const recruitingQuery = (id: number) => ({
-  queryKey: ["recruiting", "detail", id],
-  queryFn: () => getRecruitingById(id),
-  staleTime: 1000 * 60 * 60,
-});
-
-export const dashboardLoader =
-  (queryClient: QueryClient) =>
-  async ({ params }: { params: Record<string, unknown> }) => {
-    const query = recruitingQuery(Number(params.recruit_id));
-    const cached = queryClient.getQueryData<Recruiting>(query.queryKey);
-    return cached !== undefined ? cached : await queryClient.fetchQuery(query);
-  };
+import {
+  DashboardLoaderReturnType,
+  myResumeQuery,
+  recruitingDetailQuery,
+} from "./Loader/DashboardLoader.ts";
 
 export default function Dashboard() {
   const params = useParams();
-  const initialData = useLoaderData() as Awaited<
-    ReturnType<ReturnType<typeof dashboardLoader>>
-  >;
-  const { data: recruiting, isFetching } = useQuery({
-    ...recruitingQuery(Number(params.recruit_id)),
-    initialData,
+  const initialData = useLoaderData() as DashboardLoaderReturnType;
+  const { data: recruiting } = useQuery({
+    ...recruitingDetailQuery(Number(params.recruit_id)),
+    initialData: initialData.recruiting,
+  });
+  const { data: resume } = useQuery({
+    ...myResumeQuery(Number(params.recruit_id)),
+    initialData: initialData.resume,
   });
 
   const markDownTexts = {
@@ -77,8 +68,9 @@ export default function Dashboard() {
       </AnnouncementButton>
       <BottomContainer>
         <ProgressList
-          problems={recruiting ? recruiting.problem_status : []}
-          isLoading={isFetching}
+          problems={recruiting.problem_status}
+          hasResume={resume.items.length > 0}
+          isDesigner={recruiting.id === 2}
         />
         <Caution>
           아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원

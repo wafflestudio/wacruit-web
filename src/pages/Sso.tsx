@@ -1,12 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getRecruitingById } from "../apis/recruiting";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { useEffect, useState } from "react";
 import { postUser } from "../apis/user";
-import { checkAuth, saveSsoToken } from "../apis/auth";
+import { checkSSO } from "../apis/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
+import { useQuery } from "@tanstack/react-query";
 
 const getRedirectPath = (to: string) => {
   if (to === "home") {
@@ -27,48 +27,51 @@ export default function Sso() {
     email: "",
     phone_number: "",
   });
-  const { data } = useQuery({
-    queryFn: () => getRecruitingById(1),
-  });
   const { mutate } = useMutation(
     (input: UserRegisterRequest) => postUser(input),
     {
       onSuccess: () => {
-        void queryClient.invalidateQueries("auth");
+        void queryClient.invalidateQueries(["auth"]);
         navigate(getRedirectPath(params.recruit_id ?? "home"));
       },
     },
   );
 
+  const {
+    data: ssoState,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["sso"],
+    queryFn: () => checkSSO(),
+    retry: 4,
+  });
+
   useEffect(() => {
-    saveSsoToken();
-    checkAuth().then((authState) => {
-      if (authState === "invalid") {
-        alert("다시 로그인해주세요");
+    if (!isLoading) {
+      if (error) {
+        alert("로그인 정보가 잘못되었습니다.");
         navigate("/");
         return;
       }
-      if (authState === "need_register") {
+      if (!ssoState) {
         setNeedRegister(true);
         return;
       }
-      if (authState === "valid") {
+      if (ssoState) {
+        void queryClient.invalidateQueries(["auth"]);
         navigate(getRedirectPath(params.recruit_id ?? "home"));
         return;
       }
-    });
-  }, []);
-
-  if (!data) {
-    return <div></div>;
-  }
+    }
+  }, [params.recruit_id, ssoState, error, isLoading]);
 
   return (
     <>
       <Header />
       <RegisterContainer>
-        {needRegister ? (
-          <div>로딩 중</div>
+        {!needRegister ? (
+          <div />
         ) : (
           <RegisterForm
             onSubmit={(e) => {

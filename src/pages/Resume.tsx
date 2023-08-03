@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
 import { UserInfo } from "../mocks/types/types";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";

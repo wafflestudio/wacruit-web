@@ -5,3 +5,7 @@ export type Union<T extends ReadonlyArray<ValueType>> = T[number];
 // const modalStates = ["open", "closed", "closing"] as const;
 // export type ModalState = Union<typeof modalStates>;
 // 결과: ("open" | "closed" | "closing") type
+
+//Loader type
+export type LoaderReturnType<LoaderType extends (...args: any) => any> =
+  Awaited<ReturnType<ReturnType<LoaderType>>>;

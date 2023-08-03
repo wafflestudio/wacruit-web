@@ -2,17 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import initMocks from "./mocks/index";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home";
 import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
-import Dashboard, { dashboardLoader } from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { CookiesProvider } from "react-cookie";
+import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 
 const queryClient = new QueryClient();
 
