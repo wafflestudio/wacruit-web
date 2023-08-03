@@ -6,7 +6,7 @@ import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
   const navigate = useNavigate();
