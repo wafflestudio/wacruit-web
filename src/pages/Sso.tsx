@@ -1,5 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getRecruitingById } from "../apis/recruiting";
+import { useMutation, useQueryClient } from "react-query";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { useEffect, useState } from "react";
 import { postUser } from "../apis/user";
@@ -27,9 +26,6 @@ export default function Sso() {
     email: "",
     phone_number: "",
   });
-  const { data } = useQuery({
-    queryFn: () => getRecruitingById(1),
-  });
   const { mutate } = useMutation(
     (input: UserRegisterRequest) => postUser(input),
     {
@@ -43,6 +39,7 @@ export default function Sso() {
   useEffect(() => {
     saveSsoToken();
     checkAuth().then((authState) => {
+      console.log(authState);
       if (authState === "invalid") {
         alert("다시 로그인해주세요");
         navigate("/");
@@ -59,16 +56,12 @@ export default function Sso() {
     });
   }, []);
 
-  if (!data) {
-    return <div></div>;
-  }
-
   return (
     <>
       <Header />
       <RegisterContainer>
-        {needRegister ? (
-          <div>로딩 중</div>
+        {!needRegister ? (
+          <div />
         ) : (
           <RegisterForm
             onSubmit={(e) => {
