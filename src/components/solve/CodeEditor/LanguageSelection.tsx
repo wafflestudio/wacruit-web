@@ -18,10 +18,9 @@ export default function LanguageSelection(props: Props) {
       {isOpen && (
         <List>
           {languages.map((option) => (
-            <li>
+            <li key={option}>
               <ListItemButton
                 $selected={props.language === option}
-                key={option}
                 onClick={() => {
                   setIsOpen(false);
                   props.onChange(option);

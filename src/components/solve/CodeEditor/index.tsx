@@ -1,7 +1,5 @@
 import { useCodeMirror } from "@uiw/react-codemirror";
-import { useState } from "react";
 import styled from "styled-components";
-import EditorToggle from "./EditorToggle.tsx";
 import LanguageSelection from "./LanguageSelection.tsx";
 import { Language, languageSupports } from "./useLanguage.tsx";
 
@@ -22,11 +20,12 @@ export default function CodeEditor({
   setLanguage,
   language,
 }: Props) {
-  const [isEditorOpen, setIsEditorOpen] = useState(true);
+  // const [isEditorOpen, setIsEditorOpen] = useState(true);
+  const lang = languageSupports[language];
   const { setContainer } = useCodeMirror({
     height: "100%",
     style: { height: "100%" },
-    extensions: [languageSupports[language]],
+    extensions: lang ? [lang] : [],
     value: code,
     onChange: (v) => setCode(v),
   });
@@ -45,7 +44,7 @@ export default function CodeEditor({
         language={language}
         onChange={(language) => setLanguage(language)}
       />
-      <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} />
+      {/* <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} /> */}
     </Section>
   );
 }
@@ -79,6 +78,7 @@ const Header = styled.h3`
   grid-column: 1;
 
   span {
+    font-weight: bold;
     flex: 1;
   }
 `;

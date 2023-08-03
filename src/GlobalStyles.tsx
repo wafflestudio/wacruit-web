@@ -26,6 +26,10 @@ const GlobalStyles = createGlobalStyle`
     border: none;
     padding: 0;
   }
+  
+  pre {
+    font-family: monospace;
+  }
 
   @font-face {
     font-family: 'Jalnan';
