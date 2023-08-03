@@ -2,24 +2,9 @@ import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
 import { useLoaderData, useParams } from "react-router-dom";
-import { getRecruitingById } from "../apis/recruiting";
-import { QueryClient, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
-import { Recruiting } from "../types/apiTypes";
-
-const recruitingQuery = (id: number) => ({
-  queryKey: ["recruiting", "detail", id],
-  queryFn: () => getRecruitingById(id),
-  staleTime: 1000 * 60 * 60,
-});
-
-export const dashboardLoader =
-  (queryClient: QueryClient) =>
-  async ({ params }: { params: Record<string, unknown> }) => {
-    const query = recruitingQuery(Number(params.recruit_id));
-    const cached = queryClient.getQueryData<Recruiting>(query.queryKey);
-    return cached !== undefined ? cached : await queryClient.fetchQuery(query);
-  };
+import { dashboardLoader, recruitingQuery } from "./Loader/DashboardLoader";
 
 export default function Dashboard() {
   const params = useParams();
@@ -28,7 +13,7 @@ export default function Dashboard() {
   >;
   const { data: recruiting, isFetching } = useQuery({
     ...recruitingQuery(Number(params.recruit_id)),
-    initialData,
+    initialData: () => initialData,
   });
 
   const markDownTexts = {
@@ -79,6 +64,7 @@ export default function Dashboard() {
         <ProgressList
           problems={recruiting ? recruiting.problem_status : []}
           isLoading={isFetching}
+          isDesigner={recruiting ? recruiting.id === 2 : false}
         />
         <Caution>
           아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원

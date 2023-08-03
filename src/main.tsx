@@ -9,10 +9,11 @@ import Home from "./pages/Home";
 import Solve from "./pages/Solve";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
-import Dashboard, { dashboardLoader } from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { CookiesProvider } from "react-cookie";
+import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 
 const queryClient = new QueryClient();
 

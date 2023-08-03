@@ -32,9 +32,9 @@ export type UserUpdate = Pick<
  */
 
 type ProblemStatus = {
-  //id: number;
+  id: number;
   num: number;
-  status: number;
+  status: number; // 0: 미제출, 1: 채점 중, 2: 정답, 3: 오답
 };
 
 export type Recruiting = {

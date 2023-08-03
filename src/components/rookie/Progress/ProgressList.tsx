@@ -5,9 +5,14 @@ import { Recruiting } from "../../../types/apiTypes";
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
   isLoading: boolean;
+  isDesigner: boolean;
 };
 
-export function ProgressList({ problems, isLoading }: ProgressListProps) {
+export function ProgressList({
+  problems,
+  isLoading,
+  isDesigner,
+}: ProgressListProps) {
   if (isLoading) {
     return (
       <List>
@@ -32,18 +37,20 @@ export function ProgressList({ problems, isLoading }: ProgressListProps) {
         correct={null}
         to="./resume"
       />
-      {problems.map(({ num, status }) => (
-        <ProgressCard
-          type="problem"
-          title={`문제 ${num}`}
-          submit={status !== 0}
-          correct={status === 3}
-          /**
-           * @TODO num을 id로 바꾸기
-           */
-          to={`./solve/${num}`}
-        />
-      ))}
+      {isDesigner ? (
+        <div></div>
+      ) : (
+        problems.map(({ id, num, status }) => (
+          <ProgressCard
+            key={id}
+            type="problem"
+            title={`문제 ${num}`}
+            submit={status !== 0}
+            correct={status === 3}
+            to={`./solve/${id}`}
+          />
+        ))
+      )}
     </List>
   );
 }
