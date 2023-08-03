@@ -3,7 +3,8 @@ import { IStyledComponent, styled } from "styled-components";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
+// import rehypeKatex from "rehype-katex";
+import rehypeMathJax from "rehype-mathjax";
 
 type MarkdownRendererProps = {
   markdownString: string;
@@ -38,7 +39,7 @@ function CustomReactMarkdown({ markdownString }: CustomReactMarkdownProps) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeRaw, rehypeKatex]}
+      rehypePlugins={[rehypeRaw, rehypeMathJax]}
     >
       {markdownString}
     </ReactMarkdown>
