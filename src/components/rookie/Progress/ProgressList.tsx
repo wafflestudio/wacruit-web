@@ -1,33 +1,13 @@
 import styled from "styled-components";
-import { EmptyProgressCard, ProgressCard } from "./ProgressCard";
+import { ProgressCard } from "./ProgressCard";
 import { Recruiting } from "../../../types/apiTypes";
 
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
-  isLoading: boolean;
   isDesigner: boolean;
 };
 
-export function ProgressList({
-  problems,
-  isLoading,
-  isDesigner,
-}: ProgressListProps) {
-  if (isLoading) {
-    return (
-      <List>
-        <EmptyProgressCard />
-        <EmptyProgressCard />
-        <EmptyProgressCard />
-        <EmptyProgressCard />
-      </List>
-    );
-  }
-
-  if (!problems) {
-    return <div />;
-  }
-
+export function ProgressList({ problems, isDesigner }: ProgressListProps) {
   return (
     <List>
       <ProgressCard
