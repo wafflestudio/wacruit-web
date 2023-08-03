@@ -1,7 +1,10 @@
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { IStyledComponent, styled } from "styled-components";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import { IStyledComponent, styled } from "styled-components";
+import remarkMath from "remark-math";
+// import rehypeKatex from "rehype-katex";
+import rehypeMathJax from "rehype-mathjax";
 
 type MarkdownRendererProps = {
   markdownString: string;
@@ -16,23 +19,31 @@ export default function MarkdownRenderer({
     return (
       <PreventGlobalStylesResetWrapper>
         <StyledWrapper>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-          >
-            {markdownString}
-          </ReactMarkdown>
+          <CustomReactMarkdown markdownString={markdownString} />
         </StyledWrapper>
       </PreventGlobalStylesResetWrapper>
     );
   else
     return (
       <PreventGlobalStylesResetWrapper>
-        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-          {markdownString}
-        </ReactMarkdown>
+        <CustomReactMarkdown markdownString={markdownString} />
       </PreventGlobalStylesResetWrapper>
     );
+}
+
+type CustomReactMarkdownProps = {
+  markdownString: string;
+};
+
+function CustomReactMarkdown({ markdownString }: CustomReactMarkdownProps) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeRaw, rehypeMathJax]}
+    >
+      {markdownString}
+    </ReactMarkdown>
+  );
 }
 
 // 그냥 user agent stylesheet 박아넣는 styled Component
