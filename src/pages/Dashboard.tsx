@@ -22,32 +22,26 @@ export default function Dashboard() {
     initialData: initialData.resume,
   });
 
-  const markDownTexts = {
-    title: `루키 지원 페이지`,
-    subTitle: `와플스튜디오의 21.5기 루키를 모집합니다.`,
-    information: `<span style="color: #b44f3d; font-weight: 600;">지원 기간 </span>8월 5일(금) - 8월 14일(일) 23:59  
-    <span style="color: #b44f3d; font-weight: 600;">지원 방법 </span>하단 자기소개서 제출 및 문제 풀이를 모두 완료해주세요.  
-    *합격자 발표는 8월 15일 이메일로 알려드립니다.`,
-  };
-
   return (
     <Main>
       <Header />
       <Title>
         <MarkdownRenderer
-          markdownString={recruiting ? recruiting.name : "불러오는 중..."}
+          markdownString={recruiting.name}
           StyledWrapper={TitleMarkdownStyledWrapper}
         />
       </Title>
       <Description>
         <MarkdownRenderer
-          markdownString={markDownTexts.subTitle}
+          markdownString={`와플스튜디오의 21.5기 ${
+            recruiting.id === 1 ? "루키" : "디자이너"
+          }를 모집합니다.`}
           StyledWrapper={DescriptionMarkdownStyledWrapper}
         />
       </Description>
       <Information>
         <MarkdownRenderer
-          markdownString={recruiting?.description ?? ""}
+          markdownString={recruiting.description}
           StyledWrapper={InformationMarkdownStyledWrapper}
         />
       </Information>
@@ -97,15 +91,16 @@ const Title = styled.h1`
 
 const TitleMarkdownStyledWrapper = styled.div`
   p {
+    margin: 0;
     color: #222;
-    font-size: 40px;
-    font-weight: 600;
+    font-size: 46px;
+    font-weight: 700;
   }
 `;
 
 const Description = styled.p`
-  margin: 0;
-  margin-bottom: 37px;
+  margin-top: 12px;
+  margin-bottom: 35px;
 `;
 
 const DescriptionMarkdownStyledWrapper = styled.div`
@@ -129,9 +124,24 @@ const InformationMarkdownStyledWrapper = styled.div`
     font-weight: 400;
     line-height: 170%; /* 30.6px */
     letter-spacing: 0.72px;
-    span {
-      color: #b44f3d;
-      font-weight: 600;
+    margin: 0;
+  }
+  code {
+    color: #b44f3d;
+    font-weight: 600;
+  }
+  ul,
+  ol {
+    padding: 0;
+    margin: 4px;
+    padding-left: 20px;
+    li {
+      font: inherit;
+      color: #737373;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 170%; /* 30.6px */
+      letter-spacing: 0.72px;
     }
   }
 `;
