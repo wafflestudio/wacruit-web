@@ -43,7 +43,7 @@ export const tryLogin = (recruit_id: number | "home") => {
 };
 
 export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
-  getRequest<{ signup: boolean }>("/users").then(
+  getRequest<{ signup: boolean }>("/users/check").then(
     (res) => {
       return res.signup ? ("valid" as const) : ("need_register" as const);
     },
@@ -52,7 +52,7 @@ export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
 
 export const checkSSO = (): Promise<boolean> => {
   saveSsoToken();
-  return getRequest<{ signup: boolean }>("/users").then(
+  return getRequest<{ signup: boolean }>("/users/check").then(
     (res) => {
       return res.signup;
     },
