@@ -4,7 +4,7 @@ import Header from "../components/home/Header/Header";
 import { useLoaderData, useParams } from "react-router-dom";
 import { getRecruitingById } from "../apis/recruiting";
 import { QueryClient, useQuery } from "react-query";
-import MarkDownRenderer from "../lib/MarkdownRenderer";
+import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { Recruiting } from "../types/apiTypes";
 
 const recruitingQuery = (id: number) => ({
@@ -43,15 +43,22 @@ export default function Dashboard() {
     <Main>
       <Header />
       <Title>
-        <MarkDownRenderer
+        <MarkdownRenderer
           markdownString={recruiting ? recruiting.name : "불러오는 중..."}
+          StyledWrapper={TitleMarkdownStyledWrapper}
         />
       </Title>
       <Description>
-        <MarkDownRenderer markdownString={markDownTexts.subTitle} />
+        <MarkdownRenderer
+          markdownString={markDownTexts.subTitle}
+          StyledWrapper={DescriptionMarkdownStyledWrapper}
+        />
       </Description>
       <Information>
-        <MarkDownRenderer markdownString={recruiting?.description ?? ""} />
+        <MarkdownRenderer
+          markdownString={recruiting?.description ?? ""}
+          StyledWrapper={InformationMarkdownStyledWrapper}
+        />
       </Information>
       <AnnouncementButton>
         공지 및 변경사항 안내
@@ -93,32 +100,47 @@ const Main = styled.main`
 `;
 
 const Title = styled.h1`
-  color: #222;
-  font-size: 40px;
-  font-weight: 600;
   margin: 9px 0;
 `;
 
+const TitleMarkdownStyledWrapper = styled.div`
+  p {
+    color: #222;
+    font-size: 40px;
+    font-weight: 600;
+  }
+`;
+
 const Description = styled.p`
-  color: #373737;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 160%; /* 32px */
-  letter-spacing: 0.8px;
   margin: 0;
   margin-bottom: 37px;
 `;
 
+const DescriptionMarkdownStyledWrapper = styled.div`
+  p {
+    color: #373737;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 160%; /* 32px */
+    letter-spacing: 0.8px;
+  }
+`;
+
 const Information = styled.div`
-  color: #737373;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 170%; /* 30.6px */
-  letter-spacing: 0.72px;
   margin-bottom: 34px;
-  span {
-    color: #b44f3d;
-    font-weight: 600;
+`;
+
+const InformationMarkdownStyledWrapper = styled.div`
+  p {
+    color: #737373;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 170%; /* 30.6px */
+    letter-spacing: 0.72px;
+    span {
+      color: #b44f3d;
+      font-weight: 600;
+    }
   }
 `;
 
