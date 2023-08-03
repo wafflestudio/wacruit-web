@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { postResume, putResume } from "../apis/resume.ts";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";

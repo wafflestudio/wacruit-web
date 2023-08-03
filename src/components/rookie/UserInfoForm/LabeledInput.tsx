@@ -3,7 +3,6 @@ import { UserInfoFormContext } from "./UserInfoFormContext.tsx";
 
 import { Label } from "./Label.ts";
 
-import { UserInfo } from "../../../mocks/types/types.ts";
 import { UserInvitationEmails, UserUpdate } from "../../../types/apiTypes.ts";
 
 type LabeledInputProps = {

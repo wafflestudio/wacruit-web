@@ -5,7 +5,6 @@ import {
   Resume,
   ResumeQuestion,
   ResumeSubmissionCreate,
-  User,
   UserInvitationEmails,
   UserUpdate,
 } from "../../types/apiTypes";
