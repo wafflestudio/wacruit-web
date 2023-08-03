@@ -90,7 +90,7 @@ function ListItem({
   const { id, title, content, updated_at, created_at } = announcement;
   return (
     <ListItemRow onClick={handleOnClick} $listItemState={listItemState}>
-      <p>{id + 1}</p>
+      <p>{id}</p>
       <p>
         {title}
         {listItemState === "isSelected" && (
