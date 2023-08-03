@@ -87,6 +87,7 @@ export default function Header() {
               tryLogin("home");
             }}
           >
+            <img src={"/icon/header/Login.svg"} />
             로그인
           </NavButton>
           <NavButton
