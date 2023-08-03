@@ -3,7 +3,7 @@ import { SectionNumber, SectionTitle } from "./common";
 import { useCallback, useState } from "react";
 import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { zIndex } from "../../lib/zIndex";
 import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { useEffect, useState } from "react";
 import { postUser } from "../apis/user";
@@ -30,7 +30,7 @@ export default function Sso() {
     (input: UserRegisterRequest) => postUser(input),
     {
       onSuccess: () => {
-        void queryClient.invalidateQueries("auth");
+        void queryClient.invalidateQueries(["auth"]);
         navigate(getRedirectPath(params.recruit_id ?? "home"));
       },
     },

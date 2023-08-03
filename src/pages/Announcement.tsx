@@ -4,7 +4,7 @@ import { MouseEventHandler, useState } from "react";
 import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
 import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
 import { TAnnouncement } from "../types/apiTypes";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getAllAnnouncements } from "../apis/announcement";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { Union } from "../types/commonTypes";

@@ -1,4 +1,4 @@
-import { QueryClient } from "react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { getRecruitingById } from "../../apis/recruiting";
 import { Recruiting } from "../../types/apiTypes";
 

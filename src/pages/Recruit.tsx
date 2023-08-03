@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom";
 import { checkAuth, tryLogin } from "../apis/auth";
 import { useEffect } from "react";

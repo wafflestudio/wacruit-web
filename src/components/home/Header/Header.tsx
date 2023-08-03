@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";

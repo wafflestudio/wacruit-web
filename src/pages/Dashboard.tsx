@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
 import { useLoaderData, useParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { dashboardLoader, recruitingQuery } from "./Loader/DashboardLoader";
 
