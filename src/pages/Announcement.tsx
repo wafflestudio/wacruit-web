@@ -47,8 +47,9 @@ export default function Announcement() {
                 <p>등록된 공지사항이 없습니다.</p>
               </NoAnnouncements>
             ) : (
-              announcements.map((announcement) => (
+              announcements.map((announcement, idx) => (
                 <ListItem
+                  key={idx}
                   announcement={announcement}
                   listItemState={
                     selectedAnnouncementId === undefined
@@ -88,7 +89,7 @@ function ListItem({
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
   const { id, title, content, updated_at, created_at } = announcement;
   return (
-    <ListItemRow onClick={handleOnClick} listItemState={listItemState}>
+    <ListItemRow onClick={handleOnClick} $listItemState={listItemState}>
       <p>{id + 1}</p>
       <p>
         {title}
@@ -142,7 +143,7 @@ const AnnouncementList = styled.ol`
   min-width: 970px;
 `;
 
-const ListRow = styled.li<{ listItemState?: ListItemState }>`
+const ListRow = styled.li<{ $listItemState?: ListItemState }>`
   display: grid;
   grid-template-columns: 9fr 68fr 17fr 7fr;
   font-size: 20px;
@@ -168,13 +169,13 @@ const ListHeaderRow = styled(ListRow)`
 const ListItemRow = styled(ListRow)`
   cursor: pointer;
   color: #3c3c3c;
-  ${({ listItemState }) =>
-    listItemState === "isSelected" && {
+  ${({ $listItemState }) =>
+    $listItemState === "isSelected" && {
       color: "#222222",
       "font-weight": "500",
     }}
-  ${({ listItemState }) =>
-    listItemState === "SomethingElseSelected" && { color: "#9c9c9c" }}
+  ${({ $listItemState }) =>
+    $listItemState === "SomethingElseSelected" && { color: "#9c9c9c" }}
   padding: 30px 0 32px 0;
 
   > p:first-child {
@@ -182,8 +183,8 @@ const ListItemRow = styled(ListRow)`
   }
   > p:nth-child(2) {
     font-weight: 500;
-    ${({ listItemState }) =>
-      listItemState === "isSelected" && { "font-weight": "600" }}
+    ${({ $listItemState }) =>
+      $listItemState === "isSelected" && { "font-weight": "600" }}
   }
   > div:nth-child(4) {
     padding: 0 38%;
