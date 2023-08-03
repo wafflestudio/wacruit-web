@@ -22,14 +22,6 @@ export default function Dashboard() {
     initialData: initialData.resume,
   });
 
-  const markDownTexts = {
-    title: `루키 지원 페이지`,
-    subTitle: `와플스튜디오의 21.5기 루키를 모집합니다.`,
-    information: `<span style="color: #b44f3d; font-weight: 600;">지원 기간 </span>8월 5일(금) - 8월 14일(일) 23:59  
-    <span style="color: #b44f3d; font-weight: 600;">지원 방법 </span>하단 자기소개서 제출 및 문제 풀이를 모두 완료해주세요.  
-    *합격자 발표는 8월 15일 이메일로 알려드립니다.`,
-  };
-
   return (
     <Main>
       <Header />
