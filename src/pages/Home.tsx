@@ -10,22 +10,38 @@ import Modal from "../components/Modal/Modal";
 import NotificationModal from "../components/home/NotificationModal";
 import { useEffect } from "react";
 import Header from "../components/home/Header/Header";
+import { getAllAnnouncements } from "../apis/announcement";
+import { useQuery } from "react-query";
 
 const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";
+// const LOCAL_STORAGE_KEY_LATEST_ANNOUNCEMENT_ID = "latestAnnouncementId";
 
 export default function Home() {
   const modalHandle = useModal(0);
+  // const ANNOUNCEMENT_ID = Number(
+  //   localStorage.getItem(LOCAL_STORAGE_KEY_LATEST_ANNOUNCEMENT_ID),
+  // );
   const DONT_SHOW_MODAL_DATE = Number(
     localStorage.getItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE),
   );
 
+  const { data: announcements } = useQuery({
+    queryKey: ["announcement"],
+    queryFn: () => getAllAnnouncements(),
+    refetchInterval: 1000 * 5,
+    staleTime: Infinity,
+    retry: 0,
+  });
+  const latestAnnouncement = announcements ? announcements[0] : undefined;
+
   useEffect(() => {
-    if (!DONT_SHOW_MODAL_DATE) {
-      modalHandle.openModal();
-    } else if (new Date().getDate() !== DONT_SHOW_MODAL_DATE) {
-      modalHandle.openModal();
-      localStorage.setItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE, "");
-    }
+    if (latestAnnouncement?.id)
+      if (!DONT_SHOW_MODAL_DATE) {
+        modalHandle.openModal();
+      } else if (new Date().getDate() !== DONT_SHOW_MODAL_DATE) {
+        modalHandle.openModal();
+        localStorage.setItem(LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE, "");
+      }
   }, []);
 
   return (
