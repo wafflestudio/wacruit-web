@@ -124,4 +124,16 @@ const PreventGlobalStylesResetWrapper = styled.div`
   code {
     font-family: monospace;
   }
+
+  blockquote {
+    display: block;
+    margin: 0;
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding: 0 1em;
+    border-left: 0.25em solid #d0d7de;
+    > p {
+      color: #656d76;
+    }
+  }
 `;
