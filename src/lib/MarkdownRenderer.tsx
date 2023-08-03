@@ -122,7 +122,7 @@ const PreventGlobalStylesResetWrapper = styled.div`
     padding-inline-start: 40px;
   }
   code {
-    font-family: monospace;
+    /* font-family: monospace; */
   }
 
   blockquote {
