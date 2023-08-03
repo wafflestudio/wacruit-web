@@ -5,7 +5,7 @@ import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
 import {
   languageCodes,

@@ -4,8 +4,7 @@ import Modal from "../../Modal/Modal";
 import { HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback } from "react";
-import MarkDownRenderer from "../../../lib/MarkdownRenderer";
-
+import MarkdownRenderer from "../../../lib/MarkdownRenderer";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
