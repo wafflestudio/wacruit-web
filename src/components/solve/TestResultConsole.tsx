@@ -26,7 +26,7 @@ export default function TestResultConsole(props: Props) {
 const Section = styled.section`
   border: 4px solid #373737;
   border-top-width: 2px;
-  border-radius: 0 0 5px 5px;
+  border-radius: 5px;
 
   /* Solve page layout */
   flex: 1;

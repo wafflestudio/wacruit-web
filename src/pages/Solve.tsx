@@ -87,7 +87,7 @@ export default function Solve() {
     <Container>
       <Main>
         <TopNav>
-          <Link to={"/"}>
+          <Link to={`/recruiting/${params.recruit_id}`}>
             <img src="/icon/LeftArrow.svg" alt="&larr;" width={31} />
             Back
           </Link>

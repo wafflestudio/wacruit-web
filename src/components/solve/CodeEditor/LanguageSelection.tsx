@@ -46,6 +46,7 @@ const Wrapper = styled.div`
 const Button = styled.button`
   width: 100%;
   height: 35px;
+  padding: 0 5px;
 
   cursor: pointer;
   font-weight: 600;

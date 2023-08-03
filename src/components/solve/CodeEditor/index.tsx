@@ -94,6 +94,10 @@ const EditorWrapper = styled.div`
 
   grid-row: 2;
   grid-column: 1 / 5;
+
+  .cm-editor * {
+    font-family: monospace;
+  }
 `;
 
 const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`
