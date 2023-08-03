@@ -4,7 +4,7 @@ import Modal from "../../Modal/Modal";
 import { HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback, useMemo, useState } from "react";
-import MarkDownRenderer from "../../../lib/MarkdownRenderer";
+import MarkdownRenderer from "../../../lib/MarkdownRenderer";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
@@ -60,9 +60,10 @@ export default function ProblemDescription({
         />
       </Modal>
       <ProblemTitle>문제 {problemNumber}</ProblemTitle>
-      <StyledMarkdownText>
-        <MarkDownRenderer markdownString={problemMarkdown} />
-      </StyledMarkdownText>
+      <MarkdownRenderer
+        markdownString={problemMarkdown}
+        StyledWrapper={MarkdownStyledWrapper}
+      />
       <HorizontalLine margin="25px 0 14px 0" />
       {/**
       // TODO: 문제설명 마크다운에 디자인 추가
@@ -185,9 +186,8 @@ const AddTestCaseButton = styled.button`
   }
 `;
 
-const StyledMarkdownText = styled(Text)`
+const MarkdownStyledWrapper = styled.div`
   h1 {
-    font-weight: 700;
     font-size: 40px;
     line-height: 160%;
   }
@@ -203,22 +203,7 @@ const StyledMarkdownText = styled(Text)`
   }
   p {
     font-size: 18px;
-  }
-  em {
-    font-style: italic !important;
-  }
-  strong {
-    font-weight: bold;
-  }
-  ul {
-    li {
-      list-style: inside disc;
-    }
-  }
-  ol {
-    li {
-      list-style: inside decimal;
-    }
+    line-height: 160%;
   }
   code {
     background: rgba(135, 131, 120, 0.15);

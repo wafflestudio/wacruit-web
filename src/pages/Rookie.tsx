@@ -4,7 +4,7 @@ import Header from "../components/home/Header/Header";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRecruitingById } from "../apis/recruiting";
-import MarkDownRenderer from "../lib/MarkdownRenderer";
+import MarkdownRenderer from "../lib/MarkdownRenderer";
 
 /**
  * ! Deprecated
@@ -29,13 +29,13 @@ export default function Rookie() {
     <Main>
       <Header />
       <Title>
-        <MarkDownRenderer markdownString={markDownTexts.title} />
+        <MarkdownRenderer markdownString={markDownTexts.title} />
       </Title>
       <Description>
-        <MarkDownRenderer markdownString={markDownTexts.subTitle} />
+        <MarkdownRenderer markdownString={markDownTexts.subTitle} />
       </Description>
       <Information>
-        <MarkDownRenderer markdownString={markDownTexts.information} />
+        <MarkdownRenderer markdownString={markDownTexts.information} />
       </Information>
       <AnnouncementButton>
         공지 및 변경사항 안내

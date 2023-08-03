@@ -6,7 +6,7 @@ import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
 import { TAnnouncement } from "../types/apiTypes";
 import { useQuery } from "react-query";
 import { getAllAnnouncements } from "../apis/announcement";
-import MarkDownRenderer from "../lib/MarkdownRenderer";
+import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { Union } from "../types/commonTypes";
 
 const listItemStates = [
@@ -93,7 +93,10 @@ function ListItem({
       <p>
         {title}
         {listItemState === "isSelected" && (
-          <MarkDownRenderer markdownString={content} />
+          <MarkdownRenderer
+            markdownString={content}
+            StyledWrapper={MarkdownStyledWrapper}
+          />
         )}
       </p>
       <p>{(updated_at || created_at).slice(0, 10).split("-").join(".")}</p>
@@ -181,13 +184,6 @@ const ListItemRow = styled(ListRow)`
     font-weight: 500;
     ${({ listItemState }) =>
       listItemState === "isSelected" && { "font-weight": "600" }}
-    > p {
-      margin-top: 46px;
-      font-size: 18px;
-      font-weight: normal;
-      line-height: 185%;
-      color: #373737;
-    }
   }
   > div:nth-child(4) {
     padding: 0 38%;
@@ -205,5 +201,15 @@ const NoAnnouncements = styled.div`
     font-weight: 500;
     font-size: 20px;
     line-height: 140%;
+  }
+`;
+
+const MarkdownStyledWrapper = styled.div`
+  p {
+    margin-top: 46px;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 185%;
+    color: #373737;
   }
 `;
