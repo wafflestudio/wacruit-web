@@ -11,10 +11,10 @@ export default function NotificationModal({
   setDontShowModalDate,
 }: NotificationModalProps) {
   const notificationData = {
-    title: "시스템 점검 일정 안내",
-    main: `8월 4일 00시부터 리크루팅이 시작되었습니다.
-    리크루팅 관련하여 문제가 생기는 부분들은 공지 팝업을 통해 안내드리도록 하겠습니다.
-    감사합니다!
+    title: "지원 일자 변경 안내",
+    main: `웹사이트 상의 문제로 인해
+    8월 4일 (금) 정오부터 리크루팅을 시작하도록 하겠습니다. 
+    지원자 여러분들께 불편을 드려 죄송합니다.
     `,
   };
   return (
