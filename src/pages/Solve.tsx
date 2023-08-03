@@ -4,7 +4,7 @@ import ProblemDescription from "../components/solve/ProblemDescription/ProblemDe
 import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
 import {
@@ -15,6 +15,7 @@ import { useCode } from "../components/solve/CodeEditor/useCode.tsx";
 import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
 import { ProblemSubmissionResult } from "../types/apiTypes.ts";
 import { unreachable } from "../lib/unreachable.ts";
+import { flushSync } from "react-dom";
 
 export default function Solve() {
   const params = useParams();
@@ -31,11 +32,13 @@ export default function Solve() {
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
-  const [code, setCode] = useCode(language);
+  const [code, setCode] = useCode(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testResults, setTestResults] = useState<ProblemSubmissionResult[]>([]);
+  const [submitError, setSubmitError] = useState<string[]>([]);
+  const testConsoleRef = useRef<HTMLUListElement>(null);
 
   const handleSubmit = async (is_example: boolean) => {
     if (!code) {
@@ -44,17 +47,18 @@ export default function Solve() {
     }
     setIsSubmitting(true);
     setTestResults([]);
+    setSubmitError([]);
     const res = postProblemSubmission({
       problem_id: problemNumber,
       language: languageCodes[language],
       source_code: code,
       is_example,
       extra_testcases: is_example
-        ? []
-        : customTestcases.map((t) => ({
+        ? customTestcases.map((t) => ({
             stdin: t.input,
             expected_output: t.output,
-          })),
+          }))
+        : [],
     });
     try {
       for await (const { data, type } of res) {
@@ -62,7 +66,24 @@ export default function Solve() {
           case "skip":
             break;
           case "message":
-            setTestResults((prev) => [...prev, ...data.items]);
+            flushSync(() => {
+              setTestResults((prev) => [...prev, ...data.items]);
+            });
+            if (testConsoleRef.current) {
+              testConsoleRef.current.lastElementChild?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }
+            break;
+          case "error":
+            flushSync(() => {
+              setSubmitError((prev) => [...prev, data.detail]);
+            });
+            if (testConsoleRef.current) {
+              testConsoleRef.current.lastElementChild?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }
             break;
           default:
             unreachable(type);
@@ -119,7 +140,11 @@ export default function Solve() {
                 setLanguage={setLanguage}
               />
               <DragResizable initialHeight={300}>
-                <TestResultConsole results={testResults}></TestResultConsole>
+                <TestResultConsole
+                  results={testResults}
+                  error={submitError}
+                  ulRef={testConsoleRef}
+                ></TestResultConsole>
               </DragResizable>
             </Col>
             <BottomNav>

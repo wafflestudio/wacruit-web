@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import useModal from "../../Modal/useModal";
 import Modal from "../../Modal/Modal";
-import { HorizontalLine, TestCase, Text } from "./common";
+import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback } from "react";
 import MarkdownRenderer from "../../../lib/MarkdownRenderer";
+import TestCaseTable from "./TestCaseTable.tsx";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
@@ -33,7 +34,7 @@ export default function ProblemDescription({
     (newInputs: TestCase[]) => {
       // input & output 모두 빈칸이 아닌 데이터만 추가
       const validData: TestCase[] = newInputs.filter(
-        (data) => data.input !== "" && data.output != "",
+        (data) => data.input !== "" || data.output != "",
       );
       setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
     },
@@ -70,13 +71,13 @@ export default function ProblemDescription({
         <MarkDownRenderer markdownString={`-100,000 ≤ a, b ≤ 100,000`} />
       </Text>
       <HorizontalLine margin="17px 0 14px 0" />
+       */}
       <BoldText margin="0 0 16px 0">입출력 예시</BoldText>
       <TestCaseTable
         defaultTestCases={defaultTestCases}
         customTestCases={customTestCases}
         deleteCustomTestCase={deleteCustomTestCase}
       />
-      */}
       <AddTestCaseButton
         onClick={() => {
           modalHandle.openModal();
@@ -186,7 +187,7 @@ const MarkdownStyledWrapper = styled.div`
     background: rgba(135, 131, 120, 0.15);
     padding: 0.2em 0.4em;
     font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
+      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
     color: #f0745f;
     border-radius: 3px;
   }

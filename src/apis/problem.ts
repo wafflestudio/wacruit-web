@@ -14,6 +14,7 @@ export const postProblemSubmission = (
   sseRequest<
     | { type: "skip"; data: { items: [] } }
     | { type: "message"; data: { items: ProblemSubmissionResult[] } }
+    | { type: "error"; data: { detail: string } }
   >(
     "/problems/submission",
     problemSubmission,

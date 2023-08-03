@@ -4,19 +4,21 @@ import { Language } from "./useLanguage.tsx";
 /* 사용자의 패닉을 막기 위해 코드와 사용하던 언어는 새로고침하거나 재접속해도 그대로 유지됨 */
 
 // localStorage에 저장된 코드를 React state로 캐시
-export function useCode(language: Language) {
+export function useCode(language: Language, problemNumber: number) {
   const [codes, setCodes] = useState<Partial<Record<Language, string>>>({});
   const code = codes[language];
   const setCode = useCallback(
     (code: string) => {
       setCodes((codes) => ({ ...codes, [language]: code }));
-      localStorage.setItem(`code-${language}`, code);
+      localStorage.setItem(`code-lang:${language}-no:${problemNumber}`, code);
     },
-    [language],
+    [language, problemNumber],
   );
   if (code === undefined) {
     setCodes({
-      [language]: safeString(localStorage.getItem(`code-${language}`)),
+      [language]: safeString(
+        localStorage.getItem(`code-lang:${language}-no:${problemNumber}`),
+      ),
       ...codes,
     });
   }
