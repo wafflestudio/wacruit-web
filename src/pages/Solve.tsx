@@ -57,16 +57,20 @@ export default function Solve() {
             expected_output: t.output,
           })),
     });
-    for await (const { data, type } of res) {
-      switch (type) {
-        case "skip":
-          break;
-        case "message":
-          setTestResults((prev) => [...prev, ...data.items]);
-          break;
-        default:
-          unreachable(type);
+    try {
+      for await (const { data, type } of res) {
+        switch (type) {
+          case "skip":
+            break;
+          case "message":
+            setTestResults((prev) => [...prev, ...data.items]);
+            break;
+          default:
+            unreachable(type);
+        }
       }
+    } catch (e) {
+      alert("알 수 없는 오류가 발생했습니다");
     }
     setIsSubmitting(false);
   };
