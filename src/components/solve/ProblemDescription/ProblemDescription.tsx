@@ -32,10 +32,8 @@ export default function ProblemDescription({
 
   const addNewCustomTestCase = useCallback(
     (newInputs: TestCase[]) => {
-      // input & output 모두 빈칸이 아닌 데이터만 추가
-      const validData: TestCase[] = newInputs.filter(
-        (data) => data.input !== "" || data.output != "",
-      );
+      // 모든 테스트케이스 데이터 허용 -- 빈 테케 굳이 거를 필요 없을듯? Hello World가 돌아가게 하고 싶다
+      const validData: TestCase[] = newInputs;
       setCustomTestCases((prev: TestCase[]) => [...prev, ...validData]);
     },
     [setCustomTestCases],
