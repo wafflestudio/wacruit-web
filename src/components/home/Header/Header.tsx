@@ -140,6 +140,7 @@ const NavLink = styled(Link)`
   gap: 5px;
   font: inherit;
   color: inherit;
+  cursor: pointer;
   > img {
     height: 18px;
   }
@@ -151,6 +152,7 @@ const NavButton = styled.button`
   gap: 5px;
   font: inherit;
   color: inherit;
+  cursor: pointer;
   > img {
     height: 18px;
   }
