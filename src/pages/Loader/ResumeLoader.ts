@@ -5,12 +5,28 @@ import {
   Resume,
   ResumeQuestion,
   ResumeSubmissionCreate,
+  User,
+  UserInvitationEmails,
+  UserUpdate,
 } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
+import { getInvitation, getUser } from "../../apis/user";
 
 export const resumeQuestionQuery = (id: number) => ({
   queryKey: ["resume", "question", id],
   queryFn: () => getQuestions(id),
+  staleTime: Infinity,
+});
+
+export const userInformationQuery = () => ({
+  queryKey: ["user", "information"],
+  queryFn: () => getUser(),
+  staleTime: Infinity,
+});
+
+export const userInvitationQuery = () => ({
+  queryKey: ["user", "invitation"],
+  queryFn: () => getInvitation(),
   staleTime: Infinity,
 });
 
@@ -52,9 +68,25 @@ export const resumeLoader =
       });
     });
 
+    // user
+    const userQuery = userInformationQuery();
+    const user = await queryClient.fetchQuery(userQuery);
+    const invitationQuery = userInvitationQuery();
+    const invitation = await queryClient.fetchQuery(invitationQuery);
+
+    const userInputs: UserUpdate & UserInvitationEmails = {
+      university: user.university,
+      college: user.college,
+      department: user.department,
+      github_email: invitation.github_email,
+      slack_email: invitation.slack_email,
+      notion_email: invitation.notion_email,
+    };
+
     return {
       initialInputs,
       isNewResume: resume.items.length === 0,
+      userInputs,
     };
   };
 

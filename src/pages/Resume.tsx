@@ -1,21 +1,24 @@
 import styled from "styled-components";
 import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
-import { UserInfo } from "../mocks/types/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { postResume, putResume } from "../apis/resume.ts";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../apis/user.ts";
-import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
+import {
+  ResumeSubmissionCreate,
+  UserInvitationEmails,
+  UserUpdate,
+} from "../types/apiTypes.ts";
 import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
+import { patchUser, patchUserInvitationEmails } from "../apis/user.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
   const initialData = useLoaderData() as ResumeLoaderReturnType;
   const [resumeInput, setResumeInput] = useState(initialData.initialInputs);
-  const [userInfoInput, setUserInfoInput] = useUserInfo();
+  const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
 
   const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
   const navigate = useNavigate();
@@ -30,6 +33,16 @@ export default function Resume() {
               question_id: input.question_id,
               answer: input.answer,
             })),
+          userInfo: {
+            university: userInfoInput.university,
+            college: userInfoInput.college,
+            department: userInfoInput.department,
+          },
+          invitation: {
+            github_email: userInfoInput.github_email,
+            slack_email: userInfoInput.slack_email,
+            notion_email: userInfoInput.notion_email,
+          },
         },
         options,
       );
@@ -72,13 +85,11 @@ export default function Resume() {
       </Questionaires>
       <Title>추가 정보 입력</Title>
       <Description>모든 문항은 필수 응답 항목입니다.</Description>
-      {userInfoInput && (
-        <UserInfoForm
-          value={userInfoInput}
-          onChange={setUserInfoInput}
-          ref={userInfoFormRef}
-        />
-      )}
+      <UserInfoForm
+        value={userInfoInput}
+        onChange={setUserInfoInput}
+        ref={userInfoFormRef}
+      />
       <Buttons>
         <SaveButton
           onClick={() => {
@@ -108,67 +119,35 @@ export default function Resume() {
   );
 }
 
-function useUserInfo() {
-  const [userInfoInput, setUserInfoInput] = useState<UserInfo | null>(null);
-  useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () =>
-      getUser()
-        .then((data) => {
-          setUserInfoInput({
-            admission: "",
-            college: data.college,
-            githubId: data.github_email,
-            major: data.department,
-            notionEmail: data.notion_email,
-            slackEmail: data.slack_email,
-            status: "",
-            university: data.university,
-          });
-          return data;
-        })
-        .catch(() => {
-          setUserInfoInput({
-            admission: "",
-            college: "",
-            githubId: "",
-            major: "",
-            notionEmail: "",
-            slackEmail: "",
-            status: "",
-            university: "",
-          });
-        }),
-    retry: 0,
-    staleTime: 1000 * 60 * 60,
-  });
-  return [userInfoInput, setUserInfoInput] as const;
-}
-
 function useSubmit(recruiting_id: number, isNewResume: boolean) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (data: { questionaire: ResumeSubmissionCreate[] }) =>
+    (data: {
+      questionaire: ResumeSubmissionCreate[];
+      userInfo: UserUpdate;
+      invitation: UserInvitationEmails;
+    }) =>
       Promise.all([
-        /*
         patchUser({
-          college: data.userInfo.college,
-          department: data.userInfo.major,
-          github_email: data.userInfo.githubId,
-          notion_email: data.userInfo.notionEmail,
-          slack_email: data.userInfo.slackEmail,
           university: data.userInfo.university,
+          college: data.userInfo.college,
+          department: data.userInfo.department,
         }),
-        */
+        patchUserInvitationEmails({
+          github_email: data.invitation.github_email,
+          notion_email: data.invitation.notion_email,
+          slack_email: data.invitation.slack_email,
+        }),
         isNewResume
           ? postResume(recruiting_id, data.questionaire)
           : putResume(recruiting_id, data.questionaire),
       ]),
     {
       onSuccess: () => {
-        void queryClient.invalidateQueries(["userInfo"]);
-        void queryClient.invalidateQueries(["resume"]);
-        void queryClient.invalidateQueries(["recruit"]);
+        void queryClient.invalidateQueries(["user", "information"]);
+        void queryClient.invalidateQueries(["user", "invitation"]);
+        void queryClient.invalidateQueries(["resume", "answer"]);
+        void queryClient.invalidateQueries(["recruiting", "detail"]);
       },
     },
   );
