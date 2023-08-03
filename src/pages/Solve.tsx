@@ -145,7 +145,7 @@ export default function Solve() {
                   results={testResults}
                   error={submitError}
                   ulRef={testConsoleRef}
-                ></TestResultConsole>
+                />
               </DragResizable>
             </Col>
             <BottomNav>

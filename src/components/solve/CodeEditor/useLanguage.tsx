@@ -23,6 +23,37 @@ export const languageCodes: Record<Language, number> = {
   Python: 104,
 };
 
+export const boilerplates: Record<Language, string> = {
+  C: `#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  printf("Hello World!\\n");
+  return 0;
+}
+`,
+  "C++": `#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello World!" << endl;
+    return 0;
+}`,
+  Java: `// Java 클래스 이름은 반드시 Main으로 하여 제출해주세요
+class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello World!");
+  }
+}`,
+  Javascript: `console.log("Hello, world!");`,
+  Python: `print("Hello, world!")`,
+};
+
 // localStorage에 저장된 언어를 불러옴
 function getStoredLanguage() {
   const storedLanguage = localStorage.getItem("language") ?? "";
