@@ -5,49 +5,31 @@ import { UserInfo } from "../mocks/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
-import { getMyResumes, getQuestions, putResume } from "../apis/resume.ts";
-import { useNavigate, useParams } from "react-router-dom";
+import { postResume, putResume } from "../apis/resume.ts";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../apis/user.ts";
 import { ResumeSubmissionCreate } from "../types/apiTypes.ts";
+import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
-
-  const [resumeInput, setResumeInput] = useState<string[] | null>(null);
+  const initialData = useLoaderData() as ResumeLoaderReturnType;
+  const [resumeInput, setResumeInput] = useState(initialData.initialInputs);
   const [userInfoInput, setUserInfoInput] = useUserInfo();
-  const questions = useQuery({
-    queryKey: ["resume/question"],
-    queryFn: () =>
-      getQuestions(Number(recruit_id)).then((data) => {
-        setResumeInput(data.items.map(() => ""));
-        return data;
-      }),
-  });
-  const resume = useQuery({
-    queryKey: ["resume"],
-    queryFn: () =>
-      getMyResumes(Number(recruit_id)).then((data) => {
-        // Todo: resume 답안이 존재할 경우 resumeInput의 초기값으로 넣기
-        //setResumeInput(data.items.map(({ answer }) => answer ?? ""));
-        return data;
-      }),
-  });
-  const putResume = useSubmit(Number(recruit_id));
+
+  const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
   const navigate = useNavigate();
   const submit = (options?: Parameters<typeof putResume>[1]) => {
-    if (
-      resumeInput &&
-      resume.data &&
-      //userInfoInput &&
-      userInfoFormRef.current?.reportValidity()
-    ) {
+    if (userInfoFormRef.current?.reportValidity()) {
       putResume(
         {
           //userInfo: userInfoInput,
-          questionaire: resume.data.items.map((result, i) => ({
-            ...result,
-            answer: resumeInput[i],
-          })),
+          questionaire: resumeInput
+            .filter((pureInput) => pureInput.answer.length > 0)
+            .map((input) => ({
+              question_id: input.question_id,
+              answer: input.answer,
+            })),
         },
         options,
       );
@@ -62,24 +44,30 @@ export default function Resume() {
       <Title>자기소개서</Title>
       <Description>모든 문항에 성실히 응답해주세요.</Description>
       <Questionaires>
-        {questions.data && resumeInput ? (
-          questions.data.items.map(
-            ({ question_num, content, content_limit }, i) => (
-              <QuestionaireInput
-                index={question_num}
-                question={content}
-                max={content_limit}
-                value={resumeInput[i]}
-                onChange={(e) => {
-                  const copy = [...resumeInput];
-                  copy[i] = e.target.value;
-                  setResumeInput(copy);
-                }}
-              />
-            ),
-          )
-        ) : (
-          <div />
+        {resumeInput.map(
+          (
+            {
+              question_id,
+              question_num,
+              question_content,
+              content_limit,
+              answer,
+            },
+            i,
+          ) => (
+            <QuestionaireInput
+              key={question_id}
+              index={question_num}
+              question={question_content}
+              max={content_limit}
+              value={answer}
+              onChange={(e) => {
+                const copy = [...resumeInput];
+                copy[i] = { ...copy[i], answer: e.target.value };
+                setResumeInput(copy);
+              }}
+            />
+          ),
         )}
       </Questionaires>
       <Title>추가 정보 입력</Title>
@@ -157,7 +145,7 @@ function useUserInfo() {
   return [userInfoInput, setUserInfoInput] as const;
 }
 
-function useSubmit(recruiting_id: number) {
+function useSubmit(recruiting_id: number, isNewResume: boolean) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     (data: { questionaire: ResumeSubmissionCreate[] }) =>
@@ -172,7 +160,9 @@ function useSubmit(recruiting_id: number) {
           university: data.userInfo.university,
         }),
         */
-        putResume(recruiting_id, data.questionaire),
+        isNewResume
+          ? postResume(recruiting_id, data.questionaire)
+          : putResume(recruiting_id, data.questionaire),
       ]),
     {
       onSuccess: () => {
