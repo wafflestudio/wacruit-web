@@ -1,16 +1,33 @@
 import styled from "styled-components";
+import asset from "./progressCardAsset";
+import { useMemo } from "react";
 
 type PortfolioCardProps = {
   submit: boolean;
 };
 
 export default function PortfolioCard({ submit }: PortfolioCardProps) {
+  const { description, iconSrc, iconAlt } = useMemo(
+    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
+    [submit],
+  );
   return (
     <Card $submit={submit}>
       <InfoSection>
+        <img src={iconSrc} alt={iconAlt} />
         <Name>포트폴리오</Name>
-        <Description>{}</Description>
+        <Description>{description}</Description>
       </InfoSection>
+      <FileSection>
+        <div>파일 첨부</div>
+        <FileInputButton htmlFor="portfolio">파일 선택</FileInputButton>
+        <FileInput type="file" id="portfolio" />
+      </FileSection>
+      <LinkSection>
+        <div>링크 첨부</div>
+        <LinkInput placeholder="https://example.com" />
+        <LinkInput placeholder="https://example.com" />
+      </LinkSection>
     </Card>
   );
 }
@@ -20,22 +37,81 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  width: 280px;
+  width: 840px;
   height: 193px;
   flex-shrink: 0;
   border-radius: 5px;
   border: 1px solid #d1d1d1;
   padding: 27px;
-  cursor: pointer;
-  color: ${(props) => (props.$submit ? "#F0745F" : "#64CB3F")};
+  color: ${(props) => (props.$submit ? "#64CB3F" : "#F0745F")};
   border: "1px solid #D1D1D1";
   background: "#fff";
+  gap: 14px;
   &:hover {
     background: "#f6f6f6";
   }
 `;
 
-const InfoSection = styled.div``;
+const InfoSection = styled.div`
+  width: 266px;
+`;
+
+const FileSection = styled.div`
+  width: 237px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-right: 1px solid #f6f6f6;
+  gap: 8px;
+  color: #404040;
+`;
+
+const FileInputButton = styled.label`
+  padding: 7px 12px;
+  gap: 10px;
+  border-radius: 5px;
+  background: #f0745f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 160%; /* 25.6px */
+  letter-spacing: 0.64px;
+  cursor: pointer;
+`;
+const FileInput = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  padding: 0;
+  border: 0;
+`;
+
+const LinkSection = styled.div`
+  width: 237px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  color: #404040;
+`;
+
+const LinkInput = styled.input`
+  width: 260px;
+  padding: 7px 12px;
+  color: #404040;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 160%; /* 25.6px */
+  letter-spacing: 0.64px;
+  border: none;
+  border-radius: 5px;
+  background: #f6f6f6;
+
+  &::placeholder {
+    color: #d9d9d9;
+  }
+`;
 
 const Name = styled.h1`
   font-size: 24px;

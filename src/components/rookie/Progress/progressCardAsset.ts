@@ -20,9 +20,13 @@ const resumeNotSubmit: ProgressCardAsset = {
 };
 
 //portfolio
-
+const portfolioSubmit: Omit<ProgressCardAsset, "theme"> = {
+  iconSrc: "/icon/rookie/Check.svg",
+  iconAlt: "포트폴리오 제출 아이콘",
+  description: "제출 완료",
+};
 const portfolioNotSubmit: Omit<ProgressCardAsset, "theme"> = {
-  iconSrc: "/icon/rookie/Pencil.svg",
+  iconSrc: "/icon/rookie/Portfolio.svg",
   iconAlt: "포트폴리오 미제출 아이콘",
   description: "미제출",
 };
@@ -50,10 +54,11 @@ const problemNotSubmit: ProgressCardAsset = {
 const progressCardAsset = {
   resumeSubmit,
   resumeNotSubmit,
+  portfolioSubmit,
+  portfolioNotSubmit,
   problemSubmitCorrect,
   problemSubmitNotCorrect,
   problemNotSubmit,
-  portfolioNotSubmit,
 };
 
 export default progressCardAsset;
