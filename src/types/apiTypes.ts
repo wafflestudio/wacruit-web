@@ -17,16 +17,13 @@ export type User = {
   notion_email: string;
 };
 
-export type UserUpdate = Pick<
-  User,
-  | "department"
-  | "college"
-  | "university"
-  | "github_email"
-  | "slack_email"
-  | "notion_email"
->;
+export type UserUpdate = Pick<User, "department" | "college" | "university">;
 
+export type UserInvitationEmails = {
+  github_email: string;
+  slack_email: string;
+  notion_email: string;
+};
 /**
  * Recruiting
  */
