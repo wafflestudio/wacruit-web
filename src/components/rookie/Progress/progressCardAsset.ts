@@ -19,10 +19,13 @@ const resumeNotSubmit: ProgressCardAsset = {
   description: "미제출",
 };
 
-/**
- * @Todo 포트폴리오 어셋 추가하기
- */
 //portfolio
+
+const portfolioNotSubmit: Omit<ProgressCardAsset, "theme"> = {
+  iconSrc: "/icon/rookie/Pencil.svg",
+  iconAlt: "포트폴리오 미제출 아이콘",
+  description: "미제출",
+};
 
 //problem (default)
 const problemSubmitCorrect: ProgressCardAsset = {
@@ -50,5 +53,7 @@ const progressCardAsset = {
   problemSubmitCorrect,
   problemSubmitNotCorrect,
   problemNotSubmit,
+  portfolioNotSubmit,
 };
+
 export default progressCardAsset;
