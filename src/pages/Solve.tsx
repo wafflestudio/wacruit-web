@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
 import {
+  boilerplates,
   languageCodes,
   useLanguage,
 } from "../components/solve/CodeEditor/useLanguage.tsx";
@@ -150,17 +151,25 @@ export default function Solve() {
             </Col>
             <BottomNav>
               <SubmitButton
+                onClick={() => handleSubmit(false)}
+                $primary
+                disabled={isSubmitting}
+              >
+                제출하기
+              </SubmitButton>
+              <SubmitButton
                 onClick={() => handleSubmit(true)}
                 disabled={isSubmitting}
               >
                 테스트 실행
               </SubmitButton>
               <SubmitButton
-                onClick={() => handleSubmit(false)}
-                $primary
-                disabled={isSubmitting}
+                onClick={() => {
+                  if (!confirm("정말로 코드를 초기화하시겠습니까?")) return;
+                  setCode(boilerplates[language]);
+                }}
               >
-                제출하기
+                코드 초기화
               </SubmitButton>
             </BottomNav>
           </Col>
