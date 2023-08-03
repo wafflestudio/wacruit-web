@@ -12,7 +12,7 @@ export default function NotificationModal({
 }: NotificationModalProps) {
   const notificationData = {
     title: "시스템 점검 일정 안내",
-    main:   main: `8월 4일 00시부터 리크루팅이 시작되었습니다.
+    main: `8월 4일 00시부터 리크루팅이 시작되었습니다.
     리크루팅 관련하여 문제가 생기는 부분들은 공지 팝업을 통해 안내드리도록 하겠습니다.
     감사합니다!
     `,
