@@ -182,6 +182,12 @@ const MarkdownStyledWrapper = styled.div`
     font-size: 18px;
     line-height: 160%;
   }
+  ul,
+  ol {
+    list-style: disc outside none !important;
+    .li {
+    }
+  }
   code {
     background: rgba(135, 131, 120, 0.15);
     padding: 0.2em 0.4em;
@@ -189,5 +195,15 @@ const MarkdownStyledWrapper = styled.div`
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
     color: #f0745f;
     border-radius: 3px;
+  }
+  pre {
+    background: rgba(135, 131, 120, 0.15);
+    white-space: pre-wrap !important;
+    padding: 1em 20px;
+    code {
+      background: none;
+      padding: 0px !important;
+      line-height: 2em !important;
+    }
   }
 `;
