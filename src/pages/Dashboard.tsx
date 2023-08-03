@@ -91,15 +91,16 @@ const Title = styled.h1`
 
 const TitleMarkdownStyledWrapper = styled.div`
   p {
+    margin: 0;
     color: #222;
-    font-size: 40px;
-    font-weight: 600;
+    font-size: 46px;
+    font-weight: 700;
   }
 `;
 
 const Description = styled.p`
-  margin: 0;
-  margin-bottom: 37px;
+  margin-top: 12px;
+  margin-bottom: 35px;
 `;
 
 const DescriptionMarkdownStyledWrapper = styled.div`
@@ -123,9 +124,24 @@ const InformationMarkdownStyledWrapper = styled.div`
     font-weight: 400;
     line-height: 170%; /* 30.6px */
     letter-spacing: 0.72px;
-    span {
-      color: #b44f3d;
-      font-weight: 600;
+    margin: 0;
+  }
+  code {
+    color: #b44f3d;
+    font-weight: 600;
+  }
+  ul,
+  ol {
+    padding: 0;
+    margin: 4px;
+    padding-left: 20px;
+    li {
+      font: inherit;
+      color: #737373;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 170%; /* 30.6px */
+      letter-spacing: 0.72px;
     }
   }
 `;
