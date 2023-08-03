@@ -5,16 +5,25 @@ import { useQuery } from "react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";
+import { LoadingBackgroundBlink } from "../../../lib/loading";
 
 export default function Header() {
   const navigate = useNavigate();
+  const [showApply, setShowApply] = useState(false);
+
+  /**
+   * Check Authorization
+   */
   const { data: authState } = useQuery({
     queryKey: ["auth"],
     queryFn: () => checkAuth(),
     staleTime: 1000 * 60 * 60,
     retry: 0,
   });
-  const [showApply, setShowApply] = useState(false);
+
+  /**
+   * Announcement Polling
+   */
   useQuery({
     queryKey: ["announcement"],
     queryFn: () => getAllAnnouncements(),
@@ -29,9 +38,7 @@ export default function Header() {
         <Link to="/">
           <img src={"/icon/rookie/logo.png"} height={27} />
         </Link>
-        <Nav>
-          <button>로그인 정보 확인 중...</button>
-        </Nav>
+        <LoadAuth>로그인 정보 확인 중...</LoadAuth>
       </Container>
     );
   }
@@ -178,4 +185,16 @@ const ApplyList = styled.div`
       background: #f5f5f5;
     }
   }
+`;
+
+const LoadAuth = styled.div`
+  width: 300px;
+  height: 80%;
+  border-radius: 10px;
+  animation: ${LoadingBackgroundBlink};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
 `;
