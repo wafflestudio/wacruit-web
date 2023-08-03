@@ -303,7 +303,7 @@ const BackGround = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow-x: hidden;
+  overflow: hidden;
 
   #waffle1 {
     position: absolute;
