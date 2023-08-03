@@ -1,6 +1,3 @@
-import { Union } from "./commonTypes";
-import { supportedLanguages } from "./constants";
-
 /**
  * User
  */
@@ -58,7 +55,7 @@ export type RecruitingSummary = Pick<
  * Problem
  */
 
-export type TestCase = {
+export type ApiTestCase = {
   stdin: string;
   expected_output: string;
 };
@@ -66,28 +63,26 @@ export type TestCase = {
 export type Problem = {
   num: number;
   body: string;
-  testcases: TestCase[];
+  testcases: ApiTestCase[];
 };
 
 export type ProblemSubmissionRequest = {
   problem_id: number;
-  language: Union<typeof supportedLanguages>;
+  language: number;
   source_code: string;
-  is_test: boolean;
-  extra_testcases: TestCase[];
+  is_example?: boolean;
+  extra_testcases?: ApiTestCase[];
 };
 
-export type ProblemSubmissionResponse = {
-  items: {
+export type ProblemSubmissionResult = {
+  num: number;
+  status: {
     id: number;
-    /**
-     * Todo: status type 확정되면 constant로 빼기
-     */
-    status: number;
-    stdout: string | null;
-    time: number;
-    memory: number;
-  }[];
+    description: string;
+  };
+  stdout: string | null;
+  time: number;
+  memory: number;
 };
 
 /**

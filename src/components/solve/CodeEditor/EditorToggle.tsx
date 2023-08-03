@@ -8,7 +8,7 @@ interface Props {
 export default function EditorToggle(props: Props) {
   return (
     <Wrapper onClick={() => props.onChange(!props.value)}>
-      <span>Editor</span>
+      <span>Code Assistant</span>
       <Slot>
         <OnText value={props.value}>on</OnText>
         <OffText value={props.value}>off</OffText>
@@ -46,8 +46,8 @@ const Slot = styled.div`
 const TRANS_TIME = "0.2s";
 
 const Circle = styled.div<{ value: boolean }>`
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
 
   position: absolute;
   top: 2px;

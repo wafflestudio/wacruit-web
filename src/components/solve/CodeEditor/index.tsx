@@ -1,32 +1,32 @@
-import { java } from "@codemirror/lang-java";
-import { javascript } from "@codemirror/lang-javascript";
-import { python } from "@codemirror/lang-python";
-import { LanguageSupport } from "@codemirror/language";
 import { useCodeMirror } from "@uiw/react-codemirror";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import EditorToggle from "./EditorToggle.tsx";
-import LanguageSelection, { Language } from "./LanguageSelection.tsx";
+import LanguageSelection from "./LanguageSelection.tsx";
+import { Language, languageSupports } from "./useLanguage.tsx";
 
 interface Props {
   isFullScreen: boolean;
   setIsFullScreen: (isFullScreen: boolean) => void;
+  code: string;
+  setCode: (code: string) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
 }
 
-const languages: Record<Language, LanguageSupport> = {
-  Python: python(),
-  Java: java(),
-  Javascript: javascript(),
-};
-
-export default function CodeEditor({ isFullScreen, setIsFullScreen }: Props) {
-  const [language, setLanguage] = useLanguage();
+export default function CodeEditor({
+  isFullScreen,
+  setIsFullScreen,
+  code,
+  setCode,
+  setLanguage,
+  language,
+}: Props) {
   const [isEditorOpen, setIsEditorOpen] = useState(true);
-  const [code, setCode] = useCode(language);
   const { setContainer } = useCodeMirror({
     height: "100%",
     style: { height: "100%" },
-    extensions: [languages[language]],
+    extensions: [languageSupports[language]],
     value: code,
     onChange: (v) => setCode(v),
   });
@@ -48,52 +48,6 @@ export default function CodeEditor({ isFullScreen, setIsFullScreen }: Props) {
       <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} />
     </Section>
   );
-}
-
-/* 사용자의 패닉을 막기 위해 코드와 사용하던 언어는 새로고침하거나 재접속해도 그대로 유지됨 */
-
-// 문자열이면 그대로, 아니면 빈 문자열을 반환
-function safeString(_s: unknown) {
-  return typeof _s === "string" ? _s : "";
-}
-
-// localStorage에 저장된 코드를 React state로 캐시
-function useCode(language: Language) {
-  const [codes, setCodes] = useState<Partial<Record<Language, string>>>({});
-  const code = codes[language];
-  const setCode = useCallback(
-    (code: string) => {
-      setCodes((codes) => ({ ...codes, [language]: code }));
-      localStorage.setItem(`code-${language}`, code);
-    },
-    [language],
-  );
-  if (code === undefined) {
-    setCodes({
-      [language]: safeString(localStorage.getItem(`code-${language}`)),
-      ...codes,
-    });
-  }
-  return [code, setCode] as const;
-}
-
-// localStorage에 저장된 언어를 불러옴
-function getStoredLanguage() {
-  const storedLanguage = localStorage.getItem("language") ?? "";
-  if (storedLanguage in languages) {
-    return storedLanguage as Language;
-  }
-  return "Python";
-}
-
-// localStorage에 저장된 언어를 React state로 캐시
-function useLanguage() {
-  const [language, setLanguage] = useState<Language>(getStoredLanguage);
-  const _setLanguage = useCallback((language: Language) => {
-    setLanguage(language);
-    localStorage.setItem("language", language);
-  }, []);
-  return [language, _setLanguage] as const;
 }
 
 const Section = styled.section`
@@ -140,6 +94,10 @@ const EditorWrapper = styled.div`
 
   grid-row: 2;
   grid-column: 1 / 5;
+
+  .cm-editor * {
+    font-family: monospace;
+  }
 `;
 
 const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`

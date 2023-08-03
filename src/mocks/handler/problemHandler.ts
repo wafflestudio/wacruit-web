@@ -18,7 +18,7 @@ const submitProblem: RestHandler = rest.post(
     const requestBody = (await req.json()) as ProblemSubmissionRequest;
     const id = req.params.problem_id;
     const problem = getMockProblem(Number(id));
-    const extraTestcases = requestBody.extra_testcases;
+    const extraTestcases = requestBody.extra_testcases ?? [];
     if (problem === undefined) return res(ctx.status(404));
     const result = [...problem.testcases, ...extraTestcases].map((testcase) => {
       const correct = Math.random() > 0.5;
