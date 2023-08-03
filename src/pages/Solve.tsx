@@ -6,28 +6,69 @@ import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { getProblemById } from "../apis/problem.ts";
+import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
+import {
+  languageCodes,
+  useLanguage,
+} from "../components/solve/CodeEditor/useLanguage.tsx";
+import { useCode } from "../components/solve/CodeEditor/useCode.tsx";
+import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
+import { ProblemSubmissionResult } from "../types/apiTypes.ts";
+import { unreachable } from "../lib/unreachable.ts";
 
 export default function Solve() {
   const params = useParams();
+  const problemNumber = Number(params.problem_number);
   const {
     data: problem,
     isLoading,
     isError,
     isIdle,
   } = useQuery({
-    queryKey: ["problem", params.problem_number],
-    queryFn: () => getProblemById(Number(params.problem_number)),
+    queryKey: ["problem", problemNumber],
+    queryFn: () => getProblemById(problemNumber),
     staleTime: 1000 * 60 * 60,
     retry: 1,
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [language, setLanguage] = useLanguage();
+  const [code, setCode] = useCode(language);
+  const [customTestcases, setCustomTestcases] =
+    useCustomTestCases(problemNumber);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [testResults, setTestResults] = useState<ProblemSubmissionResult[]>([]);
 
-  const handleRunTest = () => {
-    alert("테스트 실행");
-  };
-  const handleSubmit = () => {
-    alert("제출하기");
+  const handleSubmit = async (is_example: boolean) => {
+    if (!code) {
+      alert("코드를 입력해주세요");
+      return;
+    }
+    setIsSubmitting(true);
+    setTestResults([]);
+    const res = postProblemSubmission({
+      problem_id: problemNumber,
+      language: languageCodes[language],
+      source_code: code,
+      is_example,
+      extra_testcases: is_example
+        ? []
+        : customTestcases.map((t) => ({
+            stdin: t.input,
+            expected_output: t.output,
+          })),
+    });
+    for await (const { data, type } of res) {
+      switch (type) {
+        case "skip":
+          break;
+        case "message":
+          setTestResults((prev) => [...prev, ...data.items]);
+          break;
+        default:
+          unreachable(type);
+      }
+    }
+    setIsSubmitting(false);
   };
 
   /**
@@ -56,6 +97,12 @@ export default function Solve() {
             <ProblemDescription
               problemNumber={problem.num}
               problemMarkdown={problem.body}
+              defaultTestCases={problem.testcases.map((t) => ({
+                input: t.stdin,
+                output: t.expected_output,
+              }))}
+              customTestCases={customTestcases}
+              setCustomTestCases={setCustomTestcases}
             />
           </Col>
           <Col>
@@ -63,14 +110,27 @@ export default function Solve() {
               <CodeEditor
                 isFullScreen={isFullScreen}
                 setIsFullScreen={setIsFullScreen}
+                code={code ?? ""}
+                setCode={setCode}
+                language={language}
+                setLanguage={setLanguage}
               />
               <DragResizable initialHeight={300}>
-                <TestResultConsole />
+                <TestResultConsole results={testResults}></TestResultConsole>
               </DragResizable>
             </Col>
             <BottomNav>
-              <SubmitButton onClick={handleRunTest}>테스트 실행</SubmitButton>
-              <SubmitButton onClick={handleSubmit} $primary>
+              <SubmitButton
+                onClick={() => handleSubmit(true)}
+                disabled={isSubmitting}
+              >
+                테스트 실행
+              </SubmitButton>
+              <SubmitButton
+                onClick={() => handleSubmit(false)}
+                $primary
+                disabled={isSubmitting}
+              >
                 제출하기
               </SubmitButton>
             </BottomNav>
@@ -156,5 +216,8 @@ const SubmitButton = styled.button<{ $primary?: boolean }>`
   &:active {
     box-shadow: 2px 2px #323232;
     transform: translate(2px, 2px);
+  }
+  &:disabled {
+    background: #c4c4c4;
   }
 `;

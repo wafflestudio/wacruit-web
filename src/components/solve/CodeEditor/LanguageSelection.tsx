@@ -1,8 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-
-const options = ["Python", "Java", "Javascript"] as const;
-export type Language = (typeof options)[number];
+import { Language, languages } from "./useLanguage.tsx";
 
 interface Props {
   language: Language;
@@ -19,7 +17,7 @@ export default function LanguageSelection(props: Props) {
       </ListToggleButton>
       {isOpen && (
         <List>
-          {options.map((option) => (
+          {languages.map((option) => (
             <li>
               <ListItemButton
                 $selected={props.language === option}

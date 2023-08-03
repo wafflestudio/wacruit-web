@@ -3,28 +3,26 @@ import useModal from "../../Modal/useModal";
 import Modal from "../../Modal/Modal";
 import { HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 import MarkDownRenderer from "../../../lib/MarkdownRenderer";
 
 interface ProblemDescriptionProps {
   problemNumber: number;
   problemMarkdown: string;
+  defaultTestCases: TestCase[];
+  customTestCases: TestCase[];
+  setCustomTestCases: (
+    param: TestCase[] | ((prev: TestCase[]) => TestCase[]),
+  ) => void;
 }
 
 export default function ProblemDescription({
   problemNumber,
   problemMarkdown,
+  defaultTestCases,
+  customTestCases,
+  setCustomTestCases,
 }: ProblemDescriptionProps) {
-  const defaultTestCases: TestCase[] = [
-    { input: "4, 5", output: "a=4\nb=5" },
-    { input: "4, 5", output: "a=4\nb=5" },
-    { input: "4, 5", output: "a=4\nb=5" },
-  ];
-  const CUSTOM_TEST_CASES_KEY = `customTestCasesOfProblemNumber${problemNumber}`;
-  const [customTestCases, setCustomTestCases] = useCustomTestCases(
-    CUSTOM_TEST_CASES_KEY,
-  );
-
   const deleteCustomTestCase = useCallback(
     (deleteIdx: number) =>
       setCustomTestCases((prev) => prev.filter((_, idx) => deleteIdx !== idx)),
@@ -92,27 +90,6 @@ export default function ProblemDescription({
 
 /* code start: 커스텀 테스트 케이스도 localStorage에 저장하며 사용한다 */
 
-function useCustomTestCases(customTestCasesKey: string) {
-  const storedCustomTestCases: TestCase[] = useMemo(
-    () => JSON.parse(localStorage.getItem(customTestCasesKey) || "[]"),
-    [customTestCasesKey],
-  );
-
-  const [customTestCases, setCustomTestCases] = useState<TestCase[]>(
-    storedCustomTestCases,
-  );
-
-  const setCustomTestCasesWithLocalStorage = useCallback(
-    (param: TestCase[] | ((prev: TestCase[]) => TestCase[])) => {
-      const newTestCases: TestCase[] =
-        typeof param === "function" ? param(customTestCases) : param;
-      setCustomTestCases(newTestCases);
-      localStorage.setItem(customTestCasesKey, JSON.stringify(newTestCases));
-    },
-    [customTestCases, customTestCasesKey],
-  );
-  return [customTestCases, setCustomTestCasesWithLocalStorage] as const;
-}
 /* end */
 
 const Section = styled.section`
