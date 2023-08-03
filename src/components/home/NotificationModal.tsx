@@ -12,11 +12,10 @@ export default function NotificationModal({
 }: NotificationModalProps) {
   const notificationData = {
     title: "시스템 점검 일정 안내",
-    main: `자기소개서는 500자 이내의
-간단한 문항 두 가지로 구성되어 있습니다.
-코딩 테스트는 지원 기간 막바지에는
-트래픽이 몰려서 사이트가 불안정해질 수 있으니,
-여유를 가지고 시간을 내서 푸시는 것을 권장드려요!`,
+    main:   main: `8월 4일 00시부터 리크루팅이 시작되었습니다.
+    리크루팅 관련하여 문제가 생기는 부분들은 공지 팝업을 통해 안내드리도록 하겠습니다.
+    감사합니다!
+    `,
   };
   return (
     <Article>
