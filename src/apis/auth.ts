@@ -49,3 +49,13 @@ export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
     },
     () => "invalid" as const,
   );
+
+export const checkSSO = (): Promise<boolean> => {
+  saveSsoToken();
+  return getRequest<{ signup: boolean }>("/users").then(
+    (res) => {
+      return res.signup;
+    },
+    (e) => Promise.reject(e),
+  );
+};

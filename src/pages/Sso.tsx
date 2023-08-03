@@ -2,10 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { useEffect, useState } from "react";
 import { postUser } from "../apis/user";
-import { checkAuth, saveSsoToken } from "../apis/auth";
+import { checkSSO } from "../apis/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
+import { useQuery } from "@tanstack/react-query";
 
 const getRedirectPath = (to: string) => {
   if (to === "home") {
@@ -36,24 +37,34 @@ export default function Sso() {
     },
   );
 
+  const {
+    data: ssoState,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["sso"],
+    queryFn: () => checkSSO(),
+    retry: 4,
+  });
+
   useEffect(() => {
-    saveSsoToken();
-    checkAuth().then((authState) => {
-      if (authState === "invalid") {
-        alert("다시 로그인해주세요");
+    if (!isLoading) {
+      if (error) {
+        alert("로그인 정보가 잘못되었습니다.");
         navigate("/");
         return;
       }
-      if (authState === "need_register") {
+      if (!ssoState) {
         setNeedRegister(true);
         return;
       }
-      if (authState === "valid") {
+      if (ssoState) {
+        void queryClient.invalidateQueries(["auth"]);
         navigate(getRedirectPath(params.recruit_id ?? "home"));
         return;
       }
-    });
-  }, []);
+    }
+  }, [params.recruit_id, ssoState, error, isLoading]);
 
   return (
     <>
