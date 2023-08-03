@@ -1,19 +1,27 @@
 import styled from "styled-components";
 import asset from "./progressCardAsset";
-import { useEffect, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getPortfolioFiles, getPortfolioLinks } from "../../../apis/portfolio";
+import { useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  deletePortfolioLink,
+  getPortfolioFiles,
+  getPortfolioLinks,
+  postPortfolioFile,
+  postPortfolioLink,
+  putPortfolioFileToS3,
+} from "../../../apis/portfolio";
+import { LoadingBackgroundBlink } from "../../../lib/loading";
 
 type PortfolioCardProps = {
   submit: boolean;
 };
 
 export default function PortfolioCard({ submit }: PortfolioCardProps) {
+  const queryClient = useQueryClient();
   const { description, iconSrc, iconAlt } = useMemo(
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
     [submit],
   );
-
   const { data: files } = useQuery({
     queryKey: ["portfolio", "files"],
     queryFn: () => getPortfolioFiles(),
@@ -25,10 +33,27 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
     staleTime: Infinity,
   });
 
+  const [linksInput, setLinksInput] = useState<
+    {
+      id: number | null;
+      url: string;
+    }[]
+  >([
+    { id: null, url: "" },
+    { id: null, url: "" },
+  ]);
+
   useEffect(() => {
-    console.log(files);
-    console.log(links);
+    if (links) {
+      const updated = linksInput.map((input, index) =>
+        links.items[index] ? links.items[index] : input,
+      );
+      setLinksInput(updated);
+    }
   }, [files, links]);
+
+  if (files === undefined || links === undefined)
+    return <EmptyCard></EmptyCard>;
 
   return (
     <Card $submit={submit}>
@@ -40,16 +65,82 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
       <FileSection>
         <div>파일 첨부</div>
         <FileInputButton htmlFor="portfolio">파일 선택</FileInputButton>
-        <FileInput type="file" id="portfolio" />
+        <FileInput
+          type="file"
+          id="portfolio"
+          onChange={(e) => {
+            if (!e.target.files) return;
+            const targetFile = e.target.files[0];
+            if (files.items.length < 1) {
+              postPortfolioFile(targetFile.name)
+                .then((res) => {
+                  putPortfolioFileToS3(res.presigned_url, targetFile);
+                })
+                .then(
+                  () => {
+                    queryClient.invalidateQueries(["portfolio", "files"]);
+                  },
+                  (e) => console.log(e),
+                );
+            }
+          }}
+        />
+        {files.items.length > 0 && (
+          <Files>
+            {files.items.map((file) => (
+              <File key={file.portfolio_name}>{file.portfolio_name}</File>
+            ))}
+          </Files>
+        )}
       </FileSection>
       <LinkSection>
         <div>링크 첨부</div>
-        <LinkInput placeholder="https://example.com" />
-        <LinkInput placeholder="https://example.com" />
+        {linksInput.map((input, index) => (
+          <LinkInput
+            placeholder="https://example.com"
+            value={input.url}
+            onChange={(e) => {
+              const copy = [...linksInput];
+              copy[index].url = e.target.value;
+              setLinksInput(copy);
+            }}
+            onBlur={() => {
+              if (input.url.length < 1) return;
+              if (input.id === null) {
+                postPortfolioLink(input.url);
+              } else {
+                deletePortfolioLink(input.id)
+                  .then(
+                    () => postPortfolioLink(input.url),
+                    (e) => console.log(e),
+                  )
+                  .then(
+                    () => {
+                      void queryClient.invalidateQueries([
+                        "portfolio",
+                        "links",
+                      ]);
+                    },
+                    (e) => console.log(e),
+                  );
+              }
+            }}
+          />
+        ))}
       </LinkSection>
     </Card>
   );
 }
+
+const EmptyCard = styled.li`
+  position: relative;
+  display: flex;
+  width: 840px;
+  height: 193px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  animation: ${LoadingBackgroundBlink};
+`;
 
 const Card = styled.li<{
   $submit: boolean;
@@ -104,6 +195,26 @@ const FileInput = styled.input`
   height: 0;
   padding: 0;
   border: 0;
+`;
+const Files = styled.div`
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  background: #f6f6f6;
+`;
+const File = styled.div`
+  border-radius: 25px;
+  border: 1px solid #d1d1d1;
+  background: #fff;
+  padding: 8px 4px;
+  color: #404040;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 160%; /* 19.2px */
+  letter-spacing: 0.48px;
 `;
 
 const LinkSection = styled.div`
