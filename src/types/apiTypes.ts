@@ -129,3 +129,11 @@ export type UserRegisterRequest = {
   phone_number: string;
   email: string;
 };
+
+export type PortfolioFile = {
+  portfolio_name: string;
+};
+export type PortfolioLink = {
+  id: number;
+  url: string;
+};

@@ -38,6 +38,7 @@ export const TableHeader = styled.tr`
   gap: 10px;
   > td {
     > pre {
+      font-family: Pretendard;
       word-wrap: break-word;
       white-space: pre-wrap;
     }

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ProgressCard } from "./ProgressCard";
 import { Recruiting } from "../../../types/apiTypes";
 import PortfolioCard from "./PortfolioCard";
+import { ResumeCard } from "./ResumeCard";
 
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
@@ -16,13 +17,7 @@ export function ProgressList({
 }: ProgressListProps) {
   return (
     <List>
-      <ProgressCard
-        type="resume"
-        title="자기소개서"
-        submit={hasResume}
-        correct={null}
-        to="./resume"
-      />
+      <ResumeCard submit={hasResume} />
       {isDesigner ? (
         <PortfolioCard submit={false} />
       ) : (
@@ -35,10 +30,8 @@ export function ProgressList({
           .map(({ id, num, status }) => (
             <ProgressCard
               key={id}
-              type="problem"
               title={`문제 ${num}`}
-              submit={status !== 0}
-              correct={status === 3}
+              statusCode={status}
               to={`./solve/${id}`}
             />
           ))

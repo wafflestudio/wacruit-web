@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
-import { getAllAnnouncements } from "../../../apis/announcement";
 import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,17 +19,6 @@ export default function Header() {
     queryKey: ["auth"],
     queryFn: () => checkAuth(),
     staleTime: 1000 * 60 * 60,
-    retry: 0,
-  });
-
-  /**
-   * Announcement Polling
-   */
-  useQuery({
-    queryKey: ["announcement"],
-    queryFn: () => getAllAnnouncements(),
-    refetchInterval: 1000 * 5,
-    staleTime: Infinity,
     retry: 0,
   });
 
@@ -87,6 +75,7 @@ export default function Header() {
               tryLogin("home");
             }}
           >
+            <img src={"/icon/header/Login.svg"} />
             로그인
           </NavButton>
           <NavButton

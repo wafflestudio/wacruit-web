@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import {
@@ -9,9 +9,11 @@ import {
   myResumeQuery,
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
+import { deleteResume } from "../apis/resume.ts";
 
 export default function Dashboard() {
   const params = useParams();
+  const navigate = useNavigate();
   const initialData = useLoaderData() as DashboardLoaderReturnType;
   const { data: recruiting } = useQuery({
     ...recruitingDetailQuery(Number(params.recruit_id)),
@@ -45,7 +47,7 @@ export default function Dashboard() {
           StyledWrapper={InformationMarkdownStyledWrapper}
         />
       </Information>
-      <AnnouncementButton>
+      <AnnouncementButton onClick={() => navigate("/announcement")}>
         공지 및 변경사항 안내
         <div>
           <img
@@ -67,9 +69,24 @@ export default function Dashboard() {
           isDesigner={recruiting.id === 2}
         />
         <Caution>
-          아래 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
+          위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
           완료됩니다.
-          <CancelButton>지원 취소</CancelButton>
+          <CancelButton
+            onClick={() => {
+              if (
+                confirm(
+                  "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
+                )
+              ) {
+                deleteResume(recruiting.id).finally(() => {
+                  alert("지원이 취소되었습니다");
+                  navigate("/");
+                });
+              }
+            }}
+          >
+            지원 취소
+          </CancelButton>
         </Caution>
       </BottomContainer>
     </Main>

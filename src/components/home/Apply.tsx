@@ -6,11 +6,11 @@ import CalenderInner from "./CalenderInner";
 import { useQuery } from "@tanstack/react-query";
 import { zIndex } from "../../lib/zIndex";
 import { getAllRecruitings } from "../../apis/recruiting";
-// import { useNavigate } from "react-router-dom";
-// import { checkAuth, tryLogin } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
+import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
     "ROOKIE",
   );
@@ -21,11 +21,11 @@ export default function Apply() {
     retry: 3,
   });
 
-  const onApply = useCallback(async () => {
+  const onApply = useCallback(async (recruit_id: number) => {
     /**
      * @TODO authPing으로 교체
      */
-    /* 
+
     const auth = await checkAuth();
 
     if (auth === "valid") {
@@ -38,8 +38,6 @@ export default function Apply() {
     if (auth === "invalid") {
       tryLogin(recruit_id);
     }
-    */
-    alert("아직 지원 기간이 아닙니다.");
   }, []);
 
   return (
@@ -96,12 +94,7 @@ export default function Apply() {
               )}
               명 지원 중
             </p>
-            <button
-              onClick={
-                () => onApply()
-                // field === "ROOKIE" ? 1 : 2
-              }
-            >
+            <button onClick={() => onApply(field === "ROOKIE" ? 1 : 2)}>
               지원하러가기!
             </button>
           </ApplyButton>
@@ -115,7 +108,11 @@ export default function Apply() {
           <p>와플스튜디오 루키회원 모집을 주변에 소문내주세요! </p>
         </ShareText>
         <ShareButton>
-          <ShareIcon>
+          <ShareIcon
+            onClick={() => {
+              window.open("https://www.instagram.com/wafflestudio_official/");
+            }}
+          >
             <img src={"/image/home/share/Instagram.svg"} alt="share" />
           </ShareIcon>
           <ShareIcon>

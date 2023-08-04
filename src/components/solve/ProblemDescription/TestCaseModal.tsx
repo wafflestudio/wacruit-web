@@ -102,10 +102,8 @@ export default function TestCaseModal({
 }
 
 const Article = styled.article`
-  width: 100%;
-  max-width: 1200px;
-  min-width: 290px;
-  height: 53%;
+  width: 70vw;
+  height: 70vh;
 `;
 
 const Nav = styled.nav`
@@ -130,7 +128,7 @@ const CloseButton = styled.button`
 
 const Main = styled.div`
   width: 100%;
-  max-height: 646px;
+  height: 100%;
   padding: 30px;
   display: flex;
   flex-direction: column;
