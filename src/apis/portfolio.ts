@@ -1,5 +1,5 @@
 import { PortfolioFile, PortfolioLink } from "../types/apiTypes";
-import { deleteRequest, getRequest, postRequest, putRequest } from "./utility";
+import { deleteRequest, getRequest, postRequest } from "./utility";
 
 export const getPortfolioFiles = () =>
   getRequest<{ items: PortfolioFile[] }>(`/portfolios/file`);
@@ -14,19 +14,26 @@ export const deletePortfolioLink = (linkId: number) =>
   deleteRequest(`/portfolios/url/${linkId}`, {});
 
 export const postPortfolioFile = (fileName: string) =>
-  postRequest<{ presigned_url: string }>(
+  getRequest<{ presigned_url: string; fields: object }>(
     `/portfolios/file/url/upload/?file_name=${fileName}`,
     {},
   );
 export const deletePortfolioFile = (fileName: string) =>
   deleteRequest(`/portfolios/file/delete/?file_name=${fileName}`, {});
 
-export const putPortfolioFileToS3 = (presignedUrl: string, file: File) =>
-  putRequest(
-    presignedUrl,
-    file,
-    {
-      "Content-Type": "application/pdf",
-    },
-    false,
-  );
+export const uploadPortfolioFileToS3 = (
+  presignedUrl: string,
+  data: object,
+  file: File,
+) => {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key as keyof typeof data]);
+  }
+  formData.append("file", file);
+  fetch(presignedUrl, {
+    method: "POST",
+    headers: { "Content-Type": "multipart/form-data" },
+    body: formData,
+  });
+};
