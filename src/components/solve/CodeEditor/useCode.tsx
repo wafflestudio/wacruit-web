@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { boilerplates, Language } from "./useLanguage.tsx";
 
 /* 사용자의 패닉을 막기 위해 코드와 사용하던 언어는 새로고침하거나 재접속해도 그대로 유지됨 */
@@ -24,6 +24,31 @@ export function useCode(language: Language, problemNumber: number) {
     });
   }
   return [code, setCode] as const;
+}
+
+export function useCodeRef(language: Language, problemNumber: number) {
+  const codes = useRef<Partial<Record<Language, string>>>({});
+  return useMemo(
+    () => ({
+      get current() {
+        return (
+          codes.current[language] ??
+          safeString(
+            localStorage.getItem(`code-lang:${language}-no:${problemNumber}`),
+            boilerplates[language],
+          )
+        );
+      },
+      set current(newCode: string) {
+        codes.current[language] = newCode;
+        localStorage.setItem(
+          `code-lang:${language}-no:${problemNumber}`,
+          newCode,
+        );
+      },
+    }),
+    [language, problemNumber],
+  );
 }
 
 // 문자열이면 그대로, 아니면 빈 문자열을 반환
