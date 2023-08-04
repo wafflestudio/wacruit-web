@@ -16,7 +16,7 @@ export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
       case 0:
         return asset.problemNotSubmit;
       case 1:
-        return asset.problemSubmitCorrect;
+        return asset.problemJudging;
       case 2:
         return asset.problemSubmitCorrect;
       case 3:
