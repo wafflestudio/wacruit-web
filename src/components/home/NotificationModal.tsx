@@ -53,11 +53,13 @@ const Article = styled.article`
   background-color: #fff;
 `;
 const ContentsWapper = styled.div`
+  max-height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 49px 43px 75px;
   border-radius: 15px;
+
   > a {
     margin-top: 35px;
     line-height: 170%;
@@ -80,13 +82,35 @@ const Title = styled.h1`
   text-align: center;
 `;
 const MainText = styled.p`
+  width: 100%;
+  overflow-y: auto;
   white-space: pre-wrap;
+  word-break: break-all;
   margin-top: 18px;
   font-size: 16px;
   line-height: 170%;
   letter-spacing: 0;
   text-align: center;
   color: #737373;
+
+  /* code start: scrollbar css design */
+  &::-webkit-scrollbar {
+    width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #737373;
+    border-radius: 10px;
+    border: 5px solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
+    // 스크롤바의 border-radius까지 figma대로 구현하려면 위처럼 상하좌우 전체에 border를 주고 border-radius를 적용시켜야 함.
+  }
+  // 스크롤바 위아래 여백
+  &::-webkit-scrollbar-button:vertical:start:decrement, // 위 여백
+  &::-webkit-scrollbar-button:vertical:end:decrement // 아래 여백
+  {
+    display: block;
+    height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
+  }
+  /* end */
 `;
 const ButtonWrapper = styled.div`
   height: 73px;
