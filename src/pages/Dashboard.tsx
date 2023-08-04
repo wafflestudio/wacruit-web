@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import {
@@ -12,6 +12,7 @@ import {
 
 export default function Dashboard() {
   const params = useParams();
+  const navigate = useNavigate();
   const initialData = useLoaderData() as DashboardLoaderReturnType;
   const { data: recruiting } = useQuery({
     ...recruitingDetailQuery(Number(params.recruit_id)),
@@ -45,7 +46,7 @@ export default function Dashboard() {
           StyledWrapper={InformationMarkdownStyledWrapper}
         />
       </Information>
-      <AnnouncementButton>
+      <AnnouncementButton onClick={() => navigate("/announcement")}>
         공지 및 변경사항 안내
         <div>
           <img

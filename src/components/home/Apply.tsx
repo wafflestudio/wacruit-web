@@ -108,7 +108,11 @@ export default function Apply() {
           <p>와플스튜디오 루키회원 모집을 주변에 소문내주세요! </p>
         </ShareText>
         <ShareButton>
-          <ShareIcon>
+          <ShareIcon
+            onClick={() => {
+              window.open("https://www.instagram.com/wafflestudio_official/");
+            }}
+          >
             <img src={"/image/home/share/Instagram.svg"} alt="share" />
           </ShareIcon>
           <ShareIcon>
