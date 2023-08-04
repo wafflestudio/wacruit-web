@@ -31,8 +31,12 @@ const UserInfoForm = forwardRef<HTMLFormElement, UserInfoFormProps>(
         >
           학과/부
         </LabeledInput>
-        <LabeledInput name="github_email" placeholder="id">
-          깃허브 아이디
+        <LabeledInput
+          name="github_email"
+          placeholder="example@gmail.com"
+          type="email"
+        >
+          깃허브 이메일
         </LabeledInput>
         <LabeledInput
           name="slack_email"

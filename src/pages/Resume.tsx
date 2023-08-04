@@ -22,11 +22,19 @@ export default function Resume() {
 
   const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
   const navigate = useNavigate();
-  const submit = (options?: Parameters<typeof putResume>[1]) => {
+
+  const submit = (
+    options?: Parameters<typeof putResume>[1],
+    temporary?: boolean,
+  ) => {
+    if (!temporary && !checkRequired(userInfoInput)) {
+      alert("필수 정보를 모두 입력하세요");
+      return;
+    }
+
     if (userInfoFormRef.current?.reportValidity()) {
       putResume(
         {
-          //userInfo: userInfoInput,
           questionaire: resumeInput
             .filter((pureInput) => pureInput.answer.length > 0)
             .map((input) => ({
@@ -93,23 +101,29 @@ export default function Resume() {
       <Buttons>
         <SaveButton
           onClick={() => {
-            submit({
-              onSuccess: () => alert("저장되었습니다."),
-              onError: () => alert("오류가 발생했습니다."),
-            });
+            submit(
+              {
+                onSuccess: () => alert("저장되었습니다."),
+                onError: () => alert("오류가 발생했습니다."),
+              },
+              true,
+            );
           }}
         >
           임시저장
         </SaveButton>
         <SubmitButton
           onClick={() =>
-            submit({
-              onSuccess: () => {
-                alert("제출되었습니다.");
-                navigate(`/recruiting/${recruit_id}`);
+            submit(
+              {
+                onSuccess: () => {
+                  alert("제출되었습니다.");
+                  navigate(`/recruiting/${recruit_id}`);
+                },
+                onError: () => alert("오류가 발생했습니다."),
               },
-              onError: () => alert("오류가 발생했습니다."),
-            })
+              false,
+            )
           }
         >
           제출하기
@@ -153,6 +167,28 @@ function useSubmit(recruiting_id: number, isNewResume: boolean) {
   );
   return mutate;
 }
+
+const checkRequired = (
+  userInfo: UserUpdate & UserInvitationEmails,
+): boolean => {
+  for (const key in userInfo) {
+    if (userInfo[key as keyof (UserUpdate & UserInvitationEmails)] === "")
+      return false;
+  }
+  return true;
+};
+
+// const pickValidInputOnly = (
+//   userInfo: UserUpdate & UserInvitationEmails,
+// ): Partial<UserUpdate & UserInvitationEmails> => {
+//   const validInput: Partial<UserUpdate & UserInvitationEmails> = {};
+//   for (const key in userInfo) {
+//     if (userInfo[key as keyof (UserUpdate & UserInvitationEmails)] !== "")
+//       validInput[key as keyof (UserUpdate & UserInvitationEmails)] =
+//         userInfo[key as keyof (UserUpdate & UserInvitationEmails)];
+//   }
+//   return validInput;
+// };
 
 const Main = styled.main`
   position: relative;
