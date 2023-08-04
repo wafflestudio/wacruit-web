@@ -124,6 +124,7 @@ const Nav = styled.nav`
   color: #222;
   font-size: 18px;
   font-weight: 500;
+  white-space: nowrap;
 `;
 
 const NavLink = styled(Link)`
