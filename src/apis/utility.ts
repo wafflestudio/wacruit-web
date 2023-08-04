@@ -113,7 +113,7 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
       throw new Error("No body");
     }
     const reader = response.body
-      .pipeThrough(new TextDecoderStream())
+      .pipeThrough(new TextDecoderStream(), { preventAbort: true })
       .getReader();
 
     for await (const event of parseEvent(reader)) {
