@@ -1,6 +1,7 @@
 export const zIndex = {
-  default: 0,
-  modal: 10,
   background: -1,
+  default: 0,
+  selectOptions: 1,
+  modal: 10,
   header: 100,
 };
