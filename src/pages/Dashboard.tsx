@@ -9,6 +9,7 @@ import {
   myResumeQuery,
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
+import { deleteResume } from "../apis/resume.ts";
 
 export default function Dashboard() {
   const params = useParams();
@@ -70,7 +71,22 @@ export default function Dashboard() {
         <Caution>
           위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
           완료됩니다.
-          <CancelButton>지원 취소</CancelButton>
+          <CancelButton
+            onClick={() => {
+              if (
+                confirm(
+                  "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
+                )
+              ) {
+                deleteResume(recruiting.id).finally(() => {
+                  alert("지원이 취소되었습니다");
+                  navigate("/");
+                });
+              }
+            }}
+          >
+            지원 취소
+          </CancelButton>
         </Caution>
       </BottomContainer>
     </Main>

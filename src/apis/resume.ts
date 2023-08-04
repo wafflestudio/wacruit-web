@@ -3,7 +3,7 @@ import {
   Resume,
   ResumeSubmissionCreate,
 } from "../types/apiTypes";
-import { getRequest, postRequest, putRequest } from "./utility";
+import { deleteRequest, getRequest, postRequest, putRequest } from "./utility";
 
 export const getMyResumes = (recruiting_id: number) =>
   getRequest<{ items: Resume[] }>(`/recruitings/${recruiting_id}/resumes`);
@@ -22,3 +22,6 @@ export const getQuestions = (recruiting_id: number) =>
   getRequest<{ items: ResumeQuestion[] }>(
     `/recruitings/${recruiting_id}/questions`,
   );
+
+export const deleteResume = (recruiting_id: number) =>
+  deleteRequest(`/recruitings/${recruiting_id}/resumes`, {});
