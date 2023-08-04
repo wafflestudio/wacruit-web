@@ -33,7 +33,6 @@ export const uploadPortfolioFileToS3 = (
   formData.append("file", file);
   fetch(presignedUrl, {
     method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
     body: formData,
   });
 };
