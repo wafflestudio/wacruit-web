@@ -91,7 +91,7 @@ export default function Header() {
               </ApplyList>
             )}
           </NavButton>
-          <NavLink to="/">
+          <NavLink to="/announcement">
             <img src={"/icon/header/Alarm.svg"} />
             공지사항
           </NavLink>
