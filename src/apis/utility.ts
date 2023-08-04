@@ -71,6 +71,23 @@ export const patchRequest = <Response>(
     body: JSON.stringify(body),
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
 
+export const deleteRequest = <Response>(
+  url: string,
+  body: object,
+  header: HeadersInit = {},
+  authorized = true,
+): Promise<Response> =>
+  fetch(`${baseURL}${url}`, {
+    method: "DELETE",
+    headers: {
+      ...defaultCommonHeader,
+      ...defaultPostHeader,
+      ...header,
+      ...(authorized ? { Authorization: getToken() } : {}),
+    },
+    body: JSON.stringify(body),
+  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+
 // EventSource API는 POST를 지원하지 않기 때문에 대충 파싱한다
 export const sseRequest = <Response extends { type: string; data: unknown }>(
   url: string,
