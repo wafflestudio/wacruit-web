@@ -5,6 +5,7 @@ import { Recruiting } from "../../../types/apiTypes";
 import PortfolioCard from "./PortfolioCard";
 */
 import { ResumeCard } from "./ResumeCard";
+// import PortfolioCard from "./PortfolioCard";
 
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
@@ -21,9 +22,9 @@ export function ProgressList({
     <List>
       <ResumeCard submit={hasResume} />
       {isDesigner ? (
-        /* disable-submission 
-        <PortfolioCard submit={false} />
-        */
+        // (
+        //   <PortfolioCard submit={false} />
+        // )
         <></>
       ) : (
         problems

@@ -9,7 +9,7 @@ import {
   getPortfolioLinks,
   postPortfolioFile,
   postPortfolioLink,
-  putPortfolioFileToS3,
+  uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 
@@ -74,9 +74,14 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
             if (files.items.length < 1) {
+              console.log(targetFile);
               postPortfolioFile(targetFile.name)
                 .then((res) => {
-                  putPortfolioFileToS3(res.presigned_url, targetFile);
+                  uploadPortfolioFileToS3(
+                    res.presigned_url,
+                    res.fields,
+                    targetFile,
+                  );
                 })
                 .then(
                   () => {
@@ -89,7 +94,11 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                 () =>
                   postPortfolioFile(targetFile.name)
                     .then((res) => {
-                      putPortfolioFileToS3(res.presigned_url, targetFile);
+                      uploadPortfolioFileToS3(
+                        res.presigned_url,
+                        res.fields,
+                        targetFile,
+                      );
                     })
                     .then(
                       () => {
