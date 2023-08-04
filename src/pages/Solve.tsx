@@ -38,7 +38,10 @@ export default function Solve() {
   const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  /**
+   * disable-submission
+   */
+  const [, /* isSubmitting */ setIsSubmitting] = useState(false);
   const [testResults, setTestResults] = useState<ProblemSubmissionResult[]>([]);
   const [submitError, setSubmitError] = useState<string[]>([]);
   const testConsoleRef = useRef<HTMLUListElement>(null);
@@ -48,6 +51,7 @@ export default function Solve() {
       alert("코드를 입력해주세요");
       return;
     }
+
     queryClient.invalidateQueries(["recruiting"]);
     setIsSubmitting(true);
     setTestResults([]);
@@ -157,14 +161,24 @@ export default function Solve() {
             <BottomNav>
               <SubmitButton
                 onClick={() => handleSubmit(false)}
-                $primary
-                disabled={isSubmitting}
+                /**
+                 * disable-submission
+                 
+                 disabled={isSubmitting}
+                 $primary
+                 */
+                disabled={true}
               >
                 제출하기
               </SubmitButton>
               <SubmitButton
                 onClick={() => handleSubmit(true)}
-                disabled={isSubmitting}
+                /**
+                 * disable-submission
+                 
+                 disabled={isSubmitting}
+                 */
+                disabled={true}
               >
                 테스트 실행
               </SubmitButton>
