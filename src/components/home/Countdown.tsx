@@ -5,7 +5,7 @@ export default function Countdown() {
   return (
     <div>
       <FlipClockCountdown
-        to={new Date("2023-08-04T12:00:00")}
+        to={new Date("2023-08-13T23:59:59")}
         digitBlockStyle={{
           width: "77px",
           height: "121px",
