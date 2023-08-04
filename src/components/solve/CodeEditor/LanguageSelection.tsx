@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Language, languages } from "./useLanguage.tsx";
+import { zIndex } from "../../../lib/zIndex";
 
 interface Props {
   language: Language;
@@ -95,4 +96,6 @@ const List = styled.ul`
   border-radius: 5px;
   max-height: 200px;
   overflow-y: auto;
+
+  z-index: ${zIndex.selectOptions};
 `;

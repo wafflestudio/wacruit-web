@@ -23,11 +23,8 @@ export default function Resume() {
   const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
   const navigate = useNavigate();
 
-  const submit = (
-    options?: Parameters<typeof putResume>[1],
-    temporary?: boolean,
-  ) => {
-    if (!temporary && !checkRequired(userInfoInput)) {
+  const submit = (options?: Parameters<typeof putResume>[1]) => {
+    if (!checkRequired(userInfoInput)) {
       alert("필수 정보를 모두 입력하세요");
       return;
     }
@@ -101,29 +98,23 @@ export default function Resume() {
       <Buttons>
         <SaveButton
           onClick={() => {
-            submit(
-              {
-                onSuccess: () => alert("저장되었습니다."),
-                onError: () => alert("오류가 발생했습니다."),
-              },
-              true,
-            );
+            submit({
+              onSuccess: () => alert("저장되었습니다."),
+              onError: () => alert("오류가 발생했습니다."),
+            });
           }}
         >
           임시저장
         </SaveButton>
         <SubmitButton
           onClick={() =>
-            submit(
-              {
-                onSuccess: () => {
-                  alert("제출되었습니다.");
-                  navigate(`/recruiting/${recruit_id}`);
-                },
-                onError: () => alert("오류가 발생했습니다."),
+            submit({
+              onSuccess: () => {
+                alert("제출되었습니다.");
+                navigate(`/recruiting/${recruit_id}`);
               },
-              false,
-            )
+              onError: () => alert("오류가 발생했습니다."),
+            })
           }
         >
           제출하기
@@ -172,7 +163,7 @@ const checkRequired = (
   userInfo: UserUpdate & UserInvitationEmails,
 ): boolean => {
   for (const key in userInfo) {
-    if (userInfo[key as keyof (UserUpdate & UserInvitationEmails)] === "")
+    if (!userInfo[key as keyof (UserUpdate & UserInvitationEmails)])
       return false;
   }
   return true;
