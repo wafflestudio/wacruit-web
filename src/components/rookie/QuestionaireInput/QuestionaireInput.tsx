@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useState } from "react";
 import styled from "styled-components";
 
 type QuestionaireInputProps = {
@@ -16,11 +16,24 @@ export default function QuestionaireInput({
   value,
   onChange,
 }: QuestionaireInputProps) {
+  const [isLimit, setIsLimit] = useState(false);
   return (
     <Wrapper>
       <Question>{`${index}. ${question}`}</Question>
-      <TextArea value={value} onChange={onChange} />
-      <Count>{`${value.length} / ${max}`}</Count>
+      <TextArea
+        value={value}
+        onChange={(e) => {
+          if (e.target.value.length > max) {
+            setIsLimit(true);
+          } else {
+            setIsLimit(false);
+            onChange(e);
+          }
+        }}
+      />
+      <Count>
+        {isLimit ? `${max}자를 초과할 수 없습니다` : `${value.length} / ${max}`}
+      </Count>
     </Wrapper>
   );
 }
