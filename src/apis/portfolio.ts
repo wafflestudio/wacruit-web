@@ -14,8 +14,8 @@ export const deletePortfolioLink = (linkId: number) =>
   deleteRequest(`/portfolios/url/${linkId}`, {});
 
 export const postPortfolioFile = (fileName: string) =>
-  postRequest<{ presigned_url: string }>(
-    `/portfolios/file/url/upload/?file_name=${fileName}`,
+  getRequest<{ presigned_url: string }>(
+    `/portfolios/file/upload/?file_name=${fileName}`,
     {},
   );
 export const deletePortfolioFile = (fileName: string) =>
