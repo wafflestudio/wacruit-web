@@ -3,41 +3,28 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import asset from "./progressCardAsset";
 
-type ProgressCardProps =
-  | {
-      type: "resume";
-      title: string;
-      submit: boolean;
-      correct: null;
-      to: string;
-    }
-  | {
-      type: "problem";
-      title: string;
-      submit: boolean;
-      correct: boolean;
-      to: string;
-    };
+type ProgressCardProps = {
+  title: string;
+  statusCode: number;
+  to: string;
+};
 
-export function ProgressCard({
-  type,
-  title,
-  submit,
-  correct,
-  to,
-}: ProgressCardProps) {
+export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
   const navigate = useNavigate();
   const { iconSrc, iconAlt, theme, description } = useMemo(() => {
-    //resume
-    if (type === "resume")
-      return submit ? asset.resumeSubmit : asset.resumeNotSubmit;
-    //problem (default)
-    return submit
-      ? correct
-        ? asset.problemSubmitCorrect
-        : asset.problemSubmitNotCorrect
-      : asset.problemNotSubmit;
-  }, [type, submit, correct]);
+    switch (statusCode) {
+      case 0:
+        return asset.problemNotSubmit;
+      case 1:
+        return asset.problemSubmitCorrect;
+      case 2:
+        return asset.problemSubmitCorrect;
+      case 3:
+        return asset.problemSubmitNotCorrect;
+      default:
+        return asset.problemNotSubmit;
+    }
+  }, [statusCode]);
 
   return (
     <Card $theme={theme} onClick={() => navigate(to)}>
@@ -52,7 +39,7 @@ export function ProgressCard({
 }
 
 const Card = styled.li<{
-  $theme: "red" | "green" | "gray" | "resumeRed" | "resumeGreen";
+  $theme: "red" | "green" | "yellow" | "gray";
 }>`
   position: relative;
   box-sizing: border-box;
@@ -70,24 +57,24 @@ const Card = styled.li<{
       ? "#F0745F"
       : props.$theme === "gray"
       ? "#737373"
-      : props.$theme === "resumeGreen"
-      ? "#64CB3F"
-      : props.$theme === "resumeRed"
-      ? "#F0745F"
+      : props.$theme === "yellow"
+      ? "#FFB800"
       : "black"};
   border: ${(props) =>
-    props.$theme === "resumeGreen"
-      ? "1px solid #64CB3F"
-      : props.$theme === "green"
+    props.$theme === "green"
       ? "1px solid #60BF3E"
       : props.$theme === "red"
       ? "1px solid #F0745F"
+      : props.$theme === "yellow"
+      ? "1px solid #FFB800"
       : "1px solid #D1D1D1"};
   background: ${(props) =>
     props.$theme === "green"
       ? "linear-gradient(180deg, #DBFFCE 0%, #FFF 46.88%);"
       : props.$theme === "red"
       ? "linear-gradient(180deg, #FFDED9 0%, #FFF 46.88%);"
+      : props.$theme === "yellow"
+      ? "linear-gradient(180deg, #FFF7CE 0%, #FFF 46.88%);"
       : "#fff"};
 
   &:hover {
@@ -96,6 +83,8 @@ const Card = styled.li<{
         ? "linear-gradient(180deg, #DBFFCE 0%, #F6F6F6 46.88%);"
         : props.$theme === "red"
         ? "linear-gradient(180deg, #FFDED9 0%, #F6F6F6 46.88%);"
+        : props.$theme === "yellow"
+        ? "linear-gradient(180deg, #FFF7CE 0%, #F6F6F6 46.88%);"
         : "#f6f6f6"};
   }
 `;

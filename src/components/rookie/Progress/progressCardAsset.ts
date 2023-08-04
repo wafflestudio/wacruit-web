@@ -1,19 +1,19 @@
-type ProgressCardAsset = {
-  theme: "red" | "green" | "gray" | "resumeRed" | "resumeGreen";
+type CardAsset = {
   iconSrc: string;
   iconAlt: string;
   description: string;
 };
+type ProgressCardAsset = CardAsset & {
+  theme: "red" | "green" | "yellow" | "gray";
+};
 
 //resume
-const resumeSubmit: ProgressCardAsset = {
-  theme: "resumeGreen",
+const resumeSubmit: CardAsset = {
   iconSrc: "/icon/rookie/Check.svg",
   iconAlt: "제출 완료 아이콘",
   description: "제출 완료",
 };
-const resumeNotSubmit: ProgressCardAsset = {
-  theme: "resumeRed",
+const resumeNotSubmit: CardAsset = {
   iconSrc: "/icon/rookie/Pencil.svg",
   iconAlt: "미제출 아이콘",
   description: "미제출",
@@ -38,6 +38,12 @@ const problemSubmitCorrect: ProgressCardAsset = {
   iconAlt: "정답 아이콘",
   description: "정답입니다!",
 };
+const problemJudging: ProgressCardAsset = {
+  theme: "yellow",
+  iconSrc: "/icon/rookie/Dots.svg",
+  iconAlt: "채점 중 아이콘",
+  description: "채점 중입니다...",
+};
 const problemSubmitNotCorrect: ProgressCardAsset = {
   theme: "red",
   iconSrc: "/icon/rookie/X.svg",
@@ -59,6 +65,7 @@ const progressCardAsset = {
   problemSubmitCorrect,
   problemSubmitNotCorrect,
   problemNotSubmit,
+  problemJudging,
 };
 
 export default progressCardAsset;

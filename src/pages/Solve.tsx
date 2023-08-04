@@ -5,7 +5,7 @@ import CodeEditor from "../components/solve/CodeEditor";
 import TestResultConsole from "../components/solve/TestResultConsole.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
 import { useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
 import {
   boilerplates,
@@ -20,6 +20,7 @@ import { flushSync } from "react-dom";
 
 export default function Solve() {
   const params = useParams();
+  const queryClient = useQueryClient();
   const problemNumber = Number(params.problem_number);
   const {
     data: problem,
@@ -46,6 +47,7 @@ export default function Solve() {
       alert("코드를 입력해주세요");
       return;
     }
+    queryClient.invalidateQueries(["recruiting"]);
     setIsSubmitting(true);
     setTestResults([]);
     setSubmitError([]);
