@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { ProgressCard } from "./ProgressCard";
 import { Recruiting } from "../../../types/apiTypes";
+/* disable-submission 
 import PortfolioCard from "./PortfolioCard";
+*/
 import { ResumeCard } from "./ResumeCard";
 
 type ProgressListProps = {
@@ -19,7 +21,10 @@ export function ProgressList({
     <List>
       <ResumeCard submit={hasResume} />
       {isDesigner ? (
+        /* disable-submission 
         <PortfolioCard submit={false} />
+        */
+        <></>
       ) : (
         problems
           .sort((a, b) => {
