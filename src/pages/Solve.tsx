@@ -39,7 +39,7 @@ export default function Solve() {
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, setIsSubmitting] = useState(false);
   const [testResults, setTestResults] = useState<ProblemSubmissionResult[]>([]);
   const [submitError, setSubmitError] = useState<string[]>([]);
   const testConsoleRef = useRef<HTMLUListElement>(null);
@@ -159,14 +159,14 @@ export default function Solve() {
             <BottomNav>
               <SubmitButton
                 onClick={() => handleSubmit(false)}
-                disabled={isSubmitting}
+                disabled={true}
                 $primary
               >
                 제출하기
               </SubmitButton>
               <SubmitButton
                 onClick={() => handleSubmit(true)}
-                disabled={isSubmitting}
+                disabled={true}
               >
                 테스트 실행
               </SubmitButton>
