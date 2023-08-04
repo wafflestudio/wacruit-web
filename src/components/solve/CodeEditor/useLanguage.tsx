@@ -16,11 +16,11 @@ export const languageSupports: Record<Language, LanguageSupport | null> = {
 };
 
 export const languageCodes: Record<Language, number> = {
-  C: 50,
-  "C++": 54,
-  Java: 62,
-  Javascript: 93,
-  Python: 92
+  C: 100,
+  "C++": 101,
+  Java: 102,
+  Javascript: 103,
+  Python: 104,
 };
 
 export const boilerplates: Record<Language, string> = {
