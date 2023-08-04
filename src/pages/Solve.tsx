@@ -38,10 +38,8 @@ export default function Solve() {
   const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
-  /**
-   * disable-submission
-   */
-  const [, /* isSubmitting */ setIsSubmitting] = useState(false);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [testResults, setTestResults] = useState<ProblemSubmissionResult[]>([]);
   const [submitError, setSubmitError] = useState<string[]>([]);
   const testConsoleRef = useRef<HTMLUListElement>(null);
@@ -161,24 +159,14 @@ export default function Solve() {
             <BottomNav>
               <SubmitButton
                 onClick={() => handleSubmit(false)}
-                /**
-                 * disable-submission
-                 
-                 disabled={isSubmitting}
-                 $primary
-                 */
-                disabled={true}
+                disabled={isSubmitting}
+                $primary
               >
                 제출하기
               </SubmitButton>
               <SubmitButton
                 onClick={() => handleSubmit(true)}
-                /**
-                 * disable-submission
-                 
-                 disabled={isSubmitting}
-                 */
-                disabled={true}
+                disabled={isSubmitting}
               >
                 테스트 실행
               </SubmitButton>
