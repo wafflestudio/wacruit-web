@@ -12,7 +12,7 @@ import {
   languageCodes,
   useLanguage,
 } from "../components/solve/CodeEditor/useLanguage.tsx";
-import { useCode } from "../components/solve/CodeEditor/useCode.tsx";
+import { useCodeRef } from "../components/solve/CodeEditor/useCode.tsx";
 import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
 import { ProblemSubmissionResult } from "../types/apiTypes.ts";
 import { unreachable } from "../lib/unreachable.ts";
@@ -34,7 +34,8 @@ export default function Solve() {
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
-  const [code, setCode] = useCode(language, problemNumber);
+  // const [code, setCode] = useCode(language, problemNumber);
+  const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +44,7 @@ export default function Solve() {
   const testConsoleRef = useRef<HTMLUListElement>(null);
 
   const handleSubmit = async (is_example: boolean) => {
-    if (!code) {
+    if (!codeRef.current) {
       alert("코드를 입력해주세요");
       return;
     }
@@ -54,7 +55,7 @@ export default function Solve() {
     const res = postProblemSubmission({
       problem_id: problemNumber,
       language: languageCodes[language],
-      source_code: code,
+      source_code: codeRef.current,
       is_example,
       extra_testcases: is_example
         ? customTestcases.map((t) => ({
@@ -138,8 +139,10 @@ export default function Solve() {
               <CodeEditor
                 isFullScreen={isFullScreen}
                 setIsFullScreen={setIsFullScreen}
-                code={code ?? ""}
-                setCode={setCode}
+                code={codeRef.current}
+                setCode={(newCode) => {
+                  codeRef.current = newCode;
+                }}
                 language={language}
                 setLanguage={setLanguage}
               />
@@ -168,7 +171,7 @@ export default function Solve() {
               <SubmitButton
                 onClick={() => {
                   if (!confirm("정말로 코드를 초기화하시겠습니까?")) return;
-                  setCode(boilerplates[language]);
+                  codeRef.current = boilerplates[language];
                 }}
               >
                 코드 초기화
