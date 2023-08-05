@@ -15,7 +15,7 @@ export const getSsoToken = (): string | null => {
 };
 
 export const deleteSsoToken = () => {
-  Cookies.remove(SSO_COOKIE_KEY);
+  Cookies.remove(SSO_COOKIE_KEY, { path:"/", domain:".wafflestudio.com" });
 };
 
 export const tryLogin = (recruit_id: number | "home") => {
