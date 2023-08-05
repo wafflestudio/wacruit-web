@@ -14,11 +14,8 @@ import {
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 
-type PortfolioCardProps = {
-  submit: boolean;
-};
-
-export default function PortfolioCard({ submit }: PortfolioCardProps) {
+export default function PortfolioCard() {
+  const [submit, setSubmit] = useState(false);
   const queryClient = useQueryClient();
   const { description, iconSrc, iconAlt } = useMemo(
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
@@ -51,6 +48,13 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
         links.items[index] ? links.items[index] : input,
       );
       setLinksInput(updated);
+    }
+    if (files) {
+      if (files.items.length > 0) {
+        setSubmit(true);
+      } else {
+        setSubmit(false);
+      }
     }
   }, [files, links]);
 
