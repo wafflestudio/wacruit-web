@@ -69,7 +69,6 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
         <FileInput
           type="file"
           id="portfolio"
-          accept="application/pdf"
           onChange={(e) => {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
