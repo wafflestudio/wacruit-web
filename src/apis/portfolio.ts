@@ -36,7 +36,7 @@ export const uploadPortfolioFileToS3 = (
     formData.append(key, data[key as keyof typeof data]);
   }
   formData.append("file", file);
-  fetch(presignedUrl, {
+  return fetch(presignedUrl, {
     method: "POST",
     body: formData,
   });
