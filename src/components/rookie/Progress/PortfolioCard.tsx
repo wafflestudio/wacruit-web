@@ -76,19 +76,19 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
             if (files.items.length < 1) {
               console.log(targetFile);
               postPortfolioFile(targetFile.name)
-                .then((res) => {
+                .then((res) =>
                   uploadPortfolioFileToS3(
                     res.presigned_url,
                     res.fields,
                     targetFile,
-                  );
+                  ),
+                )
+                .catch((err) => {
+                  console.log(e);
                 })
-                .then(
-                  () => {
-                    queryClient.refetchQueries(["portfolio", "files"]);
-                  },
-                  (e) => console.log(e),
-                );
+                .finally(() => {
+                  queryClient.refetchQueries(["portfolio", "files"]);
+                });
             } else {
               if (
                 confirm(
@@ -97,19 +97,17 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
               ) {
                 deletePortfolioFile(files.items[0].portfolio_name).finally(() =>
                   postPortfolioFile(targetFile.name)
-                    .then((res) => {
+                    .then((res) =>
                       uploadPortfolioFileToS3(
                         res.presigned_url,
                         res.fields,
                         targetFile,
-                      );
-                    })
-                    .then(
-                      () => {
-                        queryClient.refetchQueries(["portfolio", "files"]);
-                      },
-                      (e) => console.log(e),
-                    ),
+                      ),
+                    )
+                    .catch((e) => console.log(e))
+                    .finally(() => {
+                      queryClient.refetchQueries(["portfolio", "files"]);
+                    }),
                 );
               } else {
                 e.target.value = "";
