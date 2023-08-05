@@ -11,6 +11,13 @@ const defaultPostHeader = {
   "Content-Type": "application/json",
 };
 
+const safelyReturnResponse = (res: Response) =>
+  res.ok
+    ? res.status === 204
+      ? Promise.resolve(res)
+      : res.json()
+    : Promise.reject(res);
+
 export const getRequest = <Response>(
   url: string,
   header: HeadersInit = {},
@@ -22,7 +29,7 @@ export const getRequest = <Response>(
       ...header,
       ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
-  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+  }).then(safelyReturnResponse);
 
 export const postRequest = <Response>(
   url: string,
@@ -39,7 +46,7 @@ export const postRequest = <Response>(
       ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+  }).then(safelyReturnResponse);
 
 export const putRequest = <Response>(
   url: string,
@@ -56,7 +63,7 @@ export const putRequest = <Response>(
       ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+  }).then(safelyReturnResponse);
 
 export const patchRequest = <Response>(
   url: string,
@@ -73,14 +80,14 @@ export const patchRequest = <Response>(
       ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+  }).then(safelyReturnResponse);
 
 export const deleteRequest = <Response>(
   url: string,
   body: object,
   header: HeadersInit = {},
   authorized = true,
-): Promise<Response> =>
+) =>
   fetch(`${baseURL}${url}`, {
     method: "DELETE",
     headers: {
@@ -90,7 +97,7 @@ export const deleteRequest = <Response>(
       ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
-  }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
+  }).then(safelyReturnResponse);
 
 // EventSource API는 POST를 지원하지 않기 때문에 대충 파싱한다
 export const sseRequest = <Response extends { type: string; data: unknown }>(
