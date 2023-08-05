@@ -167,14 +167,16 @@ export default function PortfolioCard() {
             onBlur={() => {
               if (input.url.length < 1) return;
               if (input.id === null) {
-                postPortfolioLink(input.url);
+                postPortfolioLink(input.url).finally(() => {
+                  void queryClient.refetchQueries(["portfolio", "links"]);
+                });
               } else {
                 deletePortfolioLink(input.id)
                   .then(() => postPortfolioLink(input.url))
-                  .then(() => {
+                  .catch((e) => console.log(e))
+                  .finally(() => {
                     void queryClient.refetchQueries(["portfolio", "links"]);
-                  })
-                  .catch((e) => console.log(e));
+                  });
               }
             }}
           />
