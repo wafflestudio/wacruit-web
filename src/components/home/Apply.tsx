@@ -22,21 +22,18 @@ export default function Apply() {
   });
 
   const onApply = useCallback(async (recruit_id: number) => {
-    /**
-     * @TODO authPing으로 교체
-     */
-
     const auth = await checkAuth();
-
     if (auth === "valid") {
       navigate(`/recruiting/${recruit_id}`);
       return;
     }
     if (auth === "need_register") {
       navigate(`/sso/${recruit_id}`);
+      return;
     }
     if (auth === "invalid") {
       tryLogin(recruit_id);
+      return;
     }
   }, []);
 
