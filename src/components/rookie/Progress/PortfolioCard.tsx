@@ -85,7 +85,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                 })
                 .then(
                   () => {
-                    queryClient.invalidateQueries(["portfolio", "files"]);
+                    queryClient.refetchQueries(["portfolio", "files"]);
                   },
                   (e) => console.log(e),
                 );
@@ -107,7 +107,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                       })
                       .then(
                         () => {
-                          queryClient.invalidateQueries(["portfolio", "files"]);
+                          queryClient.refetchQueries(["portfolio", "files"]);
                         },
                         (e) => console.log(e),
                       ),
@@ -145,11 +145,9 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(portfolio_name)
-                        .then(() =>
-                          queryClient.invalidateQueries(["portfolio", "files"]),
-                        )
-                        .catch(() => alert("삭제에 실패했습니다."));
+                      deletePortfolioFile(portfolio_name).then(() =>
+                        queryClient.refetchQueries(["portfolio", "files"]),
+                      );
                     }
                   }}
                 >
@@ -183,10 +181,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   )
                   .then(
                     () => {
-                      void queryClient.invalidateQueries([
-                        "portfolio",
-                        "links",
-                      ]);
+                      void queryClient.refetchQueries(["portfolio", "links"]);
                     },
                     (e) => console.log(e),
                   );
