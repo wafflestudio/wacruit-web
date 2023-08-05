@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
   deletePortfolioLink,
+  downloadPortfolioFile,
   getPortfolioFiles,
   getPortfolioLinks,
   postPortfolioFile,
@@ -69,7 +70,6 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
         <FileInput
           type="file"
           id="portfolio"
-          accept="application/pdf"
           onChange={(e) => {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
@@ -85,36 +85,75 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                 })
                 .then(
                   () => {
-                    queryClient.invalidateQueries(["portfolio", "files"]);
+                    queryClient.refetchQueries(["portfolio", "files"]);
                   },
                   (e) => console.log(e),
                 );
             } else {
-              deletePortfolioFile(files.items[0].portfolio_name).then(
-                () =>
-                  postPortfolioFile(targetFile.name)
-                    .then((res) => {
-                      uploadPortfolioFileToS3(
-                        res.presigned_url,
-                        res.fields,
-                        targetFile,
-                      );
-                    })
-                    .then(
-                      () => {
-                        queryClient.invalidateQueries(["portfolio", "files"]);
-                      },
-                      (e) => console.log(e),
-                    ),
-                (e) => console.log(e),
-              );
+              if (
+                confirm(
+                  "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
+                )
+              ) {
+                deletePortfolioFile(files.items[0].portfolio_name).then(
+                  () =>
+                    postPortfolioFile(targetFile.name)
+                      .then((res) => {
+                        uploadPortfolioFileToS3(
+                          res.presigned_url,
+                          res.fields,
+                          targetFile,
+                        );
+                      })
+                      .then(
+                        () => {
+                          queryClient.refetchQueries(["portfolio", "files"]);
+                        },
+                        (e) => console.log(e),
+                      ),
+                  (e) => console.log(e),
+                );
+              } else {
+                e.target.value = "";
+              }
             }
           }}
         />
         {files.items.length > 0 && (
           <Files>
-            {files.items.map((file) => (
-              <File key={file.portfolio_name}>{file.portfolio_name}</File>
+            {files.items.map(({ portfolio_name }) => (
+              <File
+                key={portfolio_name}
+                onClick={() => {
+                  downloadPortfolioFile("test.png")
+                    .then(({ object_name, presigned_url }) => {
+                      /**
+                       * @TODO 정말 이 방법 밖에는 없는가?
+                       */
+                      const link = document.createElement("a");
+                      link.href = presigned_url;
+                      link.setAttribute("download", `${object_name}`);
+                      document.body.appendChild(link);
+                      link.click();
+                      link.parentNode?.removeChild(link);
+                    })
+                    .catch(() => alert("다운로드에 실패했습니다."));
+                }}
+              >
+                {portfolio_name}
+                <DeleteButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm("포트폴리오를 삭제하시겠습니까?")) {
+                      deletePortfolioFile(portfolio_name).then(() =>
+                        queryClient.refetchQueries(["portfolio", "files"]),
+                      );
+                    }
+                  }}
+                >
+                  <img src="/icon/rookie/DeleteFile.svg" />
+                </DeleteButton>
+              </File>
             ))}
           </Files>
         )}
@@ -142,10 +181,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   )
                   .then(
                     () => {
-                      void queryClient.invalidateQueries([
-                        "portfolio",
-                        "links",
-                      ]);
+                      void queryClient.refetchQueries(["portfolio", "links"]);
                     },
                     (e) => console.log(e),
                   );
@@ -223,24 +259,44 @@ const FileInput = styled.input`
   border: 0;
 `;
 const Files = styled.div`
-  width: 100%;
+  width: calc(100% - 15px);
   padding: 8px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border-radius: 5px;
   gap: 6px;
   background: #f6f6f6;
 `;
 const File = styled.div`
+  padding: 4px 8px;
   border-radius: 25px;
   border: 1px solid #d1d1d1;
   background: #fff;
-  padding: 8px 4px;
   color: #404040;
   font-size: 12px;
   font-weight: 400;
   line-height: 160%; /* 19.2px */
   letter-spacing: 0.48px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const DeleteButton = styled.button`
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const LinkSection = styled.div`
