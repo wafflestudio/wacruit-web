@@ -57,70 +57,72 @@ export default function Resume() {
   const userInfoFormRef = useRef<HTMLFormElement>(null);
 
   return (
-    <Main>
+    <>
       <Header />
-      <Title>자기소개서</Title>
-      <Description>모든 문항에 성실히 응답해주세요.</Description>
-      <Questionaires>
-        {resumeInput.map(
-          (
-            {
-              question_id,
-              question_num,
-              question_content,
-              content_limit,
-              answer,
-            },
-            i,
-          ) => (
-            <QuestionaireInput
-              key={question_id}
-              index={question_num}
-              question={question_content}
-              max={content_limit}
-              value={answer}
-              onChange={(e) => {
-                const copy = [...resumeInput];
-                copy[i] = { ...copy[i], answer: e.target.value };
-                setResumeInput(copy);
-              }}
-            />
-          ),
-        )}
-      </Questionaires>
-      <Title>추가 정보 입력</Title>
-      <Description>모든 문항은 필수 응답 항목입니다.</Description>
-      <UserInfoForm
-        value={userInfoInput}
-        onChange={setUserInfoInput}
-        ref={userInfoFormRef}
-      />
-      <Buttons>
-        <SaveButton
-          onClick={() => {
-            submit({
-              onSuccess: () => alert("저장되었습니다."),
-              onError: () => alert("오류가 발생했습니다."),
-            });
-          }}
-        >
-          임시저장
-        </SaveButton>
-        <SubmitButton
-          onClick={() =>
-            submit({
-              onSuccess: () => {
-                alert("제출되었습니다.");
-                navigate(`/recruiting/${recruit_id}`);
+      <Main>
+        <Title>자기소개서</Title>
+        <Description>모든 문항에 성실히 응답해주세요.</Description>
+        <Questionaires>
+          {resumeInput.map(
+            (
+              {
+                question_id,
+                question_num,
+                question_content,
+                content_limit,
+                answer,
               },
-              onError: () => alert("오류가 발생했습니다."),
-            })
-          }
-        >
-          제출하기
-        </SubmitButton>
-      </Buttons>
-    </Main>
+              i,
+            ) => (
+              <QuestionaireInput
+                key={question_id}
+                index={question_num}
+                question={question_content}
+                max={content_limit}
+                value={answer}
+                onChange={(e) => {
+                  const copy = [...resumeInput];
+                  copy[i] = { ...copy[i], answer: e.target.value };
+                  setResumeInput(copy);
+                }}
+              />
+            ),
+          )}
+        </Questionaires>
+        <Title>추가 정보 입력</Title>
+        <Description>모든 문항은 필수 응답 항목입니다.</Description>
+        <UserInfoForm
+          value={userInfoInput}
+          onChange={setUserInfoInput}
+          ref={userInfoFormRef}
+        />
+        <Buttons>
+          <SaveButton
+            onClick={() => {
+              submit({
+                onSuccess: () => alert("저장되었습니다."),
+                onError: () => alert("오류가 발생했습니다."),
+              });
+            }}
+          >
+            임시저장
+          </SaveButton>
+          <SubmitButton
+            onClick={() =>
+              submit({
+                onSuccess: () => {
+                  alert("제출되었습니다.");
+                  navigate(`/recruiting/${recruit_id}`);
+                },
+                onError: () => alert("오류가 발생했습니다."),
+              })
+            }
+          >
+            제출하기
+          </SubmitButton>
+        </Buttons>
+      </Main>
+    </>
   );
 }
 

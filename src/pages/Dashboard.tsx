@@ -25,71 +25,73 @@ export default function Dashboard() {
   });
 
   return (
-    <Main>
+    <>
       <Header />
-      <Title>
-        <MarkdownRenderer
-          markdownString={recruiting.name}
-          StyledWrapper={TitleMarkdownStyledWrapper}
-        />
-      </Title>
-      <Description>
-        <MarkdownRenderer
-          markdownString={`와플스튜디오의 21.5기 ${
-            recruiting.id === 1 ? "루키" : "디자이너"
-          }를 모집합니다.`}
-          StyledWrapper={DescriptionMarkdownStyledWrapper}
-        />
-      </Description>
-      <Information>
-        <MarkdownRenderer
-          markdownString={recruiting.description}
-          StyledWrapper={InformationMarkdownStyledWrapper}
-        />
-      </Information>
-      <AnnouncementButton onClick={() => navigate("/announcement")}>
-        공지 및 변경사항 안내
-        <div>
-          <img
-            src="/icon/rookie/AnnounceRightArrow.svg"
-            alt="&rarr;"
-            width={20}
+      <Main>
+        <Title>
+          <MarkdownRenderer
+            markdownString={recruiting.name}
+            StyledWrapper={TitleMarkdownStyledWrapper}
           />
-          <img
-            src="/icon/rookie/AnnounceRightArrowWhite.svg"
-            alt="&rarr;"
-            width={20}
+        </Title>
+        <Description>
+          <MarkdownRenderer
+            markdownString={`와플스튜디오의 21.5기 ${
+              recruiting.id === 1 ? "루키" : "디자이너"
+            }를 모집합니다.`}
+            StyledWrapper={DescriptionMarkdownStyledWrapper}
           />
-        </div>
-      </AnnouncementButton>
-      <BottomContainer>
-        <ProgressList
-          problems={recruiting.problem_status}
-          hasResume={resume.items.length > 0}
-          isDesigner={recruiting.id === 2}
-        />
-        <Caution>
-          위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
-          완료됩니다.
-          <CancelButton
-            onClick={() => {
-              if (
-                confirm(
-                  "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
-                )
-              ) {
-                deleteResume(recruiting.id).finally(() => {
-                  alert("지원이 취소되었습니다");
-                  navigate("/");
-                });
-              }
-            }}
-          >
-            지원 취소
-          </CancelButton>
-        </Caution>
-      </BottomContainer>
-    </Main>
+        </Description>
+        <Information>
+          <MarkdownRenderer
+            markdownString={recruiting.description}
+            StyledWrapper={InformationMarkdownStyledWrapper}
+          />
+        </Information>
+        <AnnouncementButton onClick={() => navigate("/announcement")}>
+          공지 및 변경사항 안내
+          <div>
+            <img
+              src="/icon/rookie/AnnounceRightArrow.svg"
+              alt="&rarr;"
+              width={20}
+            />
+            <img
+              src="/icon/rookie/AnnounceRightArrowWhite.svg"
+              alt="&rarr;"
+              width={20}
+            />
+          </div>
+        </AnnouncementButton>
+        <BottomContainer>
+          <ProgressList
+            problems={recruiting.problem_status}
+            hasResume={resume.items.length > 0}
+            isDesigner={recruiting.id === 2}
+          />
+          <Caution>
+            위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
+            완료됩니다.
+            <CancelButton
+              onClick={() => {
+                if (
+                  confirm(
+                    "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
+                  )
+                ) {
+                  deleteResume(recruiting.id).finally(() => {
+                    alert("지원이 취소되었습니다");
+                    navigate("/");
+                  });
+                }
+              }}
+            >
+              지원 취소
+            </CancelButton>
+          </Caution>
+        </BottomContainer>
+      </Main>
+    </>
   );
 }
 
