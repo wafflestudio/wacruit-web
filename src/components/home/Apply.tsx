@@ -22,22 +22,24 @@ export default function Apply() {
   });
 
   const onApply = useCallback(async (recruit_id: number) => {
-    /**
-     * @TODO authPing으로 교체
-     */
-
     const auth = await checkAuth();
-
     if (auth === "valid") {
       navigate(`/recruiting/${recruit_id}`);
       return;
     }
     if (auth === "need_register") {
       navigate(`/sso/${recruit_id}`);
+      return;
     }
     if (auth === "invalid") {
       tryLogin(recruit_id);
+      return;
     }
+  }, []);
+
+  const onCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    alert("링크가 복사되었습니다!");
   }, []);
 
   return (
@@ -115,11 +117,8 @@ export default function Apply() {
           >
             <img src={"/image/home/share/Instagram.svg"} alt="share" />
           </ShareIcon>
-          <ShareIcon>
+          <ShareIcon onClick={onCopy}>
             <img src={"/image/home/share/Share.svg"} alt="share" />
-          </ShareIcon>
-          <ShareIcon>
-            <img src={"/image/home/share/KakaoTalk.svg"} alt="share" />
           </ShareIcon>
         </ShareButton>
       </Share>

@@ -1,7 +1,11 @@
-import { getToken } from "./auth";
+import { getSsoToken } from "./auth";
 import { baseURL } from "./environment";
 
 const defaultCommonHeader = {};
+
+const authorizedHeader = (token: string | null) => ({
+  Authorization: `Bearer ${token}`,
+});
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
@@ -16,7 +20,7 @@ export const getRequest = <Response>(
     headers: {
       ...defaultCommonHeader,
       ...header,
-      ...(authorized ? { Authorization: getToken() } : {}),
+      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
 
@@ -32,7 +36,7 @@ export const postRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? { Authorization: getToken() } : {}),
+      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
@@ -49,7 +53,7 @@ export const putRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? { Authorization: getToken() } : {}),
+      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
@@ -66,7 +70,7 @@ export const patchRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? { Authorization: getToken() } : {}),
+      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
@@ -83,7 +87,7 @@ export const deleteRequest = <Response>(
       ...defaultCommonHeader,
       ...defaultPostHeader,
       ...header,
-      ...(authorized ? { Authorization: getToken() } : {}),
+      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
     },
     body: JSON.stringify(body),
   }).then((res) => (res.ok ? res.json() : Promise.reject(res)));
@@ -102,7 +106,7 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
         ...defaultCommonHeader,
         ...defaultPostHeader,
         ...header,
-        ...(authorized ? { Authorization: getToken() } : {}),
+        ...(authorized ? authorizedHeader(getSsoToken()) : {}),
       },
       body: JSON.stringify(body),
     });

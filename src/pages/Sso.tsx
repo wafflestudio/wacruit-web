@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { useEffect, useState } from "react";
 import { postUser } from "../apis/user";
-import { checkSSO } from "../apis/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
 import { useQuery } from "@tanstack/react-query";
+import { checkAuth } from "../apis/auth";
 
 const getRedirectPath = (to: string) => {
   if (to === "home") {
@@ -43,22 +43,27 @@ export default function Sso() {
     isLoading,
   } = useQuery({
     queryKey: ["sso"],
-    queryFn: () => checkSSO(),
-    retry: 4,
+    queryFn: () =>
+      checkAuth()
+        .then((res) =>
+          res === "invalid" ? Promise.reject("invalid") : Promise.resolve(res),
+        )
+        .catch((e) => Promise.reject(e)),
+    retry: 2,
   });
 
   useEffect(() => {
     if (!isLoading) {
       if (error) {
-        alert("로그인 정보가 잘못되었습니다.");
+        alert("문제가 발생했습니다. 다시 로그인을 시도해주세요.");
         navigate("/");
         return;
       }
-      if (!ssoState) {
-        setNeedRegister(true);
-        return;
-      }
       if (ssoState) {
+        if (ssoState === "need_register") {
+          setNeedRegister(true);
+          return;
+        }
         void queryClient.invalidateQueries(["auth"]);
         navigate(getRedirectPath(params.recruit_id ?? "home"));
         return;
