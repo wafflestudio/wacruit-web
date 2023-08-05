@@ -40,6 +40,11 @@ export default function Apply() {
     }
   }, []);
 
+  const onCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    alert("링크가 복사되었습니다!");
+  }, []);
+
   return (
     <Section>
       <BackGround></BackGround>
@@ -115,11 +120,8 @@ export default function Apply() {
           >
             <img src={"/image/home/share/Instagram.svg"} alt="share" />
           </ShareIcon>
-          <ShareIcon>
+          <ShareIcon onClick={onCopy}>
             <img src={"/image/home/share/Share.svg"} alt="share" />
-          </ShareIcon>
-          <ShareIcon>
-            <img src={"/image/home/share/KakaoTalk.svg"} alt="share" />
           </ShareIcon>
         </ShareButton>
       </Share>
