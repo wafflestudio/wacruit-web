@@ -95,23 +95,21 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
                 )
               ) {
-                deletePortfolioFile(files.items[0].portfolio_name).then(
-                  () =>
-                    postPortfolioFile(targetFile.name)
-                      .then((res) => {
-                        uploadPortfolioFileToS3(
-                          res.presigned_url,
-                          res.fields,
-                          targetFile,
-                        );
-                      })
-                      .then(
-                        () => {
-                          queryClient.refetchQueries(["portfolio", "files"]);
-                        },
-                        (e) => console.log(e),
-                      ),
-                  (e) => console.log(e),
+                deletePortfolioFile(files.items[0].portfolio_name).finally(() =>
+                  postPortfolioFile(targetFile.name)
+                    .then((res) => {
+                      uploadPortfolioFileToS3(
+                        res.presigned_url,
+                        res.fields,
+                        targetFile,
+                      );
+                    })
+                    .then(
+                      () => {
+                        queryClient.refetchQueries(["portfolio", "files"]);
+                      },
+                      (e) => console.log(e),
+                    ),
                 );
               } else {
                 e.target.value = "";
@@ -145,9 +143,10 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(portfolio_name).then(() =>
-                        queryClient.refetchQueries(["portfolio", "files"]),
-                      );
+                      deletePortfolioFile(portfolio_name).finally(() => {
+                        console.log("refetch");
+                        queryClient.refetchQueries(["portfolio", "files"]);
+                      });
                     }
                   }}
                 >
@@ -175,10 +174,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                 postPortfolioLink(input.url);
               } else {
                 deletePortfolioLink(input.id)
-                  .then(
-                    () => postPortfolioLink(input.url),
-                    (e) => console.log(e),
-                  )
+                  .finally(() => postPortfolioLink(input.url))
                   .then(
                     () => {
                       void queryClient.refetchQueries(["portfolio", "links"]);
