@@ -6,18 +6,19 @@ export default function Service() {
   const [appIndex, setAppIndex] = useState(0);
   return (
     <Section>
-      <SectionNumber>#3</SectionNumber>
-      <SectionTitle>
+      <SectionNumber style={{ gridArea: "number" }}>#3</SectionNumber>
+      <SectionTitle style={{ gridArea: "title" }}>
         <h1>
           와플스튜디오 <span>출시 서비스</span>
         </h1>
         <p>와플스튜디오의 프로젝트로 시작해 실제 사용되고 있는 서비스</p>
       </SectionTitle>
-      <Container $appIndex={appIndex}>
-        <LeftButton
-          disabled={appIndex === 0}
-          onClick={() => setAppIndex((v) => v - 1)}
-        />
+      <LeftButton
+        disabled={appIndex === 0}
+        onClick={() => setAppIndex((v) => v - 1)}
+        style={{ gridArea: "left" }}
+      />
+      <Container $appIndex={appIndex} style={{ gridArea: "apps" }}>
         <App>
           <img src="/image/home/service/Snutt.png" />
           <h3>SNUTT</h3>
@@ -42,11 +43,12 @@ export default function Service() {
             <img src="/image/home/service/Snuboard2.svg" />
           </div>
         </App>
-        <RightButton
-          disabled={appIndex === 2}
-          onClick={() => setAppIndex((v) => v + 1)}
-        />
       </Container>
+      <RightButton
+        disabled={appIndex === 2}
+        onClick={() => setAppIndex((v) => v + 1)}
+        style={{ gridArea: "right" }}
+      />
     </Section>
   );
 }
@@ -55,7 +57,14 @@ const Section = styled.section`
   position: relative;
   width: 100%;
   padding: 100px 0;
-  display: flex;
+
+  display: grid;
+  grid-template-areas:
+    "1 1 number 2 2"
+    "title title title title title"
+    "left apps apps apps right";
+  grid-template-columns: 1fr auto auto auto 1fr;
+  grid-template-rows: auto auto 1fr;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -63,21 +72,23 @@ const Section = styled.section`
 
 const Container = styled.div<{ $appIndex: number }>`
   display: flex;
-  gap: 60px;
   padding-bottom: 60px;
   align-items: center;
+  width: 526px;
+  overflow: hidden;
 
-  > :nth-child(${(props) => props.$appIndex + 2}) {
-    display: grid;
+  > div {
+    transition: transform 0.5s;
+    transform: translateX(${(p) => p.$appIndex * -526}px);
   }
 `;
 
 const App = styled.div`
-  display: none;
+  display: grid;
   flex-direction: column;
-  align-items: center;
   font-size: 14px;
   letter-spacing: -0.2px;
+  width: 100%;
 
   grid-template-areas:
     "x1 mobile"
@@ -134,24 +145,25 @@ const App = styled.div`
   }
 `;
 
-const LeftButton = styled.button`
+const LeftRightButton = styled.button`
   width: 22px;
   height: 39px;
-  background: url("${(props) =>
-      props.disabled ? "/icon/LeftLightOrange.svg" : "/icon/RightOrange.svg"}")
-    no-repeat;
-  ${(props) => !props.disabled && { transform: "rotate(180deg)" }}
   background-size: 22px 39px;
+  background-repeat: no-repeat;
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  margin: 60px;
 `;
 
-const RightButton = styled.button`
-  width: 22px;
-  height: 39px;
-  background: url("${(props) =>
-      props.disabled ? "/icon/LeftLightOrange.svg" : "/icon/RightOrange.svg"}")
-    no-repeat;
-  ${(props) => props.disabled && { transform: "rotate(180deg)" }}
-  background-size: 22px 39px;
-  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+const LeftButton = styled(LeftRightButton)`
+  background-image: url("${(props) =>
+    props.disabled ? "/icon/LeftLightOrange.svg" : "/icon/RightOrange.svg"}");
+  ${(props) => !props.disabled && { transform: "rotate(180deg)" }};
+  justify-self: flex-end;
+`;
+
+const RightButton = styled(LeftRightButton)`
+  background-image: url("${(props) =>
+    props.disabled ? "/icon/LeftLightOrange.svg" : "/icon/RightOrange.svg"}");
+  ${(props) => props.disabled && { transform: "rotate(180deg)" }};
+  justify-self: flex-start;
 `;
