@@ -78,7 +78,7 @@ const Container = styled.div<{ $appIndex: number }>`
   overflow: hidden;
 
   > div {
-    transition: transform 0.5s;
+    transition: transform 0.5s ease-in-out;
     transform: translateX(${(p) => p.$appIndex * -526}px);
   }
 `;
