@@ -120,7 +120,7 @@ export default function PortfolioCard() {
               <File
                 key={portfolio_name}
                 onClick={() => {
-                  downloadPortfolioFile("test.png")
+                  downloadPortfolioFile(portfolio_name)
                     .then(({ object_name, presigned_url }) => {
                       /**
                        * @TODO 정말 이 방법 밖에는 없는가?
