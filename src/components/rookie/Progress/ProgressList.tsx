@@ -5,6 +5,7 @@ import { Recruiting } from "../../../types/apiTypes";
 import PortfolioCard from "./PortfolioCard";
 */
 import { ResumeCard } from "./ResumeCard";
+import PortfolioCard from "./PortfolioCard";
 // import PortfolioCard from "./PortfolioCard";
 
 type ProgressListProps = {
@@ -22,10 +23,7 @@ export function ProgressList({
     <List>
       <ResumeCard submit={hasResume} />
       {isDesigner ? (
-        // (
-        //   <PortfolioCard submit={false} />
-        // )
-        <></>
+        <PortfolioCard />
       ) : (
         problems
           .sort((a, b) => {

@@ -26,7 +26,7 @@ export default function Header() {
     return (
       <Container>
         <Link to="/">
-          <img src={"/icon/rookie/logo.png"} height={27} />
+          <img src={"/icon/header/Logo.jpeg"} height={27} />
         </Link>
         <LoadAuth>로그인 정보 확인 중...</LoadAuth>
       </Container>
@@ -36,7 +36,7 @@ export default function Header() {
   return (
     <Container>
       <Link to="/">
-        <img src={"/icon/rookie/logo.png"} height={27} />
+        <img src={"/icon/header/Logo.jpeg"} height={27} />
       </Link>
       {authState === "valid" ? (
         <Nav>

@@ -2,17 +2,32 @@ import { python } from "@codemirror/lang-python";
 import { cpp } from "@codemirror/lang-cpp";
 import { javascript } from "@codemirror/lang-javascript";
 import { useCallback, useState } from "react";
-import { LanguageSupport } from "@codemirror/language";
+import { LanguageSupport, StreamLanguage } from "@codemirror/language";
 import { java } from "@codemirror/lang-java";
+import { c, kotlin } from "@codemirror/legacy-modes/mode/clike";
+import { swift } from "@codemirror/legacy-modes/mode/swift";
 
-export const languages = ["C", "C++", "Java", "Javascript", "Python"] as const;
+export const languages = [
+  "C",
+  "C++",
+  "Java",
+  "Javascript",
+  "Python",
+  "Kotlin",
+  "Swift",
+] as const;
 export type Language = (typeof languages)[number];
-export const languageSupports: Record<Language, LanguageSupport | null> = {
-  C: cpp(),
+export const languageSupports: Record<
+  Language,
+  LanguageSupport | StreamLanguage<unknown> | null
+> = {
+  C: StreamLanguage.define(c),
   "C++": cpp(),
   Java: java(),
   Javascript: javascript(),
   Python: python(),
+  Kotlin: StreamLanguage.define(kotlin),
+  Swift: StreamLanguage.define(swift),
 };
 
 export const languageCodes: Record<Language, number> = {
@@ -20,7 +35,9 @@ export const languageCodes: Record<Language, number> = {
   "C++": 54,
   Java: 62,
   Javascript: 93,
-  Python: 92
+  Python: 92,
+  Kotlin: 78,
+  Swift: 83,
 };
 
 export const boilerplates: Record<Language, string> = {
@@ -52,6 +69,10 @@ class Main {
 }`,
   Javascript: `console.log("Hello, world!");`,
   Python: `print("Hello, world!")`,
+  Kotlin: `fun main(args: Array<String>) {
+    println("Hello, world!")
+}`,
+  Swift: `print("Hello, world!")`,
 };
 
 // localStorage에 저장된 언어를 불러옴

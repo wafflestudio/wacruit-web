@@ -4,20 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
-  deletePortfolioLink,
+  // deletePortfolioLink,
+  downloadPortfolioFile,
   getPortfolioFiles,
   getPortfolioLinks,
   postPortfolioFile,
-  postPortfolioLink,
+  // postPortfolioLink,
   uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 
-type PortfolioCardProps = {
-  submit: boolean;
-};
-
-export default function PortfolioCard({ submit }: PortfolioCardProps) {
+export default function PortfolioCard() {
+  const [submit, setSubmit] = useState(false);
   const queryClient = useQueryClient();
   const { description, iconSrc, iconAlt } = useMemo(
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
@@ -51,6 +49,13 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
       );
       setLinksInput(updated);
     }
+    if (files) {
+      if (files.items.length > 0) {
+        setSubmit(true);
+      } else {
+        setSubmit(false);
+      }
+    }
   }, [files, links]);
 
   if (files === undefined || links === undefined)
@@ -69,56 +74,86 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
         <FileInput
           type="file"
           id="portfolio"
-          accept="application/pdf"
           onChange={(e) => {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
             if (files.items.length < 1) {
-              console.log(targetFile);
               postPortfolioFile(targetFile.name)
-                .then((res) => {
+                .then((res) =>
                   uploadPortfolioFileToS3(
                     res.presigned_url,
                     res.fields,
                     targetFile,
-                  );
-                })
-                .then(
-                  () => {
-                    queryClient.invalidateQueries(["portfolio", "files"]);
-                  },
-                  (e) => console.log(e),
-                );
+                  ),
+                )
+                .finally(() => {
+                  queryClient.refetchQueries(["portfolio", "files"]);
+                });
             } else {
-              deletePortfolioFile(files.items[0].portfolio_name).then(
-                () =>
+              if (
+                confirm(
+                  "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
+                )
+              ) {
+                deletePortfolioFile(files.items[0].portfolio_name).then(() =>
                   postPortfolioFile(targetFile.name)
-                    .then((res) => {
+                    .then((res) =>
                       uploadPortfolioFileToS3(
                         res.presigned_url,
                         res.fields,
                         targetFile,
-                      );
-                    })
-                    .then(
-                      () => {
-                        queryClient.invalidateQueries(["portfolio", "files"]);
-                      },
-                      (e) => console.log(e),
-                    ),
-                (e) => console.log(e),
-              );
+                      ),
+                    )
+                    .finally(() => {
+                      queryClient.refetchQueries(["portfolio", "files"]);
+                    }),
+                );
+              } else {
+                e.target.value = "";
+              }
             }
           }}
         />
         {files.items.length > 0 && (
           <Files>
-            {files.items.map((file) => (
-              <File key={file.portfolio_name}>{file.portfolio_name}</File>
+            {files.items.map(({ portfolio_name }) => (
+              <File
+                key={portfolio_name}
+                onClick={() => {
+                  downloadPortfolioFile(portfolio_name)
+                    .then(({ object_name, presigned_url }) => {
+                      /**
+                       * @TODO 정말 이 방법 밖에는 없는가?
+                       */
+                      const link = document.createElement("a");
+                      link.href = presigned_url;
+                      link.setAttribute("download", `${object_name}`);
+                      document.body.appendChild(link);
+                      link.click();
+                      link.parentNode?.removeChild(link);
+                    })
+                    .catch(() => alert("다운로드에 실패했습니다."));
+                }}
+              >
+                {portfolio_name}
+                <DeleteButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm("포트폴리오를 삭제하시겠습니까?")) {
+                      deletePortfolioFile(portfolio_name).then(() => {
+                        queryClient.refetchQueries(["portfolio", "files"]);
+                      });
+                    }
+                  }}
+                >
+                  <img src="/icon/rookie/DeleteFile.svg" />
+                </DeleteButton>
+              </File>
             ))}
           </Files>
         )}
       </FileSection>
+      {/* 
       <LinkSection>
         <div>링크 첨부</div>
         {linksInput.map((input, index) => (
@@ -133,27 +168,21 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
             onBlur={() => {
               if (input.url.length < 1) return;
               if (input.id === null) {
-                postPortfolioLink(input.url);
+                postPortfolioLink(input.url).finally(() => {
+                  void queryClient.refetchQueries(["portfolio", "links"]);
+                });
               } else {
                 deletePortfolioLink(input.id)
-                  .then(
-                    () => postPortfolioLink(input.url),
-                    (e) => console.log(e),
-                  )
-                  .then(
-                    () => {
-                      void queryClient.invalidateQueries([
-                        "portfolio",
-                        "links",
-                      ]);
-                    },
-                    (e) => console.log(e),
-                  );
+                  .then(() => postPortfolioLink(input.url))
+                  .catch((e) => console.log(e))
+                  .finally(() => {
+                    void queryClient.refetchQueries(["portfolio", "links"]);
+                  });
               }
             }}
           />
         ))}
-      </LinkSection>
+      </LinkSection>*/}
     </Card>
   );
 }
@@ -173,7 +202,8 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  width: 840px;
+  // width: 840px;
+  width: 565px;
   height: 193px;
   flex-shrink: 0;
   border-radius: 5px;
@@ -197,7 +227,7 @@ const FileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-right: 1px solid #f6f6f6;
+  // border-right: 1px solid #f6f6f6;
   gap: 8px;
   color: #404040;
 `;
@@ -221,28 +251,49 @@ const FileInput = styled.input`
   height: 0;
   padding: 0;
   border: 0;
+  visibility: hidden;
 `;
 const Files = styled.div`
-  width: 100%;
+  width: calc(100% - 15px);
   padding: 8px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border-radius: 5px;
   gap: 6px;
   background: #f6f6f6;
 `;
 const File = styled.div`
+  padding: 4px 8px;
   border-radius: 25px;
   border: 1px solid #d1d1d1;
   background: #fff;
-  padding: 8px 4px;
   color: #404040;
   font-size: 12px;
   font-weight: 400;
   line-height: 160%; /* 19.2px */
   letter-spacing: 0.48px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
+const DeleteButton = styled.button`
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+/*
 const LinkSection = styled.div`
   width: 237px;
   display: flex;
@@ -258,7 +309,7 @@ const LinkInput = styled.input`
   color: #404040;
   font-size: 16px;
   font-weight: 400;
-  line-height: 160%; /* 25.6px */
+  line-height: 160%; 
   letter-spacing: 0.64px;
   border: none;
   border-radius: 5px;
@@ -268,6 +319,7 @@ const LinkInput = styled.input`
     color: #d9d9d9;
   }
 `;
+*/
 
 const Name = styled.h1`
   font-size: 24px;

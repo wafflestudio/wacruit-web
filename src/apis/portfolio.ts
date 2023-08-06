@@ -16,8 +16,13 @@ export const deletePortfolioLink = (linkId: number) =>
 export const postPortfolioFile = (fileName: string) =>
   getRequest<{ presigned_url: string; fields: object }>(
     `/portfolios/file/url/upload/?file_name=${fileName}`,
-    {},
   );
+export const downloadPortfolioFile = (fileName: string) =>
+  getRequest<{
+    object_name: string;
+    presigned_url: string;
+    fields: object | null;
+  }>(`/portfolios/file/url/download/?file_name=${fileName}`);
 export const deletePortfolioFile = (fileName: string) =>
   deleteRequest(`/portfolios/file/delete/?file_name=${fileName}`, {});
 
@@ -31,7 +36,7 @@ export const uploadPortfolioFileToS3 = (
     formData.append(key, data[key as keyof typeof data]);
   }
   formData.append("file", file);
-  fetch(presignedUrl, {
+  return fetch(presignedUrl, {
     method: "POST",
     body: formData,
   });
