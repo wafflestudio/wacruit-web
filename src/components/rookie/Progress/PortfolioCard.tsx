@@ -4,12 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
-  deletePortfolioLink,
+  // deletePortfolioLink,
   downloadPortfolioFile,
   getPortfolioFiles,
   getPortfolioLinks,
   postPortfolioFile,
-  postPortfolioLink,
+  // postPortfolioLink,
   uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
@@ -153,6 +153,7 @@ export default function PortfolioCard() {
           </Files>
         )}
       </FileSection>
+      {/* 
       <LinkSection>
         <div>링크 첨부</div>
         {linksInput.map((input, index) => (
@@ -181,7 +182,7 @@ export default function PortfolioCard() {
             }}
           />
         ))}
-      </LinkSection>
+      </LinkSection>*/}
     </Card>
   );
 }
@@ -201,7 +202,8 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  width: 840px;
+  // width: 840px;
+  width: 565px;
   height: 193px;
   flex-shrink: 0;
   border-radius: 5px;
@@ -225,7 +227,7 @@ const FileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-right: 1px solid #f6f6f6;
+  // border-right: 1px solid #f6f6f6;
   gap: 8px;
   color: #404040;
 `;
@@ -290,7 +292,7 @@ const DeleteButton = styled.button`
     opacity: 0.5;
   }
 `;
-
+/*
 const LinkSection = styled.div`
   width: 237px;
   display: flex;
@@ -306,7 +308,7 @@ const LinkInput = styled.input`
   color: #404040;
   font-size: 16px;
   font-weight: 400;
-  line-height: 160%; /* 25.6px */
+  line-height: 160%; 
   letter-spacing: 0.64px;
   border: none;
   border-radius: 5px;
@@ -316,6 +318,7 @@ const LinkInput = styled.input`
     color: #d9d9d9;
   }
 `;
+*/
 
 const Name = styled.h1`
   font-size: 24px;
