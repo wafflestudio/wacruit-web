@@ -251,6 +251,7 @@ const FileInput = styled.input`
   height: 0;
   padding: 0;
   border: 0;
+  visibility: hidden;
 `;
 const Files = styled.div`
   width: calc(100% - 15px);
