@@ -14,11 +14,8 @@ import {
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 
-type PortfolioCardProps = {
-  submit: boolean;
-};
-
-export default function PortfolioCard({ submit }: PortfolioCardProps) {
+export default function PortfolioCard() {
+  const [submit, setSubmit] = useState(false);
   const queryClient = useQueryClient();
   const { description, iconSrc, iconAlt } = useMemo(
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
@@ -52,6 +49,13 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
       );
       setLinksInput(updated);
     }
+    if (files) {
+      if (files.items.length > 0) {
+        setSubmit(true);
+      } else {
+        setSubmit(false);
+      }
+    }
   }, [files, links]);
 
   if (files === undefined || links === undefined)
@@ -74,7 +78,6 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
             if (files.items.length < 1) {
-              console.log(targetFile);
               postPortfolioFile(targetFile.name)
                 .then((res) =>
                   uploadPortfolioFileToS3(
@@ -83,9 +86,6 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                     targetFile,
                   ),
                 )
-                .catch((err) => {
-                  console.log(e);
-                })
                 .finally(() => {
                   queryClient.refetchQueries(["portfolio", "files"]);
                 });
@@ -95,7 +95,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
                 )
               ) {
-                deletePortfolioFile(files.items[0].portfolio_name).finally(() =>
+                deletePortfolioFile(files.items[0].portfolio_name).then(() =>
                   postPortfolioFile(targetFile.name)
                     .then((res) =>
                       uploadPortfolioFileToS3(
@@ -104,7 +104,6 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                         targetFile,
                       ),
                     )
-                    .catch((e) => console.log(e))
                     .finally(() => {
                       queryClient.refetchQueries(["portfolio", "files"]);
                     }),
@@ -141,8 +140,7 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(portfolio_name).finally(() => {
-                        console.log("refetch");
+                      deletePortfolioFile(portfolio_name).then(() => {
                         queryClient.refetchQueries(["portfolio", "files"]);
                       });
                     }
@@ -169,16 +167,16 @@ export default function PortfolioCard({ submit }: PortfolioCardProps) {
             onBlur={() => {
               if (input.url.length < 1) return;
               if (input.id === null) {
-                postPortfolioLink(input.url);
+                postPortfolioLink(input.url).finally(() => {
+                  void queryClient.refetchQueries(["portfolio", "links"]);
+                });
               } else {
                 deletePortfolioLink(input.id)
-                  .finally(() => postPortfolioLink(input.url))
-                  .then(
-                    () => {
-                      void queryClient.refetchQueries(["portfolio", "links"]);
-                    },
-                    (e) => console.log(e),
-                  );
+                  .then(() => postPortfolioLink(input.url))
+                  .catch((e) => console.log(e))
+                  .finally(() => {
+                    void queryClient.refetchQueries(["portfolio", "links"]);
+                  });
               }
             }}
           />

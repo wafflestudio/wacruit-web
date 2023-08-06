@@ -23,7 +23,7 @@ export function ProgressList({
     <List>
       <ResumeCard submit={hasResume} />
       {isDesigner ? (
-        <PortfolioCard submit={false} />
+        <PortfolioCard />
       ) : (
         problems
           .sort((a, b) => {
