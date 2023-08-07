@@ -202,8 +202,7 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  // width: 840px;
-  width: 565px;
+  width: 840px;
   height: 193px;
   flex-shrink: 0;
   border-radius: 5px;
@@ -227,7 +226,7 @@ const FileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  // border-right: 1px solid #f6f6f6;
+  border-right: 1px solid #f6f6f6;
   gap: 8px;
   color: #404040;
 `;
@@ -289,6 +288,7 @@ const DeleteButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 10px;
   &:hover {
     opacity: 0.5;
   }
