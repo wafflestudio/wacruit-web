@@ -10,6 +10,7 @@ import {
   getPortfolioLinks,
   postPortfolioFile,
   postPortfolioLink,
+  putPortfolioLink,
   uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
@@ -158,6 +159,7 @@ export default function PortfolioCard() {
         <div>링크 첨부</div>
         {linksInput.map((input, index) => (
           <LinkInput
+            key={index}
             placeholder="https://example.com"
             value={input.url}
             onChange={(e) => {
@@ -166,14 +168,20 @@ export default function PortfolioCard() {
               setLinksInput(copy);
             }}
             onBlur={() => {
-              if (input.url.length < 1) return;
+              if (input.url.length < 1) {
+                if (input.id === null) return;
+                deletePortfolioLink(input.id).finally(() => {
+                  void queryClient.refetchQueries(["portfolio", "links"]);
+                });
+                return;
+              }
+
               if (input.id === null) {
                 postPortfolioLink(input.url).finally(() => {
                   void queryClient.refetchQueries(["portfolio", "links"]);
                 });
               } else {
-                deletePortfolioLink(input.id)
-                  .then(() => postPortfolioLink(input.url))
+                putPortfolioLink(input.id, input.url)
                   .catch((e) => console.log(e))
                   .finally(() => {
                     void queryClient.refetchQueries(["portfolio", "links"]);
