@@ -1,5 +1,5 @@
 import { PortfolioFile, PortfolioLink } from "../types/apiTypes";
-import { deleteRequest, getRequest, postRequest } from "./utility";
+import { deleteRequest, getRequest, postRequest, putRequest } from "./utility";
 
 export const getPortfolioFiles = () =>
   getRequest<{ items: PortfolioFile[] }>(`/portfolios/file`);
@@ -8,7 +8,14 @@ export const getPortfolioLinks = () =>
   getRequest<{ items: PortfolioLink[] }>(`/portfolios/url`);
 
 export const postPortfolioLink = (url: string) =>
-  postRequest(`/portfolios/url?url=${url}`, {});
+  postRequest(`/portfolios/url`, {
+    url,
+  });
+
+export const putPortfolioLink = (linkId: number, url: string) =>
+  putRequest(`/portfolios/url/${linkId}`, {
+    url,
+  });
 
 export const deletePortfolioLink = (linkId: number) =>
   deleteRequest(`/portfolios/url/${linkId}`, {});
