@@ -212,5 +212,7 @@ const MarkdownStyledWrapper = styled.div`
     font-weight: normal;
     line-height: 185%;
     color: #373737;
+    white-space: pre-wrap;
+    work-break: keep-all;
   }
 `;

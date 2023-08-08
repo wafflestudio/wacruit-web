@@ -136,23 +136,21 @@ const DivideLine = styled.div`
 `;
 
 const MarkdownStyledWrapper = styled.div`
+  font-size: 16px;
+  line-height: 170%;
+  letter-spacing: 0;
+  color: #737373;
   p {
-    width: 100%;
-    white-space: pre-wrap;
-    word-break: break-all;
     margin-top: 18px;
-    font-size: 16px;
-    line-height: 170%;
-    letter-spacing: 0;
-    color: #737373;
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+  ul,
+  ol {
+    padding: 0;
   }
   li {
-    width: 100%;
     white-space: pre-wrap;
-    word-break: break-all;
-    font-size: 16px;
-    line-height: 170%;
-    letter-spacing: 0;
-    color: #737373;
+    word-break: keep-all;
   }
 `;
