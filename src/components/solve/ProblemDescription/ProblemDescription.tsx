@@ -39,7 +39,7 @@ export default function ProblemDescription({
     [setCustomTestCases],
   );
 
-  const [modalHandle] = useModals(1);
+  const [[modalHandle]] = useModals();
 
   return (
     // TODO: 데이터 api 연결

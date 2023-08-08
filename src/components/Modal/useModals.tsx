@@ -3,15 +3,17 @@ import { Union } from "../../types/commonTypes";
 
 const modalStates = ["open", "closed", "closing"] as const;
 export type ModalState = Union<typeof modalStates>;
+type ModalHandle = {
+  state: ModalState;
+  openModal: () => void;
+  closeModal: () => void;
+};
 
 export default function useModals(
-  n: number,
   closingTime = 300,
   afterClosed = () => void 0,
-) {
-  const [states, setStates] = useState<ModalState[]>(
-    [...Array(n)].fill("closed"),
-  );
+): [ModalHandle[], (states: ModalState[]) => void] {
+  const [states, setStates] = useState<ModalState[]>([]);
 
   const openModalById = useCallback(
     (id: number) => () => {
@@ -36,12 +38,14 @@ export default function useModals(
   useEffect(() => () => window.clearTimeout(timeoutId.current), []);
 
   return useMemo(
-    () =>
+    () => [
       states.map((state, id) => {
         const openModal = openModalById(id);
         const closeModal = closeModalById(id);
         return { state, openModal, closeModal };
       }),
+      setStates,
+    ],
     [openModalById, closeModalById, states],
   );
 }

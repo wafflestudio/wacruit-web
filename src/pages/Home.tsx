@@ -18,13 +18,19 @@ const localStorageKeyOfAnnouncementId = (announcementId: number) =>
   `${LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE}_${announcementId}`;
 
 export default function Home() {
+  const [modalHandles, setStates] = useModals(0); // 최대 5개 띄운다
+
   const { data: pinnedAnnouncements } = useQuery({
     queryKey: ["announcement", "pinned"],
-    queryFn: () => getPinnedAnnouncements().then(),
+    queryFn: () =>
+      getPinnedAnnouncements().then((items) => {
+        setStates([...Array(items.length)].fill("open"));
+        return items;
+      }),
     staleTime: 1,
     initialData: [],
   });
-  const modalHandles = useModals(5, 0); // 최대 5개 띄운다
+
   // 공지와 모달핸들러를 하나씩 짝짓는다
   const announcementModalHandlePairs = [
     ...Array(pinnedAnnouncements?.length),
