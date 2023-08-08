@@ -19,7 +19,12 @@ export default function Service() {
         style={{ gridArea: "left" }}
       />
       <Container $appIndex={appIndex} style={{ gridArea: "apps" }}>
-        <App>
+        <App
+          $clickable={true}
+          onClick={() => {
+            window.open("https://snutt.wafflestudio.com");
+          }}
+        >
           <img src="/image/home/service/Snutt.png" />
           <h3>SNUTT</h3>
           <div>서울대학교 시간표 어플</div>
@@ -27,7 +32,12 @@ export default function Service() {
             <img src="/image/home/service/Snutt2.svg" />
           </div>
         </App>
-        <App>
+        <App
+          $clickable={true}
+          onClick={() => {
+            window.open("https://siksha.wafflestudio.com");
+          }}
+        >
           <img src="/image/home/service/Siksha.png" id="siksha" />
           <h3>식샤</h3>
           <div>서울대학교 학식 어플</div>
@@ -35,7 +45,7 @@ export default function Service() {
             <img src="/image/home/service/Siksha2.png" id="siksha2" />
           </div>
         </App>
-        <App>
+        <App $clickable={false}>
           <img src="/image/home/service/Snuboard.png" />
           <h3>스누보드</h3>
           <div>서울대학교 과별 알림 어플</div>
@@ -83,12 +93,13 @@ const Container = styled.div<{ $appIndex: number }>`
   }
 `;
 
-const App = styled.div`
+const App = styled.div<{ $clickable: boolean }>`
   display: grid;
   flex-direction: column;
   font-size: 14px;
   letter-spacing: -0.2px;
   width: 100%;
+  cursor: ${(props) => (props.$clickable ? "pointer" : "default")};
 
   grid-template-areas:
     "x1 mobile"
