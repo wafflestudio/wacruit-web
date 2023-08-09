@@ -75,6 +75,16 @@ class Main {
   Swift: `print("Hello, world!")`,
 };
 
+export const languageVersions: Record<Language, string> = {
+  C: "gcc 9.2.0",
+  "C++": "g++ 9.2.0 (C++14)",
+  Java: "OpenJDK 13.0.1",
+  Javascript: "Node.js 18.15.0",
+  Python: "Python 3.11.2",
+  Kotlin: "Kotlin 1.3.70",
+  Swift: "Swift 5.2.3",
+};
+
 // localStorage에 저장된 언어를 불러옴
 function getStoredLanguage() {
   const storedLanguage = localStorage.getItem("language") ?? "";
