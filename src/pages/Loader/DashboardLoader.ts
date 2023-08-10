@@ -1,8 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
 import { getRecruitingById } from "../../apis/recruiting";
-import { Recruiting, Resume } from "../../types/apiTypes";
+import { Recruiting, Resume, ResumeQuestion } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getMyResumes } from "../../apis/resume";
+import { resumeQuestionQuery } from "./ResumeLoader";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
@@ -21,12 +22,18 @@ export const dashboardLoader =
   async ({ params }: { params: Record<string, unknown> }) => {
     const recruitingQuery = recruitingDetailQuery(Number(params.recruit_id));
     const resumeQuery = myResumeQuery(Number(params.recruit_id));
+    const questionQuery = resumeQuestionQuery(Number(params.recruit_id));
+
     const cachedRecruiting = queryClient.getQueryData<Recruiting>(
       recruitingQuery.queryKey,
     );
     const cachedResume = queryClient.getQueryData<{ items: Resume[] }>(
       resumeQuery.queryKey,
     );
+    const cachedQuestion = queryClient.getQueryData<{
+      items: ResumeQuestion[];
+    }>(questionQuery.queryKey);
+
     return {
       recruiting:
         cachedRecruiting !== undefined
@@ -36,6 +43,10 @@ export const dashboardLoader =
         cachedResume !== undefined
           ? cachedResume
           : await queryClient.fetchQuery(resumeQuery),
+      question:
+        cachedQuestion !== undefined
+          ? cachedQuestion
+          : await queryClient.fetchQuery(questionQuery),
     };
   };
 

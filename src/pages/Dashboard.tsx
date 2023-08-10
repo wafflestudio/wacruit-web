@@ -10,6 +10,7 @@ import {
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
 import { deleteResume } from "../apis/resume.ts";
+import { resumeQuestionQuery } from "./Loader/ResumeLoader.ts";
 
 export default function Dashboard() {
   const params = useParams();
@@ -22,6 +23,10 @@ export default function Dashboard() {
   const { data: resume } = useQuery({
     ...myResumeQuery(Number(params.recruit_id)),
     initialData: initialData.resume,
+  });
+  const { data: question } = useQuery({
+    ...resumeQuestionQuery(Number(params.recruit_id)),
+    initialData: initialData.question,
   });
 
   return (
@@ -66,7 +71,7 @@ export default function Dashboard() {
         <BottomContainer>
           <ProgressList
             problems={recruiting.problem_status}
-            hasResume={resume.items.length > 0}
+            hasResume={resume.items.length === question.items.length}
             isDesigner={recruiting.id === 2}
           />
           <Caution>
