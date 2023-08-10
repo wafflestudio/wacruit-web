@@ -4,7 +4,7 @@ import QuestionaireInput from "../components/rookie/QuestionaireInput/Questionai
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
-import { postResume, putResume } from "../apis/resume.ts";
+import { putResume } from "../apis/resume.ts";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import {
   ResumeSubmissionCreate,
@@ -20,7 +20,7 @@ export default function Resume() {
   const [resumeInput, setResumeInput] = useState(initialData.initialInputs);
   const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
 
-  const putResume = useSubmit(Number(recruit_id), initialData.isNewResume);
+  const putResume = useSubmit(Number(recruit_id));
   const navigate = useNavigate();
 
   const submit = (options?: Parameters<typeof putResume>[1]) => {
@@ -126,7 +126,7 @@ export default function Resume() {
   );
 }
 
-function useSubmit(recruiting_id: number, isNewResume: boolean) {
+function useSubmit(recruiting_id: number) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     (data: {
@@ -145,9 +145,7 @@ function useSubmit(recruiting_id: number, isNewResume: boolean) {
           notion_email: data.invitation.notion_email,
           slack_email: data.invitation.slack_email,
         }),
-        isNewResume
-          ? postResume(recruiting_id, data.questionaire)
-          : putResume(recruiting_id, data.questionaire),
+        putResume(recruiting_id, data.questionaire),
       ]),
     {
       onSuccess: () => {

@@ -84,7 +84,6 @@ export const resumeLoader =
 
     return {
       initialInputs,
-      isNewResume: resume.items.length === 0,
       userInputs,
     };
   };
