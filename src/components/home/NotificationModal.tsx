@@ -1,31 +1,28 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getAllAnnouncements } from "../../apis/announcement";
+import { TAnnouncement } from "../../types/apiTypes";
 
 type NotificationModalProps = {
+  announcement: TAnnouncement;
+  index: number;
   closeModal: () => void;
   setDontShowModalDate: (date: number) => void;
 };
 
 export default function NotificationModal({
+  announcement,
+  index,
   closeModal,
   setDontShowModalDate,
 }: NotificationModalProps) {
-  const { data: latestAnnouncement } = useQuery({
-    queryKey: ["announcement"],
-    queryFn: () => getAllAnnouncements().then((res) => res[0]),
-    staleTime: 1,
-  });
   return (
-    <Article>
+    <Article $index={index}>
       <ContentsWapper>
         <ImageContainer>
           <img src="/icon/Notification.svg" alt="" />
         </ImageContainer>
-        <Title>{latestAnnouncement?.title}</Title>
-        <MainText>{latestAnnouncement?.content}</MainText>
-        {/* TODO : 오류 해결 */}
+        <Title>{announcement.title}</Title>
+        <MainText>{announcement.content}</MainText>
         <Link to="/announcement/">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
@@ -44,10 +41,10 @@ export default function NotificationModal({
   );
 }
 
-const Article = styled.article`
+const Article = styled.article<{ $index: number }>`
   position: fixed;
-  top: 124px;
-  left: 164px;
+  top: ${({ $index }) => `${124 + $index * 50}px`};
+  left: ${({ $index }) => `${164 + $index * 40}px`};
   width: 405px;
   border-radius: 15px;
   background-color: #fff;

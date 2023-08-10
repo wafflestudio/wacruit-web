@@ -46,7 +46,7 @@ export default function PortfolioCard() {
   useEffect(() => {
     if (links) {
       const updated = linksInput.map((input, index) =>
-        links.items[index] ? links.items[index] : input,
+        links.items[index] ? links.items[index] : { id: null, url: "" },
       );
       setLinksInput(updated);
     }

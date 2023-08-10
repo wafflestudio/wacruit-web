@@ -1,7 +1,11 @@
 import { useCodeMirror } from "@uiw/react-codemirror";
 import styled from "styled-components";
 import LanguageSelection from "./LanguageSelection.tsx";
-import { Language, languageSupports } from "./useLanguage.tsx";
+import {
+  Language,
+  languageSupports,
+  languageVersions,
+} from "./useLanguage.tsx";
 
 interface Props {
   isFullScreen: boolean;
@@ -44,6 +48,7 @@ export default function CodeEditor({
         language={language}
         onChange={(language) => setLanguage(language)}
       />
+      <Version>({languageVersions[language]})</Version>
       {/* <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} /> */}
     </Section>
   );
@@ -110,4 +115,12 @@ const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`
       ? "/icon/ExitFullScreen.svg"
       : "/icon/FullScreen.svg"}");
   cursor: pointer;
+`;
+
+const Version = styled.span`
+  font-size: 12px;
+  color: #373737;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
 `;

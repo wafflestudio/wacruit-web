@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
 import Header from "../components/home/Header/Header";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import {
   DashboardLoaderReturnType,
@@ -12,6 +12,7 @@ import {
 import { deleteResume } from "../apis/resume.ts";
 
 export default function Dashboard() {
+  const queryClient = useQueryClient();
   const params = useParams();
   const navigate = useNavigate();
   const initialData = useLoaderData() as DashboardLoaderReturnType;
@@ -80,6 +81,9 @@ export default function Dashboard() {
                   )
                 ) {
                   deleteResume(recruiting.id).finally(() => {
+                    queryClient.invalidateQueries(["recruiting"]);
+                    queryClient.invalidateQueries(["resume"]);
+                    queryClient.invalidateQueries(["user"]);
                     alert("지원이 취소되었습니다");
                     navigate("/");
                   });

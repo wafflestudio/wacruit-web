@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import useModal from "../../Modal/useModal";
+import useModals from "../../Modal/useModals.tsx";
 import Modal from "../../Modal/Modal";
 import { BoldText, HorizontalLine, TestCase, Text } from "./common";
 import TestCaseModal from "./TestCaseModal";
@@ -39,7 +39,7 @@ export default function ProblemDescription({
     [setCustomTestCases],
   );
 
-  const modalHandle = useModal();
+  const [modalHandle] = useModals(1);
 
   return (
     // TODO: 데이터 api 연결
