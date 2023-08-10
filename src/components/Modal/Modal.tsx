@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ModalState } from "./useModal";
+import { ModalState } from "./useModals";
 import { ReactNode } from "react";
 import { zIndex } from "../../lib/zIndex";
 
