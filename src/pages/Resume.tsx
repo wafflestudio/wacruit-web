@@ -13,6 +13,7 @@ import {
 } from "../types/apiTypes.ts";
 import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
 import { patchUser, patchUserInvitationEmails } from "../apis/user.ts";
+import { filterObject } from "../lib/filter.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
@@ -21,7 +22,44 @@ export default function Resume() {
   const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
 
   const putResume = useSubmit(Number(recruit_id));
+  const saveResume = useSave(Number(recruit_id));
   const navigate = useNavigate();
+
+  const save = (options?: Parameters<typeof saveResume>[1]) => {
+    if (userInfoFormRef.current?.reportValidity()) {
+      saveResume(
+        {
+          questionaire: resumeInput
+            .filter((pureInput) => pureInput.answer.length > 0)
+            .map((input) => ({
+              question_id: input.question_id,
+              answer: input.answer,
+            })),
+          userInfo: filterObject(
+            {
+              university: userInfoInput.university,
+              college: userInfoInput.college,
+              department: userInfoInput.department,
+            },
+            ([, value]) => {
+              return value?.length > 0;
+            },
+          ),
+          invitation: filterObject(
+            {
+              github_email: userInfoInput.github_email,
+              slack_email: userInfoInput.slack_email,
+              notion_email: userInfoInput.notion_email,
+            },
+            ([, value]) => {
+              return value?.length > 0;
+            },
+          ),
+        },
+        options,
+      );
+    }
+  };
 
   const submit = (options?: Parameters<typeof putResume>[1]) => {
     if (!checkRequired(userInfoInput)) {
@@ -99,7 +137,7 @@ export default function Resume() {
         <Buttons>
           <SaveButton
             onClick={() => {
-              submit({
+              save({
                 onSuccess: () => alert("저장되었습니다."),
                 onError: () => alert("오류가 발생했습니다."),
               });
@@ -124,6 +162,31 @@ export default function Resume() {
       </Main>
     </>
   );
+}
+
+function useSave(recruiting_id: number) {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    (data: {
+      questionaire: ResumeSubmissionCreate[];
+      userInfo: Partial<UserUpdate>;
+      invitation: Partial<UserInvitationEmails>;
+    }) =>
+      Promise.all([
+        patchUser(data.userInfo),
+        patchUserInvitationEmails(data.invitation),
+        putResume(recruiting_id, data.questionaire),
+      ]),
+    {
+      onSuccess: () => {
+        void queryClient.invalidateQueries(["user", "information"]);
+        void queryClient.invalidateQueries(["user", "invitation"]);
+        void queryClient.invalidateQueries(["resume", "answer"]);
+        void queryClient.invalidateQueries(["recruiting", "detail"]);
+      },
+    },
+  );
+  return mutate;
 }
 
 function useSubmit(recruiting_id: number) {
