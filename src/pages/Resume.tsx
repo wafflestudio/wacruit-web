@@ -101,7 +101,7 @@ export default function Resume() {
             onClick={() => {
               submit({
                 onSuccess: () => alert("저장되었습니다."),
-                onError: () => alert("오류가 발생했습니다."),
+                onError: () => alert("모집이 마감되었습니다."),
               });
             }}
           >
@@ -114,7 +114,7 @@ export default function Resume() {
                   alert("제출되었습니다.");
                   navigate(`/recruiting/${recruit_id}`);
                 },
-                onError: () => alert("오류가 발생했습니다."),
+                onError: () => alert("모집이 마감되었습니다."),
               })
             }
           >
