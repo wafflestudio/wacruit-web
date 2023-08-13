@@ -97,7 +97,7 @@ export default function Solve() {
         }
       }
     } catch (e) {
-      alert("알 수 없는 오류가 발생했습니다");
+      alert("모집이 마감되었습니다.");
     }
     setIsSubmitting(false);
   };
