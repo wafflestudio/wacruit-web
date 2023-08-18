@@ -49,8 +49,23 @@ export default function Dashboard() {
             StyledWrapper={InformationMarkdownStyledWrapper}
           />
         </Information>
-        <AnnouncementButton onClick={() => navigate("/announcement")}>
+        {/* <AnnouncementButton onClick={() => navigate("/announcement")}>
           공지 및 변경사항 안내
+          <div>
+            <img
+              src="/icon/rookie/AnnounceRightArrow.svg"
+              alt="&rarr;"
+              width={20}
+            />
+            <img
+              src="/icon/rookie/AnnounceRightArrowWhite.svg"
+              alt="&rarr;"
+              width={20}
+            />
+          </div>
+        </AnnouncementButton> */}
+        <AnnouncementButton onClick={() => navigate("./result")}>
+          지원 결과 확인하기
           <div>
             <img
               src="/icon/rookie/AnnounceRightArrow.svg"
