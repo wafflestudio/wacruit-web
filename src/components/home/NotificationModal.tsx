@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getAllAnnouncements } from "../../apis/announcement";
 import MarkdownRenderer from "../../lib/MarkdownRenderer";
 import { TAnnouncement } from "../../types/apiTypes";
 
