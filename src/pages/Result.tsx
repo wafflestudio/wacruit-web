@@ -18,15 +18,13 @@ export default function Result() {
             </LogoWrapper>
             <Title>합격자 명단에 없습니다.</Title>
             <Description>
-              <p>와플스튜디오 리크루팅에 참여해 주셔서 감사드립니다.</p>
-              <p>
-                지원서를 검토한 결과, 아쉽게도 21.5기 루키 합격자 명단에
-                포함되지 않았음을 알려드립니다.
-              </p>
-              <p>
-                지원해 주신 노력에 진심으로 감사드리며, 미래에 더 나은 기회가
-                있기를 바라며 응원하겠습니다. 감사합니다.
-              </p>
+              와플스튜디오 리크루팅에 참여해 주셔서 감사드립니다.
+              <br />
+              지원서를 검토한 결과, 아쉽게도 21.5기 루키 합격자 명단에 포함되지
+              않았음을 알려드립니다.
+              <br />
+              지원해 주신 노력에 진심으로 감사드리며, 미래에 더 나은 기회가
+              있기를 바라며 응원하겠습니다. 감사합니다.
             </Description>
             <Contact>
               기타 문의사항은{" "}
@@ -141,9 +139,7 @@ const Description = styled.div`
   font-weight: 500;
   line-height: 150%;
   margin-bottom: 36px;
-  p {
-    word-break: keep-all;
-  }
+  word-break: keep-all;
 `;
 const Contact = styled.div`
   color: #484848;
