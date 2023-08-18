@@ -215,4 +215,10 @@ const MarkdownStyledWrapper = styled.div`
     white-space: pre-wrap;
     work-break: keep-all;
   }
+  a {
+    text-decoration: underline;
+    &:hover {
+      color: #f0745f;
+    }
+  }
 `;
