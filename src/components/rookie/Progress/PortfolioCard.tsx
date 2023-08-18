@@ -46,7 +46,7 @@ export default function PortfolioCard() {
   useEffect(() => {
     if (links) {
       const updated = linksInput.map((input, index) =>
-        links.items[index] ? links.items[index] : input,
+        links.items[index] ? links.items[index] : { id: null, url: "" },
       );
       setLinksInput(updated);
     }
@@ -88,6 +88,7 @@ export default function PortfolioCard() {
                   ),
                 )
                 .finally(() => {
+                  alert("모집이 마감되었습니다.");
                   queryClient.refetchQueries(["portfolio", "files"]);
                 });
             } else {
@@ -106,6 +107,7 @@ export default function PortfolioCard() {
                       ),
                     )
                     .finally(() => {
+                      alert("모집이 마감되었습니다.");
                       queryClient.refetchQueries(["portfolio", "files"]);
                     }),
                 );
@@ -171,6 +173,7 @@ export default function PortfolioCard() {
               if (input.url.length < 1) {
                 if (input.id === null) return;
                 deletePortfolioLink(input.id).finally(() => {
+                  alert("모집이 마감되었습니다.");
                   void queryClient.refetchQueries(["portfolio", "links"]);
                 });
                 return;
@@ -178,12 +181,14 @@ export default function PortfolioCard() {
 
               if (input.id === null) {
                 postPortfolioLink(input.url).finally(() => {
+                  alert("모집이 마감되었습니다.");
                   void queryClient.refetchQueries(["portfolio", "links"]);
                 });
               } else {
                 putPortfolioLink(input.id, input.url)
                   .catch((e) => console.log(e))
                   .finally(() => {
+                    alert("모집이 마감되었습니다.");
                     void queryClient.refetchQueries(["portfolio", "links"]);
                   });
               }

@@ -14,6 +14,8 @@ import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 import { resumeLoader } from "./pages/Loader/ResumeLoader";
+import Result, { NoResult } from "./pages/Result";
+import { resultLoader } from "./pages/Loader/ResultLoader";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,12 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         loader: dashboardLoader(queryClient),
         errorElement: <div>리크루팅을 찾을 수 없습니다</div>,
+      },
+      {
+        path: "result",
+        element: <Result />,
+        loader: resultLoader(queryClient),
+        errorElement: <NoResult />,
       },
     ],
   },
