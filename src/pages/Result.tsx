@@ -17,7 +17,15 @@ export default function Result() {
               <img src="/image/result/fail.svg"></img>
             </LogoWrapper>
             <Title>합격자 명단에 없습니다.</Title>
-            <Description>지원해주셔서 감사합니다.</Description>
+            <Description>
+              와플스튜디오 리크루팅에 참여해 주셔서 감사드립니다.
+              <br />
+              지원서를 검토한 결과, 아쉽게도 21.5기 루키 합격자 명단에 포함되지
+              않았음을 알려드립니다.
+              <br />
+              지원해 주신 노력에 진심으로 감사드리며, 미래에 더 나은 기회가
+              있기를 바라며 응원하겠습니다. 감사합니다.
+            </Description>
             <Contact>
               기타 문의사항은{" "}
               <a href="mailto:recruit@wafflestudio.com ">
@@ -105,6 +113,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 1100px;
+  padding: 60px 0;
 `;
 
 const LogoWrapper = styled.div`
@@ -127,8 +137,9 @@ const Description = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 500;
-  line-height: 150%; /* 36px */
+  line-height: 150%;
   margin-bottom: 36px;
+  word-break: keep-all;
 `;
 const Contact = styled.div`
   color: #484848;
