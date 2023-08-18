@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import MarkdownRenderer from "../../lib/MarkdownRenderer";
 import { TAnnouncement } from "../../types/apiTypes";
 
 type NotificationModalProps = {
@@ -22,7 +23,12 @@ export default function NotificationModal({
           <img src="/icon/Notification.svg" alt="" />
         </ImageContainer>
         <Title>{announcement.title}</Title>
-        <MainText>{announcement.content}</MainText>
+        <MainText>
+          <MarkdownRenderer
+            markdownString={announcement.content}
+            StyledWrapper={MarkdownStyledWrapper}
+          />
+        </MainText>
         <Link to="/announcement/">자세히보기</Link>
       </ContentsWapper>
       <ButtonWrapper>
@@ -68,7 +74,7 @@ const ContentsWapper = styled.div`
 `;
 const ImageContainer = styled.div`
   width: 56px;
-  height: "56px";
+  height: 56px;
   margin-bottom: 11px;
 `;
 const Title = styled.h1`
@@ -80,15 +86,8 @@ const Title = styled.h1`
 `;
 const MainText = styled.p`
   width: 100%;
+  max-height: 100%;
   overflow-y: auto;
-  white-space: pre-wrap;
-  word-break: break-all;
-  margin-top: 18px;
-  font-size: 16px;
-  line-height: 170%;
-  letter-spacing: 0;
-  text-align: center;
-  color: #737373;
 
   /* code start: scrollbar css design */
   &::-webkit-scrollbar {
@@ -131,4 +130,30 @@ const DivideLine = styled.div`
   width: 0;
   height: 30px;
   border-left: 1px solid #fff;
+`;
+
+const MarkdownStyledWrapper = styled.div`
+  font-size: 16px;
+  line-height: 170%;
+  letter-spacing: 0;
+  color: #737373;
+  p {
+    margin-top: 18px;
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+  ul,
+  ol {
+    padding: 0;
+  }
+  li {
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+  a {
+    text-decoration: underline;
+    &:hover {
+      color: #f0745f;
+    }
+  }
 `;
