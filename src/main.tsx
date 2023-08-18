@@ -14,7 +14,8 @@ import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 import { resumeLoader } from "./pages/Loader/ResumeLoader";
-import Result from "./pages/Result";
+import Result, { NoResult } from "./pages/Result";
+import { resultLoader } from "./pages/Loader/ResultLoader";
 
 const queryClient = new QueryClient();
 
@@ -46,8 +47,8 @@ const router = createBrowserRouter([
       {
         path: "result",
         element: <Result />,
-        // loader: resultLoader(queryClient),
-        errorElement: <div>결과를 찾을 수 없습니다</div>,
+        loader: resultLoader(queryClient),
+        errorElement: <NoResult />,
       },
     ],
   },

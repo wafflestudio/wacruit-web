@@ -1,14 +1,37 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
+import { ResultLoaderReturnType } from "./Loader/ResultLoader";
+import { useEffect } from "react";
 
 export default function Result() {
-  const params = useParams();
-  // const { result } = useLoaderData() as ResultLoaderReturnType;
+  const { result } = useLoaderData() as ResultLoaderReturnType;
+  if (result.status === 3) {
+    //불합격 시
+    return (
+      <>
+        <Header />
+        <Main>
+          <Container>
+            <LogoWrapper>
+              <img src="/image/result/fail.svg"></img>
+            </LogoWrapper>
+            <Title>합격자 명단에 없습니다.</Title>
+            <Description>지원해주셔서 감사합니다.</Description>
+            <Contact>
+              기타 문의사항은{" "}
+              <a href="mailto:recruit@wafflestudio.com ">
+                mailto:recruit@wafflestudio.com
+              </a>{" "}
+              이메일로 문의주세요.
+            </Contact>{" "}
+          </Container>
+        </Main>
+      </>
+    );
+  }
 
-  // if (result.status === 1 ) { //status가 합격일 때
-  if (params.recruit_id === "1") {
-    // TODO: 서버에서 가져오는 결과로 변경
+  if (result.status === 2) {
     //합격 시
     return (
       <>
@@ -23,7 +46,8 @@ export default function Result() {
             </Title>
             <Description>
               지원 시 적어주셨던 이메일로 슬랙 및 노션 초대 예정입니다. <br />
-              어쩌고저쩌고~ <br />몇 줄인지는 모르겠지만
+              또한 8월 20일 (일요일) 오후 2시에 루키 오리엔테이션이 진행될
+              예정이니 참고 바랍니다. 오티 참석은 필수입니다.
             </Description>
             <Contact>
               기타 문의사항은{" "}
@@ -38,34 +62,37 @@ export default function Result() {
     );
   }
 
-  //불합격 시
+  //결과가 없을 시
   return (
     <>
       <Header />
       <Main>
         <Container>
           <LogoWrapper>
-            <img src="/image/result/fail.svg"></img>
+            <img src="/image/result/pass.svg"></img>
           </LogoWrapper>
-          <Title>합격자 명단에 없습니다.</Title>
-          <Description>
-            지원에 주서 감사합니다.
-            <br />
-            어쩌고저쩌고~ <br />몇 줄인지는 모르겠지만
-          </Description>
+          <Title>아직 합/불 결과가 나오지 않았습니다.</Title>
           <Contact>
             기타 문의사항은{" "}
             <a href="mailto:recruit@wafflestudio.com ">
               mailto:recruit@wafflestudio.com
             </a>{" "}
             이메일로 문의주세요.
-          </Contact>{" "}
+          </Contact>
         </Container>
       </Main>
     </>
   );
 }
 
+export function NoResult() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    alert("지원하지 않은 리크루팅입니다.");
+    navigate("../");
+  }, []);
+  return <div></div>;
+}
 const Main = styled.main`
   width: 100%;
   min-height: 100vh;
