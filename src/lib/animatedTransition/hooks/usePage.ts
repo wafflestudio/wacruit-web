@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
 import { useAnimatedTransition } from "./useAnimatedTransition";
+import { useLoaderData } from "../../refinedReactRouterDom/useLoaderData";
 
 export const usePage = <T>() => {
   const [isInitialMount, setIsInitialMount] = useState<boolean>(true);
   const [isTransitionActive, setIsTransitionActive] = useState<boolean>(false);
-  const data = useLoaderData() as T;
+  const data = useLoaderData<T>();
   const { transitionStatus } = useAnimatedTransition((state) => state);
 
   useEffect(() => {
