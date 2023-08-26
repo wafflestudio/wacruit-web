@@ -1,4 +1,4 @@
-import { keyframes, styled } from "styled-components";
+import { css, keyframes, styled } from "styled-components";
 import { ProgressList } from "../../components/rookie/Progress/ProgressList.tsx";
 import Header from "../../components/home/Header/Header.tsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,8 +29,8 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
-      <Main $isTransition={isTransitionActive}>
+      <Header isTransitionActive={isTransitionActive} />
+      <Main $isTransitionActive={isTransitionActive}>
         <Title>
           <MarkdownRenderer
             markdownString={recruiting.name}
@@ -81,7 +81,7 @@ export default function Dashboard() {
             />
           </div>
         </AnnouncementButton>
-        <BottomContainer>
+        <BottomContainer className="fromBottom">
           <ProgressList
             problems={recruiting.problem_status}
             hasResume={resume.items.length > 0}
@@ -116,33 +116,58 @@ export default function Dashboard() {
   );
 }
 
-const reveal = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+const dashboardTransitionAnimation = (isTransitionActive: boolean) => css`
+  animation-fill-mode: both;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-name: ${isTransitionActive
+    ? keyframes`
+    from {
+      opacity:1;
+    }
+    to {
+      opacity:0;
+    }`
+    : keyframes`
+    from {
+      opacity:0;
+    }
+    to {
+      opacity:1;
+    }
+  `};
+
+  .fromBottom {
+    animation-fill-mode: both;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-name: ${isTransitionActive
+      ? keyframes`
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100%);
+      }`
+      : keyframes`
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    `};
   }
 `;
 
-const disappear = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-`;
-
-const Main = styled.main<{ $isTransition: boolean }>`
+const Main = styled.main<{ $isTransitionActive: boolean }>`
   position: relative;
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 650px), 30px);
   padding-bottom: 30px;
-  animation: 0.5s ease ${(props) => (props.$isTransition ? disappear : reveal)};
-  animation-fill-mode: both;
+  ${(props) => dashboardTransitionAnimation(props.$isTransitionActive)};
 `;
 
 const Title = styled.h1`

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
@@ -7,7 +7,11 @@ import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function Header() {
+type HeaderProps = {
+  isTransitionActive?: boolean;
+};
+
+export default function Header({ isTransitionActive }: HeaderProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [showApply, setShowApply] = useState(false);
@@ -24,7 +28,7 @@ export default function Header() {
 
   if (!authState) {
     return (
-      <Container>
+      <Container $isTransitionActive={!!isTransitionActive}>
         <Link to="/">
           <img src={"/icon/header/Logo.jpeg"} height={27} />
         </Link>
@@ -34,7 +38,7 @@ export default function Header() {
   }
 
   return (
-    <Container>
+    <Container $isTransitionActive={!!isTransitionActive}>
       <Link to="/">
         <img src={"/icon/header/Logo.jpeg"} height={27} />
       </Link>
@@ -101,7 +105,29 @@ export default function Header() {
   );
 }
 
-const Container = styled.header`
+const headerTransitionAnimation = (isTransitionActive: boolean) => css`
+  animation-fill-mode: both;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-name: ${isTransitionActive
+    ? keyframes`
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  `
+    : keyframes`
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }`};
+`;
+
+const Container = styled.header<{ $isTransitionActive: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -116,6 +142,9 @@ const Container = styled.header`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
   font-family: Pretendard, sans-serif;
+  animation-fill-mode: both;
+  ${(props) => headerTransitionAnimation(props.$isTransitionActive)};
+  pointer-events: ${(props) => (props.$isTransitionActive ? "none" : "auto")};
 `;
 
 const Nav = styled.nav`

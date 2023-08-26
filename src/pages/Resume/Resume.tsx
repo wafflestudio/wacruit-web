@@ -59,7 +59,7 @@ export default function Resume() {
 
   return (
     <>
-      <Header />
+      <Header isTransitionActive={isTransitionActive} />
       <Main $isTransition={isTransitionActive}>
         <Title>자기소개서</Title>
         <Description>모든 문항에 성실히 응답해주세요.</Description>
