@@ -1,15 +1,15 @@
 import { styled } from "styled-components";
-import { ProgressList } from "../components/rookie/Progress/ProgressList";
-import Header from "../components/home/Header/Header";
+import { ProgressList } from "../../components/rookie/Progress/ProgressList.tsx";
+import Header from "../../components/home/Header/Header.tsx";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import MarkdownRenderer from "../lib/MarkdownRenderer";
+import MarkdownRenderer from "../../lib/MarkdownRenderer.tsx";
 import {
   DashboardLoaderReturnType,
   myResumeQuery,
   recruitingDetailQuery,
-} from "./Loader/DashboardLoader.ts";
-import { deleteResume } from "../apis/resume.ts";
+} from "./DashboardLoader.ts";
+import { deleteResume } from "../../apis/resume.ts";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();

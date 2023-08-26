@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { getQuestions } from "../../apis/resume";
-import { myResumeQuery } from "../Loader/DashboardLoader";
+import { myResumeQuery } from "../Dashboard/DashboardLoader";
 import {
   Resume,
   ResumeQuestion,
