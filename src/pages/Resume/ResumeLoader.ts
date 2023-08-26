@@ -1,4 +1,3 @@
-import { QueryClient } from "@tanstack/react-query";
 import { getQuestions } from "../../apis/resume";
 import { myResumeQuery } from "../Dashboard/DashboardLoader";
 import {
@@ -10,8 +9,18 @@ import {
 } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getInvitation, getUser } from "../../apis/user";
-import { setDelay } from "../../lib/animatedTransition/delay";
-import { useAnimatedTransition } from "../../lib/animatedTransition/hooks/useAnimatedTransition";
+import {
+  PageDataFetcher,
+  createPageLoader,
+} from "../../lib/animatedTransition/functions/createPageLoader";
+
+type ResumeInputs = (ResumeSubmissionCreate & {
+  question_num: number;
+  question_content: string;
+  content_limit: number;
+})[];
+
+type UserInformationInputs = UserUpdate & UserInvitationEmails;
 
 export const resumeQuestionQuery = (id: number) => ({
   queryKey: ["resume", "question", id],
@@ -31,17 +40,12 @@ export const userInvitationQuery = () => ({
   staleTime: Infinity,
 });
 
-export const resumeLoader =
-  (queryClient: QueryClient) =>
-  async ({
-    params,
-    request,
-  }: {
-    params: Record<string, unknown>;
-    request: Request;
-  }) => {
-    useAnimatedTransition.getState().startTransition(request.url);
-
+export const resumeDataFetcher: PageDataFetcher<{
+  initialInputs: ResumeInputs;
+  userInputs: UserInformationInputs;
+}> =
+  (queryClient) =>
+  async ({ params }) => {
     const resumeQuery = myResumeQuery(Number(params.recruit_id));
     const questionQuery = resumeQuestionQuery(Number(params.recruit_id));
     const cachedResume = queryClient.getQueryData<{ items: Resume[] }>(
@@ -95,8 +99,9 @@ export const resumeLoader =
     return {
       initialInputs,
       userInputs,
-      delay: await setDelay(500),
     };
   };
+
+export const resumeLoader = createPageLoader(resumeDataFetcher, 500);
 
 export type ResumeLoaderReturnType = LoaderReturnType<typeof resumeLoader>;

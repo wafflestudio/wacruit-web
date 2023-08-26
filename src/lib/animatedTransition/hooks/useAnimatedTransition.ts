@@ -20,12 +20,17 @@ export const useAnimatedTransition = create<AnimatedTransitionStore>()(
         // prevent transition when target is same as previous
         if (state.lastRequestTarget === target) return state;
 
+        console.log("start! " + target);
+
         // request transition
         return {
           transitionStatus: "request",
           lastRequestTarget: target,
         };
       }),
-    endTransition: () => set({ transitionStatus: "stable" }),
+    endTransition: () => {
+      console.log("end!");
+      set({ transitionStatus: "stable" });
+    },
   }),
 );

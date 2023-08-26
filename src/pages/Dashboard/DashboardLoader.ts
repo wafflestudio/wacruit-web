@@ -1,10 +1,11 @@
-import { QueryClient } from "@tanstack/react-query";
 import { getRecruitingById } from "../../apis/recruiting";
 import { Recruiting, Resume } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getMyResumes } from "../../apis/resume";
-import { useAnimatedTransition } from "../../lib/animatedTransition/hooks/useAnimatedTransition";
-import { setDelay } from "../../lib/animatedTransition/delay";
+import {
+  PageDataFetcher,
+  createPageLoader,
+} from "../../lib/animatedTransition/functions/createPageLoader";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
@@ -18,16 +19,12 @@ export const myResumeQuery = (id: number) => ({
   staleTime: Infinity,
 });
 
-export const dashboardLoader =
-  (queryClient: QueryClient) =>
-  async ({
-    params,
-    request,
-  }: {
-    params: Record<string, unknown>;
-    request: Request;
-  }) => {
-    useAnimatedTransition.getState().startTransition(request.url);
+export const dashboardDataFetcher: PageDataFetcher<{
+  recruiting: Recruiting;
+  resume: { items: Resume[] };
+}> =
+  (queryClient) =>
+  async ({ params }) => {
     const recruitingQuery = recruitingDetailQuery(Number(params.recruit_id));
     const resumeQuery = myResumeQuery(Number(params.recruit_id));
     const cachedRecruiting = queryClient.getQueryData<Recruiting>(
@@ -45,9 +42,10 @@ export const dashboardLoader =
         cachedResume !== undefined
           ? cachedResume
           : await queryClient.fetchQuery(resumeQuery),
-      delay: await setDelay(500),
     };
   };
+
+export const dashboardLoader = createPageLoader(dashboardDataFetcher, 500);
 
 export type DashboardLoaderReturnType = LoaderReturnType<
   typeof dashboardLoader
