@@ -7,13 +7,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home";
 import Solve from "./pages/Solve";
-import Resume from "./pages/Resume";
+import Resume from "./pages/Resume/Resume";
 import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard";
 import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { dashboardLoader } from "./pages/Loader/DashboardLoader";
-import { resumeLoader } from "./pages/Loader/ResumeLoader";
+import { resumeLoader } from "./pages/Resume/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 

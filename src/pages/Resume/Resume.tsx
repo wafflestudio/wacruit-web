@@ -1,18 +1,18 @@
 import styled from "styled-components";
-import Header from "../components/home/Header/Header.tsx";
-import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
+import Header from "../../components/home/Header/Header.tsx";
+import QuestionaireInput from "../../components/rookie/QuestionaireInput/QuestionaireInput.tsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
-import { putResume } from "../apis/resume.ts";
+import UserInfoForm from "../../components/rookie/UserInfoForm/UserInfoForm.tsx";
+import { putResume } from "../../apis/resume.ts";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import {
   ResumeSubmissionCreate,
   UserInvitationEmails,
   UserUpdate,
-} from "../types/apiTypes.ts";
-import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
-import { patchUser, patchUserInvitationEmails } from "../apis/user.ts";
+} from "../../types/apiTypes.ts";
+import { ResumeLoaderReturnType } from "./ResumeLoader.ts";
+import { patchUser, patchUserInvitationEmails } from "../../apis/user.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
