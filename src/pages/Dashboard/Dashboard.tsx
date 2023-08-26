@@ -1,7 +1,7 @@
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 import { ProgressList } from "../../components/rookie/Progress/ProgressList.tsx";
 import Header from "../../components/home/Header/Header.tsx";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import MarkdownRenderer from "../../lib/MarkdownRenderer.tsx";
 import {
@@ -10,25 +10,27 @@ import {
   recruitingDetailQuery,
 } from "./DashboardLoader.ts";
 import { deleteResume } from "../../apis/resume.ts";
+import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
   const params = useParams();
   const navigate = useNavigate();
-  const initialData = useLoaderData() as DashboardLoaderReturnType;
+  const { data, isTransitionActive } = usePage<DashboardLoaderReturnType>();
+
   const { data: recruiting } = useQuery({
     ...recruitingDetailQuery(Number(params.recruit_id)),
-    initialData: initialData.recruiting,
+    initialData: data.recruiting,
   });
   const { data: resume } = useQuery({
     ...myResumeQuery(Number(params.recruit_id)),
-    initialData: initialData.resume,
+    initialData: data.resume,
   });
 
   return (
     <>
       <Header />
-      <Main>
+      <Main $isTransition={isTransitionActive}>
         <Title>
           <MarkdownRenderer
             markdownString={recruiting.name}
@@ -114,13 +116,33 @@ export default function Dashboard() {
   );
 }
 
-const Main = styled.main`
+const reveal = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const disappear = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+const Main = styled.main<{ $isTransition: boolean }>`
   position: relative;
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 650px), 30px);
   padding-bottom: 30px;
+  animation: 0.5s ease ${(props) => (props.$isTransition ? disappear : reveal)};
+  animation-fill-mode: both;
 `;
 
 const Title = styled.h1`

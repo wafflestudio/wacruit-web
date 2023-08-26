@@ -10,6 +10,8 @@ import {
 } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getInvitation, getUser } from "../../apis/user";
+import { setDelay } from "../../lib/animatedTransition/delay";
+import { useAnimatedTransition } from "../../lib/animatedTransition/hooks/useAnimatedTransition";
 
 export const resumeQuestionQuery = (id: number) => ({
   queryKey: ["resume", "question", id],
@@ -31,7 +33,15 @@ export const userInvitationQuery = () => ({
 
 export const resumeLoader =
   (queryClient: QueryClient) =>
-  async ({ params }: { params: Record<string, unknown> }) => {
+  async ({
+    params,
+    request,
+  }: {
+    params: Record<string, unknown>;
+    request: Request;
+  }) => {
+    useAnimatedTransition.getState().startTransition(request.url);
+
     const resumeQuery = myResumeQuery(Number(params.recruit_id));
     const questionQuery = resumeQuestionQuery(Number(params.recruit_id));
     const cachedResume = queryClient.getQueryData<{ items: Resume[] }>(
@@ -54,7 +64,7 @@ export const resumeLoader =
       question_content: string;
       content_limit: number;
     })[] = [];
-    question.items.forEach((item, index) => {
+    question.items.forEach((item) => {
       const resumeIndex = resume.items.findIndex(
         (resumeItem) => resumeItem.question_id === item.question_num,
       );
@@ -85,6 +95,7 @@ export const resumeLoader =
     return {
       initialInputs,
       userInputs,
+      delay: await setDelay(500),
     };
   };
 

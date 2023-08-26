@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Header from "../../components/home/Header/Header.tsx";
 import QuestionaireInput from "../../components/rookie/QuestionaireInput/QuestionaireInput.tsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { putResume } from "../../apis/resume.ts";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ResumeSubmissionCreate,
   UserInvitationEmails,
@@ -13,12 +13,13 @@ import {
 } from "../../types/apiTypes.ts";
 import { ResumeLoaderReturnType } from "./ResumeLoader.ts";
 import { patchUser, patchUserInvitationEmails } from "../../apis/user.ts";
+import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
-  const initialData = useLoaderData() as ResumeLoaderReturnType;
-  const [resumeInput, setResumeInput] = useState(initialData.initialInputs);
-  const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
+  const { data, isTransitionActive } = usePage<ResumeLoaderReturnType>();
+  const [resumeInput, setResumeInput] = useState(data.initialInputs);
+  const [userInfoInput, setUserInfoInput] = useState(data.userInputs);
 
   const putResume = useSubmit(Number(recruit_id));
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Resume() {
   return (
     <>
       <Header />
-      <Main>
+      <Main $isTransition={isTransitionActive}>
         <Title>자기소개서</Title>
         <Description>모든 문항에 성실히 응답해주세요.</Description>
         <Questionaires>
@@ -181,12 +182,32 @@ const checkRequired = (
 //   return validInput;
 // };
 
-const Main = styled.main`
+const reveal = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const disappear = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+const Main = styled.main<{ $isTransition: boolean }>`
   position: relative;
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 534px), 30px);
+  animation: 0.5s ease ${(props) => (props.$isTransition ? disappear : reveal)};
+  animation-fill-mode: both;
 `;
 
 const Title = styled.h1`
