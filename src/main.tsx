@@ -14,8 +14,8 @@ import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { dashboardLoader } from "./pages/Dashboard/DashboardLoader";
 import { resumeLoader } from "./pages/Resume/ResumeLoader";
-import Result, { NoResult } from "./pages/Result";
-import { resultLoader } from "./pages/Loader/ResultLoader";
+import Result, { NoResult } from "./pages/Result/Result";
+import { resultLoader } from "./pages/Result/ResultLoader";
 
 const queryClient = new QueryClient();
 

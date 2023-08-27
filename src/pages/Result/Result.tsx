@@ -1,17 +1,18 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Header from "../components/home/Header/Header";
-import { ResultLoaderReturnType } from "./Loader/ResultLoader";
+import { useNavigate } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import Header from "../../components/home/Header/Header";
+import { ResultLoaderReturnType } from "./ResultLoader";
 import { useEffect } from "react";
+import { usePage } from "../../lib/animatedTransition/hooks/usePage";
 
 export default function Result() {
-  const { result } = useLoaderData() as ResultLoaderReturnType;
-  if (result.status === 3) {
+  const { data, isTransitionActive } = usePage<ResultLoaderReturnType>();
+  if (data.result.status === 3) {
     //불합격 시
     return (
       <>
-        <Header />
-        <Main>
+        <Header isTransitionActive={isTransitionActive} />
+        <Main $isTransitionActive={isTransitionActive}>
           <Container>
             <LogoWrapper>
               <img src="/image/result/fail.svg"></img>
@@ -39,12 +40,12 @@ export default function Result() {
     );
   }
 
-  if (result.status === 2) {
+  if (data.result.status === 2) {
     //합격 시
     return (
       <>
-        <Header />
-        <Main>
+        <Header isTransitionActive={isTransitionActive} />
+        <Main $isTransitionActive={isTransitionActive}>
           <Container>
             <LogoWrapper>
               <img src="/image/result/pass.svg"></img>
@@ -73,8 +74,8 @@ export default function Result() {
   //결과가 없을 시
   return (
     <>
-      <Header />
-      <Main>
+      <Header isTransitionActive={isTransitionActive} />
+      <Main $isTransitionActive={isTransitionActive}>
         <Container>
           <LogoWrapper>
             <img src="/image/result/pass.svg"></img>
@@ -101,12 +102,31 @@ export function NoResult() {
   }, []);
   return <div></div>;
 }
-const Main = styled.main`
+const Main = styled.main<{ $isTransitionActive: boolean }>`
   width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: 0.5s ease
+    ${(props) =>
+      props.$isTransitionActive
+        ? keyframes`
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+      `
+        : keyframes`
+      from {
+        opacity: 0;
+      }
+        to {
+      opacity: 1;
+      }
+    `};
 `;
 
 const Container = styled.div`
