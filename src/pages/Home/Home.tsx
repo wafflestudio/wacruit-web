@@ -1,23 +1,28 @@
-import Activity from "../components/home/Activity";
-import Apply from "../components/home/Apply";
-import Banner from "../components/home/Banner";
-import Introduce from "../components/home/Introduce";
-import Member from "../components/home/Member";
-import Service from "../components/home/Service";
-import ToHomePage from "../components/home/ToHomePage";
-import useModals from "../components/Modal/useModals";
-import Modal from "../components/Modal/Modal";
-import NotificationModal from "../components/home/NotificationModal";
+import Activity from "../../components/home/Activity";
+import Apply from "../../components/home/Apply";
+import Banner from "../../components/home/Banner";
+import Introduce from "../../components/home/Introduce";
+import Member from "../../components/home/Member";
+import Service from "../../components/home/Service";
+import ToHomePage from "../../components/home/ToHomePage";
+import useModals from "../../components/Modal/useModals";
+import Modal from "../../components/Modal/Modal";
+import NotificationModal from "../../components/home/NotificationModal";
 import { useEffect } from "react";
-import Header from "../components/home/Header/Header";
-import { getPinnedAnnouncements } from "../apis/announcement";
+import Header from "../../components/home/Header/Header";
+import { getPinnedAnnouncements } from "../../apis/announcement";
 import { useQuery } from "@tanstack/react-query";
+import { usePage } from "../../lib/animatedTransition/hooks/usePage";
+import styled from "styled-components";
+import { defaultOpacityAnimation } from "../../lib/animatedTransition/functions/commonAnimation";
 
 const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";
 const localStorageKeyOfAnnouncementId = (announcementId: number) =>
   `${LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE}_${announcementId}`;
 
 export default function Home() {
+  const { isTransitionActive } = usePage();
+
   const { data: pinnedAnnouncements } = useQuery({
     queryKey: ["announcement", "pinned"],
     queryFn: () => getPinnedAnnouncements().then(),
@@ -50,8 +55,11 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-      <main style={{ minWidth: "920px" }}>
+      <Header isTransitionActive={isTransitionActive} />
+      <Main
+        style={{ minWidth: "920px" }}
+        $isTransitionActive={isTransitionActive}
+      >
         {announcementModalHandlePairs
           .filter(({ announcement }) => {
             const KEY = localStorageKeyOfAnnouncementId(announcement.id);
@@ -88,7 +96,11 @@ export default function Home() {
         <Service />
         <Apply />
         <ToHomePage />
-      </main>
+      </Main>
     </>
   );
 }
+
+const Main = styled.main<{ $isTransitionActive: boolean }>`
+  ${(props) => defaultOpacityAnimation(500, props.$isTransitionActive)}
+`;

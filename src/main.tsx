@@ -5,7 +5,7 @@ import initMocks from "./mocks/index";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Solve from "./pages/Solve";
 import Resume from "./pages/Resume/Resume";
 import Recruit from "./pages/Recruit";
@@ -16,6 +16,7 @@ import { dashboardLoader } from "./pages/Dashboard/dashboardLoader";
 import { resumeLoader } from "./pages/Resume/resumeLoader";
 import Result, { NoResult } from "./pages/Result/Result";
 import { resultLoader } from "./pages/Result/resultLoader";
+import { homeLoader } from "./pages/Home/homeLoader";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   {
     path: "",
     element: <Home />,
+    loader: homeLoader(queryClient),
     errorElement: <div>error</div>,
     index: true,
   },
