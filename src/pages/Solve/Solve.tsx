@@ -1,36 +1,34 @@
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import ProblemDescription from "../components/solve/ProblemDescription/ProblemDescription.tsx";
-import CodeEditor from "../components/solve/CodeEditor";
-import TestResultConsole from "../components/solve/TestResultConsole.tsx";
-import DragResizable from "../components/solve/DragResizable.tsx";
+import ProblemDescription from "../../components/solve/ProblemDescription/ProblemDescription.tsx";
+import CodeEditor from "../../components/solve/CodeEditor/index.tsx";
+import TestResultConsole from "../../components/solve/TestResultConsole.tsx";
+import DragResizable from "../../components/solve/DragResizable.tsx";
 import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getProblemById, postProblemSubmission } from "../apis/problem.ts";
+import { postProblemSubmission } from "../../apis/problem.ts";
 import {
   boilerplates,
   languageCodes,
   useLanguage,
-} from "../components/solve/CodeEditor/useLanguage.tsx";
-import { useCodeRef } from "../components/solve/CodeEditor/useCode.tsx";
-import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
-import { ProblemSubmissionResult } from "../types/apiTypes.ts";
-import { unreachable } from "../lib/unreachable.ts";
+} from "../../components/solve/CodeEditor/useLanguage.tsx";
+import { useCodeRef } from "../../components/solve/CodeEditor/useCode.tsx";
+import { useCustomTestCases } from "../../components/solve/ProblemDescription/useCustomTestCases.tsx";
+import { ProblemSubmissionResult } from "../../types/apiTypes.ts";
+import { unreachable } from "../../lib/unreachable.ts";
 import { flushSync } from "react-dom";
+import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
+import { ProblemLoaderReturnType, problemDetailQuery } from "./solveLoader.ts";
+import { defaultOpacityAnimation } from "../../lib/animatedTransition/functions/commonAnimation.ts";
 
 export default function Solve() {
   const params = useParams();
   const queryClient = useQueryClient();
   const problemNumber = Number(params.problem_number);
-  const {
-    data: problem,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["problem", problemNumber],
-    queryFn: () => getProblemById(problemNumber),
-    staleTime: 1000 * 60 * 60,
-    retry: 1,
+  const { data, isTransitionActive } = usePage<ProblemLoaderReturnType>();
+  const { data: problem } = useQuery({
+    ...problemDetailQuery(Number(problemNumber)),
+    initialData: data.problem,
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
@@ -102,20 +100,8 @@ export default function Solve() {
     setIsSubmitting(false);
   };
 
-  /**
-   * @TODO 에러처리
-   */
-
-  if (isLoading) {
-    return <main>loading...</main>;
-  }
-
-  if (isError) {
-    return <main>problem not found</main>;
-  }
-
   return (
-    <Container>
+    <Container $isTransitionActive={isTransitionActive}>
       <Main>
         <TopNav>
           <Link to={`/recruiting/${params.recruit_id}`}>
@@ -186,12 +172,13 @@ export default function Solve() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div<{ $isTransitionActive: boolean }>`
   display: flex;
   height: 100vh;
   padding: 30px;
   box-sizing: border-box;
   background: #fff7e9;
+  ${(props) => defaultOpacityAnimation(500, props.$isTransitionActive)}
 `;
 const Main = styled.main`
   display: flex;
