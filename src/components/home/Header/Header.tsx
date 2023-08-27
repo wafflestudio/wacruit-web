@@ -1,11 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
 import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
+import { createAnimationSetup } from "../../../lib/animatedTransition/functions/createAnimation";
+import {
+  slideFromTop,
+  slideToTop,
+} from "../../../lib/animatedTransition/functions/commonAnimation";
 
 type HeaderProps = {
   isTransitionActive?: boolean;
@@ -106,25 +111,8 @@ export default function Header({ isTransitionActive }: HeaderProps) {
 }
 
 const headerTransitionAnimation = (isTransitionActive: boolean) => css`
-  animation-fill-mode: both;
-  animation-duration: 0.5s;
-  animation-timing-function: ease;
-  animation-name: ${isTransitionActive
-    ? keyframes`
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(-100%);
-    }
-  `
-    : keyframes`
-    from {
-      transform: translateY(-100%);
-    }
-    to {
-      transform: translateY(0);
-    }`};
+  ${createAnimationSetup(500)}
+  animation-name: ${isTransitionActive ? slideToTop : slideFromTop};
 `;
 
 const Container = styled.header<{ $isTransitionActive: boolean }>`

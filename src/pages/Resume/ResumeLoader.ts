@@ -1,5 +1,5 @@
 import { getQuestions } from "../../apis/resume";
-import { myResumeQuery } from "../Dashboard/DashboardLoader";
+import { myResumeQuery } from "../Dashboard/dashboardLoader";
 import {
   Resume,
   ResumeQuestion,

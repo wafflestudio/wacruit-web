@@ -6,6 +6,7 @@ import {
   PageDataFetcher,
   createPageLoader,
 } from "../../lib/animatedTransition/functions/createPageLoader";
+import { dashboardAnimationDuration } from "./dashboardAnimation";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
@@ -45,7 +46,10 @@ export const dashboardDataFetcher: PageDataFetcher<{
     };
   };
 
-export const dashboardLoader = createPageLoader(dashboardDataFetcher, 500);
+export const dashboardLoader = createPageLoader(
+  dashboardDataFetcher,
+  dashboardAnimationDuration,
+);
 
 export type DashboardLoaderReturnType = LoaderReturnType<
   typeof dashboardLoader

@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Header from "../../components/home/Header/Header.tsx";
 import QuestionaireInput from "../../components/rookie/QuestionaireInput/QuestionaireInput.tsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,9 +11,10 @@ import {
   UserInvitationEmails,
   UserUpdate,
 } from "../../types/apiTypes.ts";
-import { ResumeLoaderReturnType } from "./ResumeLoader.ts";
+import { ResumeLoaderReturnType } from "./resumeLoader.ts";
 import { patchUser, patchUserInvitationEmails } from "../../apis/user.ts";
 import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
+import { resumeAnimation } from "./resumeAnimation.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
@@ -182,32 +183,13 @@ const checkRequired = (
 //   return validInput;
 // };
 
-const reveal = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const disappear = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-`;
-
 const Main = styled.main<{ $isTransition: boolean }>`
   position: relative;
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 534px), 30px);
-  animation: 0.5s ease ${(props) => (props.$isTransition ? disappear : reveal)};
-  animation-fill-mode: both;
+  ${(props) => resumeAnimation(props.$isTransition)}
 `;
 
 const Title = styled.h1`

@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Header from "../../components/home/Header/Header";
-import { ResultLoaderReturnType } from "./ResultLoader";
+import { ResultLoaderReturnType } from "./resultLoader";
 import { useEffect } from "react";
 import { usePage } from "../../lib/animatedTransition/hooks/usePage";
+import { resultAnimation } from "./resultAnimation";
 
 export default function Result() {
   const { data, isTransitionActive } = usePage<ResultLoaderReturnType>();
@@ -102,31 +103,14 @@ export function NoResult() {
   }, []);
   return <div></div>;
 }
+
 const Main = styled.main<{ $isTransitionActive: boolean }>`
   width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: 0.5s ease
-    ${(props) =>
-      props.$isTransitionActive
-        ? keyframes`
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
-      `
-        : keyframes`
-      from {
-        opacity: 0;
-      }
-        to {
-      opacity: 1;
-      }
-    `};
+  ${(props) => resultAnimation(props.$isTransitionActive)}
 `;
 
 const Container = styled.div`

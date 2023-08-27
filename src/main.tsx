@@ -12,10 +12,10 @@ import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
-import { dashboardLoader } from "./pages/Dashboard/DashboardLoader";
-import { resumeLoader } from "./pages/Resume/ResumeLoader";
+import { dashboardLoader } from "./pages/Dashboard/dashboardLoader";
+import { resumeLoader } from "./pages/Resume/resumeLoader";
 import Result, { NoResult } from "./pages/Result/Result";
-import { resultLoader } from "./pages/Result/ResultLoader";
+import { resultLoader } from "./pages/Result/resultLoader";
 
 const queryClient = new QueryClient();
 

@@ -1,4 +1,4 @@
-import { css, keyframes, styled } from "styled-components";
+import { styled } from "styled-components";
 import { ProgressList } from "../../components/rookie/Progress/ProgressList.tsx";
 import Header from "../../components/home/Header/Header.tsx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,9 +8,10 @@ import {
   DashboardLoaderReturnType,
   myResumeQuery,
   recruitingDetailQuery,
-} from "./DashboardLoader.ts";
+} from "./dashboardLoader.ts";
 import { deleteResume } from "../../apis/resume.ts";
 import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
+import { dashboardAnimationCss } from "./dashboardAnimation.ts";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -116,50 +117,6 @@ export default function Dashboard() {
   );
 }
 
-const dashboardTransitionAnimation = (isTransitionActive: boolean) => css`
-  animation-fill-mode: both;
-  animation-duration: 0.5s;
-  animation-timing-function: ease;
-  animation-name: ${isTransitionActive
-    ? keyframes`
-    from {
-      opacity:1;
-    }
-    to {
-      opacity:0;
-    }`
-    : keyframes`
-    from {
-      opacity:0;
-    }
-    to {
-      opacity:1;
-    }
-  `};
-
-  .fromBottom {
-    animation-fill-mode: both;
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
-    animation-name: ${isTransitionActive
-      ? keyframes`
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(100%);
-      }`
-      : keyframes`
-      from {
-        transform: translateY(100%);
-      }
-      to {
-        transform: translateY(0);
-      }
-    `};
-  }
-`;
-
 const Main = styled.main<{ $isTransitionActive: boolean }>`
   position: relative;
   font-family: Pretendard, sans-serif;
@@ -167,7 +124,7 @@ const Main = styled.main<{ $isTransitionActive: boolean }>`
   line-height: normal;
   padding: 23vh max(calc(50vw - 650px), 30px);
   padding-bottom: 30px;
-  ${(props) => dashboardTransitionAnimation(props.$isTransitionActive)};
+  ${(props) => dashboardAnimationCss(props.$isTransitionActive)};
 `;
 
 const Title = styled.h1`
