@@ -4,6 +4,13 @@ import {
   createAnimationSetup,
 } from "./createAnimation";
 
+/**
+ * opacity를 조절하는 가장 기본적인 애니메이션입니다. 대충 넣으면 페이지가 자연스럽게 넘어갑니다.
+ *
+ * @param ms 지속시간
+ * @param isDisappearing true면 사라
+ * @returns styled-components에서 사용 가능한 css 문자열
+ */
 export const defaultOpacityAnimation = (
   ms: number,
   isDisappearing: boolean,
