@@ -40,7 +40,7 @@ export const userInvitationQuery = () => ({
   staleTime: Infinity,
 });
 
-export const resumeDataLoader: PageDataLoader<{
+const resumeDataLoader: PageDataLoader<{
   initialInputs: ResumeInputs;
   userInputs: UserInformationInputs;
 }> =

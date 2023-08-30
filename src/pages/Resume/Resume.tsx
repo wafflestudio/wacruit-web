@@ -19,10 +19,10 @@ import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/co
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
-  const data = usePageData<ResumeLoaderReturnType>();
+  const { initialInputs, userInputs } = usePageData<ResumeLoaderReturnType>();
   const animation = usePageAnimation(commonOpacityAnimator);
-  const [resumeInput, setResumeInput] = useState(data.initialInputs);
-  const [userInfoInput, setUserInfoInput] = useState(data.userInputs);
+  const [resumeInput, setResumeInput] = useState(initialInputs);
+  const [userInfoInput, setUserInfoInput] = useState(userInputs);
 
   const putResume = useSubmit(Number(recruit_id));
   const navigate = useNavigate();

@@ -19,7 +19,7 @@ export const myResumeQuery = (id: number) => ({
   staleTime: Infinity,
 });
 
-export const dashboardDataLoader: PageDataLoader<{
+const dashboardDataLoader: PageDataLoader<{
   recruiting: Recruiting;
   resume: { items: Resume[] };
 }> =

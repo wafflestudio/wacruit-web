@@ -8,10 +8,10 @@ import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnim
 import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation";
 
 export default function Result() {
-  const data = usePageData<ResultLoaderReturnType>();
+  const { result } = usePageData<ResultLoaderReturnType>();
   const animation = usePageAnimation(commonOpacityAnimator);
 
-  if (data.result.status === 3) {
+  if (result.status === 3) {
     //불합격 시
     return (
       <>
@@ -44,7 +44,7 @@ export default function Result() {
     );
   }
 
-  if (data.result.status === 2) {
+  if (result.status === 2) {
     //합격 시
     return (
       <>

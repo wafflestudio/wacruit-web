@@ -18,16 +18,16 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const params = useParams();
-  const data = usePageData<DashboardLoaderReturnType>();
+  const initialData = usePageData<DashboardLoaderReturnType>();
   const animation = usePageAnimation(dashboardMainAnimator);
 
   const { data: recruiting } = useQuery({
     ...recruitingDetailQuery(Number(params.recruit_id)),
-    initialData: data.recruiting,
+    initialData: initialData.recruiting,
   });
   const { data: resume } = useQuery({
     ...myResumeQuery(Number(params.recruit_id)),
-    initialData: data.resume,
+    initialData: initialData.resume,
   });
 
   return (
