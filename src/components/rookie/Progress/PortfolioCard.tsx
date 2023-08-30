@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { RuleSet } from "styled-components";
 import asset from "./progressCardAsset";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,14 +14,18 @@ import {
   uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
+import { usePageAnimation } from "../../../lib/animatedTransition/hooks/usePageAnimation";
+import { progressCardAnimator } from "../../../pages/Dashboard/dashboardAnimation";
 
 export default function PortfolioCard() {
   const [submit, setSubmit] = useState(false);
   const queryClient = useQueryClient();
+  const animation = usePageAnimation(progressCardAnimator(1));
   const { description, iconSrc, iconAlt } = useMemo(
     () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
     [submit],
   );
+
   const { data: files } = useQuery({
     queryKey: ["portfolio", "files"],
     queryFn: () => getPortfolioFiles(),
@@ -60,10 +64,10 @@ export default function PortfolioCard() {
   }, [files, links]);
 
   if (files === undefined || links === undefined)
-    return <EmptyCard></EmptyCard>;
+    return <EmptyCard $transitionAnimation={animation}></EmptyCard>;
 
   return (
-    <Card $submit={submit}>
+    <Card $submit={submit} $transitionAnimation={animation}>
       <InfoSection>
         <img src={iconSrc} alt={iconAlt} />
         <Name>포트폴리오</Name>
@@ -200,7 +204,9 @@ export default function PortfolioCard() {
   );
 }
 
-const EmptyCard = styled.li`
+const EmptyCard = styled.li<{
+  $transitionAnimation: RuleSet;
+}>`
   position: relative;
   display: flex;
   width: 840px;
@@ -208,10 +214,12 @@ const EmptyCard = styled.li`
   flex-shrink: 0;
   border-radius: 5px;
   animation: ${LoadingBackgroundBlink};
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Card = styled.li<{
   $submit: boolean;
+  $transitionAnimation: RuleSet;
 }>`
   position: relative;
   display: flex;
@@ -228,6 +236,7 @@ const Card = styled.li<{
   &:hover {
     background: "#f6f6f6";
   }
+  ${(props) => props.$transitionAnimation}
 `;
 
 const InfoSection = styled.div`

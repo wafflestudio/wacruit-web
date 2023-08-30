@@ -1,16 +1,25 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
+import { RuleSet, styled } from "styled-components";
 import asset from "./progressCardAsset";
+import { usePageAnimation } from "../../../lib/animatedTransition/hooks/usePageAnimation";
+import { progressCardAnimator } from "../../../pages/Dashboard/dashboardAnimation";
 
 type ProgressCardProps = {
   title: string;
   statusCode: number;
   to: string;
+  animationIndex: number;
 };
 
-export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
+export function ProgressCard({
+  title,
+  statusCode,
+  to,
+  animationIndex,
+}: ProgressCardProps) {
   const navigate = useNavigate();
+  const animation = usePageAnimation(progressCardAnimator(animationIndex));
   const { iconSrc, iconAlt, theme, description } = useMemo(() => {
     switch (statusCode) {
       case 0:
@@ -27,7 +36,12 @@ export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
   }, [statusCode]);
 
   return (
-    <Card $theme={theme} onClick={() => navigate(to)}>
+    <Card
+      $theme={theme}
+      onClick={() => navigate(to)}
+      style={{ animationDelay: `${animationIndex / 10}s` }}
+      $transitionAnimation={animation}
+    >
       <img src={iconSrc} alt={iconAlt} />
       <Name>{title}</Name>
       <Description>{description}</Description>
@@ -40,6 +54,7 @@ export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
 
 const Card = styled.li<{
   $theme: "red" | "green" | "yellow" | "gray";
+  $transitionAnimation: RuleSet;
 }>`
   position: relative;
   box-sizing: border-box;
@@ -87,6 +102,7 @@ const Card = styled.li<{
         ? "linear-gradient(180deg, #FFF7CE 0%, #F6F6F6 46.88%);"
         : "#f6f6f6"};
   }
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Name = styled.h1`

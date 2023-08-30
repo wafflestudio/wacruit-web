@@ -31,12 +31,13 @@ export function ProgressList({
             if (a.num < b.num) return -1;
             return 0;
           })
-          .map(({ id, num, status }) => (
+          .map(({ id, num, status }, index) => (
             <ProgressCard
               key={id}
               title={`문제 ${num}`}
               statusCode={status}
               to={`./solve/${id}`}
+              animationIndex={index + 1}
             />
           ))
       )}

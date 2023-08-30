@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { RuleSet } from "styled-components";
 import asset from "./progressCardAsset";
+import { usePageAnimation } from "../../../lib/animatedTransition/hooks/usePageAnimation";
+import { progressCardAnimator } from "../../../pages/Dashboard/dashboardAnimation";
 
 type ResumeCardProps = {
   submit: boolean;
@@ -9,13 +11,19 @@ type ResumeCardProps = {
 
 export function ResumeCard({ submit }: ResumeCardProps) {
   const navigate = useNavigate();
+  const animation = usePageAnimation(progressCardAnimator(0));
+
   const { iconSrc, iconAlt, description } = useMemo(
     () => (submit ? asset.resumeSubmit : asset.resumeNotSubmit),
     [submit],
   );
 
   return (
-    <Card $submit={submit} onClick={() => navigate("./resume")}>
+    <Card
+      $submit={submit}
+      $transitionAnimation={animation}
+      onClick={() => navigate("./resume")}
+    >
       <img src={iconSrc} alt={iconAlt} />
       <Name>자기소개서</Name>
       <Description>{description}</Description>
@@ -28,6 +36,7 @@ export function ResumeCard({ submit }: ResumeCardProps) {
 
 const Card = styled.li<{
   $submit: boolean;
+  $transitionAnimation: RuleSet;
 }>`
   position: relative;
   box-sizing: border-box;
@@ -46,6 +55,7 @@ const Card = styled.li<{
   &:hover {
     background: "#f6f6f6";
   }
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Name = styled.h1`
