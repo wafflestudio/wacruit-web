@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { RuleSet } from "styled-components";
 import ProblemDescription from "../../components/solve/ProblemDescription/ProblemDescription.tsx";
 import CodeEditor from "../../components/solve/CodeEditor/index.tsx";
 import TestResultConsole from "../../components/solve/TestResultConsole.tsx";
@@ -17,18 +17,21 @@ import { useCustomTestCases } from "../../components/solve/ProblemDescription/us
 import { ProblemSubmissionResult } from "../../types/apiTypes.ts";
 import { unreachable } from "../../lib/unreachable.ts";
 import { flushSync } from "react-dom";
-import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
 import { ProblemLoaderReturnType, problemDetailQuery } from "./solveLoader.ts";
-import { defaultOpacityAnimation } from "../../lib/animatedTransition/functions/commonAnimation.ts";
+import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation.ts";
+import { usePageData } from "../../lib/animatedTransition/hooks/usePageData.ts";
+import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnimation.ts";
 
 export default function Solve() {
   const params = useParams();
   const queryClient = useQueryClient();
   const problemNumber = Number(params.problem_number);
-  const { data, isTransitionActive } = usePage<ProblemLoaderReturnType>();
+  const initialData = usePageData<ProblemLoaderReturnType>();
+  const animation = usePageAnimation(commonOpacityAnimator);
+
   const { data: problem } = useQuery({
     ...problemDetailQuery(Number(problemNumber)),
-    initialData: data.problem,
+    initialData: initialData.problem,
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
@@ -101,7 +104,7 @@ export default function Solve() {
   };
 
   return (
-    <Container $isTransitionActive={isTransitionActive}>
+    <Container $transitionAnimation={animation}>
       <Main>
         <TopNav>
           <Link to={`/recruiting/${params.recruit_id}`}>
@@ -172,13 +175,13 @@ export default function Solve() {
   );
 }
 
-const Container = styled.div<{ $isTransitionActive: boolean }>`
+const Container = styled.div<{ $transitionAnimation: RuleSet }>`
   display: flex;
   height: 100vh;
   padding: 30px;
   box-sizing: border-box;
   background: #fff7e9;
-  ${(props) => defaultOpacityAnimation(500, props.$isTransitionActive)}
+  ${(props) => props.$transitionAnimation}
 `;
 const Main = styled.main`
   display: flex;

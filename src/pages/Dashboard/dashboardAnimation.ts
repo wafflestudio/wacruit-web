@@ -1,17 +1,18 @@
 import { css } from "styled-components";
 import {
-  defaultOpacityAnimation,
+  commonOpacityAnimator,
   slideFromBottom,
   slideToBottom,
 } from "../../lib/animatedTransition/functions/commonAnimation";
 import { createAnimationSetup } from "../../lib/animatedTransition/functions/createAnimation";
+import { Animator } from "../../lib/animatedTransition/hooks/usePageAnimation";
 
-export const dashboardAnimationDuration = 500;
-
-export const dashboardAnimationCss = (isTransitionActive: boolean) => css`
-  ${defaultOpacityAnimation(dashboardAnimationDuration, isTransitionActive)}
+export const dashboardMainAnimator: Animator = (args) => css`
+  ${commonOpacityAnimator(args)}
   .fromBottom {
-    ${createAnimationSetup(dashboardAnimationDuration)}
-    animation-name: ${isTransitionActive ? slideToBottom : slideFromBottom}
+    ${createAnimationSetup(args.duration)}
+    animation-name: ${args.animationStatus === "unmount"
+      ? slideToBottom
+      : slideFromBottom}
   }
 `;

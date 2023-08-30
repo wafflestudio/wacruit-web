@@ -13,8 +13,9 @@ import Header from "../../components/home/Header/Header";
 import { getPinnedAnnouncements } from "../../apis/announcement";
 import { useQuery } from "@tanstack/react-query";
 import { usePage } from "../../lib/animatedTransition/hooks/usePage";
-import styled from "styled-components";
-import { defaultOpacityAnimation } from "../../lib/animatedTransition/functions/commonAnimation";
+import styled, { RuleSet } from "styled-components";
+import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation";
+import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnimation";
 
 const LOCAL_STORAGE_KEY_DONT_SHOW_MODAL_DATE = "dontShowExpireDate";
 const localStorageKeyOfAnnouncementId = (announcementId: number) =>
@@ -22,7 +23,7 @@ const localStorageKeyOfAnnouncementId = (announcementId: number) =>
 
 export default function Home() {
   const { isTransitionActive } = usePage();
-
+  const animation = usePageAnimation(commonOpacityAnimator);
   const { data: pinnedAnnouncements } = useQuery({
     queryKey: ["announcement", "pinned"],
     queryFn: () => getPinnedAnnouncements().then(),
@@ -56,10 +57,7 @@ export default function Home() {
   return (
     <>
       <Header isTransitionActive={isTransitionActive} />
-      <Main
-        style={{ minWidth: "920px" }}
-        $isTransitionActive={isTransitionActive}
-      >
+      <Main style={{ minWidth: "920px" }} $transitionAnimation={animation}>
         {announcementModalHandlePairs
           .filter(({ announcement }) => {
             const KEY = localStorageKeyOfAnnouncementId(announcement.id);
@@ -101,6 +99,6 @@ export default function Home() {
   );
 }
 
-const Main = styled.main<{ $isTransitionActive: boolean }>`
-  ${(props) => defaultOpacityAnimation(500, props.$isTransitionActive)}
+const Main = styled.main<{ $transitionAnimation: RuleSet }>`
+  ${(props) => props.$transitionAnimation}
 `;

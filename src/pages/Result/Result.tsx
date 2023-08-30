@@ -1,19 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { RuleSet } from "styled-components";
 import Header from "../../components/home/Header/Header";
 import { ResultLoaderReturnType } from "./resultLoader";
 import { useEffect } from "react";
-import { usePage } from "../../lib/animatedTransition/hooks/usePage";
-import { resultAnimation } from "./resultAnimation";
+import { usePageData } from "../../lib/animatedTransition/hooks/usePageData";
+import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnimation";
+import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation";
 
 export default function Result() {
-  const { data, isTransitionActive } = usePage<ResultLoaderReturnType>();
+  const data = usePageData<ResultLoaderReturnType>();
+  const animation = usePageAnimation(commonOpacityAnimator);
+
   if (data.result.status === 3) {
     //불합격 시
     return (
       <>
-        <Header isTransitionActive={isTransitionActive} />
-        <Main $isTransitionActive={isTransitionActive}>
+        <Header />
+        <Main $transitionAnimation={animation}>
           <Container>
             <LogoWrapper>
               <img src="/image/result/fail.svg"></img>
@@ -45,8 +48,8 @@ export default function Result() {
     //합격 시
     return (
       <>
-        <Header isTransitionActive={isTransitionActive} />
-        <Main $isTransitionActive={isTransitionActive}>
+        <Header />
+        <Main $transitionAnimation={animation}>
           <Container>
             <LogoWrapper>
               <img src="/image/result/pass.svg"></img>
@@ -75,8 +78,8 @@ export default function Result() {
   //결과가 없을 시
   return (
     <>
-      <Header isTransitionActive={isTransitionActive} />
-      <Main $isTransitionActive={isTransitionActive}>
+      <Header />
+      <Main $transitionAnimation={animation}>
         <Container>
           <LogoWrapper>
             <img src="/image/result/pass.svg"></img>
@@ -104,13 +107,13 @@ export function NoResult() {
   return <div></div>;
 }
 
-const Main = styled.main<{ $isTransitionActive: boolean }>`
+const Main = styled.main<{ $transitionAnimation: RuleSet }>`
   width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  ${(props) => resultAnimation(props.$isTransitionActive)}
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Container = styled.div`

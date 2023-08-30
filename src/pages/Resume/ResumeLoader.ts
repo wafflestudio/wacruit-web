@@ -10,9 +10,9 @@ import {
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getInvitation, getUser } from "../../apis/user";
 import {
-  PageDataFetcher,
-  createPageLoader,
-} from "../../lib/animatedTransition/functions/createPageLoader";
+  PageDataLoader,
+  createCompositeLoader,
+} from "../../lib/animatedTransition/functions/createCompositeLoader";
 
 type ResumeInputs = (ResumeSubmissionCreate & {
   question_num: number;
@@ -40,7 +40,7 @@ export const userInvitationQuery = () => ({
   staleTime: Infinity,
 });
 
-export const resumeDataFetcher: PageDataFetcher<{
+export const resumeDataLoader: PageDataLoader<{
   initialInputs: ResumeInputs;
   userInputs: UserInformationInputs;
 }> =
@@ -102,6 +102,6 @@ export const resumeDataFetcher: PageDataFetcher<{
     };
   };
 
-export const resumeLoader = createPageLoader(resumeDataFetcher, 500);
+export const resumeLoader = createCompositeLoader(resumeDataLoader);
 
 export type ResumeLoaderReturnType = LoaderReturnType<typeof resumeLoader>;

@@ -3,10 +3,9 @@ import { Recruiting, Resume } from "../../types/apiTypes";
 import { LoaderReturnType } from "../../types/commonTypes";
 import { getMyResumes } from "../../apis/resume";
 import {
-  PageDataFetcher,
-  createPageLoader,
-} from "../../lib/animatedTransition/functions/createPageLoader";
-import { dashboardAnimationDuration } from "./dashboardAnimation";
+  PageDataLoader,
+  createCompositeLoader,
+} from "../../lib/animatedTransition/functions/createCompositeLoader";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
@@ -20,7 +19,7 @@ export const myResumeQuery = (id: number) => ({
   staleTime: Infinity,
 });
 
-export const dashboardDataFetcher: PageDataFetcher<{
+export const dashboardDataLoader: PageDataLoader<{
   recruiting: Recruiting;
   resume: { items: Resume[] };
 }> =
@@ -46,10 +45,9 @@ export const dashboardDataFetcher: PageDataFetcher<{
     };
   };
 
-export const dashboardLoader = createPageLoader(
-  dashboardDataFetcher,
-  dashboardAnimationDuration,
-);
+export const dashboardLoader = createCompositeLoader(dashboardDataLoader, {
+  duration: 500,
+});
 
 export type DashboardLoaderReturnType = LoaderReturnType<
   typeof dashboardLoader

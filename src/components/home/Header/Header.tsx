@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled, { RuleSet, css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
@@ -11,14 +11,19 @@ import {
   slideFromTop,
   slideToTop,
 } from "../../../lib/animatedTransition/functions/commonAnimation";
+import {
+  Animator,
+  usePageAnimation,
+} from "../../../lib/animatedTransition/hooks/usePageAnimation";
 
 type HeaderProps = {
   isTransitionActive?: boolean;
 };
 
-export default function Header({ isTransitionActive }: HeaderProps) {
+export default function Header(props: HeaderProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const animation = usePageAnimation(headerTransitionAnimator);
   const [showApply, setShowApply] = useState(false);
 
   /**
@@ -33,7 +38,7 @@ export default function Header({ isTransitionActive }: HeaderProps) {
 
   if (!authState) {
     return (
-      <Container $isTransitionActive={!!isTransitionActive}>
+      <Container $transitionAnimation={animation}>
         <Link to="/">
           <img src={"/icon/header/Logo.jpeg"} height={27} />
         </Link>
@@ -43,7 +48,7 @@ export default function Header({ isTransitionActive }: HeaderProps) {
   }
 
   return (
-    <Container $isTransitionActive={!!isTransitionActive}>
+    <Container $transitionAnimation={animation}>
       <Link to="/">
         <img src={"/icon/header/Logo.jpeg"} height={27} />
       </Link>
@@ -110,12 +115,16 @@ export default function Header({ isTransitionActive }: HeaderProps) {
   );
 }
 
-const headerTransitionAnimation = (isTransitionActive: boolean) => css`
-  ${createAnimationSetup(500)}
-  animation-name: ${isTransitionActive ? slideToTop : slideFromTop};
+const headerTransitionAnimator: Animator = ({
+  duration,
+  animationStatus,
+}) => css`
+  ${createAnimationSetup(duration)}
+  animation-name: ${animationStatus === "unmount" ? slideToTop : slideFromTop};
+  pointer-events: ${animationStatus === "unmount" ? "none" : "auto"};
 `;
 
-const Container = styled.header<{ $isTransitionActive: boolean }>`
+const Container = styled.header<{ $transitionAnimation: RuleSet }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -131,8 +140,7 @@ const Container = styled.header<{ $isTransitionActive: boolean }>`
   box-sizing: border-box;
   font-family: Pretendard, sans-serif;
   animation-fill-mode: both;
-  ${(props) => headerTransitionAnimation(props.$isTransitionActive)};
-  pointer-events: ${(props) => (props.$isTransitionActive ? "none" : "auto")};
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Nav = styled.nav`

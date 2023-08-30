@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { RuleSet } from "styled-components";
 import Header from "../../components/home/Header/Header.tsx";
 import QuestionaireInput from "../../components/rookie/QuestionaireInput/QuestionaireInput.tsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,12 +13,14 @@ import {
 } from "../../types/apiTypes.ts";
 import { ResumeLoaderReturnType } from "./resumeLoader.ts";
 import { patchUser, patchUserInvitationEmails } from "../../apis/user.ts";
-import { usePage } from "../../lib/animatedTransition/hooks/usePage.ts";
-import { resumeAnimation } from "./resumeAnimation.ts";
+import { usePageData } from "../../lib/animatedTransition/hooks/usePageData.ts";
+import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnimation.ts";
+import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation.ts";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
-  const { data, isTransitionActive } = usePage<ResumeLoaderReturnType>();
+  const data = usePageData<ResumeLoaderReturnType>();
+  const animation = usePageAnimation(commonOpacityAnimator);
   const [resumeInput, setResumeInput] = useState(data.initialInputs);
   const [userInfoInput, setUserInfoInput] = useState(data.userInputs);
 
@@ -60,8 +62,8 @@ export default function Resume() {
 
   return (
     <>
-      <Header isTransitionActive={isTransitionActive} />
-      <Main $isTransition={isTransitionActive}>
+      <Header />
+      <Main $transitionAnimation={animation}>
         <Title>자기소개서</Title>
         <Description>모든 문항에 성실히 응답해주세요.</Description>
         <Questionaires>
@@ -183,13 +185,13 @@ const checkRequired = (
 //   return validInput;
 // };
 
-const Main = styled.main<{ $isTransition: boolean }>`
+const Main = styled.main<{ $transitionAnimation: RuleSet }>`
   position: relative;
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
   padding: 23vh max(calc(50vw - 534px), 30px);
-  ${(props) => resumeAnimation(props.$isTransition)}
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Title = styled.h1`

@@ -1,9 +1,9 @@
 import { getRecruitingResult } from "../../apis/recruiting";
 import { LoaderReturnType } from "../../types/commonTypes";
 import {
-  PageDataFetcher,
-  createPageLoader,
-} from "../../lib/animatedTransition/functions/createPageLoader";
+  PageDataLoader,
+  createCompositeLoader,
+} from "../../lib/animatedTransition/functions/createCompositeLoader";
 
 export const recruitingResultQuery = (id: number) => ({
   queryKey: ["recruiting", "result", id],
@@ -11,7 +11,7 @@ export const recruitingResultQuery = (id: number) => ({
   staleTime: Infinity,
 });
 
-const resultDataFetcher: PageDataFetcher<{ result: { status: number } }> =
+const resultDataLoader: PageDataLoader<{ result: { status: number } }> =
   (queryClient) =>
   async ({ params }) => {
     const resultQuery = recruitingResultQuery(Number(params.recruit_id));
@@ -26,6 +26,6 @@ const resultDataFetcher: PageDataFetcher<{ result: { status: number } }> =
     };
   };
 
-export const resultLoader = createPageLoader(resultDataFetcher, 500);
+export const resultLoader = createCompositeLoader(resultDataLoader);
 
 export type ResultLoaderReturnType = LoaderReturnType<typeof resultLoader>;

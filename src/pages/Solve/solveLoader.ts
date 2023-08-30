@@ -1,10 +1,10 @@
 import { getProblemById } from "../../apis/problem";
 import { Problem } from "../../types/apiTypes";
-import {
-  PageDataFetcher,
-  createPageLoader,
-} from "../../lib/animatedTransition/functions/createPageLoader";
 import { LoaderReturnType } from "../../types/commonTypes";
+import {
+  PageDataLoader,
+  createCompositeLoader,
+} from "../../lib/animatedTransition/functions/createCompositeLoader";
 
 export const problemDetailQuery = (problemNumber: number) => ({
   queryKey: ["problem", problemNumber],
@@ -13,7 +13,7 @@ export const problemDetailQuery = (problemNumber: number) => ({
   retry: 1,
 });
 
-const solveDataFetcher: PageDataFetcher<{ problem: Problem }> =
+const solveDataLoader: PageDataLoader<{ problem: Problem }> =
   (queryClient) =>
   async ({ params }) => {
     const problemQuery = problemDetailQuery(Number(params.problem_number));
@@ -28,6 +28,6 @@ const solveDataFetcher: PageDataFetcher<{ problem: Problem }> =
     };
   };
 
-export const solveLoader = createPageLoader(solveDataFetcher, 500);
+export const solveLoader = createCompositeLoader(solveDataLoader);
 
 export type ProblemLoaderReturnType = LoaderReturnType<typeof solveLoader>;

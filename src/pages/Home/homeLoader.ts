@@ -1,6 +1,5 @@
-import { createPageLoader } from "../../lib/animatedTransition/functions/createPageLoader";
+import { createCompositeLoader } from "../../lib/animatedTransition/functions/createCompositeLoader";
 
-export const homeLoader = createPageLoader(
+export const homeLoader = createCompositeLoader(
   () => () => Promise.resolve({}),
-  500,
 );

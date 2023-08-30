@@ -3,6 +3,7 @@ import {
   createAlternateKeyframes,
   createAnimationSetup,
 } from "./createAnimation";
+import { Animator } from "../hooks/usePageAnimation";
 
 /**
  * opacity를 조절하는 가장 기본적인 애니메이션입니다. 대충 넣으면 페이지가 자연스럽게 넘어갑니다.
@@ -17,6 +18,16 @@ export const defaultOpacityAnimation = (
 ) => css`
   ${createAnimationSetup(ms)}
   animation-name: ${isDisappearing ? decreaseOpacity : increaseOpacity};
+`;
+
+export const commonOpacityAnimator: Animator = ({
+  duration,
+  animationStatus,
+}) => css`
+  ${createAnimationSetup(duration)}
+  animation-name: ${animationStatus === "unmount"
+    ? decreaseOpacity
+    : increaseOpacity};
 `;
 
 export const [increaseOpacity, decreaseOpacity] = createAlternateKeyframes(
