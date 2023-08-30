@@ -11,13 +11,14 @@ import Resume from "./pages/Resume/Resume";
 import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Sso from "./pages/Sso";
-import Announcement from "./pages/Announcement";
+import Announcement from "./pages/Announcement/Announcement";
 import { dashboardLoader } from "./pages/Dashboard/dashboardLoader";
 import { resumeLoader } from "./pages/Resume/resumeLoader";
 import Result, { NoResult } from "./pages/Result/Result";
 import { resultLoader } from "./pages/Result/resultLoader";
 import { homeLoader } from "./pages/Home/homeLoader";
 import { solveLoader } from "./pages/Solve/solveLoader";
+import { announcementLoader } from "./pages/Announcement/announcementLoader";
 
 const queryClient = new QueryClient();
 
@@ -59,7 +60,11 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "announcement", element: <Announcement /> },
+  {
+    path: "announcement",
+    element: <Announcement />,
+    loader: announcementLoader(queryClient),
+  },
   { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 

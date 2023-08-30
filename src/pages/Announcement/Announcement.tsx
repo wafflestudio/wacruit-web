@@ -1,13 +1,19 @@
-import { styled } from "styled-components";
-import Header from "../components/home/Header/Header";
+import { RuleSet, styled } from "styled-components";
+import Header from "../../components/home/Header/Header";
 import { MouseEventHandler, useState } from "react";
 import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
 import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
-import { TAnnouncement } from "../types/apiTypes";
+import { TAnnouncement } from "../../types/apiTypes";
 import { useQuery } from "@tanstack/react-query";
-import { getAllAnnouncements } from "../apis/announcement";
-import MarkdownRenderer from "../lib/MarkdownRenderer";
-import { Union } from "../types/commonTypes";
+import MarkdownRenderer from "../../lib/MarkdownRenderer";
+import { Union } from "../../types/commonTypes";
+import {
+  AnnouncementLoaderReturnType,
+  allAnnouncementsQuery,
+} from "./announcementLoader";
+import { usePageData } from "../../lib/animatedTransition/hooks/usePageData";
+import { usePageAnimation } from "../../lib/animatedTransition/hooks/usePageAnimation";
+import { commonOpacityAnimator } from "../../lib/animatedTransition/functions/commonAnimation";
 
 const listItemStates = [
   "nothingSelected",
@@ -17,18 +23,20 @@ const listItemStates = [
 type ListItemState = Union<typeof listItemStates>;
 
 export default function Announcement() {
+  const initialData = usePageData<AnnouncementLoaderReturnType>();
+  const animation = usePageAnimation(commonOpacityAnimator);
   const { data: announcements } = useQuery({
-    queryKey: ["announcement", "all"],
-    queryFn: () => getAllAnnouncements(),
-    staleTime: 1,
+    ...allAnnouncementsQuery,
+    initialData: initialData.annoucements,
   });
+
   const [selectedAnnouncementId, setSelectedAnnouncementId] =
     useState<number>();
 
   return (
     <>
       <Header />
-      <Main>
+      <Main $transitionAnimation={animation}>
         <Title>공지사항</Title>
         <Description>
           찾는 공지가 없다면 <span>mailto:recruit@wafflestudio.com</span>{" "}
@@ -115,9 +123,10 @@ function ListItem({
   );
 }
 
-const Main = styled.main`
+const Main = styled.main<{ $transitionAnimation: RuleSet }>`
   margin-top: 7vh;
   padding: 9vh max(calc(50vw - 650px), 30px);
+  ${(props) => props.$transitionAnimation}
 `;
 
 const Title = styled.h1`
