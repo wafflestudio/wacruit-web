@@ -13,9 +13,10 @@ import { css, keyframes } from "styled-components";
  */
 export const createAnimationSetup = (
   ms: number,
+  fillMode: "both" | "backwards" | "forwards" | "none" = "both",
   timingFunction = "ease",
 ) => css`
-  animation-fill-mode: both;
+  animation-fill-mode: ${fillMode};
   animation-duration: ${ms / 1000}s;
   animation-timing-function: ${timingFunction};
 `;

@@ -17,8 +17,8 @@ const cardKeyframes = createAlternateKeyframes(
   `transform: translate(0, 0); opacity: 1;`,
 );
 const selectedCardKeyframes = keyframes`
-from { transform: translate(0, 0) }
-to { transform: translate(0, -50%) } 
+from { transform: translateY(-10px) }
+to { transform: translateY(-50%) } 
 `;
 
 export const progressCardAnimator =
@@ -32,7 +32,7 @@ export const progressCardAnimator =
     }
 
     return css`
-      ${createAnimationSetup(duration)}
+      ${createAnimationSetup(duration, "backwards")}
       animation-delay: ${index / 10}s;
       animation-name: ${animationStatus === "unmount"
         ? cardKeyframes[1]

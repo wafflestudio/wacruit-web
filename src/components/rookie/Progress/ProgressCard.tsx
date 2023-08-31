@@ -92,7 +92,7 @@ const Card = styled.li<{
       : props.$theme === "yellow"
       ? "linear-gradient(180deg, #FFF7CE 0%, #FFF 46.88%);"
       : "#fff"};
-
+  transition: 0.2s ease;
   &:hover {
     background: ${(props) =>
       props.$theme === "green"
@@ -102,6 +102,7 @@ const Card = styled.li<{
         : props.$theme === "yellow"
         ? "linear-gradient(180deg, #FFF7CE 0%, #F6F6F6 46.88%);"
         : "#f6f6f6"};
+    transform: translateY(-10px);
   }
   ${(props) => props.$transitionAnimation}
 `;

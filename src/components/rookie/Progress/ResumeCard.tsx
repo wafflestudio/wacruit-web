@@ -51,9 +51,11 @@ const Card = styled.li<{
   border: ${(props) =>
     props.$submit ? "1px solid #64CB3F" : "1px solid #D1D1D1"};
   background: "#fff";
+  transition: 0.2s ease;
 
   &:hover {
     background: "#f6f6f6";
+    transform: translateY(-10px);
   }
   ${(props) => props.$transitionAnimation}
 `;
