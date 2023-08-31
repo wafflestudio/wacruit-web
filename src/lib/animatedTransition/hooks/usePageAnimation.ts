@@ -3,7 +3,7 @@ import {
   CompositeLoaderArgs,
   CompositeLoaderConfig,
 } from "../functions/createCompositeLoader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTransitionStore } from "../stores/useTransitionStore";
 
 type AnimationStatus = "mount" | "unmount";
@@ -21,32 +21,25 @@ export type Animator = (
 export const usePageAnimation = (animator: Animator) => {
   const [isInitialMount, setIsInitialMount] = useState<boolean>(true);
   const animatorRef = useRef(animator);
-  const [internalStatus, setInternalStatus] =
-    useState<AnimationStatus>("mount");
   const { transitionStatus, lastRequestTarget } = useTransitionStore(
     (state) => state,
   );
+  const getAnimationStatus = useMemo(() => {
+    if (isInitialMount) return "mount";
+    return transitionStatus === "request" ? "unmount" : "mount";
+  }, [transitionStatus, isInitialMount]);
 
   useEffect(() => {
-    if (isInitialMount) {
-      //on initial mount
-      setIsInitialMount(false);
-    } else {
-      if (transitionStatus === "request") {
-        setInternalStatus("unmount");
-      } else {
-        setInternalStatus("mount");
-      }
-    }
-  }, [transitionStatus, isInitialMount]);
+    setIsInitialMount(false);
+  }, []);
 
   return lastRequestTarget
     ? animatorRef.current({
-        animationStatus: internalStatus,
+        animationStatus: getAnimationStatus,
         ...lastRequestTarget,
       })
     : animatorRef.current({
-        animationStatus: internalStatus,
+        animationStatus: getAnimationStatus,
         transitionType: "phased",
         duration: 0,
         url: new URL(location.href),
