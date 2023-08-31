@@ -19,7 +19,9 @@ export function ProgressCard({
   animationIndex,
 }: ProgressCardProps) {
   const navigate = useNavigate();
-  const animation = usePageAnimation(progressCardAnimator(animationIndex));
+  const animation = usePageAnimation(
+    progressCardAnimator(animationIndex, to.slice(1)),
+  );
   const { iconSrc, iconAlt, theme, description } = useMemo(() => {
     switch (statusCode) {
       case 0:
@@ -39,7 +41,6 @@ export function ProgressCard({
     <Card
       $theme={theme}
       onClick={() => navigate(to)}
-      style={{ animationDelay: `${animationIndex / 10}s` }}
       $transitionAnimation={animation}
     >
       <img src={iconSrc} alt={iconAlt} />

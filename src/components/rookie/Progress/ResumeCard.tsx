@@ -11,7 +11,7 @@ type ResumeCardProps = {
 
 export function ResumeCard({ submit }: ResumeCardProps) {
   const navigate = useNavigate();
-  const animation = usePageAnimation(progressCardAnimator(0));
+  const animation = usePageAnimation(progressCardAnimator(0, "/resume"));
 
   const { iconSrc, iconAlt, description } = useMemo(
     () => (submit ? asset.resumeSubmit : asset.resumeNotSubmit),
