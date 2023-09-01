@@ -28,7 +28,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.14.0",
     "rehype-katex": "^6.0.3",
     "rehype-mathjax": "^4.0.3",
