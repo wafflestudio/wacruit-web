@@ -54,25 +54,25 @@ export default function DragResizable(props: Props) {
 
   useEffect(() => {
     const handleMouseUp = () => {
-      setDragInfo((info) =>
-        info.drag
+      setDragInfo((dragInfo) =>
+        dragInfo.drag
           ? {
-              ...info,
+              ...dragInfo,
               drag: null,
             }
-          : info,
+          : dragInfo,
       );
     };
     const handleMouseDown = (e: MouseEvent) => {
-      setDragInfo((info) => {
-        if (!container.current || !info.drag) return info;
-        const { mouseBaseY, baseHeight, maxHeight } = info.drag;
+      setDragInfo((dragInfo) => {
+        if (!container.current || !dragInfo.drag) return dragInfo;
+        const { mouseBaseY, baseHeight, maxHeight } = dragInfo.drag;
         const h = baseHeight - (e.clientY - mouseBaseY);
         const newHeight = Math.max(HANDLE_HEIGHT, Math.min(h, maxHeight));
-        return info.height === newHeight
-          ? info
+        return dragInfo.height === newHeight
+          ? dragInfo
           : {
-              ...info,
+              ...dragInfo,
               height: newHeight,
             };
       });
@@ -87,20 +87,19 @@ export default function DragResizable(props: Props) {
   }, []);
 
   const onMouseDown = useCallback<MouseEventHandler>((e) => {
-    setDragInfo((info) =>
-      container.current
-        ? {
-            drag: {
-              mouseBaseY: e.clientY,
-              baseHeight: container.current.clientHeight,
-              maxHeight:
-                (container.current.parentElement?.clientHeight ?? MIN_SPACE) -
-                MIN_SPACE,
-            },
-            height: info.height,
-          }
-        : info,
-    );
+    setDragInfo((dragInfo) => {
+      if (!container.current) return dragInfo;
+      return {
+        drag: {
+          mouseBaseY: e.clientY,
+          baseHeight: container.current.clientHeight,
+          maxHeight:
+            (container.current.parentElement?.clientHeight ?? MIN_SPACE) -
+            MIN_SPACE,
+        },
+        height: dragInfo.height,
+      };
+    });
   }, []);
 
   const style = useMemo(() => ({ height: dragInfo.height }), [dragInfo.height]);
