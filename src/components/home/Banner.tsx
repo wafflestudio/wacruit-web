@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import Countdown from "./Countdown";
+import { PausedCountdown } from "./Countdown";
 
 export default function Banner() {
   return (
@@ -50,7 +50,7 @@ export default function Banner() {
           </h1>
         </BannerText>
         <FlipClockContainer>
-          <Countdown />
+          <PausedCountdown />
         </FlipClockContainer>
       </ForeGround>
     </Section>
