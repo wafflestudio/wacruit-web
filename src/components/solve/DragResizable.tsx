@@ -35,7 +35,7 @@ export default function DragResizable(props: Props) {
       maxHeight: number;
     } | null;
 
-    // 드래그되지 않는 상태에서 저장하고 있는 높이
+    // 드래그 중인 높이
     height: number;
   }>({
     drag: null,
@@ -69,12 +69,12 @@ export default function DragResizable(props: Props) {
         const { mouseBaseY, baseHeight, maxHeight } = info.drag;
         const h = baseHeight - (e.clientY - mouseBaseY);
         const newHeight = Math.max(HANDLE_HEIGHT, Math.min(h, maxHeight));
-        return info.drag
-          ? {
+        return info.height === newHeight
+          ? info
+          : {
               ...info,
               height: newHeight,
-            }
-          : info;
+            };
       });
     };
 
