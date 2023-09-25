@@ -1,4 +1,12 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+  MouseEventHandler,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 
 interface Props {
@@ -12,42 +20,62 @@ const HANDLE_HEIGHT = 20;
 // 최대로 늘리더라도 남겨놓을 최소한의 공간: 20 + 에디터 헤더 높이
 const MIN_SPACE = 20 + 47;
 
-export default function DragResizable(props: Props) {
-  /*
- 드래그 중에는 element의 style.height를 직접 조절하고,
- 드래그가 끝나면 state에 반영한다.
+/*
+최소한의 deps로 이루어진 state-driven 드래그
+ref의 사용을 제거함
+이게 되네?
 */
-
+export default function DragResizable(props: Props) {
   const container = useRef<HTMLDivElement>(null);
-  // 드래그가 시작될 때 설정되는 값들
-  const dragInfo = useRef<{
-    mouseBaseY: number;
-    baseHeight: number;
-    maxHeight: number;
-  } | null>(null);
-  // 드래그되지 않는 상태에서 저장하고 있는 높이
-  const [height, setHeight] = useState(`${props.initialHeight}px`);
+  const [dragInfo, setDragInfo] = useState<{
+    // 드래그가 시작될 때 설정되는 값들
+    drag: {
+      mouseBaseY: number;
+      baseHeight: number;
+      maxHeight: number;
+    } | null;
+
+    // 드래그되지 않는 상태에서 저장하고 있는 높이
+    height: number;
+  }>({
+    drag: null,
+    height: props.initialHeight,
+  });
 
   // props.initialHeight가 바뀌면 드래그 초기화
   const [propHeight, setPropHeight] = useState(props.initialHeight);
   if (propHeight !== props.initialHeight) {
     setPropHeight(props.initialHeight);
-    setHeight(`${props.initialHeight}px`);
-    dragInfo.current = null;
+    setDragInfo({
+      drag: null,
+      height: props.initialHeight,
+    });
   }
 
   useEffect(() => {
     const handleMouseUp = () => {
-      dragInfo.current = null;
-      if (!container.current) return;
-      setHeight(container.current.style.height);
+      setDragInfo((info) =>
+        info.drag
+          ? {
+              ...info,
+              drag: null,
+            }
+          : info,
+      );
     };
     const handleMouseDown = (e: MouseEvent) => {
-      if (!container.current || !dragInfo.current) return;
-      const { mouseBaseY, baseHeight, maxHeight } = dragInfo.current;
-      const h = baseHeight - (e.clientY - mouseBaseY);
-      const newHeight = Math.max(HANDLE_HEIGHT, Math.min(h, maxHeight));
-      container.current.style.height = `${newHeight}px`;
+      setDragInfo((info) => {
+        if (!container.current || !info.drag) return info;
+        const { mouseBaseY, baseHeight, maxHeight } = info.drag;
+        const h = baseHeight - (e.clientY - mouseBaseY);
+        const newHeight = Math.max(HANDLE_HEIGHT, Math.min(h, maxHeight));
+        return info.drag
+          ? {
+              ...info,
+              height: newHeight,
+            }
+          : info;
+      });
     };
 
     window.addEventListener("mouseup", handleMouseUp);
@@ -58,20 +86,28 @@ export default function DragResizable(props: Props) {
     };
   }, []);
 
+  const onMouseDown = useCallback<MouseEventHandler>((e) => {
+    setDragInfo((info) =>
+      container.current
+        ? {
+            drag: {
+              mouseBaseY: e.clientY,
+              baseHeight: container.current.clientHeight,
+              maxHeight:
+                (container.current.parentElement?.clientHeight ?? MIN_SPACE) -
+                MIN_SPACE,
+            },
+            height: info.height,
+          }
+        : info,
+    );
+  }, []);
+
+  const style = useMemo(() => ({ height: dragInfo.height }), [dragInfo.height]);
+
   return (
-    <Container ref={container} style={{ height }}>
-      <Handle
-        onMouseDown={(e) => {
-          if (!container.current) return;
-          dragInfo.current = {
-            mouseBaseY: e.clientY,
-            baseHeight: container.current.clientHeight,
-            maxHeight:
-              (container.current.parentElement?.clientHeight ?? MIN_SPACE) -
-              MIN_SPACE,
-          };
-        }}
-      >
+    <Container ref={container} style={style}>
+      <Handle onMouseDown={onMouseDown}>
         <img
           src="/icon/DragHandle.svg"
           alt="&equiv;"
