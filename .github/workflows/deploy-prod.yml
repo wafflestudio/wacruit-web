@@ -1,12 +1,16 @@
-# Release 배포용 CI/CD workflow.
-
-name: Release CICD
+name: Prod CICD
 on:
   push:
     branches: release
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
 jobs:
-  Build:
+  Deploy:
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
@@ -18,13 +22,13 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build
-        run: yarn build
+        run: yarn build --mode production
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_RELEASE }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{secrets.AWS_REGION}}
@@ -32,7 +36,7 @@ jobs:
       - name: Invalidate Cloudfront cache
         uses: chetan/invalidate-cloudfront-action@v2
         env:
-          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_RELEASE }}
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }}
           PATHS: "/*"
           AWS_REGION: ${{secrets.AWS_REGION}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
