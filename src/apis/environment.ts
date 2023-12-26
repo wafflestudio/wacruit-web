@@ -1,19 +1,9 @@
-export const baseURL =
+export const BASE_URL =
+  import.meta.env.VITE_API_TYPE === "MSW" ? "" : import.meta.env.VITE_BASE_URL;
+
+export const SSO_LOGIN_URL =
   import.meta.env.VITE_API_TYPE === "MSW"
     ? ""
-    : "https://wacruit-dev.wafflestudio.com/api/v1";
+    : import.meta.env.VITE_SSO_LOGIN_URL;
 
-export const ssoLoginURL =
-  import.meta.env.VITE_API_TYPE === "MSW"
-    ? ""
-    : "https://sso-dev.wafflestudio.com/?redirect_uri=";
-
-export const ssoRedirectURI = (recruitId: number | "home") =>
-  `https://wacruit-dev.wafflestudio.com/sso/${recruitId}`;
-
-// export const baseURL = "https://wacruit.wafflestudio.com/api/v1";
-
-// export const ssoLoginURL = "https://sso.wafflestudio.com/?redirect_uri=";
-
-// export const ssoRedirectURI = (recruitId: number | "home") =>
-//   `https://wacruit.wafflestudio.com/sso/${recruitId}`;
+export const SSO_REDIRECT_URL = import.meta.env.VITE_SSO_REDIRECT_URL;
