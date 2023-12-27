@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { ssoLoginURL, ssoRedirectURI } from "./environment";
+import { SSO_LOGIN_URL, SSO_REDIRECT_URL } from "./environment";
 import { getRequest } from "./utility";
 
 const SSO_COOKIE_KEY = "waffle.access-token";
@@ -15,11 +15,11 @@ export const getSsoToken = (): string | null => {
 };
 
 export const deleteSsoToken = () => {
-  Cookies.remove(SSO_COOKIE_KEY, { path:"/", domain:".wafflestudio.com" });
+  Cookies.remove(SSO_COOKIE_KEY, { path: "/", domain: ".wafflestudio.com" });
 };
 
 export const tryLogin = (recruit_id: number | "home") => {
-  location.href = `${ssoLoginURL}${ssoRedirectURI(recruit_id)}`;
+  location.href = `${SSO_LOGIN_URL}/?redirect_uri=${SSO_REDIRECT_URL}/${recruit_id}`;
 };
 
 export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
