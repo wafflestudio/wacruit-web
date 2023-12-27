@@ -1,16 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
-import { useState } from "react";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [showApply, setShowApply] = useState(false);
 
   /**
    * Check Authorization
@@ -38,65 +36,41 @@ export default function Header() {
       <Link to="/">
         <img src={"/icon/header/Logo.jpeg"} height={27} />
       </Link>
-      {authState === "valid" ? (
-        <Nav>
-          <NavButton
-            onClick={() => {
-              deleteSsoToken();
-              queryClient.invalidateQueries(["auth"]);
-              navigate("/");
-            }}
-          >
-            <img src={"/icon/header/Logout.svg"} />
-            로그아웃
-          </NavButton>
-          <NavButton
-            onMouseEnter={() => setShowApply(true)}
-            onMouseLeave={() => setShowApply(false)}
-          >
-            <img src={"/icon/header/Apply.svg"} />
-            지원페이지
-            {showApply && (
-              <ApplyList>
-                <NavLink to={"/recruiting/1"}>루키</NavLink>
-                <NavLink to={"/recruiting/2"}>디자이너</NavLink>
-              </ApplyList>
-            )}
-          </NavButton>
-          <NavLink to="/announcement">
-            <img src={"/icon/header/Alarm.svg"} />
-            공지사항
-          </NavLink>
-        </Nav>
-      ) : (
-        <Nav>
-          <NavButton
-            onClick={() => {
-              tryLogin("home");
-            }}
-          >
-            <img src={"/icon/header/Login.svg"} />
-            로그인
-          </NavButton>
-          <NavButton
-            onMouseEnter={() => setShowApply(true)}
-            onMouseLeave={() => setShowApply(false)}
-          >
-            <img src={"/icon/header/Apply.svg"} />
-            지원페이지
-            {showApply && (
-              <ApplyList>
-                <NavButton onClick={() => tryLogin(1)}>루키</NavButton>
-                <NavButton onClick={() => tryLogin(2)}>디자이너</NavButton>
-              </ApplyList>
-            )}
-          </NavButton>
-          <NavLink to="/announcement">
-            <img src={"/icon/header/Alarm.svg"} />
-            공지사항
-          </NavLink>
-        </Nav>
-      )}
+      <Nav>
+        {authState === "valid" ? (
+          <>
+            <NavButton
+              onClick={() => {
+                deleteSsoToken();
+                queryClient.invalidateQueries(["auth"]);
+                navigate("/");
+              }}
+            >
+              <img src={"/icon/header/Logout.svg"} />
+              로그아웃
+            </NavButton>
+          </>
+        ) : (
+          <>
+            <NavButton
+              onClick={() => {
+                tryLogin("home");
+              }}
+            >
+              <img src={"/icon/header/Login.svg"} />
+              로그인
+            </NavButton>
+          </>
+        )}
+        <NavLink to={"/recruiting"}>
+          <img src={"/icon/header/Apply.svg"} />
+          지원페이지
+        </NavLink>
+        <NavLink to="/announcement">
+          <img src={"/icon/header/Alarm.svg"} />
+          공지사항
+        </NavLink>
+      </Nav>
     </Container>
   );
 }
@@ -127,7 +101,7 @@ const Nav = styled.nav`
   white-space: nowrap;
 `;
 
-const NavLink = styled(Link)`
+const NavLinkStyle = css`
   position: relative;
   display: inline-flex;
   gap: 5px;
@@ -137,49 +111,14 @@ const NavLink = styled(Link)`
   > img {
     height: 18px;
   }
+`;
+
+const NavLink = styled(Link)`
+  ${NavLinkStyle}
 `;
 
 const NavButton = styled.button`
-  position: relative;
-  display: inline-flex;
-  gap: 5px;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  > img {
-    height: 18px;
-  }
-`;
-
-const ApplyList = styled.div`
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 5px;
-  background: #fff;
-  padding: 10px 0;
-
-  > a {
-    display: block;
-    padding: 10px 0;
-    cursor: pointer;
-
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
-  > button {
-    display: block;
-    padding: 10px 0;
-    cursor: pointer;
-
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
+  ${NavLinkStyle}
 `;
 
 const LoadAuth = styled.div`
