@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAnnouncements } from "../apis/announcement";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { Union } from "../types/commonTypes";
+import { MAILTO_RECRUIT } from "../common/const";
 
 const listItemStates = [
   "nothingSelected",
@@ -31,7 +32,7 @@ export default function Announcement() {
       <Main>
         <Title>공지사항</Title>
         <Description>
-          찾는 공지가 없다면 <span>mailto:recruit@wafflestudio.com</span>{" "}
+          찾는 공지가 없다면 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
           이메일로 문의주세요.
         </Description>
         <AnnouncementList>
