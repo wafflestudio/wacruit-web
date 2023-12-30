@@ -41,7 +41,8 @@ export default function RecruitList() {
             .map((r) => (
               <RecruitItem
                 key={r.id}
-                title={r.name}
+                id={r.id}
+                name={r.name}
                 description={r.short_description}
                 from={r.from_date ? new Date(r.from_date) : null}
                 to={r.to_date ? new Date(r.to_date) : null}
