@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { ProblemSubmissionResult } from "../../types/apiTypes.ts";
+import {
+  ProblemSubmissionResult,
+  ProblemSubmissionStatusCode,
+} from "../../types/apiTypes.ts";
 import { LegacyRef } from "react";
 
 type Props = {
@@ -71,5 +74,8 @@ const Section = styled.section`
 `;
 
 const Status = styled.p<{ $code: number }>`
-  color: ${(props) => (props.$code === 3 ? "#2fa500" : "#ff0000")};
+  color: ${(props) =>
+    props.$code === ProblemSubmissionStatusCode.ACCEPTED
+      ? "#2fa500"
+      : "#ff0000"};
 `;

@@ -15,7 +15,7 @@ export function RecruitItem({
   from,
   to,
 }: RecruitItemComponentProps) {
-  // to가 undefined이면 상시 모집이므로 항상 활성화
+  // to가 null이면 상시 모집이므로 항상 활성화
   const isActive = to ? to.getMilliseconds() > Date.now() : true;
 
   return (
@@ -25,11 +25,9 @@ export function RecruitItem({
         <RightArrow src="/image/rightAngleBracket.svg" />
       </RecruitNameArea>
       <RecruitDescription>
-        {/* to가 없을 때만 상시모집, from이 없을 경우에는 빈칸으로 둔다. */}
         {to
-          ? `${from?.toISOString().split("T")[0] ?? ""} ~ ${
-              to.toISOString().split("T")[0]
-            }`
+          ? `${from?.toISOString().split("T")[0] ?? ""}
+          ${" ~ "}${to.toISOString().split("T")[0]}`
           : "상시 모집"}
         <RecruitDescriptionSeperator />
         {description}

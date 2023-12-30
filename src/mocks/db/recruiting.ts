@@ -1,10 +1,15 @@
-import { Recruiting, RecruitingSummary } from "../../types/apiTypes";
+import {
+  ProblemStatusCode,
+  Recruiting,
+  RecruitingSummary,
+  RecruitingType,
+} from "../../types/apiTypes";
 
 const recruiting: Recruiting[] = [
   {
     id: 0,
     name: "2023 루키 전형",
-    type: 1,
+    type: RecruitingType.ROOKIE,
     is_active: true,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
@@ -12,24 +17,24 @@ const recruiting: Recruiting[] = [
       {
         id: 1,
         num: 1,
-        status: 0,
+        status: ProblemStatusCode.NOT_SUBMITTED,
       },
       {
         id: 2,
         num: 2,
-        status: 0,
+        status: ProblemStatusCode.NOT_SUBMITTED,
       },
       {
         id: 3,
         num: 3,
-        status: 0,
+        status: ProblemStatusCode.NOT_SUBMITTED,
       },
     ],
   },
   {
     id: 1,
     name: "2023 디자이너 전형",
-    type: 2,
+    type: RecruitingType.DESIGNER,
     is_active: true,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",

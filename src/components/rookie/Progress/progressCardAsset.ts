@@ -44,7 +44,7 @@ const problemJudging: ProgressCardAsset = {
   iconAlt: "채점 중 아이콘",
   description: "채점 중입니다...",
 };
-const problemSubmitNotCorrect: ProgressCardAsset = {
+const problemSubmitWrong: ProgressCardAsset = {
   theme: "red",
   iconSrc: "/icon/rookie/X.svg",
   iconAlt: "오답 아이콘",
@@ -63,7 +63,7 @@ const progressCardAsset = {
   portfolioSubmit,
   portfolioNotSubmit,
   problemSubmitCorrect,
-  problemSubmitNotCorrect,
+  problemSubmitWrong,
   problemNotSubmit,
   problemJudging,
 };

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ProgressCard } from "./ProgressCard";
-import { Recruiting } from "../../../types/apiTypes";
+import { Recruiting, RecruitingType } from "../../../types/apiTypes";
 /* disable-submission 
 import PortfolioCard from "./PortfolioCard";
 */
@@ -19,7 +19,7 @@ export function ProgressList({ problems, hasResume, type }: ProgressListProps) {
     <List>
       <ResumeCard submit={hasResume} />
       {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
-      {type !== 1 ? (
+      {type !== RecruitingType.ROOKIE ? (
         <PortfolioCard />
       ) : (
         problems

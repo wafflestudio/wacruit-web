@@ -36,7 +36,7 @@ export default function RecruitList() {
                 !r2.to_date || new Date(r2.to_date) > new Date();
               if (!r1IsActive) return 1;
               if (!r2IsActive) return -1;
-              return r1.id == r2.id ? 0 : r1.id > r2.id ? -1 : 1;
+              return r1.id === r2.id ? 0 : r1.id > r2.id ? -1 : 1;
             })
             .map((r) => (
               <RecruitItem

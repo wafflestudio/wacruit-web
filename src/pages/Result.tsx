@@ -4,10 +4,11 @@ import Header from "../components/home/Header/Header";
 import { ResultLoaderReturnType } from "./Loader/ResultLoader";
 import { useEffect } from "react";
 import { MAILTO_RECRUIT } from "../common/const";
+import { RecruitingResultCode } from "../types/apiTypes";
 
 export default function Result() {
   const { result } = useLoaderData() as ResultLoaderReturnType;
-  if (result.status === 3) {
+  if (result.status === RecruitingResultCode.REJECTED) {
     //불합격 시
     return (
       <>
@@ -37,7 +38,7 @@ export default function Result() {
     );
   }
 
-  if (result.status === 2) {
+  if (result.status === RecruitingResultCode.ACCEPTED) {
     //합격 시
     return (
       <>
