@@ -11,18 +11,15 @@ import PortfolioCard from "./PortfolioCard";
 type ProgressListProps = {
   problems: Recruiting["problem_status"];
   hasResume: boolean;
-  isDesigner: boolean;
+  type: number;
 };
 
-export function ProgressList({
-  problems,
-  hasResume,
-  isDesigner,
-}: ProgressListProps) {
+export function ProgressList({ problems, hasResume, type }: ProgressListProps) {
   return (
     <List>
       <ResumeCard submit={hasResume} />
-      {isDesigner ? (
+      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
+      {type !== 1 ? (
         <PortfolioCard />
       ) : (
         problems

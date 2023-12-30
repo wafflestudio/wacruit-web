@@ -37,6 +37,7 @@ type ProblemStatus = {
 export type Recruiting = {
   id: number;
   name: string;
+  type: number; // 1: 루키, 2: 디자이너, 3: 프로그래머
   is_active: boolean;
   from_date?: string;
   to_date?: string;
@@ -46,7 +47,7 @@ export type Recruiting = {
 
 export type RecruitingSummary = Pick<
   Recruiting,
-  "id" | "name" | "is_active" | "from_date" | "to_date"
+  "id" | "name" | "type" | "is_active" | "from_date" | "to_date"
 > & { applicant_count: number; short_description: string };
 
 /**

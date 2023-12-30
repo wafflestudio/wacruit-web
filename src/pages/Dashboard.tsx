@@ -83,7 +83,7 @@ export default function Dashboard() {
           <ProgressList
             problems={recruiting.problem_status}
             hasResume={resume.items.length > 0}
-            isDesigner={recruiting.id === 2}
+            type={recruiting.type}
           />
           <Caution>
             위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
