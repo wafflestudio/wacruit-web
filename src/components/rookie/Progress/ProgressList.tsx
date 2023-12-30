@@ -9,21 +9,18 @@ import PortfolioCard from "./PortfolioCard";
 // import PortfolioCard from "./PortfolioCard";
 
 type ProgressListProps = {
-  problems: Recruiting["problem_status"];
+  recruiting: Recruiting;
   hasResume: boolean;
-  isDesigner: boolean;
 };
 
-export function ProgressList({
-  problems,
-  hasResume,
-  isDesigner,
-}: ProgressListProps) {
+export function ProgressList({ recruiting, hasResume }: ProgressListProps) {
+  const problems = recruiting.problem_status;
+  const isDesigner = recruiting.id === 2;
   return (
     <List>
       <ResumeCard submit={hasResume} />
       {isDesigner ? (
-        <PortfolioCard />
+        <PortfolioCard recruiting={recruiting} />
       ) : (
         problems
           .sort((a, b) => {

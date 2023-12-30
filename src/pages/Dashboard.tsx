@@ -81,9 +81,8 @@ export default function Dashboard() {
         </AnnouncementButton>
         <BottomContainer>
           <ProgressList
-            problems={recruiting.problem_status}
+            recruiting={recruiting}
             hasResume={resume.items.length > 0}
-            isDesigner={recruiting.id === 2}
           />
           <Caution>
             위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
