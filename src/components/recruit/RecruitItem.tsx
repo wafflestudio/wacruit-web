@@ -3,8 +3,8 @@ import styled from "styled-components";
 type RecruitItemComponentProps = {
   title: string;
   description: string;
-  from?: Date;
-  to?: Date;
+  from: Date | null;
+  to: Date | null;
 };
 
 export function RecruitItem({
@@ -13,15 +13,16 @@ export function RecruitItem({
   from,
   to,
 }: RecruitItemComponentProps) {
-  // to가 undefined이면 상시 모집
-  const isActive = to !== undefined ? to.getMilliseconds() < Date.now() : true;
+  // to가 undefined이면 상시 모집이므로 항상 활성화
+  const isActive = to ? to.getMilliseconds() > Date.now() : true;
 
   return (
-    <Container isActive={isActive}>
+    <Container $isActive={isActive}>
       <RecruitTitle>{title}</RecruitTitle>
       <RecruitDescription>
-        {from && to
-          ? `${from.toISOString().split("T")[0]} ~ ${
+        {/* to가 없을 때만 상시모집, from이 없을 경우에는 빈칸으로 둔다. */}
+        {to
+          ? `${from?.toISOString().split("T")[0] ?? ""} ~ ${
               to.toISOString().split("T")[0]
             }`
           : "상시 모집"}
@@ -32,15 +33,16 @@ export function RecruitItem({
   );
 }
 
-const Container = styled.div<{ isActive: boolean }>`
+const Container = styled.div<{ $isActive: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 48px;
-  color: ${({ isActive }) => (isActive ? "#AAA" : "#3F3F3F")};
+  color: ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#AAA")};
 
   // XXX 활성화 시에는 글자색과 동일한데 비활성화 시 글자색하고 다른 건 의도된 건가??
-  border-left: 5px solid ${({ isActive }) => (isActive ? "#C8C8C8" : "#3F3F3F")};
+  border-left: 5px solid
+    ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#C8C8C8")};
   background: #fff;
   box-shadow: -4px 0px 10px 0px rgba(0, 0, 0, 0.04);
 `;

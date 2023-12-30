@@ -38,15 +38,16 @@ export type Recruiting = {
   id: number;
   name: string;
   is_active: boolean;
-  from_date: string;
+  from_date?: string;
+  to_date?: string;
   description: string;
   problem_status: ProblemStatus[];
 };
 
 export type RecruitingSummary = Pick<
   Recruiting,
-  "id" | "name" | "is_active" | "from_date"
-> & { applicant_count: number };
+  "id" | "name" | "is_active" | "from_date" | "to_date"
+> & { applicant_count: number; short_description: string };
 
 /**
  * Problem

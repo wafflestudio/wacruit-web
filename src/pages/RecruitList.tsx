@@ -2,8 +2,17 @@ import styled from "styled-components";
 import Header from "../components/home/Header/Header";
 import { MAILTO_RECRUIT } from "../common/const";
 import { RecruitItem } from "../components/recruit/RecruitItem";
+import { useQuery } from "@tanstack/react-query";
+import { getAllRecruitings } from "../apis/recruiting";
 
 export default function RecruitList() {
+  const { data } = useQuery({
+    queryKey: ["recruiting"],
+    queryFn: getAllRecruitings,
+    staleTime: 1000 * 60,
+    retry: 3,
+  });
+
   return (
     <>
       <Header />
@@ -14,20 +23,30 @@ export default function RecruitList() {
           이메일로 문의주세요.
         </Description>
         <RecruitItemList>
-          <RecruitItem
-            title="프로그래머스 리크루팅"
-            description="실무 경험이 있는 개발자를 모집합니다."
-          />
-          <RecruitItem
-            title="디자이너 리크루팅"
-            description="UI/UX 디자이너를 모집합니다."
-          />
-          <RecruitItem
-            title="21.5기 리크루팅"
-            description="23년도 하반기 세미나를 통해 개발자로 성장할 루키를 모집합니다."
-            from={new Date(2021, 8, 1)}
-            to={new Date(2021, 8, 30)}
-          />
+          {data?.items
+            .sort((r1, r2) => {
+              const r1IsContinuous = r1.to_date === null;
+              const r2IsContinuous = r2.to_date === null;
+              if (r1IsContinuous && r2IsContinuous) return 0;
+              if (r1IsContinuous) return -1;
+              if (r2IsContinuous) return 1;
+              const r1IsActive =
+                !r1.to_date || new Date(r1.to_date) > new Date();
+              const r2IsActive =
+                !r2.to_date || new Date(r2.to_date) > new Date();
+              if (!r1IsActive) return 1;
+              if (!r2IsActive) return -1;
+              return r1.id == r2.id ? 0 : r1.id > r2.id ? -1 : 1;
+            })
+            .map((r) => (
+              <RecruitItem
+                key={r.id}
+                title={r.name}
+                description={r.short_description}
+                from={r.from_date ? new Date(r.from_date) : null}
+                to={r.to_date ? new Date(r.to_date) : null}
+              />
+            ))}
         </RecruitItemList>
       </Main>
     </>

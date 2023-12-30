@@ -49,6 +49,7 @@ export const toMockRecruitingItem = (
   is_active: recruiting.is_active,
   from_date: recruiting.from_date,
   applicant_count: Math.random() * 100,
+  short_description: "짧은 설명",
 });
 export const getAllMockRecruitings = () => recruiting;
 export const getMockRecruiting = (id: number) =>
