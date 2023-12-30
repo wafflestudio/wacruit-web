@@ -38,29 +38,25 @@ export default function Header() {
       </Link>
       <Nav>
         {authState === "valid" ? (
-          <>
-            <NavButton
-              onClick={() => {
-                deleteSsoToken();
-                queryClient.invalidateQueries(["auth"]);
-                navigate("/");
-              }}
-            >
-              <img src={"/icon/header/Logout.svg"} />
-              로그아웃
-            </NavButton>
-          </>
+          <NavButton
+            onClick={() => {
+              deleteSsoToken();
+              queryClient.invalidateQueries(["auth"]);
+              navigate("/");
+            }}
+          >
+            <img src={"/icon/header/Logout.svg"} />
+            로그아웃
+          </NavButton>
         ) : (
-          <>
-            <NavButton
-              onClick={() => {
-                tryLogin("home");
-              }}
-            >
-              <img src={"/icon/header/Login.svg"} />
-              로그인
-            </NavButton>
-          </>
+          <NavButton
+            onClick={() => {
+              tryLogin("home");
+            }}
+          >
+            <img src={"/icon/header/Login.svg"} />
+            로그인
+          </NavButton>
         )}
         <NavLink to={"/recruiting"}>
           <img src={"/icon/header/Apply.svg"} />
