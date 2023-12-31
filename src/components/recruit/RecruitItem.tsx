@@ -1,4 +1,7 @@
+import { useCallback } from "react";
 import styled from "styled-components";
+import { checkAuth, tryLogin } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
 
 type RecruitItemComponentProps = {
   id: number;
@@ -15,11 +18,28 @@ export function RecruitItem({
   from,
   to,
 }: RecruitItemComponentProps) {
+  const navigate = useNavigate();
   // to가 null이면 상시 모집이므로 항상 활성화
   const isActive = to ? to.getMilliseconds() > Date.now() : true;
 
+  const onApply = useCallback(async (recruit_id: number) => {
+    const auth = await checkAuth();
+    if (auth === "valid") {
+      navigate(`/recruiting/${recruit_id}`);
+      return;
+    }
+    if (auth === "need_register") {
+      navigate(`/sso/${recruit_id}`);
+      return;
+    }
+    if (auth === "invalid") {
+      tryLogin(recruit_id);
+      return;
+    }
+  }, []);
+
   return (
-    <Container href={`/recruiting/${id}`} $isActive={isActive}>
+    <Container onClick={() => onApply(id)} $isActive={isActive}>
       <RecruitNameArea>
         <RecruitName>{name}</RecruitName>
         <RightArrow src="/image/rightAngleBracket.svg" />
@@ -38,7 +58,7 @@ export function RecruitItem({
   );
 }
 
-const Container = styled.a<{ $isActive: boolean }>`
+const Container = styled.div<{ $isActive: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
