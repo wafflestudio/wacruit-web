@@ -24,14 +24,16 @@ export function RecruitItem({
         <RecruitName>{name}</RecruitName>
         <RightArrow src="/image/rightAngleBracket.svg" />
       </RecruitNameArea>
-      <RecruitDescription>
-        {to
-          ? `${from?.toISOString().split("T")[0] ?? ""}
+      <RecruitDescriptionArea>
+        <RecruitPeriod>
+          {to
+            ? `${from?.toISOString().split("T")[0] ?? ""}
           ${" ~ "}${to.toISOString().split("T")[0]}`
-          : "상시 모집"}
+            : "상시 모집"}
+        </RecruitPeriod>
         <RecruitDescriptionSeperator />
-        {description}
-      </RecruitDescription>
+        <RecruitDescription>{description}</RecruitDescription>
+      </RecruitDescriptionArea>
     </Container>
   );
 }
@@ -41,7 +43,8 @@ const Container = styled.a<{ $isActive: boolean }>`
   flex-direction: column;
   gap: 8px;
   padding: 48px;
-  color: ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#AAA")};
+  --color: ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#AAA")};
+  color: var(--color);
 
   // XXX 활성화 시에는 글자색과 동일한데 비활성화 시 글자색하고 다른 건 의도된 건가??
   border-left: 5px solid
@@ -72,6 +75,7 @@ const RecruitName = styled.h2`
   font-size: 28px;
   font-weight: 600;
   line-height: 140%;
+  white-space: nowrap;
 `;
 
 const RightArrow = styled.img`
@@ -79,7 +83,7 @@ const RightArrow = styled.img`
   height: 33px;
 `;
 
-const RecruitDescription = styled.div`
+const RecruitDescriptionArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -88,8 +92,21 @@ const RecruitDescription = styled.div`
   line-height: 140%;
 `;
 
+const RecruitPeriod = styled.div`
+  flex: 0 0 auto;
+  white-space: nowrap;
+`;
+
+const RecruitDescription = styled.div`
+  flex: 1 1 auto;
+  min-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
 const RecruitDescriptionSeperator = styled.div`
-  width: 1px;
+  flex: 0 0 1px;
   height: 20px;
-  background-color: #3f3f3f;
+  background-color: var(--color);
 `;
