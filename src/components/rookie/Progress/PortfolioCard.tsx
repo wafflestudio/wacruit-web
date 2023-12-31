@@ -14,8 +14,13 @@ import {
   uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
+import { Recruiting } from "../../../types/apiTypes";
 
-export default function PortfolioCard() {
+type PortfolioCardProps = {
+  recruiting: Recruiting;
+};
+
+export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
   const [submit, setSubmit] = useState(false);
   const queryClient = useQueryClient();
   const { description, iconSrc, iconAlt } = useMemo(
@@ -24,12 +29,12 @@ export default function PortfolioCard() {
   );
   const { data: files } = useQuery({
     queryKey: ["portfolio", "files"],
-    queryFn: () => getPortfolioFiles(),
+    queryFn: () => getPortfolioFiles(recruiting.id),
     staleTime: Infinity,
   });
   const { data: links } = useQuery({
     queryKey: ["portfolio", "links"],
-    queryFn: () => getPortfolioLinks(),
+    queryFn: () => getPortfolioLinks(recruiting.id),
     staleTime: Infinity,
   });
 

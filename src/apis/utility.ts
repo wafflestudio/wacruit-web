@@ -1,7 +1,9 @@
 import { getSsoToken } from "./auth";
 import { BASE_URL } from "./environment";
 
-const defaultCommonHeader = {};
+const defaultCommonHeader = {
+  "waffle-user-id": "3",
+};
 
 const authorizedHeader = (token: string | null) => ({
   Authorization: `Bearer ${token}`,
@@ -87,7 +89,7 @@ export const deleteRequest = <Response>(
   body: object,
   header: HeadersInit = {},
   authorized = true,
-) =>
+): Promise<Response> =>
   fetch(`${BASE_URL}${url}`, {
     method: "DELETE",
     headers: {

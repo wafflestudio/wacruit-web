@@ -6,7 +6,7 @@ import {
 import { getRequest, sseRequest } from "./utility";
 
 export const getProblemById = (problem_id: number) =>
-  getRequest<Problem>(`/problems/${problem_id}`);
+  getRequest<Problem>(`/v1/problems/${problem_id}`);
 
 export const postProblemSubmission = (
   problemSubmission: ProblemSubmissionRequest,
@@ -16,7 +16,7 @@ export const postProblemSubmission = (
     | { type: "message"; data: { items: ProblemSubmissionResult[] } }
     | { type: "error"; data: { detail: string } }
   >(
-    "/problems/submission",
+    "/v1/problems/submission",
     problemSubmission,
     {}, // headers
     true, // authorized
