@@ -81,7 +81,7 @@ export default function Dashboard() {
         </AnnouncementButton>
         <BottomContainer>
           <ProgressList
-            problems={recruiting.problem_status}
+            recruiting={recruiting}
             hasResume={resume.items.length > 0}
             type={recruiting.type}
           />

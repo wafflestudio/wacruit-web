@@ -87,7 +87,7 @@ export const deleteRequest = <Response>(
   body: object,
   header: HeadersInit = {},
   authorized = true,
-) =>
+): Promise<Response> =>
   fetch(`${BASE_URL}${url}`, {
     method: "DELETE",
     headers: {

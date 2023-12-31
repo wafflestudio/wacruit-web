@@ -3,13 +3,13 @@ import { User, UserInvitationEmails, UserUpdate } from "../types/apiTypes.ts";
 import { UserRegisterRequest } from "../types/apiTypes";
 import { postRequest } from "./utility";
 
-export const patchUser = (data: UserUpdate) => patchRequest("/users", data);
+export const patchUser = (data: UserUpdate) => patchRequest("/v1/users", data);
 export const patchUserInvitationEmails = (data: UserInvitationEmails) =>
-  patchRequest("/users/me/invitation-emails", data);
+  patchRequest("/v1/users/me/invitation-emails", data);
 
-export const getUser = () => patchRequest<User>("/users", {});
+export const getUser = () => patchRequest<User>("/v1/users", {});
 export const getInvitation = () =>
-  patchRequest<UserInvitationEmails>("/users/me/invitation-emails", {});
+  patchRequest<UserInvitationEmails>("/v1/users/me/invitation-emails", {});
 
 export const postUser = (data: UserRegisterRequest) =>
-  postRequest(`/users`, data);
+  postRequest(`/v1/users`, data);

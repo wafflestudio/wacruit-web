@@ -9,18 +9,24 @@ import PortfolioCard from "./PortfolioCard";
 // import PortfolioCard from "./PortfolioCard";
 
 type ProgressListProps = {
-  problems: Recruiting["problem_status"];
+  recruiting: Recruiting;
   hasResume: boolean;
   type: number;
 };
 
-export function ProgressList({ problems, hasResume, type }: ProgressListProps) {
+export function ProgressList({
+  recruiting,
+  hasResume,
+  type,
+}: ProgressListProps) {
+  const problems = recruiting.problem_status;
+
   return (
     <List>
       <ResumeCard submit={hasResume} />
       {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
       {type !== RecruitingType.ROOKIE ? (
-        <PortfolioCard />
+        <PortfolioCard recruiting={recruiting} />
       ) : (
         problems
           .sort((a, b) => {
