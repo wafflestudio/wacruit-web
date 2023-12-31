@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import asset from "./progressCardAsset";
+import { ProblemStatusCode } from "../../../types/apiTypes";
 
 type ProgressCardProps = {
   title: string;
@@ -13,14 +14,14 @@ export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
   const navigate = useNavigate();
   const { iconSrc, iconAlt, theme, description } = useMemo(() => {
     switch (statusCode) {
-      case 0:
+      case ProblemStatusCode.NOT_SUBMITTED:
         return asset.problemNotSubmit;
-      case 1:
+      case ProblemStatusCode.JUDGING:
         return asset.problemJudging;
-      case 2:
+      case ProblemStatusCode.CORRECT:
         return asset.problemSubmitCorrect;
-      case 3:
-        return asset.problemSubmitNotCorrect;
+      case ProblemStatusCode.WRONG:
+        return asset.problemSubmitWrong;
       default:
         return asset.problemNotSubmit;
     }

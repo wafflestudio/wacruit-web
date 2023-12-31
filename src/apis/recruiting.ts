@@ -1,4 +1,8 @@
-import { Recruiting, RecruitingSummary } from "../types/apiTypes";
+import {
+  Recruiting,
+  RecruitingResult,
+  RecruitingSummary,
+} from "../types/apiTypes";
 import { getRequest } from "./utility";
 
 export const getAllRecruitings = () =>
@@ -8,4 +12,4 @@ export const getRecruitingById = (id: Recruiting["id"]) =>
   getRequest<Recruiting>(`/v1/recruitings/${id}`);
 
 export const getRecruitingResult = (id: Recruiting["id"]) =>
-  getRequest<{ status: number }>(`/v1/recruitings/${id}/result`);
+  getRequest<RecruitingResult>(`/v1/recruitings/${id}/result`);

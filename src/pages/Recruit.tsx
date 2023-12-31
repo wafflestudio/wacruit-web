@@ -18,9 +18,5 @@ export default function Recruit() {
     }
   }, [data]);
 
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }

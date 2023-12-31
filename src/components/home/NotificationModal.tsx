@@ -84,7 +84,7 @@ const Title = styled.h1`
   line-height: 140%;
   text-align: center;
 `;
-const MainText = styled.p`
+const MainText = styled.div`
   width: 100%;
   max-height: 100%;
   overflow-y: auto;

@@ -1,41 +1,23 @@
 import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
 import { useCallback, useState } from "react";
-import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { zIndex } from "../../lib/zIndex";
-import { getAllRecruitings } from "../../apis/recruiting";
+// import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";
-import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
   const navigate = useNavigate();
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
     "ROOKIE",
   );
-  const { status, data } = useQuery({
-    queryKey: ["recruiting"],
-    queryFn: getAllRecruitings,
-    staleTime: 1000 * 60,
-    retry: 3,
-  });
-
-  const onApply = useCallback(async (recruit_id: number) => {
-    const auth = await checkAuth();
-    if (auth === "valid") {
-      navigate(`/recruiting/${recruit_id}`);
-      return;
-    }
-    if (auth === "need_register") {
-      navigate(`/sso/${recruit_id}`);
-      return;
-    }
-    if (auth === "invalid") {
-      tryLogin(recruit_id);
-      return;
-    }
-  }, []);
+  // const { status, data } = useQuery({
+  //   queryKey: ["recruiting"],
+  //   queryFn: getAllRecruitings,
+  //   staleTime: 1000 * 60,
+  //   retry: 3,
+  // });
 
   const onCopy = useCallback(async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -56,20 +38,20 @@ export default function Apply() {
         <SelectField>
           <Select
             $active={field === "ROOKIE"}
-            $isLock={false}
             onClick={() => setField("ROOKIE")}
           >
             루키(ROOKIE)
           </Select>
           <Select
             $active={field === "DESIGNER"}
-            $isLock={false}
             onClick={() => setField("DESIGNER")}
           >
             디자이너(DESIGNER)
           </Select>
-          <Select $active={field === "PROGRAMMER"} $isLock={true}>
-            <LockIcon width={21} height={23} />
+          <Select
+            $active={field === "PROGRAMMER"}
+            onClick={() => setField("PROGRAMMER")}
+          >
             개발자(PROGRAMMER)
           </Select>
         </SelectField>
@@ -86,7 +68,8 @@ export default function Apply() {
           <img src={"/image/home/Stroke.svg"} />
           <CalenderInner select={field}></CalenderInner>
           <ApplyButton>
-            <p>
+            {/* FIXME 어떤 리크루팅의 지원자 수를 적어야할지 모르겠어서 일단 주석 처리... */}
+            {/* <p>
               {status !== "loading" && status === "success" && (
                 <span>
                   {field === "ROOKIE"
@@ -95,8 +78,8 @@ export default function Apply() {
                 </span>
               )}
               명 지원 중
-            </p>
-            <button onClick={() => onApply(field === "ROOKIE" ? 1 : 2)}>
+            </p> */}
+            <button onClick={() => navigate("/recruiting")}>
               지원하러가기!
             </button>
           </ApplyButton>
@@ -159,7 +142,7 @@ const SelectField = styled.div`
   flex-direction: row;
 `;
 
-const Select = styled.div<{ $active: boolean; $isLock: boolean }>`
+const Select = styled.div<{ $active: boolean }>`
   padding: 30px 0px;
   flex: 1;
   border-radius: 15px 15px 0px 0px;
@@ -175,10 +158,10 @@ const Select = styled.div<{ $active: boolean; $isLock: boolean }>`
   align-items: center;
   gap: 8px;
 
-  cursor: ${(props) => (props.$isLock ? "not-allowed" : "pointer")};
+  cursor: pointer;
 
-  background: ${(props) => (props.$active ? "#f0745f" : "#EDE5D1")};
-  color: ${(props) => (props.$active ? "#fff" : "#B7B1A2")};
+  background: ${({ $active }) => ($active ? "#f0745f" : "#EDE5D1")};
+  color: ${({ $active }) => ($active ? "#fff" : "#B7B1A2")};
 
   transition: all 0.15s ease-in-out;
 `;
@@ -187,9 +170,10 @@ const CalenderArea = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0px 70px 70px;
+  padding: 0px 150px 70px;
   border-radius: 0px 0px 20px 20px;
   background: #fff7e5;
+  justify-content: start;
   align-items: center;
 `;
 
@@ -197,8 +181,8 @@ const DayWeek = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  padding: 56px 0px 38px;
+  justify-content: space-between;
+  padding: 56px 10px 38px;
 
   p {
     color: #756643;

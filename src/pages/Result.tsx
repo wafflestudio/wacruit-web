@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Header from "../components/home/Header/Header";
 import { ResultLoaderReturnType } from "./Loader/ResultLoader";
 import { useEffect } from "react";
+import { MAILTO_RECRUIT } from "../common/const";
+import { RecruitingResultCode } from "../types/apiTypes";
 
 export default function Result() {
   const { result } = useLoaderData() as ResultLoaderReturnType;
-  if (result.status === 3) {
+  if (result.status === RecruitingResultCode.REJECTED) {
     //불합격 시
     return (
       <>
@@ -27,10 +29,7 @@ export default function Result() {
               있기를 바라며 응원하겠습니다. 감사합니다.
             </Description>
             <Contact>
-              기타 문의사항은{" "}
-              <a href="mailto:recruit@wafflestudio.com ">
-                mailto:recruit@wafflestudio.com
-              </a>{" "}
+              기타 문의사항은 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
               이메일로 문의주세요.
             </Contact>{" "}
           </Container>
@@ -39,7 +38,7 @@ export default function Result() {
     );
   }
 
-  if (result.status === 2) {
+  if (result.status === RecruitingResultCode.ACCEPTED) {
     //합격 시
     return (
       <>
@@ -58,10 +57,7 @@ export default function Result() {
               예정이니 참고 바랍니다. 오티 참석은 필수입니다.
             </Description>
             <Contact>
-              기타 문의사항은{" "}
-              <a href="mailto:recruit@wafflestudio.com ">
-                mailto:recruit@wafflestudio.com
-              </a>{" "}
+              기타 문의사항은 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
               이메일로 문의주세요.
             </Contact>
           </Container>
@@ -81,10 +77,7 @@ export default function Result() {
           </LogoWrapper>
           <Title>아직 합/불 결과가 나오지 않았습니다.</Title>
           <Contact>
-            기타 문의사항은{" "}
-            <a href="mailto:recruit@wafflestudio.com ">
-              mailto:recruit@wafflestudio.com
-            </a>{" "}
+            기타 문의사항은 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
             이메일로 문의주세요.
           </Contact>
         </Container>
