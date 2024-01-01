@@ -38,11 +38,17 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
   });
 
   const refetchFiles = () => {
-    queryClient.refetchQueries(["portfolio", "files", recruiting.id]);
+    setTimeout(
+      () => queryClient.refetchQueries(["portfolio", "files", recruiting.id]),
+      100,
+    );
   };
 
   const refetchLinks = () => {
-    queryClient.refetchQueries(["portfolio", "links", recruiting.id]);
+    setTimeout(
+      () => queryClient.refetchQueries(["portfolio", "links", recruiting.id]),
+      100,
+    );
   };
 
   const handleAPIError = (r: Response) => {
