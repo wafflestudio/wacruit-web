@@ -120,19 +120,9 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
               <File
                 key={file_id}
                 onClick={() => {
-                  downloadPortfolioFile(file_id)
-                    .then(({ object_name, presigned_url }) => {
-                      /**
-                       * @TODO 정말 이 방법 밖에는 없는가?
-                       */
-                      const link = document.createElement("a");
-                      link.href = presigned_url;
-                      link.setAttribute("download", `${object_name}`);
-                      document.body.appendChild(link);
-                      link.click();
-                      link.parentNode?.removeChild(link);
-                    })
-                    .catch(() => alert("다운로드에 실패했습니다."));
+                  downloadPortfolioFile(file_id).catch(() =>
+                    alert("다운로드에 실패했습니다."),
+                  );
                 }}
               >
                 {file_name}

@@ -53,7 +53,19 @@ export const downloadPortfolioFile = (id: number) =>
     object_name: string;
     presigned_url: string;
     fields: object | null;
-  }>(`/v2/portfolios/file/url/download?portfolio_file_id=${id}`);
+  }>(`/v2/portfolios/file/url/download/${id}`).then(
+    ({ object_name, presigned_url }) => {
+      /**
+       * @TODO 정말 이 방법 밖에는 없는가?
+       */
+      const link = document.createElement("a");
+      link.href = presigned_url;
+      link.setAttribute("download", `${object_name}`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    },
+  );
 
 export const deletePortfolioFile = (id: number) =>
   deleteRequest(`/v2/portfolios/file/delete/${id}`, {});
