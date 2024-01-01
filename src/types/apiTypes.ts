@@ -183,8 +183,11 @@ export type UserRegisterRequest = {
 };
 
 export type PortfolioFile = {
-  portfolio_name: string;
+  id: number;
+  file_name: string;
+  recruiting_id: number;
 };
+
 export type PortfolioLink = {
   id: number;
   url: string;

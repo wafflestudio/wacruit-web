@@ -11,7 +11,6 @@ import {
   postPortfolioFile,
   postPortfolioLink,
   putPortfolioLink,
-  uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { Recruiting } from "../../../types/apiTypes";
@@ -28,15 +27,27 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
     [submit],
   );
   const { data: files } = useQuery({
-    queryKey: ["portfolio", "files"],
+    queryKey: ["portfolio", "files", recruiting.id],
     queryFn: () => getPortfolioFiles(recruiting.id),
     staleTime: Infinity,
   });
   const { data: links } = useQuery({
-    queryKey: ["portfolio", "links"],
+    queryKey: ["portfolio", "links", recruiting.id],
     queryFn: () => getPortfolioLinks(recruiting.id),
     staleTime: Infinity,
   });
+
+  const refetchFiles = () => {
+    queryClient.refetchQueries(["portfolio", "files", recruiting.id]);
+  };
+
+  const refetchLinks = () => {
+    queryClient.refetchQueries(["portfolio", "links", recruiting.id]);
+  };
+
+  const handleAPIError = (r: Response) => {
+    r.json().then((res) => alert(res.detail));
+  };
 
   const [linksInput, setLinksInput] = useState<
     {
@@ -84,38 +95,19 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
             if (files.items.length < 1) {
-              postPortfolioFile(targetFile.name)
-                .then((res) =>
-                  uploadPortfolioFileToS3(
-                    res.presigned_url,
-                    res.fields,
-                    targetFile,
-                  ),
-                )
-                .finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  queryClient.refetchQueries(["portfolio", "files"]);
-                });
+              postPortfolioFile(targetFile, recruiting.id)
+                .catch(handleAPIError)
+                .finally(refetchFiles);
             } else {
               if (
                 confirm(
                   "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
                 )
               ) {
-                deletePortfolioFile(files.items[0].portfolio_name).then(() =>
-                  postPortfolioFile(targetFile.name)
-                    .then((res) =>
-                      uploadPortfolioFileToS3(
-                        res.presigned_url,
-                        res.fields,
-                        targetFile,
-                      ),
-                    )
-                    .finally(() => {
-                      alert("모집이 마감되었습니다.");
-                      queryClient.refetchQueries(["portfolio", "files"]);
-                    }),
-                );
+                deletePortfolioFile(files.items[0].id)
+                  .then(() => postPortfolioFile(targetFile, recruiting.id))
+                  .catch(handleAPIError)
+                  .finally(refetchFiles);
               } else {
                 e.target.value = "";
               }
@@ -124,11 +116,11 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
         />
         {files.items.length > 0 && (
           <Files>
-            {files.items.map(({ portfolio_name }) => (
+            {files.items.map(({ id: file_id, file_name }) => (
               <File
-                key={portfolio_name}
+                key={file_id}
                 onClick={() => {
-                  downloadPortfolioFile(portfolio_name)
+                  downloadPortfolioFile(file_id)
                     .then(({ object_name, presigned_url }) => {
                       /**
                        * @TODO 정말 이 방법 밖에는 없는가?
@@ -143,14 +135,14 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
                     .catch(() => alert("다운로드에 실패했습니다."));
                 }}
               >
-                {portfolio_name}
+                {file_name}
                 <DeleteButton
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(portfolio_name).then(() => {
-                        queryClient.refetchQueries(["portfolio", "files"]);
-                      });
+                      deletePortfolioFile(file_id)
+                        .catch(handleAPIError)
+                        .finally(refetchFiles);
                     }
                   }}
                 >
@@ -177,25 +169,19 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
             onBlur={() => {
               if (input.url.length < 1) {
                 if (input.id === null) return;
-                deletePortfolioLink(input.id).finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  void queryClient.refetchQueries(["portfolio", "links"]);
-                });
+                deletePortfolioLink(input.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
                 return;
               }
-
               if (input.id === null) {
-                postPortfolioLink(input.url).finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  void queryClient.refetchQueries(["portfolio", "links"]);
-                });
+                postPortfolioLink(input.url, recruiting.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
               } else {
-                putPortfolioLink(input.id, input.url)
-                  .catch((e) => console.log(e))
-                  .finally(() => {
-                    alert("모집이 마감되었습니다.");
-                    void queryClient.refetchQueries(["portfolio", "links"]);
-                  });
+                putPortfolioLink(input.id, input.url, recruiting.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
               }
             }}
           />
