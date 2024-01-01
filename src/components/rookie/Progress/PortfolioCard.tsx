@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import asset from "./progressCardAsset";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
@@ -20,12 +20,9 @@ type PortfolioCardProps = {
 };
 
 export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
-  const [submit, setSubmit] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
-  const { description, iconSrc, iconAlt } = useMemo(
-    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
-    [submit],
-  );
+
   const { data: files } = useQuery({
     queryKey: ["portfolio", "files", recruiting.id],
     queryFn: () => getPortfolioFiles(recruiting.id),
@@ -36,6 +33,12 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
     queryFn: () => getPortfolioLinks(recruiting.id),
     staleTime: Infinity,
   });
+
+  const submit = files !== undefined && files.items.length > 0;
+  const { description, iconSrc, iconAlt } = useMemo(
+    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
+    [submit],
+  );
 
   const refetchFiles = () => {
     setTimeout(
@@ -72,14 +75,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
       );
       setLinksInput(updated);
     }
-    if (files) {
-      if (files.items.length > 0) {
-        setSubmit(true);
-      } else {
-        setSubmit(false);
-      }
-    }
-  }, [files, links]);
+  }, [links]);
 
   if (files === undefined || links === undefined)
     return <EmptyCard></EmptyCard>;
@@ -95,6 +91,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
         <div>파일 첨부</div>
         <FileInputButton htmlFor="portfolio">파일 선택</FileInputButton>
         <FileInput
+          ref={fileInputRef}
           type="file"
           id="portfolio"
           onChange={(e) => {
@@ -137,6 +134,10 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
                       deletePortfolioFile(file_id)
+                        .then(() => {
+                          if (fileInputRef.current === null) return;
+                          fileInputRef.current.value = "";
+                        })
                         .catch(handleAPIError)
                         .finally(refetchFiles);
                     }
