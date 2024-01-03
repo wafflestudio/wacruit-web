@@ -13,8 +13,8 @@ export default function LanguageSelection(props: Props) {
   return (
     <Wrapper>
       <ListToggleButton onClick={() => setIsOpen(!isOpen)} $isOpen={isOpen}>
-        <span>{props.language}</span>
-        <img src="/icon/OpenSelect.svg" alt="▼" />
+        <ListToggleButtonLabel>{props.language}</ListToggleButtonLabel>
+        <img src="/icon/OpenSelect.svg" alt="▼" width="21rem" />
       </ListToggleButton>
       {isOpen && (
         <List>
@@ -39,14 +39,14 @@ export default function LanguageSelection(props: Props) {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 128px;
+  width: 12.8rem;
   height: fit-content;
 `;
 
 const Button = styled.button`
   width: 100%;
-  height: 35px;
-  padding: 0 5px;
+  height: 3.5rem;
+  padding: 0 0.5rem;
 
   cursor: pointer;
   font-weight: 600;
@@ -62,13 +62,17 @@ const Button = styled.button`
 
 const ListToggleButton = styled(Button)<{ $isOpen: boolean }>`
   background: white;
-  border: 4px solid #373737;
-  border-radius: 5px;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem;
   position: relative;
 
   img {
     transform: rotate(${({ $isOpen }) => ($isOpen ? "-180deg" : "0deg")});
   }
+`;
+
+const ListToggleButtonLabel = styled.span`
+  font-size: 1.33rem;
 `;
 
 const ListItemButton = styled(Button)<{ $selected: boolean }>`
@@ -83,7 +87,7 @@ const ListItemButton = styled(Button)<{ $selected: boolean }>`
 const List = styled.ul`
   position: absolute;
   box-sizing: border-box;
-  top: calc(100% - 5px);
+  top: calc(100% - 0.5rem);
   left: 0;
   width: 100%;
 
@@ -92,9 +96,9 @@ const List = styled.ul`
   list-style: none;
 
   background: white;
-  border: 4px solid #373737;
-  border-radius: 5px;
-  max-height: 200px;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem;
+  max-height: 20rem;
   overflow-y: auto;
 
   z-index: ${zIndex.selectOptions};
