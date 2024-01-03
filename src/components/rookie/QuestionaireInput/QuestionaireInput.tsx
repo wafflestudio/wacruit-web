@@ -42,21 +42,21 @@ const Wrapper = styled.li`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.6rem;
 `;
 const Question = styled.div`
   color: #404040;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 400;
-  line-height: 160%; /* 32px */
-  letter-spacing: 0.8px;
+  line-height: 160%; /* 3.2rem */
+  letter-spacing: 0.08rem;
 `;
 const TextArea = styled.textarea`
-  height: 214px;
-  padding: 15px;
+  height: 21.4rem;
+  padding: 1.5rem;
   flex-shrink: 0;
-  border-radius: 5px;
-  border: 1px solid #d9d9d9;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #d9d9d9;
   background: #f6f6f6;
   resize: none;
   font: inherit;
@@ -67,11 +67,11 @@ const TextArea = styled.textarea`
 `;
 const Count = styled.div`
   position: absolute;
-  right: 32px;
-  bottom: 15px;
+  right: 3.2rem;
+  bottom: 1.5rem;
   color: #737373;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
-  line-height: 160%; /* 25.6px */
-  letter-spacing: 0.64px;
+  line-height: 160%; /* 2.56rem */
+  letter-spacing: 0.064rem;
 `;

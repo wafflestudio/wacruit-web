@@ -57,22 +57,22 @@ export default function RecruitList() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 23vh max(50vw - 534px, 30px) 30px;
+  padding: 23vh max(50vw - 53.4rem, 3rem) 3rem;
 `;
 
 const Title = styled.h1`
   color: #222;
-  font-size: 52px;
+  font-size: 5.2rem;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 1.2rem;
 `;
 
 const Description = styled.p`
   color: #484848;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
   line-height: 140%;
-  margin-bottom: 139px;
+  margin-bottom: 13.9rem;
 `;
 
 const Mail = styled.a`
@@ -83,5 +83,5 @@ const Mail = styled.a`
 const RecruitItemList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 3.6rem;
 `;

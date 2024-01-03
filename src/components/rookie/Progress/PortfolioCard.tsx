@@ -191,10 +191,10 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
 const EmptyCard = styled.li`
   position: relative;
   display: flex;
-  width: 840px;
-  height: 193px;
+  width: 84rem;
+  height: 19.3rem;
   flex-shrink: 0;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   animation: ${LoadingBackgroundBlink};
 `;
 
@@ -203,45 +203,45 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  width: 840px;
-  height: 193px;
+  width: 84rem;
+  height: 19.3rem;
   flex-shrink: 0;
-  border-radius: 5px;
-  border: 1px solid #d1d1d1;
-  padding: 27px;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #d1d1d1;
+  padding: 2.7rem;
   color: ${(props) => (props.$submit ? "#64CB3F" : "#F0745F")};
-  border: "1px solid #D1D1D1";
+  border: "0.1rem solid #D1D1D1";
   background: "#fff";
-  gap: 14px;
+  gap: 1.4rem;
   &:hover {
     background: "#f6f6f6";
   }
 `;
 
 const InfoSection = styled.div`
-  width: 266px;
+  width: 26.6rem;
 `;
 
 const FileSection = styled.div`
-  width: 237px;
+  width: 23.7rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-right: 1px solid #f6f6f6;
-  gap: 8px;
+  border-right: 0.1rem solid #f6f6f6;
+  gap: 0.8rem;
   color: #404040;
 `;
 
 const FileInputButton = styled.label`
-  padding: 7px 12px;
-  gap: 10px;
-  border-radius: 5px;
+  padding: 0.7rem 1.2rem;
+  gap: 1rem;
+  border-radius: 0.5rem;
   background: #f0745f;
   color: #fff;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
-  line-height: 160%; /* 25.6px */
-  letter-spacing: 0.64px;
+  line-height: 160%; /* 2.56rem */
+  letter-spacing: 0.064rem;
   cursor: pointer;
 `;
 const FileInput = styled.input`
@@ -254,27 +254,27 @@ const FileInput = styled.input`
   visibility: hidden;
 `;
 const Files = styled.div`
-  width: calc(100% - 15px);
-  padding: 8px;
+  width: calc(100% - 1.5rem);
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-radius: 5px;
-  gap: 6px;
+  border-radius: 0.5rem;
+  gap: 0.6rem;
   background: #f6f6f6;
 `;
 const File = styled.div`
-  padding: 4px 8px;
-  border-radius: 25px;
-  border: 1px solid #d1d1d1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2.5rem;
+  border: 0.1rem solid #d1d1d1;
   background: #fff;
   color: #404040;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: 400;
-  line-height: 160%; /* 19.2px */
-  letter-spacing: 0.48px;
+  line-height: 160%; /* 1.92rem */
+  letter-spacing: 0.048rem;
   display: flex;
-  gap: 10px;
+  gap: 1rem;
   align-items: center;
   cursor: pointer;
   &:hover {
@@ -283,37 +283,37 @@ const File = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  width: 16px;
-  height: 16px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 1rem;
   &:hover {
     opacity: 0.5;
   }
 `;
 
 const LinkSection = styled.div`
-  width: 237px;
+  width: 23.7rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 0.8rem;
   color: #404040;
 `;
 
 const LinkInput = styled.input`
-  width: 260px;
-  padding: 7px 12px;
+  width: 26rem;
+  padding: 0.7rem 1.2rem;
   color: #404040;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
   line-height: 160%;
-  letter-spacing: 0.64px;
+  letter-spacing: 0.064rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   background: #f6f6f6;
 
   &::placeholder {
@@ -322,17 +322,17 @@ const LinkInput = styled.input`
 `;
 
 const Name = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 600;
-  margin-top: 16px;
-  margin-bottom: 7px;
+  margin-top: 1.6rem;
+  margin-bottom: 0.7rem;
 `;
 
 const Description = styled.p`
   color: #737373;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 400;
-  line-height: 160%; /* 22.4px */
-  letter-spacing: 0.56px;
+  line-height: 160%; /* 2.2399999999999998rem */
+  letter-spacing: 0.05600000000000001rem;
   margin: 0;
 `;

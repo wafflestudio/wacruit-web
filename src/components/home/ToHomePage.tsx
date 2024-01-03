@@ -14,20 +14,20 @@ export default function ToHomePage() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
 
   background: #f5d487;
-  box-shadow: 0px 5px 5px 0px rgba(219, 108, 89, 0.8);
+  box-shadow: 0rem 0.5rem 0.5rem 0rem rgba(219, 108, 89, 0.8);
 `;
 
 const CustomLink = styled(Link)`
   color: #735614;
   text-align: center;
   font-family: Jalnan;
-  font-size: 22px;
+  font-size: 2.2rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

@@ -106,44 +106,44 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1100px;
-  padding: 60px 0;
+  width: 110rem;
+  padding: 6rem 0;
 `;
 
 const LogoWrapper = styled.div`
-  margin-bottom: 48px;
+  margin-bottom: 4.8rem;
 `;
 
 const Title = styled.div`
   color: #222;
-  font-size: 52px;
+  font-size: 5.2rem;
   font-weight: 700;
-  margin-bottom: 36px;
+  margin-bottom: 3.6rem;
 `;
 const Emphasis = styled.span`
   color: #f0745f;
-  font-size: 64px;
+  font-size: 6.4rem;
   font-weight: 700;
 `;
 const Description = styled.div`
   color: #484848;
   text-align: center;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 500;
   line-height: 150%;
-  margin-bottom: 36px;
+  margin-bottom: 3.6rem;
   word-break: keep-all;
 `;
 const Contact = styled.div`
   color: #484848;
   font-family: Pretendard;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
   text-align: center;
   a {
     color: #484848;
     font-family: Pretendard;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 500;
     text-decoration-line: underline;
     cursor: pointer;

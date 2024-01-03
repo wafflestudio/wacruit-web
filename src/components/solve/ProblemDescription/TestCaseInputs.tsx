@@ -111,7 +111,7 @@ const TestCaseInputTextarea = styled.textarea`
   width: 100%;
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 160%;
   resize: none;
 

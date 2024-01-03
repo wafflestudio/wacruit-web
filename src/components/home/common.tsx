@@ -2,28 +2,28 @@ import styled from "styled-components";
 
 export const SectionNumber = styled.div`
   display: inline-flex;
-  margin-bottom: 10px;
-  padding: 5px 18px 1px 18px;
-  border-radius: 28.5px;
-  border: 1px solid #f0745f;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.8rem 0.1rem 1.8rem;
+  border-radius: 2.85rem;
+  border: 0.1rem solid #f0745f;
   color: #f0745f;
   font-family: Jalnan;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
 `;
 
 export const SectionTitle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
-  margin-bottom: 90px;
+  gap: 0.7rem;
+  margin-bottom: 9rem;
 
   h1 {
     color: #2f2f2f;
     font-family: Jalnan;
-    font-size: 40px;
+    font-size: 4rem;
     font-weight: 700;
     line-height: 160%;
     span {
@@ -33,7 +33,7 @@ export const SectionTitle = styled.div`
   }
   p {
     color: #737373;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 500;
   }
 `;

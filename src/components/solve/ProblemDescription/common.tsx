@@ -9,7 +9,7 @@ export interface TestCase {
 
 export const Text = styled.p<SpacerProps>`
   ${spacer}
-  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 160%;
 `;
 
@@ -19,7 +19,7 @@ export const BoldText = styled(Text)`
 
 export const HorizontalLine = styled.hr<SpacerProps>`
   ${spacer}
-  height: 1px;
+  height: 0.1rem;
 `;
 
 export const Table = styled.table<SpacerProps>`
@@ -28,14 +28,14 @@ export const Table = styled.table<SpacerProps>`
   > tbody {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1rem;
   }
 `;
 
 export const TableHeader = styled.tr`
   display: grid;
-  grid-template-columns: 60px 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 6rem 1fr 1fr;
+  gap: 1rem;
   > td {
     > pre {
       font-family: Pretendard;
@@ -49,8 +49,8 @@ export const TableItem = styled(TableHeader)`
   > th,
   td {
     background-color: #f6f6f6;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
   }
   > td:focus-within {
     background-color: #e6e6e6;
@@ -94,8 +94,8 @@ export function DeletableTableItem({
 const DeletableTableRow = styled(TableHeader)`
   td {
     background-color: #f6f6f6;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
   }
   > td:focus-within {
     background-color: #e6e6e6;
@@ -109,7 +109,7 @@ const DeletableTh = styled.th`
     width: 100%;
     height: 100%;
     color: #323232;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     animation: appear 300ms;
     @keyframes appear {
       from {
@@ -119,8 +119,8 @@ const DeletableTh = styled.th`
   }
   > button {
     display: block;
-    padding: 13.2px 17.5px;
-    font-size: 14px;
+    padding: 1.3199999999999998rem 1.75rem;
+    font-size: 1.4rem;
     font-weight: bold;
     line-height: 160%;
     letter-spacing: 5%;
@@ -134,7 +134,7 @@ const DeletableTh = styled.th`
     }
   }
   > p {
-    padding: 10px 15px;
+    padding: 1rem 1.5rem;
     background-color: #f6f6f6;
   }
 `;

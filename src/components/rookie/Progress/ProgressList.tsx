@@ -49,7 +49,7 @@ export function ProgressList({
 
 const List = styled.ul`
   display: flex;
-  gap: 20px;
+  gap: 2rem;
   list-style: none;
   padding: 0;
 `;

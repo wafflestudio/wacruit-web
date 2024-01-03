@@ -40,7 +40,12 @@ export default function TestCaseModal({
     <Article>
       <Nav>
         <CloseButton onClick={onClose}>
-          <img src="/icon/CloseModal.svg" alt="X" width="35px" height="35px" />
+          <img
+            src="/icon/CloseModal.svg"
+            alt="X"
+            width="3.5rem"
+            height="3.5rem"
+          />
         </CloseButton>
       </Nav>
 
@@ -54,12 +59,14 @@ export default function TestCaseModal({
 
         {/* 추가된 customTestCases가 없는 경우 위 TestCaseTable 컴포넌트에 hr 구분선이 없다 */}
         {/* 해당 경우에만 따로 구분선 추가 */}
-        {customTestCases.length === 0 && <HorizontalLine margin="20px 0" />}
+        {customTestCases.length === 0 && <HorizontalLine margin="2.0rem 0" />}
 
         {/* textareas table*/}
         {newCustomTestCaseInputs.length !== 0 && (
           // 추가된 customeTestCase가 아직 없는 경우만 디자인을 위해 margin-top 적용
-          <Table margin={`${customTestCases.length === 0 ? 0 : "10px 0 0 0"}`}>
+          <Table
+            margin={`${customTestCases.length === 0 ? 0 : "1.0rem 0 0 0"}`}
+          >
             <TestCaseInputs
               newCustomTestCaseInputs={newCustomTestCaseInputs}
               startIdx={defaultTestCases.length + customTestCases.length + 1}
@@ -107,19 +114,19 @@ const Article = styled.article`
 `;
 
 const Nav = styled.nav`
-  height: 54px;
-  padding: 9.5px;
+  height: 5.4rem;
+  padding: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border: 4px solid #373737;
-  border-radius: 5px 5px 0 0;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem 0.5rem 0 0;
   background-color: #f0745f;
 `;
 
 const CloseButton = styled.button`
-  width: 35px;
-  height: 35px;
+  width: 3.5rem;
+  height: 3.5rem;
   padding: 0;
   background: transparent;
   border: none;
@@ -129,12 +136,12 @@ const CloseButton = styled.button`
 const Main = styled.div`
   width: 100%;
   height: 100%;
-  padding: 30px;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
-  border: 4px solid #373737;
+  border: 0.4rem solid #373737;
   border-top: none;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 0.5rem 0.5rem;
   background-color: #fff;
 
   overflow: auto;
@@ -145,20 +152,20 @@ const Main = styled.div`
 `;
 
 const Title = styled.h1`
-  margin: 0 0 23px 0;
+  margin: 0 0 2.3rem 0;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 4rem;
 `;
 
 const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
   padding: 0;
-  margin-top: ${(props) => (props.$marginTop ? "10px" : 0)};
+  margin-top: ${(props) => (props.$marginTop ? "1.0rem" : 0)};
   width: 100%;
-  height: 70px;
-  min-height: 70px;
+  height: 7rem;
+  min-height: 7rem;
   background: #f6f6f6;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   color: #373737;
   cursor: pointer;
   &:hover {
@@ -169,21 +176,21 @@ const AddTestCaseButton = styled.button<{ $marginTop: boolean }>`
 const SubmitButton = styled.button`
   align-self: flex-end;
   font-weight: 600;
-  width: 80px;
-  padding: 9px 20px;
-  margin-top: 40px;
-  border: 4px solid #373737;
-  border-radius: 5px;
-  box-shadow: 4px 4px #323232;
-  font-size: 18px;
+  width: 8rem;
+  padding: 0.9rem 2rem;
+  margin-top: 4rem;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem;
+  box-shadow: 0.4rem 0.4rem #323232;
+  font-size: 1.8rem;
   line-height: 160%;
   letter-spacing: 5%;
   background: #f0745f;
   color: #323232;
   cursor: pointer;
   &:active {
-    box-shadow: 2px 2px #323232;
-    transform: translate(2px, 2px);
+    box-shadow: 0.2rem 0.2rem #323232;
+    transform: translate(0.2rem, 0.2rem);
   }
   &:hover {
     background: #fff;
