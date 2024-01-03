@@ -32,7 +32,7 @@ export default function Announcement() {
       <Main>
         <Title>공지사항</Title>
         <Description>
-          찾는 공지가 없다면 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
+          찾는 공지가 없다면 <Mail href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</Mail>{" "}
           이메일로 문의주세요.
         </Description>
         <AnnouncementList>
@@ -117,8 +117,7 @@ function ListItem({
 }
 
 const Main = styled.main`
-  margin-top: 7vh;
-  padding: 9vh max(calc(50vw - 650px), 30px);
+  padding: 23vh max(50vw - 534px, 30px) 30px;
 `;
 
 const Title = styled.h1`
@@ -137,6 +136,11 @@ const Description = styled.h2`
     text-decoration: underline;
     text-underline-position: under;
   }
+`;
+
+const Mail = styled.a`
+  font-weight: 500;
+  text-decoration-line: underline;
 `;
 
 const AnnouncementList = styled.ol`

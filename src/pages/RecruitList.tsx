@@ -57,7 +57,7 @@ export default function RecruitList() {
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  padding: 23vh max(50vw - 534px, 30px) 0;
+  padding: 23vh max(50vw - 534px, 30px) 30px;
 `;
 
 const Title = styled.h1`
