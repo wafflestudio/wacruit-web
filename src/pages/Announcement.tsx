@@ -130,6 +130,7 @@ const Description = styled.h2`
   margin-top: 1.2rem;
   line-height: 140%;
   font-size: 1.6rem;
+  margin-bottom: 13.9rem;
   color: #484848;
   > span {
     font-weight: 500;
