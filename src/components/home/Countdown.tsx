@@ -7,9 +7,9 @@ export default function Countdown() {
       <FlipClockCountdown
         to={new Date("2023-08-13T23:59:59")}
         digitBlockStyle={{
-          width: "77px",
-          height: "121px",
-          fontSize: "74px",
+          width: "7.7rem",
+          height: "12.1rem",
+          fontSize: "7.4rem",
           boxShadow: "none",
         }}
         labels={["DAY", "HOUR", "MIN", "SEC"]}

@@ -35,78 +35,78 @@ export default function Introduce() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 60px 0;
+  padding: 6rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: #f0745f;
-  gap: 50px;
+  gap: 5rem;
 `;
 
 const IntroduceTop = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 2.2rem;
   text-align: center;
   h1 {
     color: #fff;
     font-family: Jalnan;
-    font-size: 24px;
+    font-size: 2.4rem;
     font-weight: 700;
 
     span {
       color: #fff;
       font-family: Jalnan;
-      font-size: 32px;
-      -webkit-text-stroke: 2px #8b3c2e;
+      font-size: 3.2rem;
+      -webkit-text-stroke: 0.2rem #8b3c2e;
       font-weight: 700;
-      text-shadow: calc(0.5px * 1) 0 0 #8b3c2e,
-        calc(0.5px * 0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
-        calc(0.5px * 0.7071) calc(0.5px * 0.7071) 0 #8b3c2e,
-        calc(0.5px * 0.3827) calc(0.5px * 0.9239) 0 #8b3c2e,
-        0 calc(0.5px * 1) 0 #8b3c2e,
-        calc(0.5px * -0.3827) calc(0.5px * 0.9239) 0 #8b3c2e,
-        calc(0.5px * -0.7071) calc(0.5px * 0.7071) 0 #8b3c2e,
-        calc(0.5px * -0.9239) calc(0.5px * 0.3827) 0 #8b3c2e,
-        calc(0.5px * -1) 0 0 #8b3c2e,
-        calc(0.5px * -0.9239) calc(0.5px * -0.3827) 0 #8b3c2e,
-        calc(0.5px * -0.7071) calc(0.5px * -0.7071) 0 #8b3c2e,
-        calc(0.5px * -0.3827) calc(0.5px * -0.9239) 0 #8b3c2e,
-        0 calc(0.5px * -1) 0 #8b3c2e,
-        calc(0.5px * 0.3827) calc(0.5px * -0.9239) 0 #8b3c2e,
-        calc(0.5px * 0.7071) calc(0.5px * -0.7071) 0 #8b3c2e,
-        calc(0.5px * 0.9239) calc(0.5px * -0.3827) 0 #8b3c2e;
+      text-shadow: calc(0.05rem * 1) 0 0 #8b3c2e,
+        calc(0.05rem * 0.9239) calc(0.05rem * 0.3827) 0 #8b3c2e,
+        calc(0.05rem * 0.7071) calc(0.05rem * 0.7071) 0 #8b3c2e,
+        calc(0.05rem * 0.3827) calc(0.05rem * 0.9239) 0 #8b3c2e,
+        0 calc(0.05rem * 1) 0 #8b3c2e,
+        calc(0.05rem * -0.3827) calc(0.05rem * 0.9239) 0 #8b3c2e,
+        calc(0.05rem * -0.7071) calc(0.05rem * 0.7071) 0 #8b3c2e,
+        calc(0.05rem * -0.9239) calc(0.05rem * 0.3827) 0 #8b3c2e,
+        calc(0.05rem * -1) 0 0 #8b3c2e,
+        calc(0.05rem * -0.9239) calc(0.05rem * -0.3827) 0 #8b3c2e,
+        calc(0.05rem * -0.7071) calc(0.05rem * -0.7071) 0 #8b3c2e,
+        calc(0.05rem * -0.3827) calc(0.05rem * -0.9239) 0 #8b3c2e,
+        0 calc(0.05rem * -1) 0 #8b3c2e,
+        calc(0.05rem * 0.3827) calc(0.05rem * -0.9239) 0 #8b3c2e,
+        calc(0.05rem * 0.7071) calc(0.05rem * -0.7071) 0 #8b3c2e,
+        calc(0.05rem * 0.9239) calc(0.05rem * -0.3827) 0 #8b3c2e;
     }
   }
   p {
     color: #fff8f6;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 500;
     line-height: 160%;
-    letter-spacing: 0.64px;
+    letter-spacing: 0.064rem;
   }
 `;
 
 const IntroduceBottom = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 2.2rem;
 `;
 
 const BottomLine = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 20px;
+  gap: 2rem;
 
   & > div:nth-child(1) {
-    padding: 4px 15px;
-    border-radius: 11.5px;
-    border: 1px solid #8b3c2e;
+    padding: 0.4rem 1.5rem;
+    border-radius: 1.15rem;
+    border: 0.1rem solid #8b3c2e;
     background: #fff;
 
     color: #df6d59;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 600;
   }
 
@@ -115,14 +115,14 @@ const BottomLine = styled.div`
     flex-direction: column;
     justify-content: center;
     color: #fff;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 600;
     line-height: 180%;
 
     & > p {
       color: #fff6f6;
       font-family: Pretendard;
-      font-size: 16px;
+      font-size: 1.6rem;
       font-weight: 400;
       line-height: 180%;
     }
@@ -130,7 +130,7 @@ const BottomLine = styled.div`
 
   & > p {
     color: #fff6f6;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 400;
     line-height: 180%;
   }

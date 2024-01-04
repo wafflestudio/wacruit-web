@@ -48,7 +48,7 @@ const Section = styled.section`
   position: relative;
   width: 100%;
   background: #f6f6f6;
-  padding: 100px 0px;
+  padding: 10rem 0rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,13 +56,13 @@ const Section = styled.section`
 `;
 
 const ActivityCardArea = styled.div`
-  max-width: 980px;
+  max-width: 98rem;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 3.2rem;
 `;
 
 function Card({ title, description }: CardProps) {
@@ -83,16 +83,16 @@ function Card({ title, description }: CardProps) {
 }
 
 const ActivityCard = styled.div<{ $hover: boolean }>`
-  padding: 30px 34px;
+  padding: 3rem 3.4rem;
   width: 100%;
-  border-radius: 29px;
-  border: 1px solid #bd8379;
+  border-radius: 2.9rem;
+  border: 0.1rem solid #bd8379;
 
   background-color: ${(props) => (props.$hover ? "#F0745F" : "#fff")};
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  gap: 30px;
+  gap: 3rem;
   align-items: center;
   h1 {
     color: ${(props) => (props.$hover ? "#ffffff" : "#F0745F")};
@@ -109,17 +109,17 @@ const CardTitle = styled.h1`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.8rem;
 
-  font-size: 26px;
+  font-size: 2.6rem;
   font-weight: 600;
-  letter-spacing: -1.3px;
+  letter-spacing: -0.13rem;
 `;
 
 const CardDescription = styled.div`
   flex: 1 1 0;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 500;
-  line-height: 160%; /* 28.8px */
-  letter-spacing: 0.72px;
+  line-height: 160%; /* 2.88rem */
+  letter-spacing: 0.072rem;
 `;

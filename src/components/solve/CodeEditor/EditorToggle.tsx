@@ -23,38 +23,38 @@ const Wrapper = styled.button`
 
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1.5rem;
 
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #342d29;
   cursor: pointer;
 `;
 
 const Slot = styled.div`
-  width: 84px;
-  height: 36px;
+  width: 8.4rem;
+  height: 3.6rem;
   box-sizing: border-box;
-  padding-left: 2px;
+  padding-left: 0.2rem;
   position: relative;
 
-  border: 4px solid #373737;
-  border-radius: 18px;
+  border: 0.4rem solid #373737;
+  border-radius: 1.8rem;
 `;
 
 const TRANS_TIME = "0.2s";
 
 const Circle = styled.div<{ value: boolean }>`
-  width: 24px;
-  height: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
 
   position: absolute;
-  top: 2px;
-  left: ${(props) => (props.value ? "2px" : "48px")};
+  top: 0.2rem;
+  left: ${(props) => (props.value ? "0.2rem" : "4.8rem")};
   transition: left ${TRANS_TIME} ease-in-out;
 
-  border: 4px solid #373737;
+  border: 0.4rem solid #373737;
   border-radius: 50%;
 
   background: #f0745f;
@@ -75,13 +75,13 @@ const OnText = styled(Text)<{ value: boolean }>`
   justify-content: flex-end;
 
   right: 0;
-  padding-right: 10px;
+  padding-right: 1rem;
   width: ${(props) => (props.value ? "100%" : "0")};
 `;
 
 const OffText = styled(Text)<{ value: boolean }>`
   justify-content: flex-start;
 
-  padding-left: 10px;
+  padding-left: 1rem;
   width: ${(props) => (props.value ? "0" : "100%")};
 `;

@@ -53,8 +53,8 @@ const PreventGlobalStylesResetWrapper = styled.div`
     font-size: 2em;
     margin-block-start: 0.67em;
     margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   h2 {
@@ -62,8 +62,8 @@ const PreventGlobalStylesResetWrapper = styled.div`
     font-size: 1.5em;
     margin-block-start: 0.83em;
     margin-block-end: 0.83em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   h3 {
@@ -71,16 +71,16 @@ const PreventGlobalStylesResetWrapper = styled.div`
     font-size: 1.17em;
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   h4 {
     display: block;
     margin-block-start: 1.33em;
     margin-block-end: 1.33em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   h5 {
@@ -88,8 +88,8 @@ const PreventGlobalStylesResetWrapper = styled.div`
     font-size: 0.83em;
     margin-block-start: 1.67em;
     margin-block-end: 1.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   h6 {
@@ -97,16 +97,16 @@ const PreventGlobalStylesResetWrapper = styled.div`
     font-size: 0.67em;
     margin-block-start: 2.33em;
     margin-block-end: 2.33em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
     font-weight: bold;
   }
   p {
     display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
   }
   em {
     font-style: italic;
@@ -119,18 +119,18 @@ const PreventGlobalStylesResetWrapper = styled.div`
     list-style: inside disc; // 공식 default는 outside이긴 하다.
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
+    padding-inline-start: 4rem;
   }
   ol {
     display: block;
     list-style: inside decimal; // 공식 default는 outside이긴 하다.
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
+    padding-inline-start: 4rem;
   }
   code {
     /* font-family: monospace; */
@@ -140,7 +140,7 @@ const PreventGlobalStylesResetWrapper = styled.div`
     display: block;
     margin: 0;
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 1.6rem;
     padding: 0 1em;
     border-left: 0.25em solid #d0d7de;
     > p {

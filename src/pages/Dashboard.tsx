@@ -119,49 +119,49 @@ const Main = styled.main`
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
-  padding: 23vh max(calc(50vw - 650px), 30px);
-  padding-bottom: 30px;
+  padding: 23vh max(calc(50vw - 65rem), 3rem);
+  padding-bottom: 3rem;
 `;
 
 const Title = styled.h1`
-  margin: 9px 0;
+  margin: 0.9rem 0;
 `;
 
 const TitleMarkdownStyledWrapper = styled.div`
   p {
     margin: 0;
     color: #222;
-    font-size: 46px;
+    font-size: 4.6rem;
     font-weight: 700;
   }
 `;
 
 const Description = styled.p`
-  margin-top: 12px;
-  margin-bottom: 35px;
+  margin-top: 1.2rem;
+  margin-bottom: 3.5rem;
 `;
 
 const DescriptionMarkdownStyledWrapper = styled.div`
   p {
     color: #373737;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 500;
-    line-height: 160%; /* 32px */
-    letter-spacing: 0.8px;
+    line-height: 160%; /* 3.2rem */
+    letter-spacing: 0.08rem;
   }
 `;
 
 const Information = styled.div`
-  margin-bottom: 34px;
+  margin-bottom: 3.4rem;
 `;
 
 const InformationMarkdownStyledWrapper = styled.div`
   p {
     color: #737373;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 400;
-    line-height: 170%; /* 30.6px */
-    letter-spacing: 0.72px;
+    line-height: 170%; /* 3.06rem */
+    letter-spacing: 0.072rem;
     margin: 0;
   }
   code {
@@ -171,15 +171,15 @@ const InformationMarkdownStyledWrapper = styled.div`
   ul,
   ol {
     padding: 0;
-    margin: 4px;
-    padding-left: 20px;
+    margin: 0.4rem;
+    padding-left: 2rem;
     li {
       font: inherit;
       color: #737373;
-      font-size: 18px;
+      font-size: 1.8rem;
       font-weight: 400;
-      line-height: 170%; /* 30.6px */
-      letter-spacing: 0.72px;
+      line-height: 170%; /* 3.06rem */
+      letter-spacing: 0.072rem;
     }
   }
 `;
@@ -187,21 +187,21 @@ const InformationMarkdownStyledWrapper = styled.div`
 const AnnouncementButton = styled.button`
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 10px 20px;
+  gap: 1rem;
+  padding: 1rem 2rem;
   background: #f0745f;
-  border: #f0745f 1px solid;
-  border-radius: 5px;
+  border: #f0745f 0.1rem solid;
+  border-radius: 0.5rem;
   color: #fff;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 500;
-  line-height: 25px;
-  margin-bottom: 34px;
+  line-height: 2.5rem;
+  margin-bottom: 3.4rem;
   cursor: pointer;
 
   > div {
-    width: 25px;
-    height: 25px;
+    width: 2.5rem;
+    height: 2.5rem;
     background: #fff;
     display: inline-flex;
     align-items: center;
@@ -235,18 +235,18 @@ const BottomContainer = styled.div`
 const Caution = styled.div`
   position: relative;
   color: #515151;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 160%; /* 28.8px */
-  letter-spacing: 0.72px;
-  margin-top: 25px;
+  line-height: 160%; /* 2.88rem */
+  letter-spacing: 0.072rem;
+  margin-top: 2.5rem;
 `;
 
 const CancelButton = styled.button`
   position: absolute;
   display: inline-block;
   right: 0;
-  margin-top: 153px;
+  margin-top: 15.3rem;
   background: none;
   border: none;
   cursor: pointer;

@@ -168,43 +168,43 @@ const RegisterContainer = styled.div`
 
 const RegisterForm = styled.form`
   position: relative;
-  padding: 0 60px;
+  padding: 0 6rem;
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  border-radius: 20px;
+  border-radius: 2rem;
 `;
 
 const RegisterIcon = styled.img`
-  margin-top: 48px;
-  margin-bottom: 20px;
+  margin-top: 4.8rem;
+  margin-bottom: 2rem;
   align-self: center;
 `;
 
 const RegisterTitle = styled.div`
   color: #1e1e1e;
   text-align: center;
-  font-size: 32px;
+  font-size: 3.2rem;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  margin-bottom: 16px;
+  margin-bottom: 1.6rem;
 `;
 
 const NameInput = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 2rem;
   > input {
-    width: 150px;
-    height: 40px;
-    font-size: 16px;
+    width: 15rem;
+    height: 4rem;
+    font-size: 1.6rem;
     font-weight: 400;
-    line-height: 160%; /* 25.6px */
-    letter-spacing: 0.64px;
-    border-radius: 2px;
-    border: 1px solid #404040;
+    line-height: 160%; /* 2.56rem */
+    letter-spacing: 0.064rem;
+    border-radius: 0.2rem;
+    border: 0.1rem solid #404040;
     background: #fff;
-    padding: 7px 12px;
+    padding: 0.7rem 1.2rem;
     &::placeholder {
       color: #d9d9d9;
     }
@@ -212,38 +212,38 @@ const NameInput = styled.div`
 `;
 
 const RegisterLabel = styled.div`
-  margin-top: 16px;
-  margin-bottom: 6px;
+  margin-top: 1.6rem;
+  margin-bottom: 0.6rem;
   color: #404040;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 400;
-  line-height: 160%; /* 32px */
-  letter-spacing: 0.8px;
+  line-height: 160%; /* 3.2rem */
+  letter-spacing: 0.08rem;
 `;
 const RegisterInput = styled.input`
-  width: 320px;
-  height: 40px;
-  font-size: 16px;
+  width: 32rem;
+  height: 4rem;
+  font-size: 1.6rem;
   font-weight: 400;
-  line-height: 160%; /* 25.6px */
-  letter-spacing: 0.64px;
-  border-radius: 2px;
-  border: 1px solid #404040;
+  line-height: 160%; /* 2.56rem */
+  letter-spacing: 0.064rem;
+  border-radius: 0.2rem;
+  border: 0.1rem solid #404040;
   background: #fff;
-  padding: 7px 12px;
+  padding: 0.7rem 1.2rem;
   &::placeholder {
     color: #d9d9d9;
   }
 `;
 const RegisterCaution = styled.div`
-  margin-top: 17px;
+  margin-top: 1.7rem;
   color: #969696;
-  font-size: 10px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 160%; /* 16px */
-  letter-spacing: 0.4px;
+  line-height: 160%; /* 1.6rem */
+  letter-spacing: 0.04rem;
   align-self: center;
-  margin-bottom: 103px;
+  margin-bottom: 10.3rem;
 `;
 
 const RegisterSubmit = styled.input<{
@@ -256,15 +256,15 @@ const RegisterSubmit = styled.input<{
   border: none;
   background: ${(props) => (props.$active ? "#F0745F" : "#d9d9d9")};
   display: flex;
-  height: 68px;
+  height: 6.8rem;
   justify-content: center;
   align-items: center;
   color: white;
   color: #fff;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 600;
-  letter-spacing: 0.9px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  letter-spacing: 0.09rem;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
   cursor: pointer;
 `;

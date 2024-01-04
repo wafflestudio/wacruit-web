@@ -186,50 +186,50 @@ const Main = styled.main`
   font-family: Pretendard, sans-serif;
   font-style: normal;
   line-height: normal;
-  padding: 23vh max(calc(50vw - 534px), 30px);
+  padding: 23vh max(calc(50vw - 53.4rem), 3rem);
 `;
 
 const Title = styled.h1`
   color: #000;
-  font-size: 40px;
+  font-size: 4rem;
   font-weight: 600;
   margin: 0;
-  margin-bottom: 8px;
+  margin-bottom: 0.8rem;
 `;
 const Description = styled.p`
   color: #737373;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 160%; /* 28.8px */
-  letter-spacing: 0.72px;
+  line-height: 160%; /* 2.88rem */
+  letter-spacing: 0.072rem;
   margin: 0;
-  margin-bottom: 41px;
+  margin-bottom: 4.1rem;
 `;
 const Questionaires = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 41px;
+  gap: 4.1rem;
   width: 100%;
   padding: 0;
   list-style: none;
-  margin-bottom: 100px;
+  margin-bottom: 10rem;
 `;
 const Buttons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  gap: 25px;
+  gap: 2.5rem;
 `;
 const SaveButton = styled.button`
   display: inline-flex;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   justify-content: center;
   align-items: flex-start;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: none;
   background: #f0f0f0;
   color: #737373;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 500;
   cursor: pointer;
 
@@ -240,14 +240,14 @@ const SaveButton = styled.button`
 `;
 const SubmitButton = styled.button`
   display: inline-flex;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   justify-content: center;
   align-items: flex-start;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: none;
   background: #f0745f;
   color: #fff;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 500;
   cursor: pointer;
 

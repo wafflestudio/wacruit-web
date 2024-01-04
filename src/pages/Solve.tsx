@@ -189,34 +189,34 @@ export default function Solve() {
 const Container = styled.div`
   display: flex;
   height: 100vh;
-  padding: 30px;
+  padding: 3rem;
   box-sizing: border-box;
   background: #fff7e9;
 `;
 const Main = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.6rem;
   flex: 1;
   overflow: hidden;
-  border: 4px solid #373737;
-  box-shadow: 10px 10px #373737;
-  border-radius: 5px;
+  border: 0.4rem solid #373737;
+  box-shadow: 1rem 1rem #373737;
+  border-radius: 0.5rem;
   background: white;
 `;
 const TopNav = styled.nav`
   display: flex;
   align-items: center;
-  padding: 14px;
+  padding: 1.4rem;
   background: #f0745f;
-  border-bottom: 4px solid #373737;
+  border-bottom: 0.4rem solid #373737;
 
   a {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.8rem;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.6rem;
     color: #000000;
     text-decoration: none;
   }
@@ -224,8 +224,8 @@ const TopNav = styled.nav`
 const Row = styled.div<{ $collapseLeft?: boolean }>`
   display: flex;
   flex: 1;
-  gap: ${(props) => (props.$collapseLeft ? "0" : "16px")};
-  padding: 0 16px 16px;
+  gap: ${(props) => (props.$collapseLeft ? "0" : "1.6rem")};
+  padding: 0 1.6rem 1.6rem;
   min-height: 0;
   & > :first-child {
     ${(props) =>
@@ -247,20 +247,20 @@ const BottomNav = styled.nav`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
-  padding: 16px 0 0;
+  gap: 1.6rem;
+  padding: 1.6rem 0 0;
 `;
 const SubmitButton = styled.button<{ $primary?: boolean }>`
-  padding: 9px 20px;
-  border: 4px solid #373737;
-  border-radius: 5px;
-  box-shadow: 4px 4px #323232;
-  font-size: 18px;
+  padding: 0.9rem 2rem;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem;
+  box-shadow: 0.4rem 0.4rem #323232;
+  font-size: 1.8rem;
   background: ${(props) => (props.$primary ? "#f0745f" : "#ededed")};
   cursor: pointer;
   &:active {
-    box-shadow: 2px 2px #323232;
-    transform: translate(2px, 2px);
+    box-shadow: 0.2rem 0.2rem #323232;
+    transform: translate(0.2rem, 0.2rem);
   }
   &:disabled {
     background: #c4c4c4;

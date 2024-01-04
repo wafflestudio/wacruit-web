@@ -112,7 +112,7 @@ export default function Apply() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 100px 0;
+  padding: 10rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,7 +131,7 @@ const BackGround = styled.div`
 
 const ApplyCalender = styled.div`
   width: 100%;
-  max-width: 1300px;
+  max-width: 130rem;
   display: flex;
   flex-direction: column;
 `;
@@ -143,20 +143,20 @@ const SelectField = styled.div`
 `;
 
 const Select = styled.div<{ $active: boolean }>`
-  padding: 30px 0px;
+  padding: 3rem 0rem;
   flex: 1;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 1.5rem 1.5rem 0rem 0rem;
   text-align: center;
   font-family: Jalnan;
-  font-size: 22px;
+  font-size: 2.2rem;
   font-weight: 700;
-  letter-spacing: 0.66px;
+  letter-spacing: 0.066rem;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.8rem;
 
   cursor: pointer;
 
@@ -170,8 +170,8 @@ const CalenderArea = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0px 150px 70px;
-  border-radius: 0px 0px 20px 20px;
+  padding: 0rem 15rem 7rem;
+  border-radius: 0rem 0rem 2rem 2rem;
   background: #fff7e5;
   justify-content: start;
   align-items: center;
@@ -182,15 +182,15 @@ const DayWeek = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 56px 10px 38px;
+  padding: 5.6rem 1rem 3.8rem;
 
   p {
     color: #756643;
     font-family: "Fredoka One";
-    font-size: 30px;
+    font-size: 3rem;
     font-weight: 600;
-    line-height: 170%; /* 51px */
-    letter-spacing: 1.2px;
+    line-height: 170%; /* 5.1rem */
+    letter-spacing: 0.12rem;
   }
 
   p:nth-child(1) {
@@ -201,57 +201,57 @@ const DayWeek = styled.div`
 const ApplyButton = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 1.7rem;
   align-items: center;
 
   p {
     color: #434343;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 600;
     span {
       color: #f0745f;
       font-family: Jalnan;
-      font-size: 24px;
+      font-size: 2.4rem;
       font-weight: 700;
     }
   }
 
   button {
-    height: 70px;
-    width: 396px;
+    height: 7rem;
+    width: 39.6rem;
 
     border: none;
-    border-radius: 20px;
+    border-radius: 2rem;
     background: #f0745f;
 
     color: #fff;
     font-family: Jalnan;
-    font-size: 22px;
+    font-size: 2.2rem;
     font-weight: 700;
-    letter-spacing: 0.88px;
+    letter-spacing: 0.088rem;
 
     cursor: pointer;
   }
 `;
 
 const Share = styled.div`
-  margin-top: 126px;
+  margin-top: 12.6rem;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 3.2rem;
 `;
 
 const ShareText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
 
   h1 {
     color: #434343;
     text-align: center;
-    font-size: 30px;
+    font-size: 3rem;
     font-weight: 700;
-    line-height: 140%; /* 42px */
+    line-height: 140%; /* 4.2rem */
     span {
       color: #f0745f;
       font-family: Jalnan;
@@ -260,9 +260,9 @@ const ShareText = styled.div`
   p {
     color: #837c6d;
     text-align: center;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 500;
-    line-height: 140%; /* 25.2px */
+    line-height: 140%; /* 2.52rem */
   }
 `;
 
@@ -270,14 +270,14 @@ const ShareButton = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 42px;
+  gap: 4.2rem;
 `;
 const ShareIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 68px;
-  height: 68px;
+  width: 6.8rem;
+  height: 6.8rem;
   border-radius: 50%;
   background: #f0745f;
   cursor: pointer;

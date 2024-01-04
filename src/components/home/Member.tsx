@@ -44,7 +44,7 @@ export default function Member() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 100px 0;
+  padding: 10rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,7 +53,7 @@ const Section = styled.section`
 
 const MemberCardArea = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 140rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -87,19 +87,19 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
   background-color: #fff;
-  width: 280px;
-  /* width: 310px;
-  border-radius: 10px;
-  padding: 30px 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1); */
+  width: 28rem;
+  /* width: 31.0rem;
+  border-radius: 1.0rem;
+  padding: 3.0rem 1.5rem;
+  box-shadow: 0.0rem 0.0rem 1.0rem rgba(0, 0, 0, 0.1);
+  border: 0.1rem solid rgba(0, 0, 0, 0.1); */
 `;
 
 const ImageArea = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 15rem;
+  height: 15rem;
 `;
 
 const ImageText = styled.div`
@@ -110,15 +110,15 @@ const ImageText = styled.div`
 
   h1 {
     color: #c8604e;
-    font-size: 24px;
+    font-size: 2.4rem;
     font-weight: 700;
-    line-height: 160%; /* 38.4px */
+    line-height: 160%; /* 3.84rem */
   }
   p {
     color: #dab3ac;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 400;
-    line-height: 160%; /* 22.4px */
+    line-height: 160%; /* 2.2399999999999998rem */
   }
 `;
 
@@ -127,21 +127,21 @@ const Description = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3px;
+  gap: 0.3rem;
 
   h1 {
     text-align: center;
     color: #525252;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 600;
-    line-height: 150%; /* 27px */
+    line-height: 150%; /* 2.7rem */
   }
   p {
     text-align: center;
     color: #737373;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 400;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; /* 1.9600000000000002rem */
     word-break: keep-all;
   }
 `;

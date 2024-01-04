@@ -10,21 +10,21 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
       <ImageArea>
         {select === "ROOKIE" && (
           <img
-            style={{ width: "105px", height: "105px" }}
+            style={{ width: "10.5rem", height: "10.5rem" }}
             src={"/image/home/members/Rookie.svg"}
             alt="rookie img"
           />
         )}
         {select === "DESIGNER" && (
           <img
-            style={{ width: "105px", height: "105px" }}
+            style={{ width: "10.5rem", height: "10.5rem" }}
             src={"/image/home/members/Designer.svg"}
             alt="designer img"
           />
         )}
         {select === "PROGRAMMER" && (
           <img
-            style={{ width: "105px", height: "105px" }}
+            style={{ width: "10.5rem", height: "10.5rem" }}
             src={"/image/home/members/Programmer.svg"}
             alt="programmer img"
           />
@@ -236,47 +236,47 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
 
 const Section = styled.section`
   width: 100%;
-  padding: 90px 0;
+  padding: 9rem 0;
   position: relative;
   display: flex;
   justify-content: center;
-  gap: 42px;
+  gap: 4.2rem;
 `;
 
 const ImageArea = styled.div`
-  width: 105px;
-  height: 105px;
+  width: 10.5rem;
+  height: 10.5rem;
 `;
 
 const TextArea = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 2.8rem;
 `;
 
 const InnerTop = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 2.8rem;
 `;
 
 const TopTitle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 0.7rem;
 
   h1 {
     color: #c8604e;
-    font-size: 26px;
+    font-size: 2.6rem;
     font-weight: 800;
-    line-height: 160%; /* 41.6px */
+    line-height: 160%; /* 4.16rem */
   }
 
   p {
     color: #525252;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 600;
-    line-height: 150%; /* 30px */
+    line-height: 150%; /* 3.0rem */
     span {
       color: #aa4533;
     }
@@ -287,9 +287,9 @@ const TopDescription = styled.ul`
   padding-left: 1em;
   li {
     color: #666259;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 400;
-    line-height: 185%; /* 33.3px */
+    line-height: 185%; /* 3.3299999999999996rem */
     list-style: disc outside;
     word-break: keep-all;
     span {
@@ -301,26 +301,26 @@ const TopDescription = styled.ul`
 const InnerBottom = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 4rem;
 
   h1 {
     color: #3b3b3b;
-    font-size: 20px;
+    font-size: 2rem;
     font-style: normal;
     font-weight: 600;
-    line-height: 180%; /* 36px */
+    line-height: 180%; /* 3.6rem */
   }
 `;
 
 const Step = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 48px;
+  gap: 4.8rem;
 `;
 
 const StepImage = styled.div`
-  width: 75px;
-  height: 75px;
+  width: 7.5rem;
+  height: 7.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -331,20 +331,20 @@ const StepImage = styled.div`
 const StepDescription = styled.div`
   span {
     color: #f0745f;
-    font-size: 12px;
+    font-size: 1.2rem;
     font-weight: 500;
   }
 
   h1 {
     position: relative;
-    top: 3px;
+    top: 0.3rem;
   }
 
   p {
     color: #827a68;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 400;
-    line-height: 150%; /* 24px */
-    letter-spacing: 0.64px;
+    line-height: 150%; /* 2.4rem */
+    letter-spacing: 0.064rem;
   }
 `;
