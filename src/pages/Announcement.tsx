@@ -32,7 +32,7 @@ export default function Announcement() {
       <Main>
         <Title>공지사항</Title>
         <Description>
-          찾는 공지가 없다면 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
+          찾는 공지가 없다면 <Mail href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</Mail>{" "}
           이메일로 문의주세요.
         </Description>
         <AnnouncementList>
@@ -109,7 +109,7 @@ function ListItem({
               ? openedListItemIcon
               : closedListItemIcon
           }
-          style={{ width: "21px", height: "12px" }}
+          style={{ width: "2.1rem", height: "1.2rem" }}
         />
       </div>
     </ListItemRow>
@@ -117,20 +117,20 @@ function ListItem({
 }
 
 const Main = styled.main`
-  margin-top: 7vh;
-  padding: 9vh max(calc(50vw - 650px), 30px);
+  padding: 23vh max(50vw - 53.4rem, 3rem) 3rem;
 `;
 
 const Title = styled.h1`
-  font-size: 52px;
+  font-size: 5.2rem;
   font-weight: 600;
   color: #222222;
 `;
 
 const Description = styled.h2`
-  margin-top: 12px;
+  margin-top: 1.2rem;
   line-height: 140%;
-  font-size: 16px;
+  font-size: 1.6rem;
+  margin-bottom: 13.9rem;
   color: #484848;
   > span {
     font-weight: 500;
@@ -139,17 +139,22 @@ const Description = styled.h2`
   }
 `;
 
+const Mail = styled.a`
+  font-weight: 500;
+  text-decoration-line: underline;
+`;
+
 const AnnouncementList = styled.ol`
-  margin-top: 50px;
-  min-width: 970px;
+  margin-top: 5rem;
+  min-width: 97rem;
 `;
 
 const ListRow = styled.li<{ $listItemState?: ListItemState }>`
   display: grid;
   grid-template-columns: 9fr 68fr 17fr 7fr;
-  font-size: 20px;
+  font-size: 2rem;
   line-height: 140%;
-  border-bottom: 1px solid #c9c9c9;
+  border-bottom: 0.1rem solid #c9c9c9;
 
   > p:nth-child(3) {
     text-align: center;
@@ -157,10 +162,10 @@ const ListRow = styled.li<{ $listItemState?: ListItemState }>`
 `;
 
 const ListHeaderRow = styled(ListRow)`
-  border-top: 2px solid #222222;
+  border-top: 0.2rem solid #222222;
   font-weight: 600;
   color: #222222;
-  padding: 16px 0;
+  padding: 1.6rem 0;
 
   > p:first-child {
     padding-left: 20%;
@@ -177,7 +182,7 @@ const ListItemRow = styled(ListRow)`
     }}
   ${({ $listItemState }) =>
     $listItemState === "SomethingElseSelected" && { color: "#9c9c9c" }}
-  padding: 30px 0 32px 0;
+  padding: 3.0rem 0 3.2rem 0;
 
   > p:first-child {
     padding-left: 30%;
@@ -193,23 +198,23 @@ const ListItemRow = styled(ListRow)`
 `;
 
 const NoAnnouncements = styled.div`
-  border-bottom: 1px solid #c9c9c9;
-  height: 450px;
+  border-bottom: 0.1rem solid #c9c9c9;
+  height: 45rem;
   display: flex;
   align-items: center;
   justify-content: center;
   > p {
     color: #3c3c3c;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 2rem;
     line-height: 140%;
   }
 `;
 
 const MarkdownStyledWrapper = styled.div`
   p {
-    margin-top: 46px;
-    font-size: 18px;
+    margin-top: 4.6rem;
+    font-size: 1.8rem;
     font-weight: normal;
     line-height: 185%;
     color: #373737;

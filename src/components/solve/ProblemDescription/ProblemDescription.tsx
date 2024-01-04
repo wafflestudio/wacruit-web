@@ -61,16 +61,16 @@ export default function ProblemDescription({
         markdownString={problemMarkdown}
         StyledWrapper={MarkdownStyledWrapper}
       />
-      <HorizontalLine margin="25px 0 14px 0" />
+      <HorizontalLine margin="2.5rem 0 1.4rem 0" />
       {/**
       // TODO: 문제설명 마크다운에 디자인 추가
       <BoldText>제한사항</BoldText>
       <Text>
         <MarkDownRenderer markdownString={`-100,000 ≤ a, b ≤ 100,000`} />
       </Text>
-      <HorizontalLine margin="17px 0 14px 0" />
+      <HorizontalLine margin="1.7rem 0 1.4rem 0" />
        */}
-      <BoldText margin="0 0 16px 0">입출력 예시</BoldText>
+      <BoldText margin="0 0 1.6rem 0">입출력 예시</BoldText>
       <TestCaseTable
         defaultTestCases={defaultTestCases}
         customTestCases={customTestCases}
@@ -93,19 +93,19 @@ export default function ProblemDescription({
 /* end */
 
 const Section = styled.section`
-  border: 4px solid #373737;
-  border-radius: 5px;
-  padding: 28px 26px;
+  border: 0.4rem solid #373737;
+  border-radius: 0.5rem;
+  padding: 2.8rem 2.6rem;
   overflow-y: auto;
 
   /* code start: scrollbar css design */
   &::-webkit-scrollbar {
-    width: 17px; // border-left 5px, border-right 5px를 뺀 7px가 보이는 두께
+    width: 1.7rem; // border-left 0.5rem, border-right 5px를 뺀 7px가 보이는 두께
   }
   &::-webkit-scrollbar-thumb {
     background: #373737;
-    border-radius: 10px;
-    border: 5px solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
+    border-radius: 1rem;
+    border: 0.5rem solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
     // 스크롤바의 border-radius까지 figma대로 구현하려면 위처럼 상하좌우 전체에 border를 주고 border-radius를 적용시켜야 함.
   }
   // 스크롤바 위아래 여백
@@ -113,7 +113,7 @@ const Section = styled.section`
   &::-webkit-scrollbar-button:vertical:end:decrement // 아래 여백
   {
     display: block;
-    height: 23px; // 위아래 여백을 28px 주어야 하는데, border-top, border-bottom이 5px 있으므로 23px만
+    height: 2.3rem; // 위아래 여백을 2.8rem 주어야 하는데, border-top, border-bottom이 0.5rem 있으므로 23px만
   }
   /* end */
 
@@ -127,30 +127,30 @@ const Section = styled.section`
 
 const ProblemTitle = styled.h1`
   font-weight: bold;
-  font-size: 40px;
-  margin-bottom: 28px;
+  font-size: 4rem;
+  margin-bottom: 2.8rem;
 `;
 
 const AddTestCaseButton = styled.button`
   float: right;
-  margin-top: 16px;
-  padding: 8px;
-  width: 216px;
-  height: 39px;
+  margin-top: 1.6rem;
+  padding: 0.8rem;
+  width: 21.6rem;
+  height: 3.9rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 0.7rem;
 
   background-color: #fff;
-  border: 2px solid #373737;
-  border-radius: 6px;
+  border: 0.2rem solid #373737;
+  border-radius: 0.6rem;
   cursor: pointer;
 
   > img {
-    width: 24px;
-    height: 24px;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   > div {
@@ -164,21 +164,21 @@ const AddTestCaseButton = styled.button`
 
 const MarkdownStyledWrapper = styled.div`
   h1 {
-    font-size: 40px;
+    font-size: 4rem;
     line-height: 160%;
   }
   h2 {
     font-weight: 600;
-    font-size: 32px;
+    font-size: 3.2rem;
     line-height: 160%;
   }
   h3 {
     font-weight: 500;
-    font-size: 24px;
+    font-size: 2.4rem;
     line-height: 160%;
   }
   p {
-    font-size: 18px;
+    font-size: 1.8rem;
     line-height: 160%;
   }
   ul,
@@ -193,15 +193,15 @@ const MarkdownStyledWrapper = styled.div`
     font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
     color: #f0745f;
-    border-radius: 3px;
+    border-radius: 0.3rem;
   }
   pre {
     background: rgba(135, 131, 120, 0.15);
     white-space: pre-wrap !important;
-    padding: 1em 20px;
+    padding: 1em 2rem;
     code {
       background: none;
-      padding: 0px !important;
+      padding: 0rem !important;
       line-height: 2em !important;
     }
   }

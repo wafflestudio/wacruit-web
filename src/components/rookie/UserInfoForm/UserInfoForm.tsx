@@ -78,8 +78,8 @@ export const Container = styled.form`
 
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 130px;
+  gap: 1.6rem;
+  margin-bottom: 13rem;
 `;
 export const Sep = styled.hr`
   grid-area: sep;
@@ -87,5 +87,5 @@ export const Sep = styled.hr`
   width: 0;
   height: 100%;
 
-  border-width: 0 1px;
+  border-width: 0 0.1rem;
 `;

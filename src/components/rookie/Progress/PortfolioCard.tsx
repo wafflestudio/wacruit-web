@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import asset from "./progressCardAsset";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
@@ -11,7 +11,6 @@ import {
   postPortfolioFile,
   postPortfolioLink,
   putPortfolioLink,
-  uploadPortfolioFileToS3,
 } from "../../../apis/portfolio";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { Recruiting } from "../../../types/apiTypes";
@@ -21,22 +20,43 @@ type PortfolioCardProps = {
 };
 
 export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
-  const [submit, setSubmit] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
-  const { description, iconSrc, iconAlt } = useMemo(
-    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
-    [submit],
-  );
+
   const { data: files } = useQuery({
-    queryKey: ["portfolio", "files"],
+    queryKey: ["portfolio", "files", recruiting.id],
     queryFn: () => getPortfolioFiles(recruiting.id),
     staleTime: Infinity,
   });
   const { data: links } = useQuery({
-    queryKey: ["portfolio", "links"],
+    queryKey: ["portfolio", "links", recruiting.id],
     queryFn: () => getPortfolioLinks(recruiting.id),
     staleTime: Infinity,
   });
+
+  const submit = files !== undefined && files.items.length > 0;
+  const { description, iconSrc, iconAlt } = useMemo(
+    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
+    [submit],
+  );
+
+  const refetchFiles = () => {
+    setTimeout(
+      () => queryClient.refetchQueries(["portfolio", "files", recruiting.id]),
+      100,
+    );
+  };
+
+  const refetchLinks = () => {
+    setTimeout(
+      () => queryClient.refetchQueries(["portfolio", "links", recruiting.id]),
+      100,
+    );
+  };
+
+  const handleAPIError = (r: Response) => {
+    r.json().then((res) => alert(res.detail));
+  };
 
   const [linksInput, setLinksInput] = useState<
     {
@@ -55,14 +75,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
       );
       setLinksInput(updated);
     }
-    if (files) {
-      if (files.items.length > 0) {
-        setSubmit(true);
-      } else {
-        setSubmit(false);
-      }
-    }
-  }, [files, links]);
+  }, [links]);
 
   if (files === undefined || links === undefined)
     return <EmptyCard></EmptyCard>;
@@ -78,44 +91,26 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
         <div>파일 첨부</div>
         <FileInputButton htmlFor="portfolio">파일 선택</FileInputButton>
         <FileInput
+          ref={fileInputRef}
           type="file"
           id="portfolio"
           onChange={(e) => {
             if (!e.target.files) return;
             const targetFile = e.target.files[0];
             if (files.items.length < 1) {
-              postPortfolioFile(targetFile.name)
-                .then((res) =>
-                  uploadPortfolioFileToS3(
-                    res.presigned_url,
-                    res.fields,
-                    targetFile,
-                  ),
-                )
-                .finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  queryClient.refetchQueries(["portfolio", "files"]);
-                });
+              postPortfolioFile(targetFile, recruiting.id)
+                .catch(handleAPIError)
+                .finally(refetchFiles);
             } else {
               if (
                 confirm(
                   "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
                 )
               ) {
-                deletePortfolioFile(files.items[0].portfolio_name).then(() =>
-                  postPortfolioFile(targetFile.name)
-                    .then((res) =>
-                      uploadPortfolioFileToS3(
-                        res.presigned_url,
-                        res.fields,
-                        targetFile,
-                      ),
-                    )
-                    .finally(() => {
-                      alert("모집이 마감되었습니다.");
-                      queryClient.refetchQueries(["portfolio", "files"]);
-                    }),
-                );
+                deletePortfolioFile(files.items[0].id)
+                  .then(() => postPortfolioFile(targetFile, recruiting.id))
+                  .catch(handleAPIError)
+                  .finally(refetchFiles);
               } else {
                 e.target.value = "";
               }
@@ -124,33 +119,27 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
         />
         {files.items.length > 0 && (
           <Files>
-            {files.items.map(({ portfolio_name }) => (
+            {files.items.map(({ id: file_id, file_name }) => (
               <File
-                key={portfolio_name}
+                key={file_id}
                 onClick={() => {
-                  downloadPortfolioFile(portfolio_name)
-                    .then(({ object_name, presigned_url }) => {
-                      /**
-                       * @TODO 정말 이 방법 밖에는 없는가?
-                       */
-                      const link = document.createElement("a");
-                      link.href = presigned_url;
-                      link.setAttribute("download", `${object_name}`);
-                      document.body.appendChild(link);
-                      link.click();
-                      link.parentNode?.removeChild(link);
-                    })
-                    .catch(() => alert("다운로드에 실패했습니다."));
+                  downloadPortfolioFile(file_id).catch(() =>
+                    alert("다운로드에 실패했습니다."),
+                  );
                 }}
               >
-                {portfolio_name}
+                {file_name}
                 <DeleteButton
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(portfolio_name).then(() => {
-                        queryClient.refetchQueries(["portfolio", "files"]);
-                      });
+                      deletePortfolioFile(file_id)
+                        .then(() => {
+                          if (fileInputRef.current === null) return;
+                          fileInputRef.current.value = "";
+                        })
+                        .catch(handleAPIError)
+                        .finally(refetchFiles);
                     }
                   }}
                 >
@@ -177,25 +166,19 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
             onBlur={() => {
               if (input.url.length < 1) {
                 if (input.id === null) return;
-                deletePortfolioLink(input.id).finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  void queryClient.refetchQueries(["portfolio", "links"]);
-                });
+                deletePortfolioLink(input.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
                 return;
               }
-
               if (input.id === null) {
-                postPortfolioLink(input.url).finally(() => {
-                  alert("모집이 마감되었습니다.");
-                  void queryClient.refetchQueries(["portfolio", "links"]);
-                });
+                postPortfolioLink(input.url, recruiting.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
               } else {
-                putPortfolioLink(input.id, input.url)
-                  .catch((e) => console.log(e))
-                  .finally(() => {
-                    alert("모집이 마감되었습니다.");
-                    void queryClient.refetchQueries(["portfolio", "links"]);
-                  });
+                putPortfolioLink(input.id, input.url, recruiting.id)
+                  .catch(handleAPIError)
+                  .finally(refetchLinks);
               }
             }}
           />
@@ -208,10 +191,10 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
 const EmptyCard = styled.li`
   position: relative;
   display: flex;
-  width: 840px;
-  height: 193px;
+  width: 84rem;
+  height: 19.3rem;
   flex-shrink: 0;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   animation: ${LoadingBackgroundBlink};
 `;
 
@@ -220,45 +203,45 @@ const Card = styled.li<{
 }>`
   position: relative;
   display: flex;
-  width: 840px;
-  height: 193px;
+  width: 84rem;
+  height: 19.3rem;
   flex-shrink: 0;
-  border-radius: 5px;
-  border: 1px solid #d1d1d1;
-  padding: 27px;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #d1d1d1;
+  padding: 2.7rem;
   color: ${(props) => (props.$submit ? "#64CB3F" : "#F0745F")};
-  border: "1px solid #D1D1D1";
+  border: "0.1rem solid #D1D1D1";
   background: "#fff";
-  gap: 14px;
+  gap: 1.4rem;
   &:hover {
     background: "#f6f6f6";
   }
 `;
 
 const InfoSection = styled.div`
-  width: 266px;
+  width: 26.6rem;
 `;
 
 const FileSection = styled.div`
-  width: 237px;
+  width: 23.7rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-right: 1px solid #f6f6f6;
-  gap: 8px;
+  border-right: 0.1rem solid #f6f6f6;
+  gap: 0.8rem;
   color: #404040;
 `;
 
 const FileInputButton = styled.label`
-  padding: 7px 12px;
-  gap: 10px;
-  border-radius: 5px;
+  padding: 0.7rem 1.2rem;
+  gap: 1rem;
+  border-radius: 0.5rem;
   background: #f0745f;
   color: #fff;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
-  line-height: 160%; /* 25.6px */
-  letter-spacing: 0.64px;
+  line-height: 160%; /* 2.56rem */
+  letter-spacing: 0.064rem;
   cursor: pointer;
 `;
 const FileInput = styled.input`
@@ -271,27 +254,27 @@ const FileInput = styled.input`
   visibility: hidden;
 `;
 const Files = styled.div`
-  width: calc(100% - 15px);
-  padding: 8px;
+  width: calc(100% - 1.5rem);
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-radius: 5px;
-  gap: 6px;
+  border-radius: 0.5rem;
+  gap: 0.6rem;
   background: #f6f6f6;
 `;
 const File = styled.div`
-  padding: 4px 8px;
-  border-radius: 25px;
-  border: 1px solid #d1d1d1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2.5rem;
+  border: 0.1rem solid #d1d1d1;
   background: #fff;
   color: #404040;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: 400;
-  line-height: 160%; /* 19.2px */
-  letter-spacing: 0.48px;
+  line-height: 160%; /* 1.92rem */
+  letter-spacing: 0.048rem;
   display: flex;
-  gap: 10px;
+  gap: 1rem;
   align-items: center;
   cursor: pointer;
   &:hover {
@@ -300,37 +283,37 @@ const File = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  width: 16px;
-  height: 16px;
+  width: 1.6rem;
+  height: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 1rem;
   &:hover {
     opacity: 0.5;
   }
 `;
 
 const LinkSection = styled.div`
-  width: 237px;
+  width: 23.7rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 0.8rem;
   color: #404040;
 `;
 
 const LinkInput = styled.input`
-  width: 260px;
-  padding: 7px 12px;
+  width: 26rem;
+  padding: 0.7rem 1.2rem;
   color: #404040;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
   line-height: 160%;
-  letter-spacing: 0.64px;
+  letter-spacing: 0.064rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   background: #f6f6f6;
 
   &::placeholder {
@@ -339,17 +322,17 @@ const LinkInput = styled.input`
 `;
 
 const Name = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 600;
-  margin-top: 16px;
-  margin-bottom: 7px;
+  margin-top: 1.6rem;
+  margin-bottom: 0.7rem;
 `;
 
 const Description = styled.p`
   color: #737373;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 400;
-  line-height: 160%; /* 22.4px */
-  letter-spacing: 0.56px;
+  line-height: 160%; /* 2.2399999999999998rem */
+  letter-spacing: 0.05600000000000001rem;
   margin: 0;
 `;

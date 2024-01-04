@@ -61,25 +61,25 @@ export function RecruitItem({
 const Container = styled.div<{ $isActive: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 48px;
+  gap: 0.8rem;
+  padding: 4.8rem;
   --color: ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#AAA")};
   color: var(--color);
 
   // XXX 활성화 시에는 글자색과 동일한데 비활성화 시 글자색하고 다른 건 의도된 건가??
-  border-left: 5px solid
+  border-left: 0.5rem solid
     ${({ $isActive }) => ($isActive ? "#3F3F3F" : "#C8C8C8")};
   background: #fff;
-  box-shadow: -4px 0px 10px 0px rgba(0, 0, 0, 0.04);
+  box-shadow: -0.4rem 0rem 1rem 0rem rgba(0, 0, 0, 0.04);
 
   transition: 0.5s ease;
   cursor: pointer;
-  --arrow-gap: 22px;
+  --arrow-gap: 2.2rem;
 
   &:hover {
-    box-shadow: -4px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: -0.4rem 0rem 2rem 0rem rgba(0, 0, 0, 0.08);
     transform: scale(101%);
-    --arrow-gap: 42px;
+    --arrow-gap: 4.2rem;
   }
 `;
 
@@ -92,22 +92,22 @@ const RecruitNameArea = styled.div`
 
 const RecruitName = styled.h2`
   color: #3f3f3f;
-  font-size: 28px;
+  font-size: 2.8rem;
   font-weight: 600;
   line-height: 140%;
   white-space: nowrap;
 `;
 
 const RightArrow = styled.img`
-  width: 33px;
-  height: 33px;
+  width: 3.3rem;
+  height: 3.3rem;
 `;
 
 const RecruitDescriptionArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 20px;
+  gap: 1rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 140%;
 `;
@@ -119,14 +119,14 @@ const RecruitPeriod = styled.div`
 
 const RecruitDescription = styled.div`
   flex: 1 1 auto;
-  min-width: 150px;
+  min-width: 15rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
 const RecruitDescriptionSeperator = styled.div`
-  flex: 0 0 1px;
-  height: 20px;
+  flex: 0 0 0.1rem;
+  height: 2rem;
   background-color: var(--color);
 `;

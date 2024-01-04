@@ -44,12 +44,12 @@ const Card = styled.li<{
 }>`
   position: relative;
   box-sizing: border-box;
-  width: 280px;
-  height: 193px;
+  width: 28rem;
+  height: 19.3rem;
   flex-shrink: 0;
-  border-radius: 5px;
-  border: 1px solid #d1d1d1;
-  padding: 27px;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #d1d1d1;
+  padding: 2.7rem;
   cursor: pointer;
   color: ${(props) =>
     props.$theme === "green"
@@ -63,12 +63,12 @@ const Card = styled.li<{
       : "black"};
   border: ${(props) =>
     props.$theme === "green"
-      ? "1px solid #60BF3E"
+      ? "0.1rem solid #60BF3E"
       : props.$theme === "red"
-      ? "1px solid #F0745F"
+      ? "0.1rem solid #F0745F"
       : props.$theme === "yellow"
-      ? "1px solid #FFB800"
-      : "1px solid #D1D1D1"};
+      ? "0.1rem solid #FFB800"
+      : "0.1rem solid #D1D1D1"};
   background: ${(props) =>
     props.$theme === "green"
       ? "linear-gradient(180deg, #DBFFCE 0%, #FFF 46.88%);"
@@ -91,29 +91,29 @@ const Card = styled.li<{
 `;
 
 const Name = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 600;
-  margin-top: 16px;
-  margin-bottom: 7px;
+  margin-top: 1.6rem;
+  margin-bottom: 0.7rem;
 `;
 
 const Description = styled.p`
   color: #737373;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 400;
-  line-height: 160%; /* 22.4px */
-  letter-spacing: 0.56px;
+  line-height: 160%; /* 2.2399999999999998rem */
+  letter-spacing: 0.05600000000000001rem;
   margin: 0;
 `;
 
 const Button = styled.button`
   position: absolute;
-  width: 30px;
-  height: 30px;
-  padding: 2px 0 0 0;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.2rem 0 0 0;
   border-radius: 50%;
-  border: 1px solid #737373;
-  right: 27px;
-  bottom: 27px;
+  border: 0.1rem solid #737373;
+  right: 2.7rem;
+  bottom: 2.7rem;
   background: none;
 `;

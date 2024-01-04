@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main style={{ minWidth: "920px" }}>
+      <main style={{ minWidth: "92.0rem" }}>
         {announcementModalHandlePairs
           .filter(({ announcement }) => {
             const KEY = localStorageKeyOfAnnouncementId(announcement.id);
