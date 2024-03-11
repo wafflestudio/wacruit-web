@@ -1,41 +1,23 @@
 import styled from "styled-components";
 import { SectionNumber, SectionTitle } from "./common";
 import { useCallback, useState } from "react";
-import { LockIcon } from "./icons/LockIcon";
 import CalenderInner from "./CalenderInner";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { zIndex } from "../../lib/zIndex";
-import { getAllRecruitings } from "../../apis/recruiting";
+// import { getAllRecruitings } from "../../apis/recruiting";
 import { useNavigate } from "react-router-dom";
-import { checkAuth, tryLogin } from "../../apis/auth";
 
 export default function Apply() {
   const navigate = useNavigate();
   const [field, setField] = useState<"ROOKIE" | "DESIGNER" | "PROGRAMMER">(
     "ROOKIE",
   );
-  const { status, data } = useQuery({
-    queryKey: ["recruiting"],
-    queryFn: getAllRecruitings,
-    staleTime: 1000 * 60,
-    retry: 3,
-  });
-
-  const onApply = useCallback(async (recruit_id: number) => {
-    const auth = await checkAuth();
-    if (auth === "valid") {
-      navigate(`/recruiting/${recruit_id}`);
-      return;
-    }
-    if (auth === "need_register") {
-      navigate(`/sso/${recruit_id}`);
-      return;
-    }
-    if (auth === "invalid") {
-      tryLogin(recruit_id);
-      return;
-    }
-  }, []);
+  // const { status, data } = useQuery({
+  //   queryKey: ["recruiting"],
+  //   queryFn: getAllRecruitings,
+  //   staleTime: 1000 * 60,
+  //   retry: 3,
+  // });
 
   const onCopy = useCallback(async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -56,20 +38,20 @@ export default function Apply() {
         <SelectField>
           <Select
             $active={field === "ROOKIE"}
-            $isLock={false}
             onClick={() => setField("ROOKIE")}
           >
             루키(ROOKIE)
           </Select>
           <Select
             $active={field === "DESIGNER"}
-            $isLock={false}
             onClick={() => setField("DESIGNER")}
           >
             디자이너(DESIGNER)
           </Select>
-          <Select $active={field === "PROGRAMMER"} $isLock={true}>
-            <LockIcon width={21} height={23} />
+          <Select
+            $active={field === "PROGRAMMER"}
+            onClick={() => setField("PROGRAMMER")}
+          >
             개발자(PROGRAMMER)
           </Select>
         </SelectField>
@@ -86,7 +68,8 @@ export default function Apply() {
           <img src={"/image/home/Stroke.svg"} />
           <CalenderInner select={field}></CalenderInner>
           <ApplyButton>
-            <p>
+            {/* FIXME 어떤 리크루팅의 지원자 수를 적어야할지 모르겠어서 일단 주석 처리... */}
+            {/* <p>
               {status !== "loading" && status === "success" && (
                 <span>
                   {field === "ROOKIE"
@@ -95,8 +78,8 @@ export default function Apply() {
                 </span>
               )}
               명 지원 중
-            </p>
-            <button onClick={() => onApply(field === "ROOKIE" ? 1 : 2)}>
+            </p> */}
+            <button onClick={() => navigate("/recruiting")}>
               지원하러가기!
             </button>
           </ApplyButton>
@@ -129,7 +112,7 @@ export default function Apply() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 100px 0;
+  padding: 10rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,7 +131,7 @@ const BackGround = styled.div`
 
 const ApplyCalender = styled.div`
   width: 100%;
-  max-width: 1300px;
+  max-width: 130rem;
   display: flex;
   flex-direction: column;
 `;
@@ -159,26 +142,26 @@ const SelectField = styled.div`
   flex-direction: row;
 `;
 
-const Select = styled.div<{ $active: boolean; $isLock: boolean }>`
-  padding: 30px 0px;
+const Select = styled.div<{ $active: boolean }>`
+  padding: 3rem 0rem;
   flex: 1;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 1.5rem 1.5rem 0rem 0rem;
   text-align: center;
   font-family: Jalnan;
-  font-size: 22px;
+  font-size: 2.2rem;
   font-weight: 700;
-  letter-spacing: 0.66px;
+  letter-spacing: 0.066rem;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.8rem;
 
-  cursor: ${(props) => (props.$isLock ? "not-allowed" : "pointer")};
+  cursor: pointer;
 
-  background: ${(props) => (props.$active ? "#f0745f" : "#EDE5D1")};
-  color: ${(props) => (props.$active ? "#fff" : "#B7B1A2")};
+  background: ${({ $active }) => ($active ? "#f0745f" : "#EDE5D1")};
+  color: ${({ $active }) => ($active ? "#fff" : "#B7B1A2")};
 
   transition: all 0.15s ease-in-out;
 `;
@@ -187,9 +170,10 @@ const CalenderArea = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0px 70px 70px;
-  border-radius: 0px 0px 20px 20px;
+  padding: 0rem 15rem 7rem;
+  border-radius: 0rem 0rem 2rem 2rem;
   background: #fff7e5;
+  justify-content: start;
   align-items: center;
 `;
 
@@ -197,16 +181,16 @@ const DayWeek = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  padding: 56px 0px 38px;
+  justify-content: space-between;
+  padding: 5.6rem 1rem 3.8rem;
 
   p {
     color: #756643;
     font-family: "Fredoka One";
-    font-size: 30px;
+    font-size: 3rem;
     font-weight: 600;
-    line-height: 170%; /* 51px */
-    letter-spacing: 1.2px;
+    line-height: 170%; /* 5.1rem */
+    letter-spacing: 0.12rem;
   }
 
   p:nth-child(1) {
@@ -217,57 +201,57 @@ const DayWeek = styled.div`
 const ApplyButton = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 1.7rem;
   align-items: center;
 
   p {
     color: #434343;
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 600;
     span {
       color: #f0745f;
       font-family: Jalnan;
-      font-size: 24px;
+      font-size: 2.4rem;
       font-weight: 700;
     }
   }
 
   button {
-    height: 70px;
-    width: 396px;
+    height: 7rem;
+    width: 39.6rem;
 
     border: none;
-    border-radius: 20px;
+    border-radius: 2rem;
     background: #f0745f;
 
     color: #fff;
     font-family: Jalnan;
-    font-size: 22px;
+    font-size: 2.2rem;
     font-weight: 700;
-    letter-spacing: 0.88px;
+    letter-spacing: 0.088rem;
 
     cursor: pointer;
   }
 `;
 
 const Share = styled.div`
-  margin-top: 126px;
+  margin-top: 12.6rem;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 3.2rem;
 `;
 
 const ShareText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
 
   h1 {
     color: #434343;
     text-align: center;
-    font-size: 30px;
+    font-size: 3rem;
     font-weight: 700;
-    line-height: 140%; /* 42px */
+    line-height: 140%; /* 4.2rem */
     span {
       color: #f0745f;
       font-family: Jalnan;
@@ -276,9 +260,9 @@ const ShareText = styled.div`
   p {
     color: #837c6d;
     text-align: center;
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: 500;
-    line-height: 140%; /* 25.2px */
+    line-height: 140%; /* 2.52rem */
   }
 `;
 
@@ -286,14 +270,14 @@ const ShareButton = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 42px;
+  gap: 4.2rem;
 `;
 const ShareIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 68px;
-  height: 68px;
+  width: 6.8rem;
+  height: 6.8rem;
   border-radius: 50%;
   background: #f0745f;
   cursor: pointer;

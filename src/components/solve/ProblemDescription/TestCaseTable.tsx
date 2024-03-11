@@ -46,7 +46,7 @@ export default function TestCaseTable({
         {customTestCases.length !== 0 && (
           <tr style={{ width: "100%" }}>
             <td style={{ display: "block", width: "100%" }}>
-              <HorizontalLine margin="5px 0" />
+              <HorizontalLine margin="0.5rem 0" />
             </td>
           </tr>
         )}

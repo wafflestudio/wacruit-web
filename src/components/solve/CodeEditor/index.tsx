@@ -38,7 +38,7 @@ export default function CodeEditor({
       {/* Header가 Editor를 가리도록, Header를 먼저 배치. 실제 렌더 위치는 grid에 의해 보정됨 */}
       <EditorWrapper ref={(elem) => setContainer(elem ?? undefined)} />
       <Header>
-        <span>Script</span>
+        <HeaderTitle>Script</HeaderTitle>
         <FullscreenButton
           onClick={() => setIsFullScreen(!isFullScreen)}
           $isFullScreen={isFullScreen}
@@ -59,7 +59,7 @@ const Section = styled.section`
   grid-template-rows: auto 1fr;
   grid-template-columns: auto auto 1fr auto;
 
-  min-width: 295px; // 탭 모양이 안 깨지는 크기
+  min-width: 29.5rem; // 탭 모양이 안 깨지는 크기
 
   /* Solve page layout */
   flex: 1;
@@ -68,15 +68,16 @@ const Section = styled.section`
 
 const Header = styled.h3`
   background: url("/image/TabHeader.svg");
+  background-size: 88.5rem;
 
   display: flex;
   align-items: center;
 
-  padding-left: 32px;
-  padding-right: 32px;
-  height: 47px;
-  width: 293px;
-  margin: 0 0 -4px 0; // 탭 헤더로 테두리 일부를 가린다
+  padding-left: 3.2rem;
+  padding-right: 3.2rem;
+  height: 4.7rem;
+  width: 29.3rem;
+  margin: 0 0 -0.4rem 0; // 탭 헤더로 테두리 일부를 가린다
   box-sizing: border-box;
 
   grid-row: 1;
@@ -88,10 +89,14 @@ const Header = styled.h3`
   }
 `;
 
+const HeaderTitle = styled.span`
+  font-size: 1.6rem;
+`;
+
 const EditorWrapper = styled.div`
-  border: 4px solid #373737;
-  border-bottom-width: 2px;
-  border-radius: 0 4px 4px 4px;
+  border: 0.4rem solid #373737;
+  border-bottom-width: 0.2rem;
+  border-radius: 0 0.4rem 0.4rem 0.4rem;
 
   flex: 1;
   overflow: auto;
@@ -102,25 +107,27 @@ const EditorWrapper = styled.div`
 
   .cm-editor * {
     font-family: monospace;
+    font-size: 1.3rem;
   }
 `;
 
 const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`
-  width: 20px;
-  height: 20px;
+  width: 2rem;
+  height: 2rem;
 
   border: none;
   background: url("${(props) =>
     props.$isFullScreen
       ? "/icon/ExitFullScreen.svg"
       : "/icon/FullScreen.svg"}");
+  background-size: 2rem;
   cursor: pointer;
 `;
 
 const Version = styled.span`
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #373737;
-  margin-left: 8px;
+  margin-left: 0.8rem;
   display: flex;
   align-items: center;
 `;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ProgressCard } from "./ProgressCard";
-import { Recruiting } from "../../../types/apiTypes";
+import { Recruiting, RecruitingType } from "../../../types/apiTypes";
 /* disable-submission 
 import PortfolioCard from "./PortfolioCard";
 */
@@ -9,21 +9,24 @@ import PortfolioCard from "./PortfolioCard";
 // import PortfolioCard from "./PortfolioCard";
 
 type ProgressListProps = {
-  problems: Recruiting["problem_status"];
+  recruiting: Recruiting;
   hasResume: boolean;
-  isDesigner: boolean;
+  type: number;
 };
 
 export function ProgressList({
-  problems,
+  recruiting,
   hasResume,
-  isDesigner,
+  type,
 }: ProgressListProps) {
+  const problems = recruiting.problem_status;
+
   return (
     <List>
       <ResumeCard submit={hasResume} />
-      {isDesigner ? (
-        <PortfolioCard />
+      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
+      {type !== RecruitingType.ROOKIE ? (
+        <PortfolioCard recruiting={recruiting} />
       ) : (
         problems
           .sort((a, b) => {
@@ -46,7 +49,7 @@ export function ProgressList({
 
 const List = styled.ul`
   display: flex;
-  gap: 20px;
+  gap: 2rem;
   list-style: none;
   padding: 0;
 `;

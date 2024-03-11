@@ -16,6 +16,7 @@ import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 import { resumeLoader } from "./pages/Loader/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
+import RecruitList from "./pages/RecruitList";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
     element: <Home />,
     errorElement: <div>error</div>,
     index: true,
+  },
+  {
+    path: "recruiting",
+    element: <RecruitList />,
+    errorElement: <div>error</div>,
   },
   {
     path: "recruiting/:recruit_id",

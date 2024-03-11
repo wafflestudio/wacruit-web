@@ -1,5 +1,5 @@
 import { getSsoToken } from "./auth";
-import { baseURL } from "./environment";
+import { BASE_URL } from "./environment";
 
 const defaultCommonHeader = {};
 
@@ -23,7 +23,7 @@ export const getRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${BASE_URL}${url}`, {
     headers: {
       ...defaultCommonHeader,
       ...header,
@@ -37,7 +37,7 @@ export const postRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${BASE_URL}${url}`, {
     method: "POST",
     headers: {
       ...defaultCommonHeader,
@@ -54,7 +54,7 @@ export const putRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${BASE_URL}${url}`, {
     method: "PUT",
     headers: {
       ...defaultCommonHeader,
@@ -71,7 +71,7 @@ export const patchRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${baseURL}${url}`, {
+  fetch(`${BASE_URL}${url}`, {
     method: "PATCH",
     headers: {
       ...defaultCommonHeader,
@@ -87,8 +87,8 @@ export const deleteRequest = <Response>(
   body: object,
   header: HeadersInit = {},
   authorized = true,
-) =>
-  fetch(`${baseURL}${url}`, {
+): Promise<Response> =>
+  fetch(`${BASE_URL}${url}`, {
     method: "DELETE",
     headers: {
       ...defaultCommonHeader,
@@ -107,7 +107,7 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
   authorized = true,
 ): AsyncIterable<Response> => ({
   async *[Symbol.asyncIterator]() {
-    const response = await fetch(`${baseURL}${url}`, {
+    const response = await fetch(`${BASE_URL}${url}`, {
       method: "POST",
       headers: {
         ...defaultCommonHeader,

@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { ProblemSubmissionResult } from "../../types/apiTypes.ts";
+import {
+  ProblemSubmissionResult,
+  ProblemSubmissionStatusCode,
+} from "../../types/apiTypes.ts";
 import { LegacyRef } from "react";
 
 type Props = {
@@ -11,7 +14,7 @@ type Props = {
 export default function TestResultConsole(props: Props) {
   return (
     <Section>
-      <h3>Console</h3>
+      <SectionTitle>Console</SectionTitle>
       <ul ref={props.ulRef}>
         {props.results.map((result) => (
           <li key={result.num}>
@@ -41,14 +44,14 @@ export default function TestResultConsole(props: Props) {
 }
 
 const Section = styled.section`
-  border: 4px solid #373737;
-  border-top-width: 2px;
-  border-radius: 5px;
+  border: 0.4rem solid #373737;
+  border-top-width: 0.2rem;
+  border-radius: 0.5rem;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
+  gap: 1rem;
+  padding: 1rem;
 
   h3 {
     font-weight: bold;
@@ -57,7 +60,7 @@ const Section = styled.section`
   ul {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1rem;
     line-height: 1.2;
     overflow: auto;
 
@@ -70,6 +73,13 @@ const Section = styled.section`
   flex: 1;
 `;
 
+const SectionTitle = styled.h3`
+  font-size: 1.6rem;
+`;
+
 const Status = styled.p<{ $code: number }>`
-  color: ${(props) => (props.$code === 3 ? "#2fa500" : "#ff0000")};
+  color: ${(props) =>
+    props.$code === ProblemSubmissionStatusCode.ACCEPTED
+      ? "#2fa500"
+      : "#ff0000"};
 `;

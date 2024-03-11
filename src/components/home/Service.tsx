@@ -66,7 +66,7 @@ export default function Service() {
 const Section = styled.section`
   position: relative;
   width: 100%;
-  padding: 100px 0;
+  padding: 10rem 0;
 
   display: grid;
   grid-template-areas:
@@ -82,22 +82,22 @@ const Section = styled.section`
 
 const Container = styled.div<{ $appIndex: number }>`
   display: flex;
-  padding-bottom: 60px;
+  padding-bottom: 6rem;
   align-items: center;
-  width: 526px;
+  width: 52.6rem;
   overflow: hidden;
 
   > div {
     transition: transform 0.5s ease-in-out;
-    transform: translateX(${(p) => p.$appIndex * -526}px);
+    transform: translateX(${(p) => p.$appIndex * -52.6}rem);
   }
 `;
 
 const App = styled.div<{ $clickable: boolean }>`
   display: grid;
   flex-direction: column;
-  font-size: 14px;
-  letter-spacing: -0.2px;
+  font-size: 1.4rem;
+  letter-spacing: -0.02rem;
   width: 100%;
   cursor: ${(props) => (props.$clickable ? "pointer" : "default")};
 
@@ -107,28 +107,28 @@ const App = styled.div<{ $clickable: boolean }>`
     "name mobile"
     "desc mobile"
     "x2 mobile";
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 20rem 1fr;
   grid-template-rows: 1fr auto auto auto 1fr;
-  grid-column-gap: 20px;
+  grid-column-gap: 2rem;
   justify-items: center;
 
   > img {
-    width: 210px;
-    height: 210px;
+    width: 21rem;
+    height: 21rem;
     object-fit: cover;
     grid-area: logo;
-    border-radius: 26px;
+    border-radius: 2.6rem;
   }
   #siksha {
-    width: 120px;
-    height: 120px;
+    width: 12rem;
+    height: 12rem;
     object-fit: cover;
-    margin: 25px 0;
+    margin: 2.5rem 0;
   }
   h3 {
-    font-size: 18px;
+    font-size: 1.8rem;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 1.2rem;
     grid-area: name;
   }
   div:nth-child(3) {
@@ -137,32 +137,32 @@ const App = styled.div<{ $clickable: boolean }>`
   }
   > div:last-child {
     grid-area: mobile;
-    width: 306px;
-    height: 582px;
+    width: 30.6rem;
+    height: 58.2rem;
     background: url("/image/mobileFrame.svg") no-repeat;
-    background-size: 306px 582px;
+    background-size: 30.6rem 58.2rem;
     display: flex;
     justify-content: center;
     align-items: center;
     img {
-      width: 306px;
-      height: 582px;
-      border-radius: 26px;
+      width: 30.6rem;
+      height: 58.2rem;
+      border-radius: 2.6rem;
     }
     #siksha2 {
-      width: 282px;
-      height: 556px;
+      width: 28.2rem;
+      height: 55.6rem;
     }
   }
 `;
 
 const LeftRightButton = styled.button`
-  width: 22px;
-  height: 39px;
-  background-size: 22px 39px;
+  width: 2.2rem;
+  height: 3.9rem;
+  background-size: 2.2rem 3.9rem;
   background-repeat: no-repeat;
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
-  margin: 60px;
+  margin: 6rem;
 `;
 
 const LeftButton = styled(LeftRightButton)`

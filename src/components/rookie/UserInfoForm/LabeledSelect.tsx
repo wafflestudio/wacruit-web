@@ -72,15 +72,15 @@ const Options = styled.div<{ $isOpen: boolean }>`
   display: ${(props) => (props.$isOpen ? "block" : "none")};
 
   width: 100%;
-  max-height: 200px;
+  max-height: 20rem;
   overflow: auto;
 
   position: absolute;
-  top: calc(100% - 1px);
+  top: calc(100% - 0.1rem);
 
   background: white;
-  border: 1px solid #404040;
-  border-radius: 0 0 2px 2px;
+  border: 0.1rem solid #404040;
+  border-radius: 0 0 0.2rem 0.2rem;
 
   // 커스텀 스크롤바 사용
   &::-webkit-scrollbar {
@@ -93,10 +93,10 @@ const Option = styled.button<{ $selected: boolean }>`
   align-items: center;
 
   width: 100%;
-  height: 40px;
-  padding: 0 12px;
+  height: 4rem;
+  padding: 0 1.2rem;
 
-  font-size: 16px;
+  font-size: 1.6rem;
   cursor: pointer;
   background-color: ${(props) => (props.$selected ? "#d9d9d9" : "white")};
 
@@ -111,13 +111,13 @@ const CurrentOption = styled.button<{ $isOpen: boolean }>`
   justify-content: space-between;
 
   width: 100%;
-  height: 40px;
-  padding: 0 12px;
+  height: 4rem;
+  padding: 0 1.2rem;
 
-  border: 1px solid #404040;
-  border-radius: ${(props) => (props.$isOpen ? "2px 2px 0 0" : "2px")};
+  border: 0.1rem solid #404040;
+  border-radius: ${(props) => (props.$isOpen ? "0.2rem 0.2rem 0 0" : "0.2rem")};
 
-  font-size: 16px;
+  font-size: 1.6rem;
   cursor: pointer;
   background-color: white;
 
