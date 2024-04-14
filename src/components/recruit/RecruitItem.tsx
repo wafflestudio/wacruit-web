@@ -20,7 +20,7 @@ export function RecruitItem({
 }: RecruitItemComponentProps) {
   const navigate = useNavigate();
   // to가 null이면 상시 모집이므로 항상 활성화
-  const isActive = to ? to.getMilliseconds() > Date.now() : true;
+  const isActive = to ? to.getTime() > Date.now() : true;
 
   const onApply = useCallback(async (recruit_id: number) => {
     const auth = await checkAuth();
