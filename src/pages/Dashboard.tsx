@@ -9,7 +9,7 @@ import {
   myResumeQuery,
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
-import { deleteResume } from "../apis/resume.ts";
+import { applyRecruiting, cancelRecruiting } from "../apis/recruiting.ts";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -64,21 +64,40 @@ export default function Dashboard() {
             />
           </div>
         </AnnouncementButton> */}
-        <AnnouncementButton onClick={() => navigate("./result")}>
-          지원 결과 확인하기
-          <div>
-            <img
-              src="/icon/rookie/AnnounceRightArrow.svg"
-              alt="&rarr;"
-              width={20}
-            />
-            <img
-              src="/icon/rookie/AnnounceRightArrowWhite.svg"
-              alt="&rarr;"
-              width={20}
-            />
-          </div>
-        </AnnouncementButton>
+        {initialData.recruiting.applied ? (
+          <AnnouncementButton onClick={() => navigate("./result")}>
+            지원 결과 확인하기
+            <div>
+              <img
+                src="/icon/rookie/AnnounceRightArrow.svg"
+                alt="&rarr;"
+                width={20}
+              />
+              <img
+                src="/icon/rookie/AnnounceRightArrowWhite.svg"
+                alt="&rarr;"
+                width={20}
+              />
+            </div>
+          </AnnouncementButton>
+        ) : (
+          <AnnouncementButton
+            onClick={() =>
+              applyRecruiting(recruiting.id)
+                .then(() => {
+                  alert("지원이 완료되었습니다.");
+                  navigate(0);
+                })
+                .catch((res: Response) => {
+                  res.json().then((data) => {
+                    alert(data.detail);
+                  });
+                })
+            }
+          >
+            지원하기
+          </AnnouncementButton>
+        )}
         <BottomContainer>
           <ProgressList
             recruiting={recruiting}
@@ -88,25 +107,33 @@ export default function Dashboard() {
           <Caution>
             위 내용은 제출 후에도 상시 수정할 수 있으며, 모두 제출해야 지원
             완료됩니다.
-            <CancelButton
-              onClick={() => {
-                if (
-                  confirm(
-                    "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
-                  )
-                ) {
-                  deleteResume(recruiting.id).finally(() => {
-                    queryClient.invalidateQueries(["recruiting"]);
-                    queryClient.invalidateQueries(["resume"]);
-                    queryClient.invalidateQueries(["user"]);
-                    alert("지원이 취소되었습니다");
-                    navigate("/");
-                  });
-                }
-              }}
-            >
-              지원 취소
-            </CancelButton>
+            {initialData.recruiting.applied ? (
+              <CancelButton
+                onClick={() => {
+                  if (
+                    confirm(
+                      "지원을 취소하면 입력한 자기소개서와 문제의 제출 내역이 모두 삭제됩니다. 정말로 지원을 취소하시겠습니까?",
+                    )
+                  ) {
+                    cancelRecruiting(recruiting.id)
+                      .then(() => {
+                        queryClient.invalidateQueries(["recruiting"]);
+                        queryClient.invalidateQueries(["resume"]);
+                        queryClient.invalidateQueries(["user"]);
+                        alert("지원이 취소되었습니다");
+                        navigate("/");
+                      })
+                      .catch((res: Response) => {
+                        res.json().then((data) => {
+                          alert(data.detail);
+                        });
+                      });
+                  }
+                }}
+              >
+                지원 취소
+              </CancelButton>
+            ) : null}
           </Caution>
         </BottomContainer>
       </Main>

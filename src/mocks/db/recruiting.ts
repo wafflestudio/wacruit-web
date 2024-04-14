@@ -11,6 +11,7 @@ const recruiting: Recruiting[] = [
     name: "2023 루키 전형",
     type: RecruitingType.ROOKIE,
     is_active: true,
+    applied: false,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
     problem_status: [
@@ -36,6 +37,7 @@ const recruiting: Recruiting[] = [
     name: "2023 디자이너 전형",
     type: RecruitingType.DESIGNER,
     is_active: true,
+    applied: false,
     from_date: "2023-08-04",
     description: "어쩌고 저쩌고",
     problem_status: [

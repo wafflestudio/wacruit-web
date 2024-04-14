@@ -52,6 +52,7 @@ export type Recruiting = {
   name: string;
   type: RecruitingType;
   is_active: boolean;
+  applied: boolean;
   from_date?: string;
   to_date?: string;
   description: string;
