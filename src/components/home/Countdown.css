@@ -65,6 +65,7 @@
   justify-content: center;
   /* background: var(--fcc-background); */
   background: url("/image/home/countdown/CardBottomHalf.svg");
+  background-size: contain;
 }
 ._SKh-V {
   align-items: flex-end;
@@ -73,6 +74,7 @@
   border-top-right-radius: 4px;
   /* border-bottom: var(--fcc-divider-height) solid var(--fcc-divider-color); */
   background: url("/image/home/countdown/CardTopHalf.svg");
+  background-size: contain;
   font-family: "Fredoka", cursive !important;
 }
 ._106d2 {
@@ -91,6 +93,7 @@
   transform-origin: bottom;
   transform: rotateX(0);
   background: url("/image/home/countdown/CardTopHalf.svg");
+  background-size: contain;
   font-family: "Fredoka", cursive !important;
 }
 ._3luxx._2kgZC {
