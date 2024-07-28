@@ -64,7 +64,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 01</span>
                 <h1>자기소개서 제출 및 코딩테스트 응시</h1>
-                <p>8월 13일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
+                <p>8월 18일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
               </StepDescription>
             </Step>
             <Step>
@@ -75,7 +75,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
                 <span>STEP 02</span>
                 <h1>루키회원 합격자 발표</h1>
                 <p>
-                  합격자 발표는 8월 18일(금) 리크루팅 사이트로 공개될
+                  합격자 발표는 8월 23일(금) 리크루팅 사이트로 공개될
                   예정입니다.
                 </p>
               </StepDescription>
@@ -87,10 +87,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 03</span>
                 <h1>전체 신입회원 오리엔테이션</h1>
-                <p>
-                  8월 20일(일) 비대면으로 진행되며, 시간은 추후 공지될
-                  예정입니다.
-                </p>
+                <p>추후 공지될 예정입니다.</p>
               </StepDescription>
             </Step>
           </InnerBottom>
@@ -131,7 +128,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 01</span>
                 <h1>자기소개서 및 포트폴리오(프로젝트 1개 이상) 제출</h1>
-                <p>8월 13일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
+                <p>8월 18일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
               </StepDescription>
             </Step>
             <Step>
@@ -142,7 +139,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
                 <span>STEP 02</span>
                 <h1>디자이너 회원 합격자 발표</h1>
                 <p>
-                  합격자 발표는 8월 18일(금) 리크루팅 사이트로 공개될
+                  합격자 발표는 8월 23일(금) 리크루팅 사이트로 공개될
                   예정입니다.
                 </p>
               </StepDescription>
@@ -154,10 +151,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 03</span>
                 <h1>전체 신입회원 오리엔테이션</h1>
-                <p>
-                  8월 20일(일) 비대면으로 진행되며, 시간은 추후 공지될
-                  예정입니다.
-                </p>
+                <p>추후 공지될 예정입니다.</p>
               </StepDescription>
             </Step>
           </InnerBottom>
@@ -198,7 +192,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 01</span>
                 <h1>자기소개서 및 포트폴리오(프로젝트 3개 이상) 제출</h1>
-                <p>8월 13일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
+                <p>상시 모집</p>
               </StepDescription>
             </Step>
             <Step>
@@ -208,10 +202,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 02</span>
                 <h1>개발자 회원 합격자 발표</h1>
-                <p>
-                  합격자 발표는 8월 18일(금) 리크루팅 사이트로 공개될
-                  예정입니다.
-                </p>
+                <p>상시 모집</p>
               </StepDescription>
             </Step>
             <Step>
@@ -221,10 +212,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 03</span>
                 <h1>전체 신입회원 오리엔테이션</h1>
-                <p>
-                  8월 20일(일) 비대면으로 진행되며, 시간은 추후 공지될
-                  예정입니다.
-                </p>
+                <p>상시 모집</p>
               </StepDescription>
             </Step>
           </InnerBottom>

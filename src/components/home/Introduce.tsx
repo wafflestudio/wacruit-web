@@ -5,7 +5,7 @@ export default function Introduce() {
     <Section>
       <IntroduceTop>
         <h1>
-          와플스튜디오에서 <span>&lsquo;21.5기 신입회원&rsquo;</span> 을
+          와플스튜디오에서 <span>&lsquo;22.5기 신입회원&rsquo;</span> 을
           모집합니다!
         </h1>
         <p>
@@ -18,13 +18,12 @@ export default function Introduce() {
       <IntroduceBottom>
         <BottomLine>
           <div>지원기간</div>
-          <div>2023.08.04(금) ~ 08.13(일) 23:59</div>
+          <div>2023.08.10(금) ~ 08.18(일) 23:59</div>
         </BottomLine>
         <BottomLine>
           <div>지원분야</div>
           <div>
             <div>루키(Rookie) & 디자이너(Designer)</div>
-            <p>-개발자(Programmer) 모집 공지는 추후에 올라올 예정입니다-</p>
           </div>
         </BottomLine>
       </IntroduceBottom>
