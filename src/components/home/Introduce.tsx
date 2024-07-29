@@ -18,7 +18,7 @@ export default function Introduce() {
       <IntroduceBottom>
         <BottomLine>
           <div>지원기간</div>
-          <div>2023.08.10(금) ~ 08.18(일) 23:59</div>
+          <div>2024.08.10(금) ~ 08.18(일) 23:59</div>
         </BottomLine>
         <BottomLine>
           <div>지원분야</div>
