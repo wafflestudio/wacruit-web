@@ -38,19 +38,22 @@ export default function Apply() {
         <SelectField>
           <Select
             $active={field === "ROOKIE"}
+            $isLock={false}
             onClick={() => setField("ROOKIE")}
           >
             루키(ROOKIE)
           </Select>
           <Select
             $active={field === "DESIGNER"}
+            $isLock={false}
             onClick={() => setField("DESIGNER")}
           >
             디자이너(DESIGNER)
           </Select>
           <Select
             $active={field === "PROGRAMMER"}
-            onClick={() => setField("PROGRAMMER")}
+            $isLock={true}
+            // onClick={() => setField("PROGRAMMER")}
           >
             개발자(PROGRAMMER)
           </Select>
@@ -142,7 +145,7 @@ const SelectField = styled.div`
   flex-direction: row;
 `;
 
-const Select = styled.div<{ $active: boolean }>`
+const Select = styled.div<{ $active: boolean; $isLock: boolean }>`
   padding: 3rem 0rem;
   flex: 1;
   border-radius: 1.5rem 1.5rem 0rem 0rem;
@@ -158,7 +161,7 @@ const Select = styled.div<{ $active: boolean }>`
   align-items: center;
   gap: 0.8rem;
 
-  cursor: pointer;
+  cursor: ${(props) => (props.$isLock ? "not-allowed" : "pointer")};
 
   background: ${({ $active }) => ($active ? "#f0745f" : "#EDE5D1")};
   color: ${({ $active }) => ($active ? "#fff" : "#B7B1A2")};

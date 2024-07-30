@@ -87,7 +87,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 03</span>
                 <h1>전체 신입회원 오리엔테이션</h1>
-                <p>추후 공지될 예정입니다.</p>
+                <p>9월 1일(일) 비대면으로 진행됩니다.</p>
               </StepDescription>
             </Step>
           </InnerBottom>
@@ -109,13 +109,16 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
                 앱/웹의 UI/UX를 디자인합니다.
               </li>
               <li>
-                <span>Adobe XD, Sketch, Figma</span> 등의 툴을 사용해본 경험이
-                있거나, <span>UI/UX Design에 열정과 관심</span>이 있는 분들을
-                찾습니다.
+                <span>Figma</span> 등의 툴을 사용해본 경험이 있거나,{" "}
+                <span>UI/UX Design에 열정과 관심</span>이 있는 분들을 찾습니다.
               </li>
               <li>
-                Figma 사용 경험이 많지 않으신 분들 한해서{" "}
-                <span>피그마 스터디</span>도 함께 진행할 예정입니다.
+                <span>포토샵, 일러스트레이터</span> 사용 경험이 있으시면
+                좋습니다!
+              </li>
+              <li>
+                툴 사용 경험이 많지 않으신 분들 한해서 <span>스터디</span>도
+                함께 진행할 예정입니다.
               </li>
             </TopDescription>
           </InnerTop>
@@ -151,7 +154,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               <StepDescription>
                 <span>STEP 03</span>
                 <h1>전체 신입회원 오리엔테이션</h1>
-                <p>추후 공지될 예정입니다.</p>
+                <p>9월 1일(일) 비대면으로 진행됩니다.</p>
               </StepDescription>
             </Step>
           </InnerBottom>
