@@ -130,7 +130,7 @@ export default function CalenderInner({ select }: CalenderInnerProps) {
               </StepImage>
               <StepDescription>
                 <span>STEP 01</span>
-                <h1>자기소개서 및 포트폴리오(프로젝트 1개 이상) 제출</h1>
+                <h1>자기소개서 및 포트폴리오(프로젝트 3개 이상) 제출</h1>
                 <p>8월 18일(일) 23:59시까지 위 사항을 완료해주셔야 합니다.</p>
               </StepDescription>
             </Step>
