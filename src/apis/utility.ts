@@ -105,17 +105,18 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
   body: object,
   header: HeadersInit = {},
   authorized = true,
+  method: "GET" | "POST" = "POST",
 ): AsyncIterable<Response> => ({
   async *[Symbol.asyncIterator]() {
     const response = await fetch(`${BASE_URL}${url}`, {
-      method: "POST",
+      method,
       headers: {
         ...defaultCommonHeader,
         ...defaultPostHeader,
         ...header,
         ...(authorized ? authorizedHeader(getSsoToken()) : {}),
       },
-      body: JSON.stringify(body),
+      body: method === "POST" ? JSON.stringify(body) : undefined,
     });
     if (!response.ok) {
       throw response;
