@@ -94,10 +94,10 @@ print("Hello, world!")`,
 };
 
 export const languageVersions: Record<Language, string> = {
-  C: "gcc 9.2.0",
-  "C++": "g++ 9.2.0 (C++14)",
-  Java: "OpenJDK 13.0.1",
-  Javascript: "Node.js 18.15.0",
+  C: "gcc 12.2.0",
+  "C++": "g++ 12.2.0",
+  Java: "OpenJDK 17.0.12",
+  Javascript: "Node.js 18.19.0",
   Python: "Python 3.11.2",
   // Kotlin: "Kotlin 1.3.70",
   // Swift: "Swift 5.2.3",
