@@ -6,7 +6,7 @@ import { LanguageSupport, StreamLanguage } from "@codemirror/language";
 import { java } from "@codemirror/lang-java";
 import { c, kotlin } from "@codemirror/legacy-modes/mode/clike";
 import { swift } from "@codemirror/legacy-modes/mode/swift";
-import { LanguageCode } from "../../../types/apiTypes";
+import { LanguageCode, LanguageCodeV2 } from "../../../types/apiTypes";
 
 export const languages = [
   "C",
@@ -39,6 +39,16 @@ export const languageCodes: Record<Language, LanguageCode> = {
   Python: LanguageCode.PYTHON,
   Kotlin: LanguageCode.KOTLIN,
   Swift: LanguageCode.SWFIT,
+};
+
+export const languageCodesV2: Record<Language, LanguageCodeV2> = {
+  C: LanguageCodeV2.C,
+  "C++": LanguageCodeV2.CPP,
+  Java: LanguageCodeV2.JAVA,
+  Javascript: LanguageCodeV2.JAVASCRIPT,
+  Python: LanguageCodeV2.PYTHON,
+  Kotlin: LanguageCodeV2.KOTLIN,
+  Swift: LanguageCodeV2.SWIFT,
 };
 
 export const boilerplates: Record<Language, string> = {
