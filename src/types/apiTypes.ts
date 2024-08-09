@@ -99,9 +99,27 @@ export enum LanguageCode {
   SWFIT = 83,
 }
 
+export enum LanguageCodeV2 {
+  C = "c",
+  CPP = "c++",
+  JAVA = "java",
+  JAVASCRIPT = "javascript",
+  PYTHON = "python",
+  KOTLIN = "kotlin",
+  SWIFT = "swift",
+}
+
 export type ProblemSubmissionRequest = {
   problem_id: number;
   language: LanguageCode;
+  source_code: string;
+  is_example?: boolean;
+  extra_testcases?: ApiTestCase[];
+};
+
+export type ProblemSubmissionRequestV2 = {
+  problem_id: number;
+  language: LanguageCodeV2;
   source_code: string;
   is_example?: boolean;
   extra_testcases?: ApiTestCase[];
@@ -130,6 +148,14 @@ export type ProblemSubmissionResult = {
     id: ProblemSubmissionStatusCode;
     description: string;
   };
+  stdout: string | null;
+  time: number;
+  memory: number;
+};
+
+export type ProblemSubmissionResultV2 = {
+  num: number;
+  status: string;
   stdout: string | null;
   time: number;
   memory: number;
