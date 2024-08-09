@@ -73,9 +73,6 @@ export default function Solve() {
         : [],
     });
     res
-      .catch((e) => {
-        alert("제출 중 오류가 발생했습니다.");
-      })
       .then(() => getProblemSubmissionV2(problemNumber))
       .then(async (res) => {
         for await (const { data, type } of res) {
@@ -110,7 +107,7 @@ export default function Solve() {
       })
       .catch((e) => {
         console.error(e);
-        alert("모집이 마감되었습니다.");
+        alert("모집이 기간이 아닙니다.");
       });
     setIsSubmitting(false);
   };
