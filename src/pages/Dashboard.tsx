@@ -36,12 +36,12 @@ export default function Dashboard() {
           />
         </Title>
         <Description>
-          <MarkdownRenderer
+          {/* <MarkdownRenderer
             markdownString={`와플스튜디오의 21.5기 ${
               recruiting.id === 1 ? "루키" : "디자이너"
             }를 모집합니다.`}
             StyledWrapper={DescriptionMarkdownStyledWrapper}
-          />
+          /> */}
         </Description>
         <Information>
           <MarkdownRenderer
@@ -168,15 +168,15 @@ const Description = styled.p`
   margin-bottom: 3.5rem;
 `;
 
-const DescriptionMarkdownStyledWrapper = styled.div`
-  p {
-    color: #373737;
-    font-size: 2rem;
-    font-weight: 500;
-    line-height: 160%; /* 3.2rem */
-    letter-spacing: 0.08rem;
-  }
-`;
+// const DescriptionMarkdownStyledWrapper = styled.div`
+//   p {
+//     color: #373737;
+//     font-size: 2rem;
+//     font-weight: 500;
+//     line-height: 160%; /* 3.2rem */
+//     letter-spacing: 0.08rem;
+//   }
+// `;
 
 const Information = styled.div`
   margin-bottom: 3.4rem;
