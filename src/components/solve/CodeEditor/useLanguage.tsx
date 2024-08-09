@@ -55,6 +55,7 @@ export const boilerplates: Record<Language, string> = {
   C: `#include <stdio.h>
 #include <stdlib.h>
 
+// 코드에서 한글은 전부 지워주세요
 int main(void)
 {
   printf("Hello World!\\n");
@@ -73,17 +74,22 @@ int main()
     return 0;
 }`,
   Java: `// Java 클래스 이름은 반드시 Main으로 하여 제출해주세요
+// 코드에서 한글은 전부 지워주세요 
 class Main {
   public static void main(String[] args) {
     System.out.println("Hello World!");
   }
 }`,
-  Javascript: `console.log("Hello, world!");`,
-  Python: `print("Hello, world!")`,
-  Kotlin: `fun main(args: Array<String>) {
-    println("Hello, world!")
+  Javascript: `// 코드에서 한글은 전부 지워주세요
+console.log("Hello, world!");`,
+  Python: `# 코드에서 한글은 전부 지워주세요
+print("Hello, world!")`,
+  Kotlin: `// 코드에서 한글은 전부 지워주세요
+fun main(args: Array<String>) {
+  println("Hello, world!")
 }`,
-  Swift: `print("Hello, world!")`,
+  Swift: `// 코드에서 한글은 전부 지워주세요
+print("Hello, world!")`,
 };
 
 export const languageVersions: Record<Language, string> = {
