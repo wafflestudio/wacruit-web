@@ -42,6 +42,7 @@ export const getProblemSubmissionV2 = (problem_id: number) =>
     | { type: "skip"; data: { items: [] } }
     | { type: "message"; data: { items: ProblemSubmissionResultV2[] } }
     | { type: "error"; data: { detail: string } }
+    | { type: "unknown"; data: unknown }
   >(
     `/v2/problems/${problem_id}/submission`,
     {}, // body
