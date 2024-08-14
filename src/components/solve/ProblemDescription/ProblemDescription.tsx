@@ -184,8 +184,8 @@ const MarkdownStyledWrapper = styled.div`
   ul,
   ol {
     list-style: disc outside none !important;
-    .li {
-    }
+    font-size: 1.8rem;
+    line-height: 160%;
   }
   code {
     background: rgba(135, 131, 120, 0.15);
