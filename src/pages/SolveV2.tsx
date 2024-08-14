@@ -1,26 +1,26 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import ProblemDescription from "../components/solve/ProblemDescription/ProblemDescription.tsx";
-import CodeEditor from "../components/solve/CodeEditor/index.tsx";
-import TestResultConsole from "../components/solve/TestResultConsoleV2.tsx";
-import DragResizable from "../components/solve/DragResizable.tsx";
-import { useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getProblemById,
   getProblemSubmissionV2,
   postProblemSubmissionV2,
 } from "../apis/problem.ts";
+import CodeEditor from "../components/solve/CodeEditor/index.tsx";
+import { useCodeRef } from "../components/solve/CodeEditor/useCode.tsx";
 import {
   boilerplates,
   languageCodesV2,
   useLanguage,
 } from "../components/solve/CodeEditor/useLanguage.tsx";
-import { useCodeRef } from "../components/solve/CodeEditor/useCode.tsx";
+import DragResizable from "../components/solve/DragResizable.tsx";
+import ProblemDescription from "../components/solve/ProblemDescription/ProblemDescription.tsx";
 import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
-import { ProblemSubmissionResultV2 } from "../types/apiTypes.ts";
+import TestResultConsole from "../components/solve/TestResultConsoleV2.tsx";
 import { unreachable } from "../lib/unreachable.ts";
-import { flushSync } from "react-dom";
+import { ProblemSubmissionResultV2 } from "../types/apiTypes.ts";
 
 export default function Solve() {
   const params = useParams();
@@ -71,6 +71,13 @@ export default function Solve() {
             expected_output: t.output,
           }))
         : [],
+    }).catch((e: Response) => {
+      return e.json().then((data: any) => {
+        if (data.detail) throw Error(data.detail);
+        else {
+          throw Error("코드 제출에 실패했습니다. 운영팀에게 문의해주세요.");
+        }
+      });
     });
     res
       .then(() => getProblemSubmissionV2(problemNumber))
@@ -100,14 +107,20 @@ export default function Solve() {
                 });
               }
               break;
+            case "unknown":
+              console.error(`Unknown data: ${data}`);
+              break;
             default:
               unreachable(type);
           }
         }
       })
       .catch((e) => {
-        console.error(e);
-        alert("모집이 기간이 아닙니다.");
+        if (e instanceof Error) {
+          alert(e.message);
+        } else {
+          alert("채점 결과 조회에 실패했습니다. 운영팀에게 문의 바랍니다.");
+        }
       });
     setIsSubmitting(false);
   };

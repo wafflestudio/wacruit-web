@@ -131,11 +131,19 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
     for await (const event of parseEvent(reader)) {
       yield {
         type: event.type,
-        data: JSON.parse(event.data),
+        data: tryParseData(event.data),
       } as Response;
     }
   },
 });
+
+function tryParseData(data: string) {
+  try {
+    return JSON.parse(data);
+  } catch {
+    return data;
+  }
+}
 
 async function* parseLine(reader: ReadableStreamDefaultReader<string>) {
   let lastLine = "";
@@ -156,7 +164,7 @@ async function* parseEvent(reader: ReadableStreamDefaultReader<string>) {
     if (line.length > 0) lines.push(line);
     else {
       const type = removeFirstSpace(
-        lines.find((line) => line.startsWith("event:"))?.slice(6) ?? " " + line,
+        lines.find((line) => line.startsWith("event:"))?.slice(6) ?? "unknown",
       );
       const data = lines
         .filter((line) => line.startsWith("data:"))
