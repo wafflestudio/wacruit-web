@@ -53,8 +53,8 @@ export default function Result() {
             </Title>
             <Description>
               지원 시 적어주셨던 이메일로 슬랙 초대 예정입니다. <br />
-              또한 9월 1일 (일요일) 오후 2시에 루키 오리엔테이션이 진행될
-              예정이니 참고 바랍니다. 오티 참석은 필수입니다.
+              또한 9월 1일 (일요일) 에 루키 오리엔테이션이 진행될 예정이니 참고
+              바랍니다. 오티 참석은 필수입니다.
             </Description>
             <Contact>
               기타 문의사항은 <a href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</a>{" "}
