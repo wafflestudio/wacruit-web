@@ -1,18 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
-import { useQueryClient } from "@tanstack/react-query";
+import { getSsoUtils } from "../../../entities/lib/sso";
+import { useAuthQuery } from "../../../entities/auth/useAuthQuery";
 import { useRouteNavigation } from "../../../shared/routes/useRouteNavigation";
 
 export default function Headerv2() {
   const { toHomeV2, toAnnouncement, toRecruitingList } = useRouteNavigation();
-  const queryClient = useQueryClient();
+  const { useCheckAuth, useLogout } = useAuthQuery();
+  const { tryLogin } = getSsoUtils();
 
-  const { data: authState } = useQuery({
-    queryKey: ["auth"],
-    queryFn: () => checkAuth(),
-    staleTime: 1000 * 60 * 60,
-    retry: 0,
-  });
+  const { data: authState } = useCheckAuth();
+  const { mutation: tryLogout } = useLogout();
 
   if (!authState) {
     return (
@@ -20,7 +16,6 @@ export default function Headerv2() {
         <button onClick={toHomeV2}>
           <img src={"/icon/header/Logo.jpeg"} height={27} />
         </button>
-        <span>로그인 정보 확인 중...</span>
       </div>
     );
   }
@@ -34,8 +29,7 @@ export default function Headerv2() {
         {authState === "valid" ? (
           <button
             onClick={() => {
-              deleteSsoToken();
-              queryClient.invalidateQueries(["auth"]);
+              tryLogout();
               toHomeV2();
             }}
           >
