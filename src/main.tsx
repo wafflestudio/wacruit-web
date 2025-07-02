@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import initMocks from "./mocks/index";
+import { PATH } from "./shared/routes/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
@@ -17,8 +18,11 @@ import { resumeLoader } from "./pages/Loader/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 import RecruitList from "./pages/RecruitList";
+import HomeV2 from "./pages/HomeV2";
 
 const queryClient = new QueryClient();
+
+const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST } = PATH;
 
 const router = createBrowserRouter([
   {
@@ -28,7 +32,13 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: "recruiting",
+    path: HOME_V2,
+    element: <HomeV2 />,
+    errorElement: <div>error</div>,
+    index: true,
+  },
+  {
+    path: RECRUITING_LIST,
     element: <RecruitList />,
     errorElement: <div>error</div>,
   },
@@ -58,7 +68,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "announcement", element: <Announcement /> },
+  { path: ANNOUNCEMENT, element: <Announcement /> },
   { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 
