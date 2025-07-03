@@ -2,6 +2,7 @@ import Headerv2 from "../components/home/Header/HeaderV2";
 import styled from "styled-components";
 import { HeroSection } from "../features/home/ui/HeroSection";
 import { WaffleHistory } from "../features/home/ui/WaffleHistory";
+import { Activities } from "../features/home/ui/Activities";
 
 export default function HomeV2() {
   return (
@@ -10,6 +11,7 @@ export default function HomeV2() {
       <MainContainer>
         <HeroSection />
         <WaffleHistory />
+        <Activities />
       </MainContainer>
     </div>
   );

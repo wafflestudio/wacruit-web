@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { formatUserCount } from "../lib/formatHistoryNumber";
 
 export const WaffleHistory = () => {
-  // history
+  // /history
   const MOCK_HISTORY_DATA = {
     startDate: "2022-07-01",
     operationPeriod: 2,
@@ -12,6 +13,16 @@ export const WaffleHistory = () => {
 
   const { operationPeriod, totalProjects, totalUsers, totalMembers } =
     MOCK_HISTORY_DATA;
+
+  const historyData = [
+    { label: "운영 기간", value: `${operationPeriod}년` },
+    { label: "누적 프로젝트 수", value: `${totalProjects}개` },
+    {
+      label: "누적 서비스 이용자 수",
+      value: formatUserCount({ count: totalUsers }),
+    },
+    { label: "누적 회원수", value: formatUserCount({ count: totalMembers }) },
+  ];
 
   return (
     <Container>
@@ -26,22 +37,12 @@ export const WaffleHistory = () => {
         </Description>
       </TextBlock>
       <StatsGrid>
-        <StatCard>
-          <Label>운영 기간</Label>
-          <Value>{operationPeriod}년</Value>
-        </StatCard>
-        <StatCard>
-          <Label>누적 프로젝트 수</Label>
-          <Value>{totalProjects}개</Value>
-        </StatCard>
-        <StatCard>
-          <Label>누적 서비스 이용자 수</Label>
-          <Value>{totalUsers.toLocaleString()}명</Value>
-        </StatCard>
-        <StatCard>
-          <Label>누적 회원수</Label>
-          <Value>{totalMembers.toLocaleString()}명</Value>
-        </StatCard>
+        {historyData.map(({ label, value }) => (
+          <StatCard>
+            <Label>{label}</Label>
+            <Value>{value}</Value>
+          </StatCard>
+        ))}
       </StatsGrid>
     </Container>
   );
@@ -50,7 +51,6 @@ export const WaffleHistory = () => {
 const Container = styled.section`
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffefba, #ffffff);
   display: flex;
   gap: 2rem;
   flex-direction: column;
