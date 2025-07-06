@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { HeroSection } from "../features/home/ui/HeroSection";
 import { WaffleHistory } from "../features/home/ui/WaffleHistory";
 import { Activities } from "../features/home/ui/Activities";
+import { Projects } from "../features/home/ui/Projects";
 
 export default function HomeV2() {
   return (
@@ -12,6 +13,7 @@ export default function HomeV2() {
         <HeroSection />
         <WaffleHistory />
         <Activities />
+        <Projects />
       </MainContainer>
     </div>
   );
