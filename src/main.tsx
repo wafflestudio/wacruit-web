@@ -18,11 +18,15 @@ import { resumeLoader } from "./pages/Loader/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 import RecruitList from "./pages/RecruitList";
+import Project from "./pages/Project";
+import Review from "./pages/Review";
+import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
 
 const queryClient = new QueryClient();
 
-const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST } = PATH;
+const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST, PROJECT, REVIEW, MEMBER } =
+  PATH;
 
 const router = createBrowserRouter([
   {
@@ -40,6 +44,21 @@ const router = createBrowserRouter([
   {
     path: RECRUITING_LIST,
     element: <RecruitList />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: PROJECT,
+    element: <Project />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: REVIEW,
+    element: <Review />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: MEMBER,
+    element: <Member />,
     errorElement: <div>error</div>,
   },
   {
