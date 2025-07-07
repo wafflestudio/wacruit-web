@@ -1,20 +1,14 @@
 import styled from "styled-components";
+import { RecruitingCTAButton } from "../../../shared/ui/RecruitingCTAButton";
 
 export const HeroSection = () => {
-  // /recruiting/pre-registration
-  const MOCK_PRE_REGISTRATION_URL = "https://docs.google.com/forms";
-
   return (
     <Container>
       <TextGroup>
         <h3>맛있는 서비스가 탄생하는 곳</h3>
         <h1>와플스튜디오</h1>
       </TextGroup>
-      <ButtonGroup>
-        <a href={MOCK_PRE_REGISTRATION_URL} target="_blank" rel="noreferrer">
-          23.5기 모집 알림 신청하기
-        </a>
-      </ButtonGroup>
+      <RecruitingCTAButton />
     </Container>
   );
 };
@@ -48,23 +42,5 @@ const TextGroup = styled.div`
     font-size: 5.6rem;
     font-weight: bold;
     color: #222;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  a {
-    background-color: #ff6f61;
-    color: white;
-    padding: 1.2rem 2.4rem;
-    font-size: 1.4rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #e55b4d;
-    }
   }
 `;

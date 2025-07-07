@@ -4,6 +4,7 @@ import { HeroSection } from "../features/home/ui/HeroSection";
 import { WaffleHistory } from "../features/home/ui/WaffleHistory";
 import { Activities } from "../features/home/ui/Activities";
 import { Projects } from "../features/home/ui/Projects";
+import { Outro } from "../features/home/ui/Outro";
 
 export default function HomeV2() {
   return (
@@ -14,6 +15,7 @@ export default function HomeV2() {
         <WaffleHistory />
         <Activities />
         <Projects />
+        <Outro />
       </MainContainer>
     </div>
   );

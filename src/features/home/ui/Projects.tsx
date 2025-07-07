@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
-import { BreifProjectList } from "../../../shared/api/types/projects";
+import { BreifProjectList } from "../../../shared/api/types/project";
 
 export const Projects = () => {
   const MOCK_BRIEF_PROJECT_DATA: BreifProjectList = {
