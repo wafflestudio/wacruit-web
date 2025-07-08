@@ -4,7 +4,7 @@ import reset from "styled-reset";
 const GlobalStyles = createGlobalStyle`
   ${reset}
   html {
-    font-size: 9px;
+    font-size: 62.5%;
   }
 
   body {
