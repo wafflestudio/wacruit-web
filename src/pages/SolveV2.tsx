@@ -72,7 +72,7 @@ export default function Solve() {
           }))
         : [],
     }).catch((e: Response) => {
-      return e.json().then((data: any) => {
+      return e.json().then((data: { detail?: string }) => {
         if (data.detail) throw Error(data.detail);
         else {
           throw Error("코드 제출에 실패했습니다. 운영팀에게 문의해주세요.");
