@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { ASSET_PATH } from "../assets/constants";
-import { HeaderRecruitingCTAButton } from "./HeaderRecruitingCTAButton";
 import { HamburgerButton } from "./HamburgerButton";
 
 export const MobileHeader = ({
