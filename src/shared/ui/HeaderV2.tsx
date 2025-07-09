@@ -1,12 +1,16 @@
 import { getSsoUtils } from "../../entities/lib/sso";
 import { useAuthQuery } from "../../entities/auth/useAuthQuery";
 import { useRouteNavigation } from "../routes/useRouteNavigation";
+import { useWindowWidth } from "../hooks/useWindowWidth";
 import { DesktopHeader } from "./DesktopHeader";
 import { useRouteLocation } from "../routes/useRouteLocation";
 import { PATH } from "../routes/constants";
 import { MobileHeader } from "./MobileHeader";
 
 export default function Headerv2() {
+  const width = useWindowWidth();
+  const isMobile = width < 768;
+
   const { toHomeV2, toRecruitingInfo, toProjectList, toReviewList } =
     useRouteNavigation();
   const { useCheckAuth, useLogout } = useAuthQuery();
@@ -46,8 +50,16 @@ export default function Headerv2() {
     toHomeV2();
   };
 
-  return (
+  return isMobile ? (
     <MobileHeader
+      authState={authState}
+      navButtons={navButtons}
+      onLogout={onLogout}
+      onLogin={onLogin}
+      toHome={toHomeV2}
+    />
+  ) : (
+    <DesktopHeader
       authState={authState}
       navButtons={navButtons}
       onLogout={onLogout}

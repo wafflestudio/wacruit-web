@@ -98,7 +98,8 @@ const CardList = styled.div`
 
 const Card = styled.div<{ reverse?: boolean }>`
   display: flex;
-  flex-direction: ${({ reverse }) => (reverse ? "row-reverse" : "row")};
+  flex-direction: ${({ reverse }) =>
+    reverse === true ? "row-reverse" : "row"};
   gap: 2rem;
   align-items: center;
 
