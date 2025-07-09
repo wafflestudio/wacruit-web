@@ -2,7 +2,6 @@ import { getRequest } from "./utility";
 import { BreifProjectList } from "../shared/api/types/project";
 import { encodeQueryParams } from "./utility";
 
-// V1
 export const getProjects = ({
   queryParams,
 }: {

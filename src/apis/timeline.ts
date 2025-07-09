@@ -5,7 +5,6 @@ import type {
 } from "../shared/api/types/timeline";
 import { encodeQueryParams } from "./utility";
 
-// V1
 export const getTimelines = ({
   queryParams,
 }: {
