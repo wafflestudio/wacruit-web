@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { getSsoUtils } from "../../../entities/lib/sso";
-import { useAuthQuery } from "../../../entities/auth/useAuthQuery";
+import { useAuthQuery } from "../../../entities/api/useAuthQuery";
 import { useRouteNavigation } from "../../../shared/routes/useRouteNavigation";
 
 export default function Headerv2() {
