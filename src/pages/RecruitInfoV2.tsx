@@ -1,7 +1,16 @@
 import styled from "styled-components";
+import { Hero } from "../features/recruiting/ui/Hero";
+import { ApplicantRequirements } from "../features/recruiting/ui/ApplicantRequirements";
+import { Positions } from "../features/recruiting/ui/Positions";
 
 const RecruitInfoV2 = () => {
-  return <MainContainer></MainContainer>;
+  return (
+    <MainContainer>
+      <Hero />
+      <ApplicantRequirements />
+      <Positions />
+    </MainContainer>
+  );
 };
 
 const MainContainer = styled.main`
