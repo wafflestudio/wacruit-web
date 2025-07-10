@@ -1,4 +1,4 @@
-import Headerv2 from "../shared/ui/HeaderV2";
+import Headerv2 from "../shared/ui/header/HeaderV2";
 import styled from "styled-components";
 import { HeroSection } from "../features/home/ui/HeroSection";
 import { WaffleHistory } from "../features/home/ui/WaffleHistory";

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ASSET_PATH } from "../assets/constants";
+import { ASSET_PATH } from "../../assets/constants";
 import { HeaderRecruitingCTAButton } from "./HeaderRecruitingCTAButton";
 
 export const DesktopHeader = ({
@@ -55,6 +55,10 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderGroupContainer = styled.div`

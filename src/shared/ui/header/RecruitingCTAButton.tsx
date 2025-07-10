@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useRouteNavigation } from "../routes/useRouteNavigation";
-import { BreifRecruiting } from "../api/types/recruiting";
+import { useRouteNavigation } from "../../routes/useRouteNavigation";
+import { BreifRecruiting } from "../../api/types/recruiting";
 
-export const HeaderRecruitingCTAButton = () => {
+export const RecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
 
   // /recruitings/active
@@ -79,17 +79,20 @@ export const HeaderRecruitingCTAButton = () => {
 
 const StyledButton = styled.button`
   display: inline-block;
-  background-color: ${({ theme }) => theme.colors.black[100]};
-  color: ${({ theme }) => theme.colors.black[900]};
-  padding: 0.4rem 1.2rem;
-  font-size: ${({ theme }) => theme.fontSizes[14]};
+  background-color: #ff6f61;
+  color: white;
+  padding: 1.2rem 2.4rem;
+  font-size: 1.4rem;
+  font-weight: bold;
   text-align: center;
-  border-radius: 0.2rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.black[300]};
+    background-color: #e55b4d;
   }
 
   &:disabled,

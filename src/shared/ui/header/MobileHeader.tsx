@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { ASSET_PATH } from "../assets/constants";
+import { useState, useRef, type RefObject } from "react";
+import { ASSET_PATH } from "../../assets/constants";
 import { HamburgerButton } from "./HamburgerButton";
+import { MobileNavButton } from "./MoblieNavButton";
+import { useIsVisible } from "../../hooks/useIsVisble";
 
 export const MobileHeader = ({
   authState,
@@ -16,11 +18,14 @@ export const MobileHeader = ({
   onLogin: () => void;
   toHome: () => void;
 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isVisible = useIsVisible(ref);
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <HeaderContainer isOpen={isOpen}>
+      <HeaderContainer $isOpen={isOpen}>
         <HeaderGroupContainer>
           <LogoButton onClick={toHome}>
             <img src={isOpen ? ASSET_PATH.LOGO.BLACK : ASSET_PATH.LOGO.WHITE} />
@@ -28,24 +33,41 @@ export const MobileHeader = ({
           <HamburgerButton isOpen={isOpen} setIsOpen={setIsOpen} />
         </HeaderGroupContainer>
       </HeaderContainer>
-      <MobileDashboard isOpen={isOpen}>
+      <MobileDashboard $isOpen={isOpen} ref={ref}>
         <NavButtonGroup>
           {navButtons.map(({ label, onAction, selected }, idx) => (
-            <NavButton
+            <MobileNavButton
               key={`nav-button-${idx}`}
               onClick={() => {
                 onAction();
                 setIsOpen(false);
               }}
               selected={selected}
+              isOpen={isOpen}
+              index={idx}
+              isVisible={isVisible}
             >
               {label}
-            </NavButton>
+            </MobileNavButton>
           ))}
           {authState === "valid" ? (
-            <NavButton onClick={onLogout}>로그아웃</NavButton>
+            <MobileNavButton
+              onClick={onLogout}
+              isOpen={isOpen}
+              index={navButtons.length + 1}
+              isVisible={isVisible}
+            >
+              로그아웃
+            </MobileNavButton>
           ) : (
-            <NavButton onClick={onLogin}>로그인</NavButton>
+            <MobileNavButton
+              onClick={onLogin}
+              isOpen={isOpen}
+              index={navButtons.length}
+              isVisible={isVisible}
+            >
+              로그인
+            </MobileNavButton>
           )}
         </NavButtonGroup>
       </MobileDashboard>
@@ -53,19 +75,23 @@ export const MobileHeader = ({
   );
 };
 
-const HeaderContainer = styled.header<{ isOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 50;
-  width: 100%;
-  padding: 1.2rem 0;
-  background-color: ${({ theme, isOpen }) =>
-    isOpen ? theme.colors.white : theme.colors.black[900]};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
+const HeaderContainer = styled.header<{ $isOpen: boolean }>`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    width: 100%;
+    padding: 1.2rem 0;
+    background-color: ${({ theme, $isOpen }) =>
+      $isOpen ? theme.colors.white : theme.colors.black[900]};
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
 `;
 
 const HeaderGroupContainer = styled.div`
@@ -85,7 +111,10 @@ const LogoButton = styled.button`
   }
 `;
 
-const MobileDashboard = styled.div<{ isOpen: boolean }>`
+const MobileDashboard = styled.div<{
+  ref?: RefObject<HTMLDivElement>;
+  $isOpen: boolean;
+}>`
   position: fixed;
   top: 0;
   left: 0;
@@ -95,8 +124,8 @@ const MobileDashboard = styled.div<{ isOpen: boolean }>`
   z-index: 40;
   padding: 0 2rem;
   padding-top: 4.8rem;
-  transform: ${({ isOpen }) =>
-    isOpen ? "translateX(0)" : "translateX(-100%)"};
+  transform: ${({ $isOpen }) =>
+    $isOpen ? "translateY(0)" : "translateY(-100%)"};
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
@@ -105,20 +134,4 @@ const MobileDashboard = styled.div<{ isOpen: boolean }>`
 const NavButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const NavButton = styled.button<{ selected?: boolean }>`
-  font-size: ${({ theme }) => theme.fontSizes[18]};
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.black[900]};
-  font-weight: ${({ selected, theme }) =>
-    selected ? theme.fontWeights.bold : theme.fontWeights.medium};
-  text-align: left;
-  padding: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.black[700]};
-  }
 `;
