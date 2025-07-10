@@ -21,10 +21,11 @@ import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 import RecruitList from "./pages/RecruitList";
 import HomeV2 from "./pages/HomeV2";
+import RecruitInfoV2 from "./pages/RecruitInfoV2";
 
 const queryClient = new QueryClient();
 
-const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST } = PATH;
+const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST, RECRUITING_INFO } = PATH;
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
     path: HOME_V2,
     element: <HomeV2 />,
     errorElement: <div>error</div>,
-    index: true,
+  },
+  {
+    path: RECRUITING_INFO,
+    element: <RecruitInfoV2 />,
+    errorElement: <div>error</div>,
   },
   {
     path: RECRUITING_LIST,
