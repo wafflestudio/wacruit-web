@@ -1,4 +1,3 @@
 .yarn
 *.js
-public/mockServiceWorker.js
 dist
