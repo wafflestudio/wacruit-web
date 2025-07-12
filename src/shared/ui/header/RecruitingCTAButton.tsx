@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useRouteNavigation } from "../routes/useRouteNavigation";
-import { BreifRecruiting } from "../api/types/recruiting";
+import { useRouteNavigation } from "../../routes/useRouteNavigation";
+import { BreifRecruiting } from "../../api/types/recruiting";
 
 export const RecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
