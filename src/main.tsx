@@ -25,7 +25,13 @@ import RecruitInfoV2 from "./pages/RecruitInfoV2";
 
 const queryClient = new QueryClient();
 
-const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST, RECRUITING_INFO } = PATH;
+const {
+  HOME_V2,
+  ANNOUNCEMENT,
+  RECRUITING_LIST,
+  RECRUITING_INFO,
+  RECRUITING_DETAIL,
+} = PATH;
 
 const router = createBrowserRouter([
   {
@@ -50,7 +56,7 @@ const router = createBrowserRouter([
     errorElement: <div>error</div>,
   },
   {
-    path: "recruiting/:recruit_id",
+    path: RECRUITING_DETAIL,
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [

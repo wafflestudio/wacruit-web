@@ -1,8 +1,8 @@
 import type { SeminarType } from "../../../shared/api/types/seminar";
 
-export type MainTab = "ROOKIES" | "PROGRAMMERS" | "DESIGNERS";
-type ProgrammersSubTab = "PROGRAMMERS";
-type DesignersSubTab = "DESIGNERS";
+export type MainTab = "ROOKIE" | "PROGRAMMER" | "DESIGNER";
+type ProgrammersSubTab = "PROGRAMMER";
+type DesignersSubTab = "DESIGNER";
 export type SubTab = SeminarType | ProgrammersSubTab | DesignersSubTab;
 
 export type SubTabContent = {

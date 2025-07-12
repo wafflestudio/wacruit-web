@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { SeminarListResponse } from "../../../shared/api/types/seminar";
 import type { TabContent, MainTab, SubTab } from "../model/types";
 import { PositionTab } from "./PositionTab";
+import { NavigateRecruitingByPosition } from "./NavigateRecruitingByPosition";
 
 export const Positions = () => {
   // /seminars
@@ -29,7 +30,7 @@ export const Positions = () => {
 
   const tabContents: TabContent[] = [
     {
-      id: "ROOKIES",
+      id: "ROOKIE",
       information:
         "개발 경험이 많지 않거나 와플스튜디오에서 제공하는 세미나를 통해서 기본부터 다잡고 싶으신 분들",
       subTabs: seminars.map(({ type, curriculum_info, prerequisite_info }) => ({
@@ -39,11 +40,11 @@ export const Positions = () => {
       })),
     },
     {
-      id: "PROGRAMMERS",
+      id: "PROGRAMMER",
       information: "실제 프로젝트를 진행해본 경험이 있으신 분들",
       subTabs: [
         {
-          id: "PROGRAMMERS",
+          id: "PROGRAMMER",
           activityInfo:
             "- 와플스튜디오의 기존 서비스 개발에 참여합니다.\n- 자유롭게 팀을 구성하여 신규 프로젝트를 기획하고 개발합니다.\n- 코루틴 기초와 비동기 I/O를 이해할 수 있습니다.",
           requirementInfo:
@@ -52,12 +53,12 @@ export const Positions = () => {
       ],
     },
     {
-      id: "DESIGNERS",
+      id: "DESIGNER",
       information:
         "와플스튜디오의 프로젝트에서 기획 및 UI/UX 디자인을 중점적으로 진행하고 싶으신 분들",
       subTabs: [
         {
-          id: "DESIGNERS",
+          id: "DESIGNER",
           activityInfo:
             "- 와플스튜디오의 기존 서비스의 UI/UX를 개선합니다.\n- 자유롭게 팀을 구성하여 신규 프로젝트를 기획하고 앱 또는 웹의 UI/UX를 디자인합니다.\n- 디자이너들을 대상으로 비정기적 스터디를 진행합니다.",
           requirementInfo:
@@ -67,7 +68,7 @@ export const Positions = () => {
     },
   ];
 
-  const [selectedMainTab, setSelectedMainTab] = useState<MainTab>("ROOKIES");
+  const [selectedMainTab, setSelectedMainTab] = useState<MainTab>("ROOKIE");
 
   const currentMainContent = tabContents.find(
     (tab) => tab.id === selectedMainTab,
@@ -94,6 +95,7 @@ export const Positions = () => {
         setSelectedSubTabId={setSelectedSubTabId}
         tabContents={tabContents}
       />
+      <NavigateRecruitingByPosition position={selectedMainTab} />
     </section>
   );
 };

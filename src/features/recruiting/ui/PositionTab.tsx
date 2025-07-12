@@ -6,18 +6,19 @@ import type {
   SubTabContent,
 } from "../model/types";
 import MarkdownRenderer from "../../../lib/MarkdownRenderer";
+import { formatSubTabsByEnglish } from "../lib/formatSubTabs";
 
 const TAB_TITLE: { id: MainTab; label: string }[] = [
   {
-    id: "ROOKIES",
+    id: "ROOKIE",
     label: "준회원(Rookies)",
   },
   {
-    id: "PROGRAMMERS",
+    id: "PROGRAMMER",
     label: "정회원(Programmers)",
   },
   {
-    id: "DESIGNERS",
+    id: "DESIGNER",
     label: "디자이너(Designers)",
   },
 ];
@@ -90,15 +91,22 @@ export const PositionTab = ({
 
       {hasMultipleSubTabs && (
         <SubTabGroup>
-          {currentMainContent.subTabs.map((sub) => (
-            <TabButton
-              key={sub.id}
-              onClick={() => handleSubTabChange(sub)}
-              $selected={sub.id === selectedSubTabId}
-            >
-              {sub.id}
-            </TabButton>
-          ))}
+          {currentMainContent.subTabs.map((sub) => {
+            const formattedSubtab = formatSubTabsByEnglish({ tab: sub.id });
+            console.log(sub.id, formattedSubtab);
+            if (formattedSubtab === null) {
+              return null;
+            }
+            return (
+              <TabButton
+                key={sub.id}
+                onClick={() => handleSubTabChange(sub)}
+                $selected={sub.id === selectedSubTabId}
+              >
+                {formattedSubtab}
+              </TabButton>
+            );
+          })}
         </SubTabGroup>
       )}
 
