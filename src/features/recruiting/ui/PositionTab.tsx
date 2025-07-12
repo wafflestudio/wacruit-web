@@ -5,6 +5,7 @@ import type {
   SubTab,
   SubTabContent,
 } from "../model/types";
+import MarkdownRenderer from "../../../lib/MarkdownRenderer";
 
 const TAB_TITLE: { id: MainTab; label: string }[] = [
   {
@@ -103,18 +104,10 @@ export const PositionTab = ({
 
       <TabContent>
         <h4>어떤 활동을 하나요?</h4>
-        <ul>
-          {currentSubTab.activityInfo.map((item, idx) => (
-            <li key={`activity-${idx}`}>{item}</li>
-          ))}
-        </ul>
+        <MarkdownRenderer markdownString={currentSubTab.activityInfo} />
 
         <h4>어떤 사람이 지원하면 좋을까요?</h4>
-        <ul>
-          {currentSubTab.requirementInfo.map((item, idx) => (
-            <li key={`requirement-${idx}`}>{item}</li>
-          ))}
-        </ul>
+        <MarkdownRenderer markdownString={currentSubTab.requirementInfo} />
       </TabContent>
     </Section>
   );
