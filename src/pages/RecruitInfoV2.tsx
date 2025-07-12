@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Hero } from "../features/recruiting/ui/Hero";
 import { ApplicantRequirements } from "../features/recruiting/ui/ApplicantRequirements";
 import { Positions } from "../features/recruiting/ui/Positions";
+import { RecruitTimeline } from "../features/recruiting/ui/Timeline";
 
 const RecruitInfoV2 = () => {
   return (
@@ -9,6 +10,7 @@ const RecruitInfoV2 = () => {
       <Hero />
       <ApplicantRequirements />
       <Positions />
+      <RecruitTimeline />
     </MainContainer>
   );
 };

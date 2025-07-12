@@ -1,9 +1,9 @@
-import { MainTab } from "../model/types";
+import { RecruitingType } from "../../../shared/api/types/recruiting";
 
 export const formatPositionByEnglish = ({
   position,
 }: {
-  position: MainTab;
+  position: RecruitingType;
 }) => {
   if (position === "ROOKIE") {
     return "Rookies";
