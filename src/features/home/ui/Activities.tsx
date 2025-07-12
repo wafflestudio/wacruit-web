@@ -98,6 +98,7 @@ const CardList = styled.div`
 
 const Card = styled.div`
   display: flex;
+  flex-direction: row;
   gap: 2rem;
   align-items: center;
 

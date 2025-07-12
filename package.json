@@ -6,15 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint .",
+    "format": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
-  },
-  "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "eslint --config ./.eslintrc.cjs --fix",
-      "prettier --config ./.prettierrc --write -u"
-    ]
+    "preview": "vite preview",
+    "check-all": "yarn lint && yarn format && yarn typecheck"
   },
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.2",
@@ -50,8 +46,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
     "msw": "^1.2.2",
     "prettier": "^2.8.8",
     "rollup-plugin-node-polyfills": "^0.2.1",
