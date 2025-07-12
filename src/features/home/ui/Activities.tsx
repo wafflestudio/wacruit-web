@@ -50,7 +50,7 @@ export const Activities = () => {
       <Title>와플스튜디오에서는 무엇을 할 수 있나요?</Title>
       <CardList>
         {activityData.map(({ title, content, imageUrl, button }, idx) => (
-          <Card key={`history-${idx}`} reverse={idx % 2 === 1}>
+          <Card key={`history-${idx}`}>
             <ImageWrapper>
               <img src={imageUrl} alt={title} />
             </ImageWrapper>
@@ -96,9 +96,8 @@ const CardList = styled.div`
   max-width: 960px;
 `;
 
-const Card = styled.div<{ reverse?: boolean }>`
+const Card = styled.div`
   display: flex;
-  flex-direction: ${({ reverse }) => (reverse ? "row-reverse" : "row")};
   gap: 2rem;
   align-items: center;
 

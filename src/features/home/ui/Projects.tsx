@@ -14,7 +14,7 @@ export const Projects = () => {
         is_active: true,
       },
       {
-        id: 1,
+        id: 2,
         name: "식샤",
         brief_introduction: "한줄 소개",
         thumbnail_url: "https://example.com/thumbnail.jpg",
