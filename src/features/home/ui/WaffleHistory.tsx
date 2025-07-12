@@ -37,8 +37,8 @@ export const WaffleHistory = () => {
         </Description>
       </TextBlock>
       <StatsGrid>
-        {historyData.map(({ label, value }) => (
-          <StatCard>
+        {historyData.map(({ label, value }, idx) => (
+          <StatCard key={`history-${idx}`}>
             <Label>{label}</Label>
             <Value>{value}</Value>
           </StatCard>
