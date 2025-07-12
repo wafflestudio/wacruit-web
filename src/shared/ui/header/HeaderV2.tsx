@@ -1,5 +1,5 @@
 import { getSsoUtils } from "../../../entities/lib/sso";
-import { useAuthQuery } from "../../../entities/auth/useAuthQuery";
+import { useAuthQuery } from "../../../entities/api/useAuthQuery";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
 import { DesktopHeader } from "./DesktopHeader";
 import { useRouteLocation } from "../../routes/useRouteLocation";
