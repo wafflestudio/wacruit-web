@@ -5,4 +5,5 @@ export const PATH = {
   PROJECT: "/project",
   REVIEW: "/review",
   MEMBER: "/member",
+  RECRUITING_INFO: "/recruiting-info",
 };

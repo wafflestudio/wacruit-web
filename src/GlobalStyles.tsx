@@ -4,7 +4,8 @@ import reset from "styled-reset";
 const GlobalStyles = createGlobalStyle`
   ${reset}
   html {
-    font-size: 9px;
+    font-size: 62.5%;
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
 
   body {
@@ -29,6 +30,7 @@ const GlobalStyles = createGlobalStyle`
     background-color: transparent;
     border: none;
     padding: 0;
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
   
   pre {

@@ -54,7 +54,7 @@ export const resumeLoader =
       question_content: string;
       content_limit: number;
     })[] = [];
-    question.items.forEach((item, index) => {
+    question.items.forEach((item) => {
       const resumeIndex = resume.items.findIndex(
         (resumeItem) => resumeItem.question_id === item.question_num,
       );

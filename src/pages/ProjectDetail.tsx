@@ -1,9 +1,6 @@
 // api 연결시: import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { projectDetail, urlItem } from "../mocks/project";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useState } from "react";
 
 const Container = styled.div`
@@ -111,7 +108,7 @@ export default function ProjectDetailPage() {
             rel="noopener noreferrer"
           >
             {url.title}
-            <ArrowOutwardIcon />
+            ""
           </Label>
         ))}
       </Row>
@@ -121,7 +118,7 @@ export default function ProjectDetailPage() {
           onClick={() => setIndex((i) => i - 1)}
           disabled={index === 0}
         >
-          <ArrowBackIosIcon />
+          ""
         </ArrowButton>
 
         <Image src={project.images[index]} alt={`project image ${index + 1}`} />
@@ -130,7 +127,7 @@ export default function ProjectDetailPage() {
           onClick={() => setIndex((i) => i + 1)}
           disabled={index === project.images.length - 1}
         >
-          <ArrowForwardIosIcon />
+          ""
         </ArrowButton>
       </ImageWrapper>
       <Row>{project.introduction}</Row>
