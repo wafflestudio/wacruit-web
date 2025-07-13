@@ -2,6 +2,6 @@ import { SeminarListResponse } from "../shared/api/types/seminar";
 import { getRequest } from "./utility";
 
 // V2
-export const getQuestions = () => {
+export const getSeminarList = () => {
   getRequest<SeminarListResponse>(`/v3/seminars`);
 };
