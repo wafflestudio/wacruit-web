@@ -4,6 +4,7 @@ import { ApplicantRequirements } from "../features/recruiting/ui/ApplicantRequir
 import { Positions } from "../features/recruiting/ui/Positions";
 import { RecruitTimeline } from "../features/recruiting/ui/Timeline";
 import { RookieInfo } from "../features/recruiting/ui/RookieInfo";
+import { RecruitingQuestion } from "../features/recruiting/ui/RecruitingQuestion";
 
 const RecruitInfoV2 = () => {
   return (
@@ -13,6 +14,7 @@ const RecruitInfoV2 = () => {
       <Positions />
       <RecruitTimeline />
       <RookieInfo />
+      <RecruitingQuestion />
     </MainContainer>
   );
 };
