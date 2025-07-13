@@ -71,26 +71,22 @@ export const PositionTab = ({
   };
 
   return (
-    <Section>
-      <MainTabGroup>
+    <section>
+      <div>
         {TAB_TITLE.map(({ id, label }) => (
-          <TabButton
-            key={id}
-            onClick={() => handleMainTabChange(id)}
-            $selected={id === selectedMainTab}
-          >
+          <button key={id} onClick={() => handleMainTabChange(id)}>
             {label}
-          </TabButton>
+          </button>
         ))}
-      </MainTabGroup>
+      </div>
 
-      <Information>
+      <div>
         <p>지원 대상</p>
         <p>{currentMainContent.information}</p>
-      </Information>
+      </div>
 
       {hasMultipleSubTabs && (
-        <SubTabGroup>
+        <div>
           {currentMainContent.subTabs.map((sub) => {
             const formattedSubtab = formatSubTabsByEnglish({ tab: sub.id });
             console.log(sub.id, formattedSubtab);
@@ -98,73 +94,21 @@ export const PositionTab = ({
               return null;
             }
             return (
-              <TabButton
-                key={sub.id}
-                onClick={() => handleSubTabChange(sub)}
-                $selected={sub.id === selectedSubTabId}
-              >
+              <button key={sub.id} onClick={() => handleSubTabChange(sub)}>
                 {formattedSubtab}
-              </TabButton>
+              </button>
             );
           })}
-        </SubTabGroup>
+        </div>
       )}
 
-      <TabContent>
+      <div>
         <h4>어떤 활동을 하나요?</h4>
         <MarkdownRenderer markdownString={currentSubTab.activityInfo} />
 
         <h4>어떤 사람이 지원하면 좋을까요?</h4>
         <MarkdownRenderer markdownString={currentSubTab.requirementInfo} />
-      </TabContent>
-    </Section>
+      </div>
+    </section>
   );
 };
-
-const Section = styled.section`
-  padding: 2rem;
-`;
-
-const MainTabGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-`;
-
-const SubTabGroup = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin: 1rem 0;
-`;
-
-const TabButton = styled.button<{ $selected: boolean }>`
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: ${({ $selected }) => ($selected ? "#333" : "#fff")};
-  color: ${({ $selected }) => ($selected ? "#fff" : "#000")};
-  cursor: pointer;
-`;
-
-const Information = styled.p`
-  font-size: 1.4rem;
-  color: #555;
-`;
-
-const TabContent = styled.div`
-  margin-top: 1.5rem;
-  h4 {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  ul {
-    margin-bottom: 1rem;
-    padding-left: 1.2rem;
-    list-style: disc;
-    li {
-      margin-bottom: 0.4rem;
-      font-size: 1.4rem;
-      color: #444;
-    }
-  }
-`;
