@@ -33,7 +33,7 @@ export const RecruitingCTAButton = () => {
         : max;
     }, null)?.generation;
 
-  // /recruiting/pre-registration
+  // //pre-registrations/active
   const MOCK_PRE_REGISTRATION_URL = {
     id: 1,
     url: "https://docs.google.com/forms/d/e/1FAIpQLSdExampleFormID/viewform",
