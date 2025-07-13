@@ -3,6 +3,7 @@ import { Hero } from "../features/recruiting/ui/Hero";
 import { ApplicantRequirements } from "../features/recruiting/ui/ApplicantRequirements";
 import { Positions } from "../features/recruiting/ui/Positions";
 import { RecruitTimeline } from "../features/recruiting/ui/Timeline";
+import { RookieInfo } from "../features/recruiting/ui/RookieInfo";
 
 const RecruitInfoV2 = () => {
   return (
@@ -11,6 +12,7 @@ const RecruitInfoV2 = () => {
       <ApplicantRequirements />
       <Positions />
       <RecruitTimeline />
+      <RookieInfo />
     </MainContainer>
   );
 };
