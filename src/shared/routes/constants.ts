@@ -4,6 +4,8 @@ export const PATH = {
   ANNOUNCEMENT: "/announcement",
   RECRUITING_INFO: "/recruiting-info",
   RECRUITING_DETAIL: "/recruiting/:recruit_id",
+  PROJECT_LIST: "/projects",
+  REVIEW_LIST: "/reviews,",
 };
 
 export const CREATE_PATH = {

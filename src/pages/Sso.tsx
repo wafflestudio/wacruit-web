@@ -69,7 +69,7 @@ export default function Sso() {
         return;
       }
     }
-  }, [params.recruit_id, ssoState, error, isLoading]);
+  }, [params.recruit_id, ssoState, error, isLoading, navigate, queryClient]);
 
   return (
     <>

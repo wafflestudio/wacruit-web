@@ -75,7 +75,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
       );
       setLinksInput(updated);
     }
-  }, [links]);
+  }, [links, linksInput]);
 
   if (files === undefined || links === undefined)
     return <EmptyCard></EmptyCard>;

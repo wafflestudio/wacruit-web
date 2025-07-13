@@ -1,4 +1,4 @@
-import { RecruitingCTAButton } from "../../../shared/ui/RecruitingCTAButton";
+import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
 
 export const Hero = () => {
   return (

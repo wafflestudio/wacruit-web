@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { RecruitingCTAButton } from "../../../shared/ui/RecruitingCTAButton";
+import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
 
 export const HeroSection = () => {
   return (
