@@ -11,7 +11,7 @@ const Pagination = styled.div`
   gap: 0.75rem;
 `;
 
-const PageNumber = styled.button < { active: boolean } > `
+const PageNumber = styled.button<{ active: boolean }>`
   font-weight: ${(props) => (props.active ? "bold" : "normal")};
   background-color: ${(props) => (props.active ? "#e5e7eb" : "transparent")};
   padding: 0.5rem 0.75rem;
@@ -20,7 +20,7 @@ const PageNumber = styled.button < { active: boolean } > `
   border: none;
 `;
 
-const Arrow = styled.button < { disabled: boolean } > `
+const Arrow = styled.button<{ disabled: boolean }>`
   opacity: ${(props) => (props.disabled ? 0.3 : 1)};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   font-size: 1.25rem;
@@ -51,7 +51,7 @@ const Class = styled.div`
   gap: 2rem;
 `;
 
-const ClassButton = styled.div < { active: boolean } > `
+const ClassButton = styled.div<{ active: boolean }>`
   text-decoration: underline;
   text-align: center;
   flex: 1 1 50%;
@@ -94,7 +94,7 @@ const Project = styled.h2`
   font-size: 1.125rem;
 `;
 
-const StatusButton = styled.button < { isActive: boolean } > `
+const StatusButton = styled.button<{ isActive: boolean }>`
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
@@ -109,7 +109,7 @@ const Description = styled.p`
 
 export default function ProjectGrid() {
   const navigate = useNavigate();
-  const [selectedType, setSelectedType] = useState < "SERVICE" | "STUDY" > (
+  const [selectedType, setSelectedType] = useState<"SERVICE" | "STUDY">(
     "SERVICE",
   );
 
@@ -172,8 +172,8 @@ export default function ProjectGrid() {
                     ? "서비스 중"
                     : "서비스 종료"
                   : project.is_active
-                    ? "활동 중"
-                    : "활동 종료"}
+                  ? "활동 중"
+                  : "활동 종료"}
               </StatusButton>
             </TitleRow>
             <Description>{project.summary}</Description>

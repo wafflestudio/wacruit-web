@@ -28,8 +28,14 @@ import HomeV2 from "./pages/HomeV2";
 
 const queryClient = new QueryClient();
 
-const { HOME_V2, ANNOUNCEMENT, RECRUITING_LIST, PROJECT, REVIEW, MEMBER } =
-  PATH;
+const {
+  HOME_V2,
+  ANNOUNCEMENT,
+  RECRUITING_LIST,
+  PROJECT_LIST,
+  REVIEW_LIST,
+  MEMBER,
+} = PATH;
 
 const router = createBrowserRouter([
   {
@@ -50,7 +56,7 @@ const router = createBrowserRouter([
     errorElement: <div>error</div>,
   },
   {
-    path: PROJECT,
+    path: PROJECT_LIST,
     element: <Project />,
     errorElement: <div>error</div>,
   },
@@ -60,7 +66,7 @@ const router = createBrowserRouter([
     errorElement: <div>error</div>,
   },
   {
-    path: REVIEW,
+    path: REVIEW_LIST,
     element: <Review />,
     errorElement: <div>error</div>,
   },
