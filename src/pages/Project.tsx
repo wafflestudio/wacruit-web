@@ -1,5 +1,36 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { projectData } from "../mocks/project";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom";
+
+const ITEMS_PER_PAGE = 6;
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
+const PageNumber = styled.button<{ active: boolean }>`
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  background-color: ${(props) => (props.active ? "#e5e7eb" : "transparent")};
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  border: none;
+`;
+
+const Arrow = styled.button<{ disabled: boolean }>`
+  opacity: ${(props) => (props.disabled ? 0.3 : 1)};
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+  font-size: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+`;
 
 const Grid = styled.div`
   display: grid;
@@ -11,6 +42,7 @@ const Grid = styled.div`
 const Title = styled.div`
   font-weight: bold;
   font-size: 3rem;
+  line-height: 140%;
 `;
 
 const Class = styled.div`
@@ -18,18 +50,17 @@ const Class = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
 `;
 
-const Class1 = styled.div`
+const ClassButton = styled.div<{ active: boolean }>`
   text-decoration: underline;
   text-align: center;
   flex: 1 1 50%;
-`;
-
-const Class2 = styled.div`
-  text-decoration: underline;
-  text-align: center;
-  flex: 1 1 50%;
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  color: ${(props) =>
+    props.active ? "#000000" : "#9ca3af"}; /* 회색: tailwind gray-400 */
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
@@ -40,7 +71,7 @@ const Wrapper = styled.div`
   gap: 5rem;
 `;
 
-const Card = styled.div`
+const Card = styled.button`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -65,12 +96,12 @@ const Project = styled.h2`
   font-size: 1.125rem;
 `;
 
-const StatusButton = styled.button<{ isService: boolean }>`
+const StatusButton = styled.button<{ isActive: boolean }>`
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  background-color: ${(props) => (props.isService ? "#bbf7d0" : "#e5e7eb")};
-  color: ${(props) => (props.isService ? "#166534" : "#374151")};
+  background-color: ${(props) => (props.isActive ? "#bbf7d0" : "#e5e7eb")};
+  color: ${(props) => (props.isActive ? "#166534" : "#374151")};
 `;
 
 const Description = styled.p`
@@ -79,6 +110,27 @@ const Description = styled.p`
 `;
 
 export default function ProjectGrid() {
+  const navigate = useNavigate();
+  const [selectedType, setSelectedType] = useState<"SERVICE" | "STUDY">(
+    "SERVICE",
+  );
+
+  const filteredProjects = projectData.filter(
+    (project) => project.project_type === selectedType,
+  );
+
+  const sortedData = [...filteredProjects].sort((a, b) => {
+    return Number(b.is_active) - Number(a.is_active);
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(sortedData.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentItems = sortedData.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE,
+  );
+
   return (
     <Wrapper>
       <Title>
@@ -87,30 +139,72 @@ export default function ProjectGrid() {
         무엇이든 할 수 있어요!
       </Title>
       <Class>
-        <Class1>서비스</Class1>
-        <Class2>스터디</Class2>
+        <ClassButton
+          active={selectedType === "SERVICE"}
+          onClick={() => setSelectedType("SERVICE")}
+        >
+          서비스
+        </ClassButton>
+        <ClassButton
+          active={selectedType === "STUDY"}
+          onClick={() => setSelectedType("STUDY")}
+        >
+          스터디
+        </ClassButton>
       </Class>
       <Grid>
-        {projectData.map((project, index) => (
-          <Card key={index}>
+        {currentItems.map((project) => (
+          <Card
+            onClick={() => navigate(`/project/${project.id}`)}
+            key={project.id}
+          >
             <Thumbnail
               src={project.thumbnail_url}
               alt={project.name}
               onError={(e) => {
-                e.currentTarget.src = ""; // 이미지 src를 비워서 배경색만 남게
-                e.currentTarget.style.backgroundColor = "#e5e7eb"; // 회색 배경
+                e.currentTarget.src = "";
+                e.currentTarget.style.backgroundColor = "#e5e7eb";
               }}
             />
             <TitleRow>
               <Project>{project.name}</Project>
-              <StatusButton isService={project.is_service}>
-                {project.is_service ? "서비스 중" : "서비스 종료"}
+              <StatusButton isActive={project.is_active}>
+                {project.project_type === "SERVICE"
+                  ? project.is_active
+                    ? "서비스 중"
+                    : "서비스 종료"
+                  : project.is_active
+                  ? "활동 중"
+                  : "활동 종료"}
               </StatusButton>
             </TitleRow>
-            <Description>{project.brief_introduction}</Description>
+            <Description>{project.summary}</Description>
           </Card>
         ))}
       </Grid>
+      <Pagination>
+        <Arrow
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => p - 1)}
+        >
+          <ArrowBackIosIcon />
+        </Arrow>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <PageNumber
+            key={i}
+            active={i + 1 === currentPage}
+            onClick={() => setCurrentPage(i + 1)}
+          >
+            {i + 1}
+          </PageNumber>
+        ))}
+        <Arrow
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => p + 1)}
+        >
+          <ArrowForwardIosIcon />
+        </Arrow>
+      </Pagination>
     </Wrapper>
   );
 }
