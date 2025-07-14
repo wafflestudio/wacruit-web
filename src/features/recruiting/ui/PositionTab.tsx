@@ -5,7 +5,7 @@ import type {
   SubTabContent,
 } from "../model/types";
 import MarkdownRenderer from "../../../lib/MarkdownRenderer";
-import { formatSubTabsByEnglish } from "../lib/formatSubTabs";
+import { formatSeminarByEnglish } from "../lib/formatSeminar";
 
 const TAB_TITLE: { id: MainTab; label: string }[] = [
   {
@@ -87,11 +87,12 @@ export const PositionTab = ({
       {hasMultipleSubTabs && (
         <div>
           {currentMainContent.subTabs.map((sub) => {
-            const formattedSubtab = formatSubTabsByEnglish({ tab: sub.id });
-            console.log(sub.id, formattedSubtab);
-            if (formattedSubtab === null) {
+            if (sub.id === "DESIGNER" || sub.id === "PROGRAMMER") {
               return null;
             }
+            const formattedSubtab = formatSeminarByEnglish({
+              seminar: sub.id,
+            });
             return (
               <button key={sub.id} onClick={() => handleSubTabChange(sub)}>
                 {formattedSubtab}

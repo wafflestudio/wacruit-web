@@ -4,12 +4,12 @@ export const formatPositionByEnglish = ({
   position,
 }: {
   position: RecruitingType;
-}) => {
-  if (position === "ROOKIE") {
-    return "Rookies";
-  }
-  if (position === "PROGRAMMER") {
-    return "Programmers";
-  }
-  return "Designers";
+}): string => {
+  const map: Record<typeof position, string> = {
+    ROOKIE: "Rookies",
+    PROGRAMMER: "Programmers",
+    DESIGNER: "Designers",
+  };
+
+  return map[position];
 };
