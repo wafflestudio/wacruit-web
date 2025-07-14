@@ -68,17 +68,17 @@ export const Positions = () => {
     },
   ];
 
-  const [selectedMainTab, setSelectedMainTab] = useState<MainTab>("ROOKIE");
+  const [selectedMainTabId, setSelectedMainTabId] = useState<MainTab>("ROOKIE");
 
   const currentMainContent = tabContents.find(
-    (tab) => tab.id === selectedMainTab,
+    (tab) => tab.id === selectedMainTabId,
   );
-  const [selectedSubTabId, setSelectedSubTabId] = useState<SubTab>(
-    currentMainContent === undefined
-      ? "SPRING"
-      : currentMainContent.subTabs[0].id,
+  const [selectedSubTabId, setSelectedSubTabId] = useState<SubTab | undefined>(
+    undefined,
   );
-
+  const selectedSubTabWithInitialValue =
+    currentMainContent?.subTabs.find((t) => t.id === selectedSubTabId)?.id ??
+    "SPRING";
   return (
     <section>
       <div>
@@ -89,13 +89,13 @@ export const Positions = () => {
         </p>
       </div>
       <PositionTab
-        selectedMainTab={selectedMainTab}
-        setSelectedMainTab={setSelectedMainTab}
-        selectedSubTabId={selectedSubTabId}
+        selectedMainTabId={selectedMainTabId}
+        setSelectedMainTabId={setSelectedMainTabId}
+        selectedSubTabId={selectedSubTabWithInitialValue}
         setSelectedSubTabId={setSelectedSubTabId}
         tabContents={tabContents}
       />
-      <NavigateRecruitingByPosition position={selectedMainTab} />
+      <NavigateRecruitingByPosition position={selectedMainTabId} />
     </section>
   );
 };

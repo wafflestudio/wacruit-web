@@ -24,20 +24,20 @@ const TAB_TITLE: { id: MainTab; label: string }[] = [
 
 export const PositionTab = ({
   tabContents,
-  selectedMainTab,
-  setSelectedMainTab,
+  selectedMainTabId,
+  setSelectedMainTabId,
   selectedSubTabId,
   setSelectedSubTabId,
 }: {
-  selectedMainTab: MainTab;
-  setSelectedMainTab: (tab: MainTab) => void;
+  selectedMainTabId: MainTab;
+  setSelectedMainTabId: (tab: MainTab) => void;
   selectedSubTabId: SubTab;
   setSelectedSubTabId: (subTabId: SubTab) => void;
   tabContents: TabContent[];
 }) => {
   // 현재 메인탭 확인 (ID로 불러오기)
   const currentMainContent = tabContents.find(
-    (tab) => tab.id === selectedMainTab,
+    (tab) => tab.id === selectedMainTabId,
   );
   if (currentMainContent === undefined) {
     return null;
@@ -60,7 +60,7 @@ export const PositionTab = ({
     if (newTab === undefined) {
       return;
     }
-    setSelectedMainTab(tab);
+    setSelectedMainTabId(tab);
     setSelectedSubTabId(newTab.subTabs[0].id);
   };
 
