@@ -37,7 +37,6 @@ const router = createBrowserRouter([
     path: HOME_V2,
     element: <HomeV2 />,
     errorElement: <div>error</div>,
-    index: true,
   },
   {
     path: RECRUITING_LIST,

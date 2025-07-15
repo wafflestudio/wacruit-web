@@ -1,4 +1,16 @@
+import { useTimelineQuery } from "../../../entities/api/useTimelineQuery";
+
 export const TimeLine = () => {
+  const { useGetTimelines } = useTimelineQuery();
+  const { data, isError } = useGetTimelines({});
+  if (isError) {
+    return <div>에러 발생</div>;
+  }
+  if (data === undefined) {
+    return <div>로딩중...</div>;
+  }
+
+  const { items: timeline } = data;
   return (
     <div>
       <h3>활동 타임라인</h3>
@@ -21,8 +33,19 @@ export const TimeLine = () => {
           </span>
         </div>
       </p>
-
-      <div>{/* 타임라인 탭 생성 */}</div>
+      <div>
+        {timeline.map(
+          ({ id, title, group, category, start_date, end_date }) => (
+            <div key={`timeline-${id}`}>
+              <span>{title}</span>
+              <span>{group}</span>
+              <span>{category.title}</span>
+              <span>{start_date}</span>
+              <span>{end_date}</span>
+            </div>
+          ),
+        )}
+      </div>
     </div>
   );
 };

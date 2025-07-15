@@ -8,14 +8,14 @@ export const useAuthQuery = () => {
   const { deleteSsoToken } = getSsoUtils();
   return {
     useCheckAuth: () => {
-      const { data } = useQuery({
+      const { data, isError } = useQuery({
         queryKey: ["auth"],
         queryFn: () => checkAuth(),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
     useLogout: () => {
       return {
