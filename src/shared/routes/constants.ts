@@ -3,6 +3,7 @@ export const PATH = {
   RECRUITING_LIST: "/recruiting",
   ANNOUNCEMENT: "/announcement",
   PROJECT_LIST: "/project",
+  PROJECT_DETAIL: "/project/:id",
   REVIEW_LIST: "/review",
   MEMBER: "/member",
   RECRUITING_INFO: "/recruiting-info",

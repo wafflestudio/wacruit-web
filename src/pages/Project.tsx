@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { projectData } from "../mocks/project";
-import { useNavigate } from "react-router-dom";
+import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
 
 const ITEMS_PER_PAGE = 6;
 const Pagination = styled.div`
@@ -51,13 +51,13 @@ const Class = styled.div`
   gap: 2rem;
 `;
 
-const ClassButton = styled.div<{ active: boolean }>`
+const ClassButton = styled.div<{ $active: boolean }>`
   text-decoration: underline;
   text-align: center;
   flex: 1 1 50%;
-  font-weight: ${(props) => (props.active ? "bold" : "normal")};
-  color: ${(props) =>
-    props.active ? "#000000" : "#9ca3af"}; /* 회색: tailwind gray-400 */
+  font-weight: ${({ $active }) => ($active ? "bold" : "normal")};
+  color: ${({ $active }) =>
+    $active ? "#000000" : "#9ca3af"}; /* 회색: tailwind gray-400 */
   cursor: pointer;
 `;
 
@@ -94,12 +94,12 @@ const Project = styled.h2`
   font-size: 1.125rem;
 `;
 
-const StatusButton = styled.button<{ isActive: boolean }>`
+const StatusButton = styled.button<{ $isActive: boolean }>`
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  background-color: ${(props) => (props.isActive ? "#bbf7d0" : "#e5e7eb")};
-  color: ${(props) => (props.isActive ? "#166534" : "#374151")};
+  background-color: ${({ $isActive }) => ($isActive ? "#bbf7d0" : "#e5e7eb")};
+  color: ${({ $isActive }) => ($isActive ? "#166534" : "#374151")};
 `;
 
 const Description = styled.p`
@@ -108,7 +108,7 @@ const Description = styled.p`
 `;
 
 export default function ProjectGrid() {
-  const navigate = useNavigate();
+  const { toProjectDetail } = useRouteNavigation();
   const [selectedType, setSelectedType] = useState<"SERVICE" | "STUDY">(
     "SERVICE",
   );
@@ -128,6 +128,16 @@ export default function ProjectGrid() {
     startIndex,
     startIndex + ITEMS_PER_PAGE,
   );
+  function formatProjectStatus(project: {
+    project_type: string;
+    is_active: boolean;
+  }): string {
+    if (project.project_type === "SERVICE") {
+      return project.is_active ? "서비스 중" : "서비스 종료";
+    } else {
+      return project.is_active ? "활동 중" : "활동 종료";
+    }
+  }
 
   return (
     <Wrapper>
@@ -138,13 +148,13 @@ export default function ProjectGrid() {
       </Title>
       <Class>
         <ClassButton
-          active={selectedType === "SERVICE"}
+          $active={selectedType === "SERVICE"}
           onClick={() => setSelectedType("SERVICE")}
         >
           서비스
         </ClassButton>
         <ClassButton
-          active={selectedType === "STUDY"}
+          $active={selectedType === "STUDY"}
           onClick={() => setSelectedType("STUDY")}
         >
           스터디
@@ -152,10 +162,7 @@ export default function ProjectGrid() {
       </Class>
       <Grid>
         {currentItems.map((project) => (
-          <Card
-            onClick={() => navigate(`/project/${project.id}`)}
-            key={project.id}
-          >
+          <Card onClick={() => toProjectDetail(project.id)} key={project.id}>
             <Thumbnail
               src={project.thumbnail_url}
               alt={project.name}
@@ -166,14 +173,8 @@ export default function ProjectGrid() {
             />
             <TitleRow>
               <Project>{project.name}</Project>
-              <StatusButton isActive={project.is_active}>
-                {project.project_type === "SERVICE"
-                  ? project.is_active
-                    ? "서비스 중"
-                    : "서비스 종료"
-                  : project.is_active
-                  ? "활동 중"
-                  : "활동 종료"}
+              <StatusButton $isActive={project.is_active}>
+                {formatProjectStatus(project)}
               </StatusButton>
             </TitleRow>
             <Description>{project.summary}</Description>

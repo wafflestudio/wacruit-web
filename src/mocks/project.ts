@@ -213,7 +213,7 @@ export const projectData: ProjectData[] = [
   },
 ];
 
-export type urlType =
+export type UrlType =
   | "Android"
   | "iOS"
   | "Web"
@@ -221,10 +221,10 @@ export type urlType =
   | "Github: iOS"
   | "Github: Web";
 
-export interface urlItem {
-  title: urlType;
+export type UrlItem = {
+  title: UrlType;
   url: string;
-}
+};
 
 export interface Project {
   id: number;
@@ -235,7 +235,7 @@ export interface Project {
   project_type: ProjectType;
   is_active: boolean;
   images: string[];
-  urls: urlItem[];
+  urls: UrlItem[];
 }
 
 export const projectDetail: Project = {
@@ -255,23 +255,23 @@ export const projectDetail: Project = {
   urls: [
     {
       title: "Web",
-      url: "github.com",
+      url: "https://picsum.photos/200",
     },
     {
       title: "iOS",
-      url: "github.com",
+      url: "https://picsum.photos/200",
     },
     {
       title: "Github: Web",
-      url: "github.com",
+      url: "https://picsum.photos/200",
     },
     {
       title: "Android",
-      url: "github.com",
+      url: "https://picsum.photos/200",
     },
     {
       title: "Github: Android",
-      url: "github.com",
+      url: "https://picsum.photos/200",
     },
   ],
 };

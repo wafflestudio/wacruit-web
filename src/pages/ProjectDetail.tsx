@@ -1,6 +1,6 @@
 // api 연결시: import { useParams } from "react-router-dom"
 import styled from "styled-components";
-import { projectDetail, urlItem } from "../mocks/project";
+import { projectDetail, type UrlItem, type UrlType } from "../mocks/project";
 import { useState } from "react";
 
 const Container = styled.div`
@@ -73,13 +73,11 @@ export default function ProjectDetailPage() {
   const [index, setIndex] = useState(0);
   const project = projectDetail;
 
-  const getStatusLabel = () => {
-    if (!project.is_active)
-      return project.project_type === "SERVICE" ? "서비스 종료" : "활동 종료";
-    return project.project_type === "SERVICE" ? "서비스 중" : "활동 중";
-  };
+  function getStatusLabel(a: string): string {
+    return a === "SERVICE" ? "서비스 중" : "활동 중";
+  }
 
-  const labelOrder = [
+  const LABEL_ORDER: UrlType[] = [
     "Android",
     "iOS",
     "Web",
@@ -88,25 +86,22 @@ export default function ProjectDetailPage() {
     "Github: Web",
   ];
 
-  const sortedUrls = labelOrder
-    .map((title) => project.urls.find((url) => url.title === title))
-    .filter((url): url is urlItem => !!url);
+  const sortedUrls = LABEL_ORDER.map((title) =>
+    project.urls.find((url) => url.title === title),
+  ).filter((url): url is UrlItem => url !== undefined);
 
   return (
     <Container>
       <Row>
         <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>{project.name}</h1>
-        <Status>{getStatusLabel()}</Status>
+        {project.is_active && (
+          <Status>{getStatusLabel(project.project_type)}</Status>
+        )}
       </Row>
       <Row>{project.summary}</Row>
       <Row>
         {sortedUrls.map((url) => (
-          <Label
-            key={url.title}
-            href={url.url.startsWith("http") ? url.url : `https://${url.url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Label key={url.title} href={url.url} target="_blank">
             {url.title}
             ""
           </Label>

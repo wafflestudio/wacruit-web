@@ -33,6 +33,7 @@ const {
   ANNOUNCEMENT,
   RECRUITING_LIST,
   PROJECT_LIST,
+  PROJECT_DETAIL,
   REVIEW_LIST,
   MEMBER,
 } = PATH;
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
     errorElement: <div>error</div>,
   },
   {
-    path: "/project/:id",
+    path: PROJECT_DETAIL,
     element: <ProjectDetail />,
     errorElement: <div>error</div>,
   },
