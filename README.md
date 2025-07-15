@@ -2,7 +2,7 @@
 
 ## 와플스튜디오 리크루팅 페이지 리뉴얼
 
-# Table of Content
+# Table of Contents
 
 - [Usage](#Usage)
 

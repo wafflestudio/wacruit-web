@@ -11,7 +11,7 @@ export const useRouteNavigation = () => {
     PROJECT_LIST,
     REVIEW_LIST,
   } = PATH;
-  const { RECRUITING_DETAIL } = CREATE_PATH;
+  const { RECRUITING_DETAIL, PROJECT_DETAIL } = CREATE_PATH;
 
   return {
     toHomeV2: () => {
@@ -22,6 +22,9 @@ export const useRouteNavigation = () => {
     },
     toProjectList: () => {
       void navigation(PROJECT_LIST);
+    },
+    toProjectDetail: ({ projectId }: { projectId: number }) => {
+      void navigation(PROJECT_DETAIL({ projectId }));
     },
     toReviewList: () => {
       void navigation(REVIEW_LIST);
