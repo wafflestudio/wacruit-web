@@ -25,6 +25,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
+import RecruitInfoV2 from "./pages/RecruitInfoV2";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,8 @@ const {
   HOME_V2,
   ANNOUNCEMENT,
   RECRUITING_LIST,
+  RECRUITING_INFO,
+  RECRUITING_DETAIL,
   PROJECT_LIST,
   PROJECT_DETAIL,
   REVIEW_LIST,
@@ -49,7 +52,11 @@ const router = createBrowserRouter([
     path: HOME_V2,
     element: <HomeV2 />,
     errorElement: <div>error</div>,
-    index: true,
+  },
+  {
+    path: RECRUITING_INFO,
+    element: <RecruitInfoV2 />,
+    errorElement: <div>error</div>,
   },
   {
     path: RECRUITING_LIST,
@@ -77,7 +84,7 @@ const router = createBrowserRouter([
     errorElement: <div>error</div>,
   },
   {
-    path: "recruiting/:recruit_id",
+    path: RECRUITING_DETAIL,
     element: <Recruit />,
     errorElement: <div>error</div>,
     children: [

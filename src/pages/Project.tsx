@@ -128,16 +128,16 @@ export default function ProjectGrid() {
     startIndex,
     startIndex + ITEMS_PER_PAGE,
   );
-  function formatProjectStatus(project: {
+  const formatProjectStatus = (project: {
     project_type: string;
     is_active: boolean;
-  }): string {
+  }): string => {
     if (project.project_type === "SERVICE") {
       return project.is_active ? "서비스 중" : "서비스 종료";
     } else {
       return project.is_active ? "활동 중" : "활동 종료";
     }
-  }
+  };
 
   return (
     <Wrapper>
@@ -162,7 +162,10 @@ export default function ProjectGrid() {
       </Class>
       <Grid>
         {currentItems.map((project) => (
-          <Card onClick={() => toProjectDetail(project.id)} key={project.id}>
+          <Card
+            onClick={() => toProjectDetail({ projectId: project.id })}
+            key={project.id}
+          >
             <Thumbnail
               src={project.thumbnail_url}
               alt={project.name}

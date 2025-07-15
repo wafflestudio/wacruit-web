@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { PATH } from "./constants";
+import { PATH, CREATE_PATH } from "./constants";
 
 export const useRouteNavigation = () => {
   const navigation = useNavigate();
@@ -11,6 +11,7 @@ export const useRouteNavigation = () => {
     PROJECT_LIST,
     REVIEW_LIST,
   } = PATH;
+  const { RECRUITING_DETAIL, PROJECT_DETAIL } = CREATE_PATH;
 
   return {
     toHomeV2: () => {
@@ -22,8 +23,8 @@ export const useRouteNavigation = () => {
     toProjectList: () => {
       void navigation(PROJECT_LIST);
     },
-    toProjectDetail: (id: number) => {
-      void navigation(`/project/${id}`);
+    toProjectDetail: ({ projectId }: { projectId: number }) => {
+      void navigation(PROJECT_DETAIL({ projectId }));
     },
     toReviewList: () => {
       void navigation(REVIEW_LIST);
@@ -33,6 +34,9 @@ export const useRouteNavigation = () => {
     },
     toRecruitingList: () => {
       void navigation(RECRUITING_LIST);
+    },
+    toRecruitingDetail: ({ recruitId }: { recruitId: number }) => {
+      void navigation(RECRUITING_DETAIL({ recruitId }));
     },
   };
 };
