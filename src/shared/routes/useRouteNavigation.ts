@@ -22,6 +22,9 @@ export const useRouteNavigation = () => {
     toProjectList: () => {
       void navigation(PROJECT_LIST);
     },
+    toProjectDetail: (id: number) => {
+      void navigation(`/project/${id}`);
+    },
     toReviewList: () => {
       void navigation(REVIEW_LIST);
     },
