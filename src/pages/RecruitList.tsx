@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
-import { MAILTO_RECRUIT } from "../common/const";
+import { MAILTO_RECRUIT } from "@common/const";
 import { RecruitItem } from "../components/recruit/RecruitItem";
 import { useQuery } from "@tanstack/react-query";
 import { getAllRecruitings } from "../apis/recruiting";

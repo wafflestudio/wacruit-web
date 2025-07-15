@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { projectData } from "../mocks/project";
+import { projectData } from "@mocks/project";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
 
 const ITEMS_PER_PAGE = 6;
