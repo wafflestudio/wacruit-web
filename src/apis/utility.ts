@@ -3,9 +3,14 @@ import { BASE_URL } from "./environment";
 
 const defaultCommonHeader = {};
 
-const authorizedHeader = (token: string | null) => ({
-  Authorization: `Bearer ${token}`,
-});
+const authorizedHeader = (token: string | null) => {
+  if (token === null) {
+    return undefined;
+  }
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
