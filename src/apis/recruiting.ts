@@ -3,7 +3,10 @@ import {
   RecruitingResult,
   RecruitingSummary,
 } from "../types/apiTypes";
-import { BreifRecruiting } from "../shared/api/types/recruiting";
+import type {
+  BreifRecruiting,
+  RecruitingInfoListResponse,
+} from "../shared/api/types/recruiting";
 import { getRequest, postRequest, deleteRequest } from "./utility";
 
 // V1
@@ -25,4 +28,8 @@ export const cancelRecruiting = (id: Recruiting["id"]) =>
 // V2
 export const getActiveRecruitings = () => {
   getRequest<{ items: BreifRecruiting[] }>(`/v3/recruitings/active`);
+};
+
+export const getRecruitingInfo = () => {
+  getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
 };

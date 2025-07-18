@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getActiveRecruitings } from "../../apis/recruiting";
+import { getActiveRecruitings, getRecruitingInfo } from "../../apis/recruiting";
 
 export const useRecruitingQuery = () => {
   return {
@@ -12,6 +12,16 @@ export const useRecruitingQuery = () => {
       });
 
       return { data, isError };
+    },
+    useRecruitingTimelineInfo: () => {
+      const { data } = useQuery({
+        queryKey: ["recruiting", "info"],
+        queryFn: () => getRecruitingInfo(),
+        staleTime: 1000 * 60 * 60,
+        retry: 0,
+      });
+
+      return { data };
     },
   };
 };

@@ -10,7 +10,8 @@
     "format": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
-    "check-all": "yarn lint && yarn format && yarn typecheck"
+    "check-all": "yarn lint && yarn format && yarn typecheck",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.2",
