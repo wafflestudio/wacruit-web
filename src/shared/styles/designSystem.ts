@@ -41,4 +41,7 @@ export const theme = {
   lineHeights: {
     base: 1.5,
   },
+  media: {
+    mobile: 768,
+  },
 };

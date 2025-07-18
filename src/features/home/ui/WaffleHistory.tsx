@@ -25,7 +25,7 @@ export const WaffleHistory = () => {
   ];
 
   return (
-    <Container>
+    <Container id="">
       <TextBlock>
         <Title>서울대 개발 커뮤니티의 중심</Title>
         <Description>
