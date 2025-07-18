@@ -1,46 +1,69 @@
+import { useRef } from "react";
 import styled from "styled-components";
-import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
+import { Confetti } from "./Confetti";
 
 export const HeroSection = () => {
+  const nextSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToNext = () => {
+    if (nextSectionRef.current) {
+      nextSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <Container>
-      <TextGroup>
-        <h3>맛있는 서비스가 탄생하는 곳</h3>
-        <h1>와플스튜디오</h1>
-      </TextGroup>
-      <RecruitingCTAButton />
-    </Container>
+    <>
+      <HeroContainer>
+        <HeroContent>
+          <Logo>Waffle Studio</Logo>
+          <ScrollArrow onClick={scrollToNext} />
+        </HeroContent>
+        <Confetti />
+        {/* 다음 섹션 스크롤링을 위한 더미 div */}
+      </HeroContainer>
+      <div ref={nextSectionRef}></div>
+    </>
   );
 };
 
-const Container = styled.section`
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffefba, #ffffff);
+const HeroContainer = styled.div`
+  position: relative;
+  height: 100vh;
+  background: ${({ theme }) => theme.colors.lime};
   display: flex;
-  gap: 2rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem 1rem;
+  padding: 3.5rem;
+  padding-top: 8.3rem;
+  overflow: hidden;
 `;
 
-const TextGroup = styled.div`
+const HeroContent = styled.div`
   display: flex;
-  flex-direction: column;
+  align
   gap: 1rem;
-  text-align: center;
-  margin-bottom: 2rem;
+  z-index: 10;
+`;
 
-  h3 {
-    font-size: 2.4rem;
-    color: #555;
-    margin-bottom: 0.5rem;
-  }
+const Logo = styled.div`
+  background: ${({ theme }) => theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.black[100]};
+  text-align: left;
+  font-size: 12rem;
+  height: fit-content;
+  padding: 1rem;
+`;
 
-  h1 {
-    font-size: 5.6rem;
-    font-weight: bold;
-    color: #222;
+const ScrollArrow = styled.div`
+  width: 14rem;
+  height: 14rem;
+  background: ${({ theme }) => theme.colors.black[700]};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.black[500]};
   }
 `;
