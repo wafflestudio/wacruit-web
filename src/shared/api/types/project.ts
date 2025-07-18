@@ -10,5 +10,5 @@ type BreifProject = {
 };
 
 export type BreifProjectList = {
-  projects: BreifProject[];
+  items: BreifProject[];
 };

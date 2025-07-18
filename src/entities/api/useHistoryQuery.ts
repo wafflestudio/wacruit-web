@@ -4,14 +4,14 @@ import { getHistories } from "../../apis/history";
 export const useHistoryQuery = () => {
   return {
     useGetHistories: () => {
-      const { data } = useQuery({
+      const { data, isError } = useQuery({
         queryKey: ["histories"],
         queryFn: () => getHistories(),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
   };
 };

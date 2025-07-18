@@ -11,14 +11,13 @@ export const useTimelineQuery = () => {
         groupType: TimelineGroupType;
       };
     }) => {
-      const { data } = useQuery({
-        queryKey: ["projects"],
+      const { data, isError } = useQuery({
+        queryKey: ["timelines"],
         queryFn: () => getTimelines({ queryParams }),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
-
-      return { data };
+      return { data, isError };
     },
   };
 };

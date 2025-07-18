@@ -15,5 +15,5 @@ export type TimelineResponse = {
 };
 
 export type TimelineListResponse = {
-  timeline: TimelineResponse[];
+  items: TimelineResponse[];
 };

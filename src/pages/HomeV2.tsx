@@ -5,6 +5,7 @@ import { WaffleHistory } from "../features/home/ui/WaffleHistory";
 import { Activities } from "../features/home/ui/Activities";
 import { Projects } from "../features/home/ui/Projects";
 import { Outro } from "../features/home/ui/Outro";
+import { TimeLine } from "../features/home/ui/Timeline";
 
 export default function HomeV2() {
   return (
@@ -14,6 +15,7 @@ export default function HomeV2() {
         <HeroSection />
         <WaffleHistory />
         <Activities />
+        <TimeLine />
         <Projects />
         <Outro />
       </MainContainer>

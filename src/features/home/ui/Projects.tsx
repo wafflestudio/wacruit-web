@@ -1,40 +1,21 @@
 import styled from "styled-components";
 import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
-import { BreifProjectList } from "../../../shared/api/types/project";
+import { useProjectQuery } from "../../../entities/api/useProjectQuery";
 
 export const Projects = () => {
-  const MOCK_BRIEF_PROJECT_DATA: BreifProjectList = {
-    projects: [
-      {
-        id: 1,
-        name: "SNUTT",
-        brief_introduction: "한줄 소개",
-        thumbnail_url: "https://example.com/thumbnail.jpg",
-        project_type: "PROJECT",
-        is_active: true,
-      },
-      {
-        id: 2,
-        name: "식샤",
-        brief_introduction: "한줄 소개",
-        thumbnail_url: "https://example.com/thumbnail.jpg",
-        project_type: "STUDY",
-        is_active: true,
-      },
-      {
-        id: 3,
-        name: "비활성 프로젝트",
-        brief_introduction: "표시되지 않아야 함",
-        thumbnail_url: "https://example.com/thumbnail.jpg",
-        project_type: "PROJECT",
-        is_active: false,
-      },
-    ],
-  };
+  const { useGetProjects } = useProjectQuery();
 
-  const { projects } = MOCK_BRIEF_PROJECT_DATA;
+  const { data, isError } = useGetProjects({});
+  if (isError) {
+    return <div>에러 발생</div>;
+  }
+  if (data === undefined) {
+    return <div>로딩중...</div>;
+  }
+
+  const { items: projects } = data;
   const thumbnailProjects =
-    projects.length > 12 ? projects.slice(0, 12) : projects;
+    projects.length > 6 ? projects.slice(0, 6) : projects;
 
   return (
     <Wrapper>

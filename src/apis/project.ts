@@ -8,8 +8,8 @@ export const getProjects = ({
   queryParams?: { offset: number; limit: number };
 }) => {
   if (queryParams === undefined) {
-    return getRequest<BreifProjectList>(`/v3/pre-registrations/active`);
+    return getRequest<BreifProjectList>(`/v3/projects`);
   }
   const query = encodeQueryParams({ params: queryParams });
-  return getRequest<BreifProjectList>(`/v3/pre-registrations/active/?${query}`);
+  return getRequest<BreifProjectList>(`/v3/projects/?${query}`);
 };

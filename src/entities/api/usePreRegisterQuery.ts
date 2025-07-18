@@ -4,14 +4,14 @@ import { getActivePreregisterInfo } from "../../apis/preregister";
 export const usePreRegisterQuery = () => {
   return {
     useGetActivePreRegisterInfo: () => {
-      const { data } = useQuery({
-        queryKey: ["pre-register", "active"],
+      const { data, isError } = useQuery({
+        queryKey: ["pre-registration", "active"],
         queryFn: () => getActivePreregisterInfo(),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
   };
 };

@@ -11,14 +11,14 @@ export const useProjectQuery = () => {
         limit: number;
       };
     }) => {
-      const { data } = useQuery({
+      const { data, isError } = useQuery({
         queryKey: ["projects"],
         queryFn: () => getProjects({ queryParams }),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
   };
 };
