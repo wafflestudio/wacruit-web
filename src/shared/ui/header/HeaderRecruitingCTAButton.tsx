@@ -1,27 +1,32 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
 import { BreifRecruiting } from "../../api/types/recruiting";
+import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
+import { usePreRegisterQuery } from "../../../entities/api/usePreRegisterQuery";
 
 export const HeaderRecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
 
-  // /recruitings/active
-  const MOCK_ACTIVE_RECRUITINGS: { items: BreifRecruiting[] } = {
-    items: [
-      {
-        id: 0,
-        name: "22.5기 루키 리크루팅",
-        generation: "22.5",
-        type: "ROOKIE",
-        is_active: true,
-        from_date: "2025-06-30T06:25:02.346Z",
-        to_date: "2025-06-30T06:25:02.346Z",
-        applicant_count: 0,
-        short_description: "string",
-      },
-    ],
-  };
-  const { items: recruitings } = MOCK_ACTIVE_RECRUITINGS;
+  const { useGetActiveRecruitings } = useRecruitingQuery();
+  const { useGetActivePreRegisterInfo } = usePreRegisterQuery();
+
+  const { data: recruitingData, isError: isRecruitingError } =
+    useGetActiveRecruitings();
+  const { data: preRegistrationData, isError: isPreRegistrationError } =
+    useGetActivePreRegisterInfo();
+  if (isRecruitingError || isPreRegistrationError) {
+    return <StyledButton as="div">모집 마감</StyledButton>;
+  }
+  if (recruitingData === undefined || preRegistrationData === undefined) {
+    return <StyledButton as="div">로딩 중...</StyledButton>;
+  }
+
+  const { items: recruitings } = recruitingData;
+  const {
+    url: preRegistrationUrl,
+    generation: currentPreRegistrationGeneration,
+    isActive: isPreRegistrationActive,
+  } = preRegistrationData;
 
   const currentRecruitingGeneration =
     recruitings.reduce<BreifRecruiting | null>((max, cur) => {
@@ -32,20 +37,6 @@ export const HeaderRecruitingCTAButton = () => {
         ? cur
         : max;
     }, null)?.generation;
-
-  // /recruiting/pre-registration
-  const MOCK_PRE_REGISTRATION_URL = {
-    id: 1,
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSdExampleFormID/viewform",
-    generation: "23.5",
-    isActive: true,
-  };
-
-  const {
-    url: preRegistrationUrl,
-    generation: currentPreRegistrationGeneration,
-    isActive: isPreRegistrationActive,
-  } = MOCK_PRE_REGISTRATION_URL;
 
   if (currentRecruitingGeneration !== undefined) {
     return (
