@@ -3,8 +3,8 @@ import { formatPositionByEnglish } from "../lib/formatPositions";
 import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
 
 export const RecruitTimeline = () => {
-  const { useRecruitingTimelineInfo } = useRecruitingQuery();
-  const { data, isError } = useRecruitingTimelineInfo({});
+  const { useGetRecruitingTimelineInfo } = useRecruitingQuery();
+  const { data, isError } = useGetRecruitingTimelineInfo();
   if (isError) {
     return <div>에러 발생</div>;
   }

@@ -13,7 +13,7 @@ export const useRecruitingQuery = () => {
 
       return { data, isError };
     },
-    useRecruitingTimelineInfo: () => {
+    useGetRecruitingTimelineInfo: () => {
       const { data, isError } = useQuery({
         queryKey: ["recruiting", "info"],
         queryFn: () => getRecruitingInfo(),
