@@ -6,9 +6,11 @@ import path from "path";
 export default defineConfig({
   resolve: {
     alias: [
-      { find: "@common", replacement: path.resolve(__dirname, "src/common") },
       { find: "@", replacement: path.resolve(__dirname, "src") },
-      { find: "timers", replacement: "rollup-plugin-node-polyfills/polyfills/timers" },
+      {
+        find: "timers",
+        replacement: "rollup-plugin-node-polyfills/polyfills/timers",
+      },
     ],
   },
   server: {

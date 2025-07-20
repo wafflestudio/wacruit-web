@@ -20,10 +20,10 @@ import { resumeLoader } from "./pages/Loader/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 import RecruitList from "./pages/RecruitList";
-import Project from "./pages/Project";
+import Project from "@/pages/Project";
 import ProjectDetail from "./pages/ProjectDetail";
-import Review from "./pages/Review";
-import Member from "./pages/Member";
+import Review from "@/pages/Review";
+import Member from "@/pages/Member";
 import HomeV2 from "./pages/HomeV2";
 
 const queryClient = new QueryClient();

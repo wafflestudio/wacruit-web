@@ -1,13 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@common/*": [
-        "src/common/*"
-      ],
-      "@*": [
-        "src/*"
-      ]
+      "@*": ["*"]
     },
     "composite": true,
     "skipLibCheck": true,
@@ -15,7 +10,5 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "vite.config.ts"
-  ]
+  "include": ["vite.config.ts"]
 }
