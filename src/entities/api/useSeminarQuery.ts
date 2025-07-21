@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSeminarList } from "../../apis/seminar";
+import { getActiveSeminarList } from "../../apis/seminar";
 
 export const useSeminarQuery = () => {
   return {
-    useSeminarList: () => {
-      const { data } = useQuery({
+    useGetActiveSeminars: () => {
+      const { data, isError } = useQuery({
         queryKey: ["seminars"],
-        queryFn: () => getSeminarList(),
+        queryFn: () => getActiveSeminarList(),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
   };
 };

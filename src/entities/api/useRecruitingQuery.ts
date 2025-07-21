@@ -13,15 +13,15 @@ export const useRecruitingQuery = () => {
 
       return { data, isError };
     },
-    useRecruitingTimelineInfo: () => {
-      const { data } = useQuery({
+    useGetRecruitingTimelineInfo: () => {
+      const { data, isError } = useQuery({
         queryKey: ["recruiting", "info"],
         queryFn: () => getRecruitingInfo(),
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
 
-      return { data };
+      return { data, isError };
     },
   };
 };

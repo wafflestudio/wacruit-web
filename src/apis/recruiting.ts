@@ -26,10 +26,8 @@ export const cancelRecruiting = (id: Recruiting["id"]) =>
   deleteRequest(`/v1/recruitings/${id}/apply`, {});
 
 // V2
-export const getActiveRecruitings = () => {
+export const getActiveRecruitings = () =>
   getRequest<{ items: BreifRecruiting[] }>(`/v3/recruitings/active`);
-};
 
-export const getRecruitingInfo = () => {
+export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
-};
