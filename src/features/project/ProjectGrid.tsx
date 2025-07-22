@@ -16,8 +16,17 @@ export default function ProjectGrid() {
   );
 
   const sortedData = [...filteredProjects].sort((a, b) => {
-    return Number(b.is_active) - Number(a.is_active);
+    // 우선순위 1: is_active (true 먼저)
+    if (a.is_active !== b.is_active) {
+      return Number(b.is_active) - Number(a.is_active);
+    }
+
+    // 우선순위 2: member_generation (숫자 내림차순)
+    const genA = a.id
+    const genB = b.id
+    return genB - genA;
   });
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(sortedData.length / ITEMS_PER_PAGE);
@@ -69,13 +78,15 @@ export default function ProjectGrid() {
                 e.currentTarget.style.backgroundColor = "#e5e7eb";
               }}
             />
-            <TitleRow>
-              <Project>{project.name}</Project>
-              <StatusButton $isActive={project.is_active}>
+            {(project.is_active && (
+              <StatusButton>
                 {formatProjectStatus(project)}
               </StatusButton>
+            ))}
+            <TitleRow>
+              <Project>{project.name}</Project>
+              <Description>{project.summary}</Description>
             </TitleRow>
-            <Description>{project.summary}</Description>
           </Card>
         ))}
       </Grid>
@@ -182,36 +193,65 @@ const Card = styled.button`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.6rem;
+  position: relative;
 `;
-
 const Thumbnail = styled.img`
   width: 100%;
   height: 18rem;
   object-fit: cover;
-  border-radius: 1rem;
+  border-radius: 0.6rem;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1); /* 호버 시 110% 확대 */
+  }
 `;
 
 const TitleRow = styled.div`
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
 `;
 
 const Project = styled.h2`
   font-weight: bold;
-  font-size: 1.125rem;
+  font-size: 1.8rem;
+  color: var(--black-900, #121212);
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 27px */
+  letter-spacing: -0.18px;
 `;
 
-const StatusButton = styled.button<{ $isActive: boolean }>`
-  font-size: 0.875rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  background-color: ${({ $isActive }) => ($isActive ? "#bbf7d0" : "#e5e7eb")};
-  color: ${({ $isActive }) => ($isActive ? "#166534" : "#374151")};
+const StatusButton = styled.button`
+  display: flex;
+  padding: 0.3rem 0.8rem;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 6.8rem;
+  right: 0;
+  border-bottom-right-radius: 0.6rem;
+  background-color: black;
+  color: white;
+  border: none;
+  font-family: "Pretendard Variable";
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 19.5px */
+  letter-spacing: -0.13px;
 `;
 
 const Description = styled.p`
-  font-size: 0.875rem;
-  color: #4b5563;
+  font-size: 1.4rem;
+  color: var(--black-900, #121212);
+  font-family: "Pretendard Variable";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
+  letter-spacing: -0.14px;
 `;

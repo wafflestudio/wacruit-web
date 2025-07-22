@@ -14,7 +14,6 @@ export default function Project() {
 }
 
 const MainContainer = styled.main`
-  min-width: "92.0rem";
   display: flex;
   justify-content: center;
 `;
