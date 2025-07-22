@@ -9,7 +9,9 @@ export default function MemberGrid() {
   const [sortOpen, setSortOpen] = useState(false);
   const positions = ["전체", "Android", "IOS", "Frontend", "Backend", "Design"];
   const filtered = members.filter((member) =>
-    selectedPosition === "전체" ? true : member.member_position === selectedPosition
+    selectedPosition === "전체"
+      ? true
+      : member.member_position === selectedPosition,
   );
 
   const sorted = [...filtered].sort((a, b) => {
@@ -46,14 +48,16 @@ export default function MemberGrid() {
         <FilterBar>
           <Sort>기수 정렬</Sort>
           <SortButton onClick={() => setSortOpen((prev) => !prev)}>
-            {sortOrder === "desc" ? (<>
-            <SortOrder>내림차순</SortOrder>
-            <img src='/icon/arrow_down.svg'/>
-            </>
-            ):(<>
-            <SortOrder>오름차순</SortOrder>
-            <img src='/icon/arrow_up.svg'/>
-            </>
+            {sortOrder === "desc" ? (
+              <>
+                <SortOrder>내림차순</SortOrder>
+                <img src="/icon/arrow_down.svg" />
+              </>
+            ) : (
+              <>
+                <SortOrder>오름차순</SortOrder>
+                <img src="/icon/arrow_up.svg" />
+              </>
             )}
           </SortButton>
         </FilterBar>
@@ -115,7 +119,7 @@ const Sort = styled.div`
   font-weight: 600;
   line-height: 150%;
   letter-spacing: -0.16px;
-`
+`;
 const SortOrder = styled.div`
   color: #121212;
   text-align: center;
@@ -125,7 +129,7 @@ const SortOrder = styled.div`
   font-weight: 500;
   line-height: 150%;
   letter-spacing: -0.16px;
-`
+`;
 const Flex = styled.div`
   display: flex;
   flex-direction: column;
@@ -151,7 +155,7 @@ const FilterBar = styled.div`
 const Filter = styled(FilterBar)`
   && {
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -238,8 +242,8 @@ const SortButton = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 3px;
-  border: 0.1rem solid var(--black-700, #5F656F);
-  background: var(--white, #FFF);
+  border: 0.1rem solid var(--black-700, #5f656f);
+  background: var(--white, #fff);
 `;
 const Grid = styled.div`
   display: grid;
@@ -258,10 +262,6 @@ const Card = styled.div`
   padding: 1rem;
   transition: background-color 0.3s;
   cursor: pointer;
-
-  &:hover {
-    background-color: #e5e7eb; /* hover 시 더 진한 회색 */
-  }
   width: 22.2rem;
   padding: 1.6rem 2.2rem;
   align-items: flex-start;

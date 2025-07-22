@@ -48,19 +48,18 @@ const Title = styled.div`
 `;
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  /* 기본 3열 */
+  grid-template-columns: repeat(3, 1fr); /* 기본 3열 */
   gap: 1.5rem;
   padding: 1.5rem;
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);  /* 화면 좁아지면 2열 */
+    grid-template-columns: repeat(2, 1fr); /* 화면 좁아지면 2열 */
   }
 
   @media (max-width: 640px) {
-    grid-template-columns: 1fr;  /* 더 좁아지면 1열 */
+    grid-template-columns: 1fr; /* 더 좁아지면 1열 */
   }
 `;
-
 
 const Card = styled.div`
   display: flex;
@@ -73,10 +72,6 @@ const Card = styled.div`
   height: 26.8rem;
   min-width: 30rem;
   gap: 2rem;
-
-  &:hover {
-    background-color: #e5e7eb; /* hover 시 더 진한 회색 */
-  }
 `;
 
 const HeaderRow = styled.div`

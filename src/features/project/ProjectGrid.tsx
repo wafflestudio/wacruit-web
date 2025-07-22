@@ -22,11 +22,10 @@ export default function ProjectGrid() {
     }
 
     // 우선순위 2: member_generation (숫자 내림차순)
-    const genA = a.id
-    const genB = b.id
+    const genA = a.id;
+    const genB = b.id;
     return genB - genA;
   });
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(sortedData.length / ITEMS_PER_PAGE);
@@ -78,11 +77,9 @@ export default function ProjectGrid() {
                 e.currentTarget.style.backgroundColor = "#e5e7eb";
               }}
             />
-            {(project.is_active && (
-              <StatusButton>
-                {formatProjectStatus(project)}
-              </StatusButton>
-            ))}
+            {project.is_active && (
+              <StatusButton>{formatProjectStatus(project)}</StatusButton>
+            )}
             <TitleRow>
               <Project>{project.name}</Project>
               <Description>{project.summary}</Description>
@@ -179,6 +176,11 @@ const ClassButton = styled.div<{ $active: boolean }>`
   font-weight: ${({ $active }) => ($active ? "bold" : "normal")};
   color: ${({ $active }) => ($active ? "#000000" : "#9ca3af")};
   cursor: pointer;
+  font-family: "Pretendard Variable";
+  font-size: 1.8rem;
+  font-style: normal;
+  line-height: 150%;
+  letter-spacing: -0.18px;
 `;
 
 const Wrapper = styled.div`
@@ -195,6 +197,7 @@ const Card = styled.button`
   align-items: flex-start;
   gap: 1.6rem;
   position: relative;
+  cursor: pointer;
 `;
 const Thumbnail = styled.img`
   width: 100%;
