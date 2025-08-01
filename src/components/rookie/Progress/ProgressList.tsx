@@ -20,7 +20,6 @@ export function ProgressList({
   type,
 }: ProgressListProps) {
   const problems = recruiting.problem_status;
-  console.log(type);
 
   return (
     <List>

@@ -47,8 +47,6 @@ export enum RecruitingType {
   PROGRAMMER = 3,
 }
 
-export type RecruitingStringType = "Rookie" | "PROGRAMMER" | "DESIGNER";
-
 export type Recruiting = {
   id: number;
   name: string;
