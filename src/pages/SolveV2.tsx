@@ -187,7 +187,10 @@ export default function Solve() {
               >
                 제출하기
               </SubmitButton>
-              <SubmitButton onClick={() => handleSubmit(true)} disabled={true}>
+              <SubmitButton
+                onClick={() => handleSubmit(true)}
+                disabled={isSubmitting}
+              >
                 테스트 실행
               </SubmitButton>
               <SubmitButton
