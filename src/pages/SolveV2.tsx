@@ -39,6 +39,7 @@ export default function Solve() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
   // const [code, setCode] = useCode(language, problemNumber);
+  const [isCodeInitialized, setIsCodeInitialized] = useState(true);
   const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
@@ -166,6 +167,7 @@ export default function Solve() {
                 setIsFullScreen={setIsFullScreen}
                 code={codeRef.current}
                 setCode={(newCode) => {
+                  setIsCodeInitialized(false);
                   codeRef.current = newCode;
                 }}
                 language={language}
@@ -195,9 +197,13 @@ export default function Solve() {
               </SubmitButton>
               <SubmitButton
                 onClick={() => {
-                  if (!confirm("정말로 코드를 초기화하시겠습니까?")) return;
+                  if (!confirm("정말로 코드를 초기화하시겠습니까?")) {
+                    return;
+                  }
                   codeRef.current = boilerplates[language];
+                  setIsCodeInitialized(true);
                 }}
+                disabled={isCodeInitialized}
               >
                 코드 초기화
               </SubmitButton>
