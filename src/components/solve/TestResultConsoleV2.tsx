@@ -3,6 +3,7 @@ import { ProblemSubmissionResultV2 } from "../../types/apiTypes.ts";
 import { LegacyRef } from "react";
 
 type Props = {
+  isSubmitting?: boolean;
   results: ProblemSubmissionResultV2[];
   error: string[];
   ulRef?: LegacyRef<HTMLUListElement>;
@@ -12,6 +13,8 @@ export default function TestResultConsole(props: Props) {
   return (
     <Section>
       <SectionTitle>Console</SectionTitle>
+      <p>테스트 코드가 돌아가는 데에는 1분 가량의 시간이 소요될 수 있습니다.</p>
+      {props.isSubmitting && <p>채점이 시작되었습니다. 잠시만 기다려주세요.</p>}
       <ul ref={props.ulRef}>
         {props.results.map((result) => (
           <li key={result.num}>
