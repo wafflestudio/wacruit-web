@@ -10,7 +10,6 @@ type Props = {
 };
 
 export default function TestResultConsole(props: Props) {
-  console.log(props.isSubmitting);
   return (
     <Section>
       <SectionTitle>Console</SectionTitle>
