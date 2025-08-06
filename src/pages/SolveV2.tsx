@@ -57,8 +57,8 @@ export default function Solve() {
       return;
     }
 
-    queryClient.invalidateQueries(["recruiting"]);
     setIsSubmitting(true);
+    queryClient.invalidateQueries(["recruiting"]);
     setTestResults([]);
     setSubmitError([]);
     const res = postProblemSubmissionV2({
@@ -122,8 +122,10 @@ export default function Solve() {
         } else {
           alert("채점 결과 조회에 실패했습니다. 운영팀에게 문의 바랍니다.");
         }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-    setIsSubmitting(false);
   };
 
   /**
@@ -175,6 +177,7 @@ export default function Solve() {
               />
               <DragResizable initialHeight={300}>
                 <TestResultConsole
+                  isSubmitting={isSubmitting}
                   results={testResults}
                   error={submitError}
                   ulRef={testConsoleRef}
