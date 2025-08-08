@@ -22,21 +22,24 @@ export function RecruitItem({
   // to가 null이면 상시 모집이므로 항상 활성화
   const isActive = to ? to.getTime() > Date.now() : true;
 
-  const onApply = useCallback(async (recruit_id: number) => {
-    const auth = await checkAuth();
-    if (auth === "valid") {
-      navigate(`/recruiting/${recruit_id}`);
-      return;
-    }
-    if (auth === "need_register") {
-      navigate(`/sso/${recruit_id}`);
-      return;
-    }
-    if (auth === "invalid") {
-      tryLogin(recruit_id);
-      return;
-    }
-  }, []);
+  const onApply = useCallback(
+    async (recruit_id: number) => {
+      const auth = await checkAuth();
+      if (auth === "valid") {
+        navigate(`/recruiting/${recruit_id}`);
+        return;
+      }
+      if (auth === "need_register") {
+        navigate(`/sso/${recruit_id}`);
+        return;
+      }
+      if (auth === "invalid") {
+        tryLogin(recruit_id);
+        return;
+      }
+    },
+    [navigate],
+  );
 
   return (
     <Container onClick={() => onApply(id)} $isActive={isActive}>

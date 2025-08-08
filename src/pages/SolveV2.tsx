@@ -39,6 +39,7 @@ export default function Solve() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
   // const [code, setCode] = useCode(language, problemNumber);
+  const [isCodeInitialized, setIsCodeInitialized] = useState(true);
   const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
@@ -56,8 +57,8 @@ export default function Solve() {
       return;
     }
 
-    queryClient.invalidateQueries(["recruiting"]);
     setIsSubmitting(true);
+    queryClient.invalidateQueries(["recruiting"]);
     setTestResults([]);
     setSubmitError([]);
     const res = postProblemSubmissionV2({
@@ -72,7 +73,7 @@ export default function Solve() {
           }))
         : [],
     }).catch((e: Response) => {
-      return e.json().then((data: any) => {
+      return e.json().then((data: { detail?: string }) => {
         if (data.detail) throw Error(data.detail);
         else {
           throw Error("코드 제출에 실패했습니다. 운영팀에게 문의해주세요.");
@@ -121,8 +122,10 @@ export default function Solve() {
         } else {
           alert("채점 결과 조회에 실패했습니다. 운영팀에게 문의 바랍니다.");
         }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-    setIsSubmitting(false);
   };
 
   /**
@@ -166,6 +169,7 @@ export default function Solve() {
                 setIsFullScreen={setIsFullScreen}
                 code={codeRef.current}
                 setCode={(newCode) => {
+                  setIsCodeInitialized(false);
                   codeRef.current = newCode;
                 }}
                 language={language}
@@ -173,6 +177,7 @@ export default function Solve() {
               />
               <DragResizable initialHeight={300}>
                 <TestResultConsole
+                  isSubmitting={isSubmitting}
                   results={testResults}
                   error={submitError}
                   ulRef={testConsoleRef}
@@ -187,14 +192,21 @@ export default function Solve() {
               >
                 제출하기
               </SubmitButton>
-              <SubmitButton onClick={() => handleSubmit(true)} disabled={true}>
+              <SubmitButton
+                onClick={() => handleSubmit(true)}
+                disabled={isSubmitting}
+              >
                 테스트 실행
               </SubmitButton>
               <SubmitButton
                 onClick={() => {
-                  if (!confirm("정말로 코드를 초기화하시겠습니까?")) return;
+                  if (!confirm("정말로 코드를 초기화하시겠습니까?")) {
+                    return;
+                  }
                   codeRef.current = boilerplates[language];
+                  setIsCodeInitialized(true);
                 }}
+                disabled={isCodeInitialized}
               >
                 코드 초기화
               </SubmitButton>

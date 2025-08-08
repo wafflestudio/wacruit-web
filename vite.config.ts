@@ -8,5 +8,14 @@ export default defineConfig({
       timers: "rollup-plugin-node-polyfills/polyfills/timers",
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://wacruit-dev.wafflestudio.com/",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   plugins: [react()],
 });

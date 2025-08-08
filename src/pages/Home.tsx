@@ -46,7 +46,7 @@ export default function Home() {
       }
     });
     // api 응답이 성공했을 때 처리하기 위하여 dep array에 pinnedAnnouncements를 추가
-  }, [pinnedAnnouncements]);
+  }, [pinnedAnnouncements, announcementModalHandlePairs]);
 
   return (
     <>

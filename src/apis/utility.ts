@@ -3,9 +3,14 @@ import { BASE_URL } from "./environment";
 
 const defaultCommonHeader = {};
 
-const authorizedHeader = (token: string | null) => ({
-  Authorization: `Bearer ${token}`,
-});
+const authorizedHeader = (token: string | null) => {
+  if (token === null) {
+    return undefined;
+  }
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
 
 const defaultPostHeader = {
   "Content-Type": "application/json",
@@ -179,3 +184,35 @@ async function* parseEvent(reader: ReadableStreamDefaultReader<string>) {
 function removeFirstSpace(str: string) {
   return str.startsWith(" ") ? str.slice(1) : str;
 }
+
+export const encodeQueryParams = ({
+  params,
+}: {
+  params: Record<
+    string,
+    | string
+    | number
+    | boolean
+    | string[]
+    | number[]
+    | boolean[]
+    | null
+    | undefined
+  >;
+}) => {
+  const queryParameters = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null) return; // null, undefined 제외
+
+    if (Array.isArray(value)) {
+      value.forEach((v) => {
+        queryParameters.append(key, v.toString());
+      });
+    } else {
+      queryParameters.append(key, value.toString());
+    }
+  });
+
+  return queryParameters.toString();
+};

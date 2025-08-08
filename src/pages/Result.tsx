@@ -91,7 +91,7 @@ export function NoResult() {
   useEffect(() => {
     alert("지원하지 않은 리크루팅입니다.");
     navigate("../");
-  }, []);
+  }, [navigate]);
   return <div></div>;
 }
 const Main = styled.main`

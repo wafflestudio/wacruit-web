@@ -7,5 +7,6 @@ export type Union<T extends ReadonlyArray<ValueType>> = T[number];
 // 결과: ("open" | "closed" | "closing") type
 
 //Loader type
+// eslint-disable-next-line
 export type LoaderReturnType<LoaderType extends (...args: any) => any> =
   Awaited<ReturnType<ReturnType<LoaderType>>>;
