@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import useModals from "../../Modal/useModals.tsx";
 import Modal from "../../Modal/Modal";
-import { BoldText, HorizontalLine, TestCase, Text } from "./common";
+import { BoldText, HorizontalLine, TestCase } from "./common";
 import TestCaseModal from "./TestCaseModal";
 import { useCallback } from "react";
 import MarkdownRenderer from "../../../lib/MarkdownRenderer";
@@ -76,14 +76,14 @@ export default function ProblemDescription({
         customTestCases={customTestCases}
         deleteCustomTestCase={deleteCustomTestCase}
       />
-      <AddTestCaseButton
+      {/* <AddTestCaseButton
         onClick={() => {
           modalHandle.openModal();
         }}
       >
         <img src="/icon/AddTestCase.svg" alt="+" />
         <Text as="div">테스트 케이스 추가하기</Text>
-      </AddTestCaseButton>
+      </AddTestCaseButton> */}
     </Section>
   );
 }
@@ -131,36 +131,36 @@ const ProblemTitle = styled.h1`
   margin-bottom: 2.8rem;
 `;
 
-const AddTestCaseButton = styled.button`
-  float: right;
-  margin-top: 1.6rem;
-  padding: 0.8rem;
-  width: 21.6rem;
-  height: 3.9rem;
+// const AddTestCaseButton = styled.button`
+//   float: right;
+//   margin-top: 1.6rem;
+//   padding: 0.8rem;
+//   width: 21.6rem;
+//   height: 3.9rem;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 0.7rem;
 
-  background-color: #fff;
-  border: 0.2rem solid #373737;
-  border-radius: 0.6rem;
-  cursor: pointer;
+//   background-color: #fff;
+//   border: 0.2rem solid #373737;
+//   border-radius: 0.6rem;
+//   cursor: pointer;
 
-  > img {
-    width: 2.4rem;
-    height: 2.4rem;
-  }
+//   > img {
+//     width: 2.4rem;
+//     height: 2.4rem;
+//   }
 
-  > div {
-    font-weight: 500;
-  }
+//   > div {
+//     font-weight: 500;
+//   }
 
-  &:hover {
-    background-color: #e6e6e6;
-  }
-`;
+//   &:hover {
+//     background-color: #e6e6e6;
+//   }
+// `;
 
 const MarkdownStyledWrapper = styled.div`
   h1 {
