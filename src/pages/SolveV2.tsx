@@ -192,12 +192,12 @@ export default function Solve() {
               >
                 제출하기
               </SubmitButton>
-              <SubmitButton
+              {/* <SubmitButton
                 onClick={() => handleSubmit(true)}
                 disabled={isSubmitting}
               >
                 테스트 실행
-              </SubmitButton>
+              </SubmitButton> */}
               <SubmitButton
                 onClick={() => {
                   if (!confirm("정말로 코드를 초기화하시겠습니까?")) {
