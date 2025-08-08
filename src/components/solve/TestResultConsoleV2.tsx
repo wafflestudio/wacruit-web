@@ -14,7 +14,12 @@ export default function TestResultConsole(props: Props) {
     <Section>
       <SectionTitle>Console</SectionTitle>
       <p>테스트 코드가 돌아가는 데에는 1분 가량의 시간이 소요될 수 있습니다.</p>
-      {props.isSubmitting && <p>채점이 시작되었습니다. 잠시만 기다려주세요.</p>}
+      {props.isSubmitting && (
+        <p>
+          채점이 시작되었습니다. 모든 테스트케이스가 채점될 때까지 잠시만
+          기다려주세요.
+        </p>
+      )}
       <ul ref={props.ulRef}>
         {props.results.map((result) => (
           <li key={result.num}>
