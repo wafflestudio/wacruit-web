@@ -63,7 +63,8 @@ int main(void)
   return 0;
 }
 `,
-  "C++": `#include <iostream>
+  "C++": ` // c++ 17 버전으로 작성해주세요.
+#include <iostream>
 #include <string>
 #include <vector>
 
