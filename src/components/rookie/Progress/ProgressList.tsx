@@ -7,6 +7,7 @@ import PortfolioCard from "./PortfolioCard";
 import { ResumeCard } from "./ResumeCard";
 import PortfolioCard from "./PortfolioCard";
 // import PortfolioCard from "./PortfolioCard";
+import { ProgrammerRecruitInfo } from "../../programmer/ProgrammerRecruitInfo";
 
 type ProgressListProps = {
   recruiting: Recruiting;
@@ -14,21 +15,21 @@ type ProgressListProps = {
   type: number;
 };
 
-export function ProgressList({
+function ResumeInfo({
+  recruitingType,
   recruiting,
   hasResume,
-  type,
-}: ProgressListProps) {
-  const problems = recruiting.problem_status;
-
-  return (
-    <List>
-      <ResumeCard submit={hasResume} />
-      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
-      {type !== RecruitingType.ROOKIE ? (
-        <PortfolioCard recruiting={recruiting} />
-      ) : (
-        problems
+}: {
+  recruitingType: number;
+  recruiting: Recruiting;
+  hasResume: boolean;
+}) {
+  if (recruitingType === RecruitingType.ROOKIE) {
+    const problems = recruiting.problem_status;
+    return (
+      <>
+        <ResumeCard submit={hasResume} />
+        {problems
           .sort((a, b) => {
             if (a.num > b.num) return 1;
             if (a.num < b.num) return -1;
@@ -41,8 +42,34 @@ export function ProgressList({
               statusCode={status}
               to={`./solve/${id}`}
             />
-          ))
-      )}
+          ))}
+      </>
+    );
+  }
+  if (recruitingType === RecruitingType.PROGRAMMER) {
+    return <ProgrammerRecruitInfo />;
+  }
+  return (
+    <>
+      <ResumeCard submit={hasResume} />
+      <PortfolioCard recruiting={recruiting} />
+    </>
+  );
+}
+
+export function ProgressList({
+  recruiting,
+  hasResume,
+  type,
+}: ProgressListProps) {
+  return (
+    <List>
+      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
+      <ResumeInfo
+        recruiting={recruiting}
+        recruitingType={type}
+        hasResume={hasResume}
+      />
     </List>
   );
 }

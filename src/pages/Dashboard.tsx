@@ -10,6 +10,7 @@ import {
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
 import { applyRecruiting, cancelRecruiting } from "../apis/recruiting.ts";
+import { RecruitingType } from "../types/apiTypes.ts";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -64,40 +65,43 @@ export default function Dashboard() {
             />
           </div>
         </AnnouncementButton> */}
-        {initialData.recruiting.applied ? (
-          <AnnouncementButton onClick={() => navigate("./result")}>
-            지원 결과 확인하기
-            <div>
-              <img
-                src="/icon/rookie/AnnounceRightArrow.svg"
-                alt="&rarr;"
-                width={20}
-              />
-              <img
-                src="/icon/rookie/AnnounceRightArrowWhite.svg"
-                alt="&rarr;"
-                width={20}
-              />
-            </div>
-          </AnnouncementButton>
-        ) : (
-          <AnnouncementButton
-            onClick={() =>
-              applyRecruiting(recruiting.id)
-                .then(() => {
-                  alert("지원이 완료되었습니다.");
-                  navigate(0);
-                })
-                .catch((res: Response) => {
-                  res.json().then((data) => {
-                    alert(data.detail);
-                  });
-                })
-            }
-          >
-            지원하기
-          </AnnouncementButton>
-        )}
+        {initialData.recruiting.applied &&
+          recruiting.type !== RecruitingType.PROGRAMMER && (
+            <AnnouncementButton onClick={() => navigate("./result")}>
+              지원 결과 확인하기
+              <div>
+                <img
+                  src="/icon/rookie/AnnounceRightArrow.svg"
+                  alt="&rarr;"
+                  width={20}
+                />
+                <img
+                  src="/icon/rookie/AnnounceRightArrowWhite.svg"
+                  alt="&rarr;"
+                  width={20}
+                />
+              </div>
+            </AnnouncementButton>
+          )}{" "}
+        {!initialData.recruiting.applied &&
+          recruiting.type !== RecruitingType.PROGRAMMER && (
+            <AnnouncementButton
+              onClick={() =>
+                applyRecruiting(recruiting.id)
+                  .then(() => {
+                    alert("지원이 완료되었습니다.");
+                    navigate(0);
+                  })
+                  .catch((res: Response) => {
+                    res.json().then((data) => {
+                      alert(data.detail);
+                    });
+                  })
+              }
+            >
+              지원하기
+            </AnnouncementButton>
+          )}
         <BottomContainer>
           <ProgressList
             recruiting={recruiting}
