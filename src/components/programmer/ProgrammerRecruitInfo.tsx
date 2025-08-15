@@ -2,6 +2,39 @@ import styled from "styled-components";
 import { MAILTO_RECRUIT } from "../../common/const";
 
 export const ProgrammerRecruitInfo = () => {
+  const requirements = [
+    {
+      contents: "이름, 학교, 학과, 학번",
+    },
+    {
+      contents: "전화번호",
+      detail: "예. 010-1234-5678",
+    },
+    {
+      contents: "슬랙, 노션, 깃허브 초대를 위한 이메일",
+      detail: (
+        <>
+          세 가지에 대해 모두 작성해주세요. (예. 깃허브
+          example_github@gmail.com, 슬랙/노션 example_slack@naver.com)
+        </>
+      ),
+    },
+    {
+      contents: "지원하는 포지션 및 주 사용 기술스택",
+      detail: "복수 응답 또한 가능합니다. (예. Frontent / React, Next.js)",
+    },
+    {
+      contents: (
+        <>
+          지원 동기 <Highlight>(500자 내외)</Highlight>
+        </>
+      ),
+    },
+    {
+      contents: "프로젝트 진행과 관련한 자료 및 간략한 설명",
+      detail: "예. 깃허브 링크, 포트폴리오 등",
+    },
+  ];
   return (
     <div>
       <div>
@@ -13,36 +46,12 @@ export const ProgrammerRecruitInfo = () => {
           </Description>
 
           <RequirementsList style={{ counterReset: "item" }}>
-            <RequirementItem>
-              <RequirementText>이름, 학교, 학과, 학번</RequirementText>
-            </RequirementItem>
-
-            <RequirementItem>
-              <RequirementText>전화번호 및 연락을 위한 이메일</RequirementText>
-            </RequirementItem>
-
-            <RequirementItem>
-              <RequirementText>
-                슬랙, 노션, 깃허브 초대를 위한 이메일
-              </RequirementText>
-              <SubText>
-                세 가지에 대해 모두 작성해주세요. (예. 깃허브
-                example_github@gmail.com, 슬랙/노션 example_slack@naver.com)
-              </SubText>
-            </RequirementItem>
-
-            <RequirementItem>
-              <RequirementText>
-                지원 동기 <Highlight>(500자 내외)</Highlight>
-              </RequirementText>
-            </RequirementItem>
-
-            <RequirementItem>
-              <RequirementText>
-                프로젝트 진행과 관련한 자료 및 간략한 설명
-              </RequirementText>
-              <SubText>(예. 깃허브 링크, 포트폴리오 등)</SubText>
-            </RequirementItem>
+            {requirements.map(({ contents, detail }) => (
+              <RequirementItem>
+                <RequirementText>{contents}</RequirementText>
+                {detail !== undefined && <SubText>{detail}</SubText>}
+              </RequirementItem>
+            ))}
           </RequirementsList>
         </Content>
       </div>
