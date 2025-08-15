@@ -21,7 +21,7 @@ export const ProgrammerRecruitInfo = () => {
     },
     {
       contents: "지원하는 포지션 및 주 사용 기술스택",
-      detail: "복수 응답 또한 가능합니다. (예. Frontent / React, Next.js)",
+      detail: "복수 응답 또한 가능합니다. (예. 웹 프론트엔드 / React, Next.js)",
     },
     {
       contents: (
