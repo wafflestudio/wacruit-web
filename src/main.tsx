@@ -20,8 +20,8 @@ import { resumeLoader } from "./pages/Loader/ResumeLoader";
 import Result, { NoResult } from "./pages/Result";
 import { resultLoader } from "./pages/Loader/ResultLoader";
 import RecruitList from "./pages/RecruitList";
-import Project from "./pages/Project";
-import ProjectDetail from "./pages/ProjectDetail";
+import ProjectV2 from "./pages/ProjectV2";
+import ProjectDetailV2 from "./pages/ProjectDetailV2";
 import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
@@ -65,12 +65,12 @@ const router = createBrowserRouter([
   },
   {
     path: PROJECT_LIST,
-    element: <Project />,
+    element: <ProjectV2 />,
     errorElement: <div>error</div>,
   },
   {
     path: PROJECT_DETAIL,
-    element: <ProjectDetail />,
+    element: <ProjectDetailV2 />,
     errorElement: <div>error</div>,
   },
   {

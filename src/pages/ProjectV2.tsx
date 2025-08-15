@@ -107,7 +107,7 @@ const Description = styled.p`
   color: #4b5563;
 `;
 
-export default function ProjectGrid() {
+export default function ProjectV2() {
   const { toProjectDetail } = useRouteNavigation();
   const [selectedType, setSelectedType] = useState<"SERVICE" | "STUDY">(
     "SERVICE",

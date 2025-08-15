@@ -69,7 +69,7 @@ const ArrowButton = styled.button<{ left?: boolean }>`
   }
 `;
 
-export default function ProjectDetailPage() {
+export default function ProjectDetailPageV2() {
   const [index, setIndex] = useState(0);
   const project = projectDetail;
 
