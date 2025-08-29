@@ -10,11 +10,7 @@ export default function MemberGrid() {
   ];
   return (
     <Wrapper>
-      <Title1>
-        와플스튜디오의 발전을 위해
-        <br />
-        노력해주신 분들
-      </Title1>
+      <Title1>와플스튜디오의 발전을 위해 노력해주신 분들</Title1>
       <Flex>
         {sponsors.map((sponsor) => (
           <div key={sponsor.id}>{`${sponsor.name} 님`}</div>
