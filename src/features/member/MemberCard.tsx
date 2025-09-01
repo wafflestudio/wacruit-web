@@ -25,7 +25,10 @@ export default function MemberCard({
       />
       <Name title={m.name}>{m.name}</Name>
       <MetaRow>
-        <Meta>{m.generationText}</Meta>
+        <Gen>
+          <GenNum>{m.generationText}</GenNum>
+          <GenSuffix>기</GenSuffix>
+        </Gen>
         <Meta>{formatPositionLabel(m.positionKey, isMobile)}</Meta>
       </MetaRow>
     </Card>
@@ -35,9 +38,9 @@ export default function MemberCard({
 const Card = styled.div`
   position: relative;
   display: flex;
-  gap: 25px;
   background-color: ${theme.colors.black[100]};
   border-radius: 4px;
+  gap: 19px;
 
   @media (max-width: 767px) {
     width: 108px;
@@ -87,26 +90,38 @@ const Name = styled.div`
   }
 `;
 
-const MetaRow = styled.div`
-  flex-shrink: 0;
+const Gen = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: ${theme.colors.black[700]};
-  white-space: nowrap;
+  gap: 1px;
+`;
 
+const MetaBase = styled.span`
   font-family: "Pretendard Variable", system-ui, -apple-system, Segoe UI, Roboto,
     "Noto Sans KR", sans-serif;
   font-weight: ${theme.fontWeights.medium};
   letter-spacing: -0.01em;
   line-height: ${theme.lineHeights.base};
   font-size: ${theme.fontSizes[13]};
+  color: ${theme.colors.black[700]};
 
   @media (max-width: 767px) {
     font-size: ${theme.fontSizes[12]};
   }
 `;
 
-const Meta = styled.span`
-  display: inline-block;
+const GenNum = styled(MetaBase)``;
+const GenSuffix = styled(MetaBase)``;
+const Meta = styled(MetaBase)``;
+
+const MetaRow = styled.div`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 4px;
+
+  @media (max-width: 767px) {
+    gap: 4px;
+  }
 `;

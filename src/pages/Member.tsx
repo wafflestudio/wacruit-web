@@ -43,7 +43,7 @@ export default function MemberPage() {
       return {
         id: m.id,
         name: `${m.last_name}${m.first_name}`,
-        generationText: `${m.generation}기`,
+        generationText: `${m.generation}`,
         generationNum: parseGeneration(m.generation),
         positionKey: key as CorePos,
       };

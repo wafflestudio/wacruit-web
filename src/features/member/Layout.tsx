@@ -16,7 +16,6 @@ export const Wrapper = styled.div`
   padding: 0 0 140px;
 
   height: auto;
-  min-height: 1443px;
 
   @media (max-width: 767px) {
     width: 100%;
@@ -25,7 +24,6 @@ export const Wrapper = styled.div`
     gap: 40px;
     padding: 0 0 140px;
     height: auto;
-    min-height: 1680px;
   }
 `;
 
