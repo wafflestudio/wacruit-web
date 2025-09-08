@@ -1,100 +1,153 @@
 import styled from "styled-components";
 import { reviewData } from "../mocks/review";
+import Headerv2 from "../shared/ui/header/HeaderV2";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 5rem;
-  gap: 5rem;
-`;
+const Section = styled.section`
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 128px 0 140px 0;
+  box-sizing: border-box;
 
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 3rem;
-`;
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  padding: 1.5rem;
-`;
-
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: #f3f4f6; /* 연한 회색 */
-  border-radius: 0.5rem;
-  padding: 1rem;
-  transition: background-color 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e5e7eb; /* hover 시 더 진한 회색 */
+  @media (max-width: 768px) {
+    padding: 88px 0 140px 0;
   }
 `;
 
-const HeaderRow = styled.div`
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1200px;
+  padding: 0 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+`;
+
+const TitleSection = styled.div`
+  text-align: left;
+`;
+
+const SectionTitle = styled.h1`
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.black[900]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  letter-spacing: -1%;
+  margin: 0;
+  white-space: nowrap;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+
+`;
+
+const ReviewCard = styled.article`
+  width: 100%;
+  height: 268px;
+  background-color: ${({ theme }) => theme.colors.black[100]};
+  border-radius: 8px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    height: 247px;
+    padding: 18px 24px;
+  }
+`;
+
+const CardHeader = styled.div`
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
+  gap: 19px;
+  
 `;
 
 const LeftInfo = styled.div`
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 8px;
 `;
 
-const RightInfo = styled.div`
+const MemberName = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  color: ${({ theme }) => theme.colors.black[900]};
+`;
+
+const MemberInfo = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.black[700]};
+`;
+
+const CardContent = styled.div`
+  width: 100%;
+  height: auto;
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 18px;
+  
 `;
 
-const Status = styled.span<{ isActive: boolean }>`
-  color: ${(props) => (props.isActive ? "green" : "gray")};
-  font-weight: bold;
+const ReviewTitle = styled.h2`
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  color: ${({ theme }) => theme.colors.black[900]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  letter-spacing: -1%;
+  margin: 0;
 `;
 
-const Review = styled.h2`
-  font-size: 1.125rem;
-  font-weight: bold;
-`;
-
-const Content = styled.p`
-  font-size: 0.875rem;
-  color: #4b5563;
+const ReviewText = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.black[900]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  letter-spacing: -1%;
+  margin: 0;
 `;
 
 export default function ReviewGrid() {
   return (
-    <Wrapper>
-      <Title>
-        와플스튜디오 회원들의
-        <br />
-        생생한 후기를 모았어요!
-      </Title>
-      <Grid>
-        {reviewData.map((review, index) => (
-          <Card key={index}>
-            <HeaderRow>
-              <LeftInfo>
-                <span>{review.member_name}</span>
-                <Status isActive={review.is_active}>
-                  {review.is_active ? "• 활동중" : "• 휴식회원"}
-                </Status>
-              </LeftInfo>
-              <RightInfo>
-                <span>{review.member_generation}</span>
-                <span>{review.member_position}</span>
-              </RightInfo>
-            </HeaderRow>
-            <Review>{review.title}</Review>
-            <Content>{review.content}</Content>
-          </Card>
-        ))}
-      </Grid>
-    </Wrapper>
+    <Section>
+      <Headerv2 />
+      <ContentWrapper>
+        <TitleSection>
+          <SectionTitle>
+            와플스튜디오 회원들의
+            <br />
+            생생한 후기를 모았어요!
+          </SectionTitle>
+        </TitleSection>
+
+        <Grid>
+          {reviewData.map((review, index) => (
+            <ReviewCard key={index}>
+              <CardHeader>
+                <LeftInfo>
+                  <MemberName>{review.member_name}</MemberName>
+                </LeftInfo>
+                <MemberInfo>{review.member_generation} {review.member_position}</MemberInfo>
+              </CardHeader>
+
+              <CardContent>
+                <ReviewTitle>{review.title}</ReviewTitle>
+                <ReviewText>{review.content}</ReviewText>
+              </CardContent>
+            </ReviewCard>
+          ))}
+        </Grid>
+      </ContentWrapper>
+    </Section>
   );
 }
