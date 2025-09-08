@@ -29,7 +29,7 @@ export const theme = {
     18: "1.8rem",
     20: "2.0rem",
     24: "2.4rem",
-    32: "3.2rem",
+    32: "2.8rem",
     40: "4.0rem",
     50: "5.0rem",
   },
