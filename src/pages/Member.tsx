@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { members, ApiMember, ApiPosition } from "../mocks/member";
 import { sponsors } from "../mocks/sponsor";
+import Headerv2 from "../shared/ui/header/HeaderV2";
+import styled from "styled-components";
 
 import { Title1, Title2 } from "../features/member/Titles";
 import PositionFilters from "../features/member/PositionFilters";
@@ -31,6 +33,14 @@ const POS_FROM_API: Record<ApiPosition, CorePos> = {
   BACKEND: "backend",
   DESIGN: "design",
 };
+
+const HeaderOffset = styled.div`
+  height: calc(2rem + 2 * 1.2rem + 1px + 80px);
+
+  @media (max-width: 768px) {
+    height: calc(2rem + 2 * 1.2rem + 40px);
+  }
+`;
 
 export default function MemberPage() {
   const isMobile = useIsMobile(767);
@@ -69,39 +79,43 @@ export default function MemberPage() {
   const toggleSort = () => setSortOrder((p) => (p === "desc" ? "asc" : "desc"));
 
   return (
-    <Wrapper>
-      <CombinedSection>
-        {/* Sponsors */}
-        <SponsorsBlock>
-          <Title1>
-            <span className="t1-part">와플스튜디오의 발전을 위해</span>
-            <span className="t1-part">노력해주신 분들</span>
-          </Title1>
-          <Flex>
-            {sponsors.map((s) => (
-              <SponsorName key={s.id}>{`${s.name} 님`}</SponsorName>
-            ))}
-          </Flex>
-        </SponsorsBlock>
+    <>
+      <Headerv2 />
+      <HeaderOffset />
+      <Wrapper>
+        <CombinedSection>
+          {/* Sponsors */}
+          <SponsorsBlock>
+            <Title1>
+              <span className="t1-part">와플스튜디오의 발전을 위해</span>
+              <span className="t1-part">노력해주신 분들</span>
+            </Title1>
+            <Flex>
+              {sponsors.map((s) => (
+                <SponsorName key={s.id}>{`${s.name} 님`}</SponsorName>
+              ))}
+            </Flex>
+          </SponsorsBlock>
 
-        {/* Members */}
-        <MemberBlock>
-          <Title2>와플스튜디오 멤버</Title2>
-          <ControlsRow>
-            <PositionFilters
-              selected={selectedPosition}
-              onSelect={setSelectedPosition}
-            />
-            <SortToggle sortOrder={sortOrder} onToggle={toggleSort} />
-          </ControlsRow>
+          {/* Members */}
+          <MemberBlock>
+            <Title2>와플스튜디오 멤버</Title2>
+            <ControlsRow>
+              <PositionFilters
+                selected={selectedPosition}
+                onSelect={setSelectedPosition}
+              />
+              <SortToggle sortOrder={sortOrder} onToggle={toggleSort} />
+            </ControlsRow>
 
-          <Grid>
-            {processed.map((m) => (
-              <MemberCard key={m.id} m={m} isMobile={isMobile} />
-            ))}
-          </Grid>
-        </MemberBlock>
-      </CombinedSection>
-    </Wrapper>
+            <Grid>
+              {processed.map((m) => (
+                <MemberCard key={m.id} m={m} isMobile={isMobile} />
+              ))}
+            </Grid>
+          </MemberBlock>
+        </CombinedSection>
+      </Wrapper>
+    </>
   );
 }
