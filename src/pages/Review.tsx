@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { reviewData } from "../mocks/review";
+import { useQuery } from "@tanstack/react-query";
+import { getAllReviews } from "../apis/review";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 
 const Section = styled.section`
@@ -42,7 +43,6 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-
 `;
 
 const ReviewCard = styled.article`
@@ -55,7 +55,7 @@ const ReviewCard = styled.article`
   flex-direction: column;
   gap: 20px;
   box-sizing: border-box;
-  
+
   @media (max-width: 768px) {
     height: 247px;
     padding: 18px 24px;
@@ -69,7 +69,6 @@ const CardHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 19px;
-  
 `;
 
 const LeftInfo = styled.div`
@@ -96,7 +95,6 @@ const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 18px;
-  
 `;
 
 const ReviewTitle = styled.h2`
@@ -117,7 +115,71 @@ const ReviewText = styled.p`
   margin: 0;
 `;
 
+const LoadingMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  color: ${({ theme }) => theme.colors.black[700]};
+  padding: 40px;
+`;
+
 export default function ReviewGrid() {
+  // 포지션 변환 함수
+  const formatPosition = (position: string): string => {
+    const formatted =
+      position.charAt(0).toUpperCase() + position.slice(1).toLowerCase();
+
+    // iOS 특별 처리
+    if (formatted === "Ios") return "iOS";
+
+    return formatted;
+  };
+
+  const {
+    data: reviews,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["review", "all"],
+    queryFn: () => getAllReviews().then((response) => response.items),
+    staleTime: 1,
+  });
+
+  if (isLoading) {
+    return (
+      <Section>
+        <Headerv2 />
+        <ContentWrapper>
+          <TitleSection>
+            <SectionTitle>
+              와플스튜디오 회원들의
+              <br />
+              생생한 후기를 모았어요!
+            </SectionTitle>
+          </TitleSection>
+          <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
+        </ContentWrapper>
+      </Section>
+    );
+  }
+
+  if (error != null) {
+    return (
+      <Section>
+        <Headerv2 />
+        <ContentWrapper>
+          <TitleSection>
+            <SectionTitle>
+              와플스튜디오 회원들의
+              <br />
+              생생한 후기를 모았어요!
+            </SectionTitle>
+          </TitleSection>
+          <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+        </ContentWrapper>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <Headerv2 />
@@ -130,23 +192,34 @@ export default function ReviewGrid() {
           </SectionTitle>
         </TitleSection>
 
-        <Grid>
-          {reviewData.map((review, index) => (
-            <ReviewCard key={index}>
-              <CardHeader>
-                <LeftInfo>
-                  <MemberName>{review.member_name}</MemberName>
-                </LeftInfo>
-                <MemberInfo>{review.member_generation} {review.member_position}</MemberInfo>
-              </CardHeader>
+        {reviews && reviews.length === 0 ? (
+          <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
+        ) : (
+          <Grid>
+            {reviews &&
+              reviews.map((review) => (
+                <ReviewCard key={review.id}>
+                  <CardHeader>
+                    <LeftInfo>
+                      <MemberName>
+                        {review.member_last_name}
+                        {review.member_first_name}
+                      </MemberName>
+                    </LeftInfo>
+                    <MemberInfo>
+                      {review.member_generation}기{" "}
+                      {formatPosition(review.member_position)}
+                    </MemberInfo>
+                  </CardHeader>
 
-              <CardContent>
-                <ReviewTitle>{review.title}</ReviewTitle>
-                <ReviewText>{review.content}</ReviewText>
-              </CardContent>
-            </ReviewCard>
-          ))}
-        </Grid>
+                  <CardContent>
+                    <ReviewTitle>{review.title}</ReviewTitle>
+                    <ReviewText>{review.content}</ReviewText>
+                  </CardContent>
+                </ReviewCard>
+              ))}
+          </Grid>
+        )}
       </ContentWrapper>
     </Section>
   );
