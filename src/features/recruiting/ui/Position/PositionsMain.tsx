@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { TabContent, MainTab, SubTab } from "../model/types";
+import type { TabContent, MainTab, SubTab } from "../../model/types";
 import { NavigateRecruitingByPosition } from "./NavigateRecruitingByPosition";
-import { useSeminarQuery } from "../../../entities/api/useSeminarQuery";
+import { useSeminarQuery } from "../../../../entities/api/useSeminarQuery";
 import { PositionTab } from "./PositionTab";
 
 const DEFAULT_TAB_CONTENTS: TabContent[] = [
@@ -46,7 +46,7 @@ const DEFAULT_TAB_CONTENTS: TabContent[] = [
   },
 ];
 
-export const PositionContents = () => {
+export const PositionsMain = () => {
   const [selectedMainTabId, setSelectedMainTabId] = useState<MainTab>("ROOKIE");
   const [selectedSubTabId, setSelectedSubTabId] = useState<SubTab | undefined>(
     undefined,

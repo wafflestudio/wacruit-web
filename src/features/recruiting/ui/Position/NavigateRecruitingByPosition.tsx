@@ -1,7 +1,7 @@
-import type { MainTab } from "../model/types";
-import { formatPositionByEnglish } from "../lib/formatPositions";
-import { useRouteNavigation } from "../../../shared/routes/useRouteNavigation";
-import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
+import type { MainTab } from "../../model/types";
+import { formatPositionByEnglish } from "../../lib/formatPositions";
+import { useRouteNavigation } from "../../../../shared/routes/useRouteNavigation";
+import { useRecruitingQuery } from "../../../../entities/api/useRecruitingQuery";
 
 export const NavigateRecruitingByPosition = ({
   position,
@@ -15,7 +15,7 @@ export const NavigateRecruitingByPosition = ({
   if (isError) {
     return (
       <button onClick={toRecruitingList}>
-        {formatPositionByEnglish({ position })} 리크루팅
+        {/* {formatPositionByEnglish({ position })} 리크루팅 */}
       </button>
     );
   }
