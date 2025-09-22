@@ -9,12 +9,12 @@ export const HeaderOffset = styled.div`
 
 export const Wrapper = styled.div`
   display: flex;
-  max-width: 120rem; /* 1200px */
+  max-width: 120rem;
   margin: 0 auto;
   padding: 0 clamp(0rem, calc((100vw - 30rem) / 2), 2rem) 14rem;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4rem; /* 40px */
+  gap: 4rem;
   align-self: stretch;
 `;
 

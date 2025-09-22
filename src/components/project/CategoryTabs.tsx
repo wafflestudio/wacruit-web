@@ -6,13 +6,13 @@ const Class = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8rem; /* 80px */
+  gap: 8rem;
 `;
 
 const ClassButton = styled.button<{ $active: boolean }>`
   cursor: pointer;
   text-decoration: ${({ $active }) => ($active ? "underline" : "none")};
-  text-underline-offset: 0.4rem;
+  text-underline-offset: 1.5rem;
   color: ${({ theme, $active }) =>
     $active ? theme.colors.black[900] : theme.colors.black[500]};
   font-size: ${({ theme }) => theme.fontSizes[18]};
