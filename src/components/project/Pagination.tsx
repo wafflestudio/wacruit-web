@@ -57,7 +57,9 @@ export default function Pagination({
   return (
     <PaginationWrap>
       <ArrowIcon
+        type="button"
         $dir="left"
+        aria-label="이전 페이지"
         disabled={currentPage === 1}
         onClick={() => currentPage > 1 && onChange(currentPage - 1)}
       />
@@ -71,7 +73,9 @@ export default function Pagination({
         </PageNumber>
       ))}
       <ArrowIcon
+        type="button"
         $dir="right"
+        aria-label="다음 페이지"
         disabled={currentPage === totalPages}
         onClick={() => currentPage < totalPages && onChange(currentPage + 1)}
       />
