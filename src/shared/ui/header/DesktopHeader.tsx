@@ -51,7 +51,6 @@ const HeaderContainer = styled.header`
   width: 100%;
   padding: 1.2rem 0;
   background-color: ${({ theme }) => theme.colors.black[900]};
-  border-bottom: 1px solid #eee;
   display: flex;
   align-items: center;
   justify-content: center;
