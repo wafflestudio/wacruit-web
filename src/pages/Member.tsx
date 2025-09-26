@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { members, ApiMember, ApiPosition } from "../mocks/member";
 import { sponsors } from "../mocks/sponsor";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import Footer from "../shared/ui/footer/Footer";
 import styled from "styled-components";
 
 import { Title1, Title2 } from "../features/member/Titles";
@@ -116,6 +117,7 @@ export default function MemberPage() {
           </MemberBlock>
         </CombinedSection>
       </Wrapper>
+      <Footer />
     </>
   );
 }

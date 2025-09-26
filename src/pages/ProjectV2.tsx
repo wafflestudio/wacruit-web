@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import Footer from "../shared/ui/footer/Footer";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
 import {
   HeaderOffset,
@@ -109,6 +110,7 @@ export default function ProjectPage() {
           </ContentGroup>
         </TitleGroup>
       </Wrapper>
+      <Footer />
     </>
   );
 }
