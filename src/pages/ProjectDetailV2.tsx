@@ -1,7 +1,13 @@
 import styled from "styled-components";
-import { projectDetail, type UrlItem, type UrlType } from "../mocks/project";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { HeaderOffset } from "../components/project";
+import { getProjectDetail } from "../apis/project";
+import type { ProjectUrl } from "../shared/api/types/project";
+import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
+import type { ProjectImage } from "../shared/api/types/project";
 
 const Page = styled.div`
   background: ${({ theme }) => theme.colors.black[900]};
@@ -63,7 +69,6 @@ const StatusPill = styled.span`
   color: ${({ theme }) => theme.colors.black[900]};
   font-family: "Pretendard Variable";
   font-size: ${({ theme }) => theme.fontSizes[13]};
-  font-style: normal;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.013rem;
@@ -72,10 +77,8 @@ const StatusPill = styled.span`
 const Summary = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.white};
-
   font-family: "Pretendard Variable";
   font-size: ${({ theme }) => theme.fontSizes[16]};
-  font-style: normal;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.016rem;
@@ -103,7 +106,6 @@ const UrlPill = styled.a`
   gap: 0.4rem;
   border-radius: 0.4rem;
   background: ${({ theme }) => theme.colors.white};
-
   color: ${({ theme }) => theme.colors.black[900]};
   font-size: ${({ theme }) => theme.fontSizes[14]};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -123,13 +125,17 @@ const ImagesList = styled.div`
   gap: 2rem;
 `;
 
-const Image = styled.div<{ $src: string }>`
+const ImageCard = styled.div<{ $src: string }>`
   align-self: stretch;
   height: 57.931rem;
   aspect-ratio: 58 / 35;
   border-radius: 0.8rem;
-  background: ${({ $src, theme }) =>
-    `url(${$src}) lightgray 50% / cover no-repeat, ${theme.colors.black[200]}`};
+
+  background-color: ${({ theme }) => theme.colors.black[200]};
+  background-image: ${({ $src }) => `url("${$src}")`};
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   @media (max-width: 767px) {
     height: 21.3017rem;
@@ -139,13 +145,12 @@ const Image = styled.div<{ $src: string }>`
 const Intro = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.white};
-
   font-family: "Pretendard Variable";
   font-size: ${({ theme }) => theme.fontSizes[16]};
-  font-style: normal;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.016rem;
+  white-space: pre-line;
 
   @media (max-width: 767px) {
     font-size: 1.5rem;
@@ -161,11 +166,9 @@ const GreenBar = styled.button`
   height: 5rem;
   background: ${({ theme }) => theme.colors.green};
   z-index: 1000;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 0;
   padding: 0.5rem 0;
   cursor: pointer;
@@ -177,29 +180,63 @@ const CloseImg = styled.img`
   display: block;
 `;
 
-export default function ProjectDetailPageV2() {
-  const project = projectDetail;
+const labelFromUrlType = (t: string) =>
+  t === "ANDROID_STORE"
+    ? "Android"
+    : t === "IOS_APP_STORE"
+    ? "iOS"
+    : t === "WEB"
+    ? "Web"
+    : t === "GITHUB_ANDROID"
+    ? "Github: Android"
+    : t === "GITHUB_IOS"
+    ? "Github: iOS"
+    : t === "GITHUB_WEB"
+    ? "Github: Web"
+    : t;
 
-  const handleCloseBar = () => {
-    window.location.assign("/projects");
-  };
+const URL_ORDER = [
+  "ANDROID_STORE",
+  "IOS_APP_STORE",
+  "WEB",
+  "GITHUB_ANDROID",
+  "GITHUB_IOS",
+  "GITHUB_WEB",
+];
 
-  function getStatusLabel(a: string): string {
-    return a === "SERVICE" ? "서비스중" : "활동중";
-  }
+export default function ProjectDetailPage() {
+  const { id } = useParams<{ id?: string }>();
+  const enabled = !!id;
 
-  const LABEL_ORDER: UrlType[] = [
-    "Android",
-    "iOS",
-    "Web",
-    "Github: Android",
-    "Github: iOS",
-    "Github: Web",
-  ];
+  const { data, isFetching, isError, error } = useQuery({
+    queryKey: ["project", id],
+    queryFn: () => getProjectDetail(id as string),
+    enabled,
+  });
 
-  const sortedUrls = LABEL_ORDER.map((title) =>
-    project.urls.find((url) => url.title === title),
-  ).filter((url): url is UrlItem => url !== undefined);
+  const { toProjectList } = useRouteNavigation();
+  const handleCloseBar = () => toProjectList();
+
+  const sortedUrls: ProjectUrl[] = useMemo(() => {
+    if (!data) return [];
+    return [...data.urls].sort((a, b) => {
+      const ai = URL_ORDER.indexOf(a.url_type);
+      const bi = URL_ORDER.indexOf(b.url_type);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    });
+  }, [data]);
+
+  const imageList = useMemo<ProjectImage[]>(
+    () =>
+      (data?.images ?? []).filter(
+        (img) =>
+          typeof img.presigned_url === "string" && img.presigned_url.length > 0,
+      ),
+    [data],
+  );
+
+  const getStatusLabel = (t: string) =>
+    t === "SERVICE" ? "서비스중" : "활동중";
 
   return (
     <>
@@ -208,51 +245,62 @@ export default function ProjectDetailPageV2() {
         <HeaderOffset />
 
         <Main>
-          <InfoStack>
-            <TextStack>
-              <TitleRow>
-                <Title>{project.name}</Title>
-                {project.is_active && (
-                  <StatusPill>
-                    {getStatusLabel(project.project_type)}
-                  </StatusPill>
-                )}
-              </TitleRow>
+          {!enabled ? (
+            <div style={{ color: "#fff" }}>잘못된 경로입니다.</div>
+          ) : enabled && isFetching && !data ? (
+            <div style={{ color: "#fff" }}>로딩 중…</div>
+          ) : isError ? (
+            <div style={{ color: "salmon" }}>
+              {error instanceof Error
+                ? error.message
+                : "프로젝트 상세를 불러오지 못했습니다."}
+            </div>
+          ) : data ? (
+            <>
+              <InfoStack>
+                <TextStack>
+                  <TitleRow>
+                    <Title>{data.name}</Title>
+                    {data.is_active && (
+                      <StatusPill>
+                        {getStatusLabel(data.project_type)}
+                      </StatusPill>
+                    )}
+                  </TitleRow>
+                  <Summary>{data.summary}</Summary>
+                </TextStack>
 
-              <Summary>{project.summary}</Summary>
-            </TextStack>
+                <UrlList>
+                  {sortedUrls.map((u) => (
+                    <UrlPill
+                      key={`${u.url_type}-${u.url}`}
+                      href={u.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {labelFromUrlType(u.url_type)}
+                      <LinkArrowImg
+                        src="/icon/LinkArrow.svg"
+                        alt=""
+                        aria-hidden="true"
+                      />
+                    </UrlPill>
+                  ))}
+                </UrlList>
+              </InfoStack>
 
-            <UrlList>
-              {sortedUrls.map((url) => (
-                <UrlPill
-                  key={url.title}
-                  href={url.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {url.title}
-                  <LinkArrowImg
-                    src="/icon/LinkArrow.svg"
-                    alt=""
-                    aria-hidden="true"
+              <ImagesList>
+                {imageList.map((img) => (
+                  <ImageCard
+                    key={img.project_image_id}
+                    $src={img.presigned_url}
                   />
-                </UrlPill>
-              ))}
-            </UrlList>
-          </InfoStack>
+                ))}
+              </ImagesList>
 
-          <ImagesList>
-            {project.images.map((src, i) => (
-              <Image
-                key={i}
-                $src={src}
-                role="img"
-                aria-label={`project image ${i + 1}`}
-              />
-            ))}
-          </ImagesList>
-
-          <Intro>{project.introduction}</Intro>
+              <Intro>{data.introduction}</Intro>
+            </>
+          ) : null}
         </Main>
 
         <GreenBar
