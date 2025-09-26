@@ -42,8 +42,7 @@ const Thumbnail = styled.div<{ $src: string }>`
   }
 `;
 
-const StatusButton = styled.button`
-  cursor: pointer;
+const StatusBadge = styled.div`
   display: flex;
   padding: 0.3rem 0.8rem;
   justify-content: center;
@@ -55,9 +54,6 @@ const StatusButton = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.013rem;
-`;
-
-const StatusBadge = styled(StatusButton)`
   position: absolute;
   right: 0;
   bottom: 0;
