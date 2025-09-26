@@ -46,16 +46,15 @@ export const ClassAndGrid = styled.div`
 `;
 
 export const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 120rem;
-  align-items: flex-start;
-  align-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
-  align-self: stretch;
-  margin: 0 auto;
+  width: 100%;
 
-  @media (max-width: 60rem) {
-    justify-content: center;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
   }
 `;

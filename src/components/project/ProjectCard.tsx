@@ -92,6 +92,7 @@ const Description = styled.p`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.014rem;
+  text-align: left;
 `;
 
 interface Props {

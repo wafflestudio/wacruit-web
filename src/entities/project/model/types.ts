@@ -1,1 +1,1 @@
-export type ProjectType = "PROJECT" | "STUDY";
+export type ProjectType = "SERVICE" | "STUDY";
