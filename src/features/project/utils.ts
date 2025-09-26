@@ -11,7 +11,12 @@ export function formatProjectStatus(
 }
 
 export function paginate<T>(data: T[], page: number, perPage: number) {
-  const totalPages = Math.max(1, Math.ceil(data.length / perPage));
-  const start = (page - 1) * perPage;
-  return { items: data.slice(start, start + perPage), totalPages };
+  const safePerPage = Math.max(1, perPage);
+  const safePage = Math.max(1, page);
+  const totalPages = Math.max(1, Math.ceil(data.length / safePerPage));
+  const start = (safePage - 1) * safePerPage;
+  return {
+    items: data.slice(start, start + safePerPage),
+    totalPages,
+  };
 }
