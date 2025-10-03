@@ -6,6 +6,7 @@ import { Timeline } from "../features/recruiting/Timeline";
 import { RookieInfo } from "../features/recruiting/RookieInfo";
 import { Faq } from "../features/recruiting/Faq";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import Footer from "../shared/ui/footer/Footer";
 
 const RecruitInfoV3 = () => {
   return (
@@ -17,6 +18,7 @@ const RecruitInfoV3 = () => {
       <Timeline />
       <RookieInfo />
       <Faq />
+      <Footer />
     </MainContainer>
   );
 };
@@ -24,9 +26,7 @@ const RecruitInfoV3 = () => {
 const MainContainer = styled.main`
   display: flex;
   width: 100%;
-  max-width: 1920px;
   flex-direction: column;
-  align-items: flex-start;
 `;
 
 export default RecruitInfoV3;
