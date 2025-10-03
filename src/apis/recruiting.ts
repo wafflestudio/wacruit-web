@@ -1,4 +1,5 @@
 import {
+  QuestionResponse,
   Recruiting,
   RecruitingResult,
   RecruitingSummary,
@@ -31,3 +32,12 @@ export const getActiveRecruitings = () =>
 
 export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
+
+// V3
+export const getAllQuestions = () =>
+  getRequest<{ items: QuestionResponse[] }>(`/v3/questions`, {}, false);
+
+export const getRecruitingInfoByType = (type: string) =>
+  getRequest<RecruitingInfoListResponse>(
+    `/v3/recruitings/info?recruiting_type=${type}`,
+  );

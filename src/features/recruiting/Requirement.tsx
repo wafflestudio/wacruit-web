@@ -4,25 +4,49 @@ import {
   FireIcon,
   CubeIcon,
   LaptopIcon,
-} from "../../../components/icons/recruiting";
+} from "../../components/icons/recruiting/Requirement";
 
 export const Requirement = () => {
   const requirements = [
     {
       IconComponent: SnuIcon,
-      label: "현재 서울대학교에 재학∙휴학중이거나 졸업하신 분",
+      label: (
+        <>
+          현재 서울대학교에 재학∙
+          <br />
+          휴학중이거나 졸업하신 분
+        </>
+      ),
     },
     {
       IconComponent: FireIcon,
-      label: "학과/학번과 무관하게 개발에 대한 열정이 있으신 분",
+      label: (
+        <>
+          학과/학번과 무관하게
+          <br />
+          개발에 대한 열정이 있으신 분
+        </>
+      ),
     },
     {
       IconComponent: CubeIcon,
-      label: "두 학기 이상 활동 가능하신 분(필수)",
+      label: (
+        <>
+          두 학기 이상
+          <br />
+          활동 가능하신 분(필수)
+        </>
+      ),
     },
     {
       IconComponent: LaptopIcon,
-      label: "멋진 서비스를 만들고 싶으신 분",
+      label: (
+        <>
+          멋진 서비스를
+          <br />
+          만들고 싶은 분
+        </>
+      ),
     },
   ];
 
@@ -76,32 +100,36 @@ const RequirementTitle = styled.h2`
 `;
 
 const RequirementGrid = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
   gap: 30px;
-  flex-wrap: wrap;
-  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 1130px) {
+    grid-template-columns: repeat(2, 250px);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    max-width: 250px;
+  }
 `;
 
 const RequirementCard = styled.div`
   display: flex;
-  width: 244px;
+  width: 250px;
   height: 291px;
   padding: 24px;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   border-radius: 8px;
 `;
 
 const IconWrapper = styled.div`
-  /* TODO: 아이콘 크기 및 스타일링 */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 `;
 
 const RequirementText = styled.p`
