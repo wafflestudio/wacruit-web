@@ -22,14 +22,7 @@ export const Projects = () => {
       <Title>와플스튜디오의 프로젝트</Title>
       <ProjectGrid>
         {thumbnailProjects.map(
-          ({
-            id,
-            name,
-            brief_introduction,
-            thumbnail_url,
-            project_type,
-            is_active,
-          }) => (
+          ({ id, name, summary, thumbnail_url, project_type, is_active }) => (
             <ProjectCard key={`project-${id}`}>
               <Thumbnail src={thumbnail_url} alt={name} />
               <CardContent>
@@ -40,7 +33,7 @@ export const Projects = () => {
                     projectType={project_type}
                   />
                 </CardHeader>
-                <Brief>{brief_introduction}</Brief>
+                <Brief>{summary}</Brief>
               </CardContent>
             </ProjectCard>
           ),

@@ -1,24 +1,19 @@
-import { ProjectType } from "../../../entities/project/model/types";
+export type ProjectType = "SERVICE" | "STUDY";
 
-export type ProjectListItem = {
+export interface ProjectListItem {
   id: number;
   name: string;
   summary: string;
   thumbnail_url: string;
   project_type: ProjectType;
   is_active: boolean;
-};
+}
 
-export type BriefProjectList = {
+export interface ProjectListResponse {
   items: ProjectListItem[];
-};
+}
 
-export type ProjectImage = {
-  object_name: string;
-  presigned_url: string;
-  fields: Record<string, unknown>;
-  project_image_id: number;
-};
+export type Project = ProjectListItem;
 
 export type UrlType =
   | "ANDROID_STORE"
@@ -29,12 +24,19 @@ export type UrlType =
   | "GITHUB_WEB"
   | string;
 
-export type ProjectUrl = {
+export interface ProjectUrl {
   url_type: UrlType;
   url: string;
-};
+}
 
-export type ProjectDetail = {
+export interface ProjectImage {
+  object_name: string;
+  presigned_url: string;
+  fields: Record<string, unknown>;
+  project_image_id: number;
+}
+
+export interface ProjectDetail {
   id: number;
   name: string;
   summary: string;
@@ -44,4 +46,4 @@ export type ProjectDetail = {
   is_active: boolean;
   images: ProjectImage[];
   urls: ProjectUrl[];
-};
+}
