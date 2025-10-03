@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import type { MainTab, SubTab, TabContent } from "./types";
 import { formatSeminarByEnglish } from "./utils";
+import { SeminarType } from "../../../shared/api/types/seminar";
 
 const DEFAULT_TAB_CONTENTS: TabContent[] = [
   {
@@ -152,7 +153,7 @@ export const PositionTab = () => {
                   return null;
                 }
                 const formattedSubtab = formatSeminarByEnglish({
-                  seminar: sub.id,
+                  seminar: sub.id as SeminarType,
                 });
                 return (
                   <SubTabButton

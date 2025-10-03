@@ -14,11 +14,11 @@ export const RecruitingCTAButton = () => {
   const { data: preRegistrationData, isError: isPreRegistrationError } =
     useGetActivePreRegisterInfo();
   if (isRecruitingError || isPreRegistrationError) {
+    // TODO: 하드코딩 문구 교체 예정
     return (
       <StyledButton onClick={toRecruitingList}>
         23.5기 준회원(Rookies) 지원하러 가기
       </StyledButton>
-      //하드코딩 나중에 고치기
     );
   }
   if (recruitingData === undefined || preRegistrationData === undefined) {

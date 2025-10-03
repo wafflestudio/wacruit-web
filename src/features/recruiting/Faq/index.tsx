@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { getAllQuestions } from "../../../apis/recruiting";
-import { FaqAccordion } from "./QuestionAccordian";
+import { FaqAccordion } from "./QuestionAccordion";
 
 const RECRUITING_EMAIL = "recruit@wafflestudio.com";
 
@@ -61,7 +61,6 @@ const FaqContact = styled.div`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.14px;
-  }
 `;
 
 const LoadingMessage = styled.div`
