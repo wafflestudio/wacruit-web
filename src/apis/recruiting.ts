@@ -1,4 +1,5 @@
 import {
+  QuestionResponse,
   Recruiting,
   RecruitingResult,
   RecruitingSummary,
@@ -6,6 +7,7 @@ import {
 import type {
   BreifRecruiting,
   RecruitingInfoListResponse,
+  RecruitingType,
 } from "../shared/api/types/recruiting";
 import { getRequest, postRequest, deleteRequest } from "./utility";
 
@@ -31,3 +33,12 @@ export const getActiveRecruitings = () =>
 
 export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
+
+// V3
+export const getAllQuestions = () =>
+  getRequest<{ items: QuestionResponse[] }>(`/v3/questions`, {}, false);
+
+export const getRecruitingInfoByType = (type: RecruitingType) =>
+  getRequest<RecruitingInfoListResponse>(
+    `/v3/recruitings/info?recruiting_type=${type}`,
+  );

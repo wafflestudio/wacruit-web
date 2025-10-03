@@ -25,7 +25,7 @@ import ProjectDetailV2 from "./pages/ProjectDetailV2";
 import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
-import RecruitInfoV2 from "./pages/RecruitInfoV2";
+import RecruitInfoV3 from "./pages/RecruitInfoV3";
 
 const queryClient = new QueryClient();
 
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
   },
   {
     path: RECRUITING_INFO,
-    element: <RecruitInfoV2 />,
+    element: <RecruitInfoV3 />,
     errorElement: <div>error</div>,
   },
   {

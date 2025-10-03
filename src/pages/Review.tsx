@@ -141,7 +141,7 @@ export default function ReviewGrid() {
   } = useQuery({
     queryKey: ["review", "all"],
     queryFn: () => getAllReviews().then((response) => response.items),
-    staleTime: 1,
+    staleTime: 60_000,
   });
 
   if (isLoading) {
