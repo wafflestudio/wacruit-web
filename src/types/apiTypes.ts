@@ -219,3 +219,53 @@ export type PortfolioLink = {
   id: number;
   url: string;
 };
+
+/**
+ * Review
+ */
+
+export type Review = {
+  id: number;
+  title: string;
+  content: string;
+  member_id: number;
+  member_first_name: string;
+  member_last_name: string;
+  member_position: string;
+  member_generation: string;
+  is_active: boolean;
+};
+
+export type ReviewResponse = {
+  items: Review[];
+};
+
+/**
+ * Faq
+ */
+
+export type QuestionResponse = {
+  id: number;
+  question: string;
+  answer: string;
+};
+
+export type QuestionListResponse = {
+  items: QuestionResponse[];
+};
+
+/**
+ * Recruiting Info
+ */
+
+export type RecruitingInfo = {
+  id: number;
+  type: RecruitingType;
+  info_num: number;
+  title: string;
+  date_info: string;
+};
+
+export type RecruitingInfoListResponse = {
+  items: RecruitingInfo[];
+};

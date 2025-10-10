@@ -14,6 +14,8 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
       text-decoration: none;
       border-collapse: collapse;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
   }
   

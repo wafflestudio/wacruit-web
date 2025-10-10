@@ -14,9 +14,10 @@ export const RecruitingCTAButton = () => {
   const { data: preRegistrationData, isError: isPreRegistrationError } =
     useGetActivePreRegisterInfo();
   if (isRecruitingError || isPreRegistrationError) {
+    // TODO: 하드코딩 문구 교체 예정
     return (
       <StyledButton onClick={toRecruitingList}>
-        리크루팅 정보 확인하기
+        23.5기 준회원(Rookies) 지원하러 가기
       </StyledButton>
     );
   }
@@ -70,18 +71,27 @@ export const RecruitingCTAButton = () => {
 };
 
 const StyledButton = styled.button`
-  display: inline-block;
-  background-color: #ff6f61;
+  display: flex;
+  padding: 10px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  background: var(--pink, #ff2c4c);
   color: white;
-  padding: 1.2rem 2.4rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+
+  // display: inline-block;
+  // background-color: pink;
+  // color: white;
+  // padding: 1.2rem 2.4rem;
+  // font-size: 1.4rem;
+  // font-weight: bold;
+  // text-align: center;
+  // text-decoration: none;
+  // border: none;
+  // border-radius: 8px;
+  // cursor: pointer;
+  // transition: background-color 0.2s ease;
 
   &:hover {
     background-color: #e55b4d;

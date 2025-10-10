@@ -9,7 +9,7 @@ export const ProjectStatusBadge = ({
 }) => {
   if (!isActive) return null;
 
-  const label = projectType === "PROJECT" ? "서비스 중" : "활동 중";
+  const label = projectType === "SERVICE" ? "서비스 중" : "활동 중";
 
   return <span>{label}</span>;
 };
