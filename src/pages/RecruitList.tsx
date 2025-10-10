@@ -46,6 +46,8 @@ export default function RecruitList() {
                 description={r.short_description}
                 from={r.from_date ? new Date(r.from_date) : null}
                 to={r.to_date ? new Date(r.to_date) : null}
+                is_active={r.is_active}
+                type={r.type}
               />
             ))}
         </RecruitItemList>

@@ -1,8 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
 import { getRecruitingById } from "../../apis/recruiting";
-import { Recruiting, Resume } from "../../types/apiTypes";
-import { LoaderReturnType } from "../../types/commonTypes";
+import { Recruiting } from "../../types/apiTypes";
 import { getMyResumes } from "../../apis/resume";
+import { redirect } from "react-router-dom";
+import { checkAuth } from "../../apis/auth";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],
@@ -16,29 +17,64 @@ export const myResumeQuery = (id: number) => ({
   staleTime: Infinity,
 });
 
+export type DashboardLoaderReturnType = {
+  recruiting: Recruiting & { applied?: boolean };
+  resume: { items: unknown[] };
+};
+
 export const dashboardLoader =
   (queryClient: QueryClient) =>
   async ({ params }: { params: Record<string, unknown> }) => {
-    const recruitingQuery = recruitingDetailQuery(Number(params.recruit_id));
-    const resumeQuery = myResumeQuery(Number(params.recruit_id));
-    const cachedRecruiting = queryClient.getQueryData<Recruiting>(
-      recruitingQuery.queryKey,
-    );
-    const cachedResume = queryClient.getQueryData<{ items: Resume[] }>(
-      resumeQuery.queryKey,
-    );
-    return {
-      recruiting:
-        cachedRecruiting !== undefined
-          ? cachedRecruiting
-          : await queryClient.fetchQuery(recruitingQuery),
-      resume:
-        cachedResume !== undefined
-          ? cachedResume
-          : await queryClient.fetchQuery(resumeQuery),
-    };
-  };
+    const rawId = params.recruit_id;
+    const id = Number(rawId);
+    if (!rawId || Number.isNaN(id)) {
+      throw new Response("Invalid recruit id", { status: 400 });
+    }
 
-export type DashboardLoaderReturnType = LoaderReturnType<
-  typeof dashboardLoader
->;
+    let recruiting = queryClient.getQueryData<Recruiting>([
+      "recruiting",
+      "detail",
+      id,
+    ]);
+
+    if (!recruiting) {
+      try {
+        recruiting = await queryClient.fetchQuery<Recruiting>(
+          recruitingDetailQuery(id),
+        );
+      } catch (err) {
+        throw new Response("Recruiting not found", { status: 404 });
+      }
+    }
+
+    const recruitingVal: Recruiting = recruiting;
+
+    if (recruitingVal.type === 3) {
+      throw redirect(`/recruiting/programmers/${id}`);
+    }
+
+    const isActive =
+      recruitingVal.is_active &&
+      (!recruitingVal.to_date ||
+        new Date(recruitingVal.to_date).getTime() > Date.now());
+
+    if (!isActive) {
+      return { recruiting: recruitingVal, resume: { items: [] } };
+    }
+
+    const authState = await checkAuth();
+    if (authState !== "valid") {
+      throw redirect(`/login-redirect?to=${id}`);
+    }
+
+    let resume;
+    try {
+      resume = await queryClient.fetchQuery<{ items: unknown[] }>(
+        myResumeQuery(id),
+      );
+    } catch {
+      resume = { items: [] };
+    }
+
+    return { recruiting: recruitingVal, resume };
+  };
