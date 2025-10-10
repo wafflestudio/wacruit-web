@@ -47,10 +47,6 @@ export const dashboardLoader =
       }
     }
 
-    if (!recruiting) {
-      throw new Response("Recruiting not found", { status: 404 });
-    }
-
     const recruitingVal: Recruiting = recruiting;
 
     if (recruitingVal.type === 3) {
