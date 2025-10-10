@@ -239,3 +239,33 @@ export type Review = {
 export type ReviewResponse = {
   items: Review[];
 };
+
+/**
+ * Faq
+ */
+
+export type QuestionResponse = {
+  id: number;
+  question: string;
+  answer: string;
+};
+
+export type QuestionListResponse = {
+  items: QuestionResponse[];
+};
+
+/**
+ * Recruiting Info
+ */
+
+export type RecruitingInfo = {
+  id: number;
+  type: RecruitingType;
+  info_num: number;
+  title: string;
+  date_info: string;
+};
+
+export type RecruitingInfoListResponse = {
+  items: RecruitingInfo[];
+};
