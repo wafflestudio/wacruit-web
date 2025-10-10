@@ -9,6 +9,8 @@ type RecruitItemComponentProps = {
   description: string;
   from: Date | null;
   to: Date | null;
+  is_active: boolean;
+  type: number;
 };
 
 export function RecruitItem({
@@ -17,32 +19,38 @@ export function RecruitItem({
   description,
   from,
   to,
+  is_active,
+  type,
 }: RecruitItemComponentProps) {
   const navigate = useNavigate();
   // to가 null이면 상시 모집이므로 항상 활성화
-  const isActive = to ? to.getTime() > Date.now() : true;
+  // const isActive = to ? to.getTime() > Date.now() : true;
 
-  const onApply = useCallback(
-    async (recruit_id: number) => {
-      const auth = await checkAuth();
-      if (auth === "valid") {
-        navigate(`/recruiting/${recruit_id}`);
-        return;
-      }
-      if (auth === "need_register") {
-        navigate(`/sso/${recruit_id}`);
-        return;
-      }
-      if (auth === "invalid") {
-        tryLogin(recruit_id);
-        return;
-      }
-    },
-    [navigate],
-  );
+  const isActive =
+    type === 3 ? true : is_active && (!to || to.getTime() > Date.now());
+
+  const onApply = useCallback(async () => {
+    if (!isActive) return;
+
+    if (type === 3) {
+      navigate(`/recruiting/programmers/${id}`);
+      return;
+    }
+
+    const authState = await checkAuth();
+    if (authState === "valid") {
+      navigate(`/recruiting/${id}`);
+      return;
+    }
+    if (authState === "need_register") {
+      tryLogin(id);
+      return;
+    }
+    tryLogin(id);
+  }, [id, isActive, navigate, type]);
 
   return (
-    <Container onClick={() => onApply(id)} $isActive={isActive}>
+    <Container onClick={onApply} $isActive={isActive} role="button">
       <RecruitNameArea>
         <RecruitName>{name}</RecruitName>
         <RightArrow src="/image/rightAngleBracket.svg" />

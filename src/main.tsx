@@ -13,7 +13,6 @@ import Solve from "./pages/SolveV2";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
 import Dashboard from "./pages/Dashboard";
-import Sso from "./pages/Sso";
 import Announcement from "./pages/Announcement";
 import { dashboardLoader } from "./pages/Loader/DashboardLoader";
 import { resumeLoader } from "./pages/Loader/ResumeLoader";
@@ -26,6 +25,7 @@ import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
 import RecruitInfoV2 from "./pages/RecruitInfoV2";
+import { ProgrammerRecruitInfo } from "./components/programmer/ProgrammerRecruitInfo";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +62,11 @@ const router = createBrowserRouter([
     path: RECRUITING_LIST,
     element: <RecruitList />,
     errorElement: <div>error</div>,
+  },
+  {
+    path: "/recruiting/programmers/:recruit_id",
+    element: <ProgrammerRecruitInfo />,
+    errorElement: <div>프로그래머스 페이지를 불러올 수 없습니다.</div>,
   },
   {
     path: PROJECT_LIST,
@@ -110,7 +115,6 @@ const router = createBrowserRouter([
     ],
   },
   { path: ANNOUNCEMENT, element: <Announcement /> },
-  { path: "/sso/:recruit_id", element: <Sso /> },
 ]);
 
 if (import.meta.env.DEV && import.meta.env.VITE_API_TYPE === "MSW") {
