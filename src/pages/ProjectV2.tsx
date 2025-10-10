@@ -1,4 +1,3 @@
-// src/pages/Project.tsx
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
