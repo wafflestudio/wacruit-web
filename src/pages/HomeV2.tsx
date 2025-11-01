@@ -6,23 +6,27 @@ import { Activities } from "../features/home/ui/Activities";
 import { Projects } from "../features/home/ui/Projects";
 import { Outro } from "../features/home/ui/Outro";
 import { TimeLine } from "../features/home/ui/Timeline";
+import Footer from "../shared/ui/footer/Footer";
 
 export default function HomeV2() {
   return (
     <div>
-      <Headerv2 />
       <MainContainer>
+        <Headerv2 />
         <HeroSection />
         <WaffleHistory />
         <Activities />
         <TimeLine />
         <Projects />
         <Outro />
+        <Footer />
       </MainContainer>
     </div>
   );
 }
 
 const MainContainer = styled.main`
-  min-width: "92.0rem";
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 `;

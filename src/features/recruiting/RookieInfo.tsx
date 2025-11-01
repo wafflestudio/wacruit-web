@@ -86,7 +86,6 @@ export const RookieInfo = () => {
   );
 };
 
-// Styled Components
 const RookieInfoContainer = styled.section`
   display: flex;
   padding: 100px 0;

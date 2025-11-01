@@ -1,107 +1,74 @@
 import styled from "styled-components";
-import { formatUserCount } from "../lib/formatHistoryNumber";
+// import WaffleStack from "../../../components/icons/home/WaffleStack.svg?react";
 
 export const WaffleHistory = () => {
-  // /history
-  const MOCK_HISTORY_DATA = {
-    startDate: "2022-07-01",
-    operationPeriod: 2,
-    totalProjects: 150,
-    totalUsers: 10000,
-    totalMembers: 3000,
-  };
-
-  const { operationPeriod, totalProjects, totalUsers, totalMembers } =
-    MOCK_HISTORY_DATA;
-
-  const historyData = [
-    { label: "운영 기간", value: `${operationPeriod}년` },
-    { label: "누적 프로젝트 수", value: `${totalProjects}개` },
-    {
-      label: "누적 서비스 이용자 수",
-      value: formatUserCount({ count: totalUsers }),
-    },
-    { label: "누적 회원수", value: formatUserCount({ count: totalMembers }) },
-  ];
-
   return (
-    <Container>
-      <TextBlock>
-        <Title>서울대 개발 커뮤니티의 중심</Title>
-        <Description>
-          와플스튜디오에서는 개발을 좋아하는 서울대학교 학생들의 네트워크를
-          형성하고, 함께 성장할 수 있는 기회를 제공합니다. 전공과 학번에
-          상관없이 모든 학생들에게 열려 있습니다. 공익적 목적으로 모든 인원이
-          자율적으로 프로젝트에 참여하여 모두에게 도움이 되는 가치를 창출하는
-          것을 목표로 합니다.
-        </Description>
-      </TextBlock>
-      <StatsGrid>
-        {historyData.map(({ label, value }, idx) => (
-          <StatCard key={`history-${idx}`}>
-            <Label>{label}</Label>
-            <Value>{value}</Value>
-          </StatCard>
-        ))}
-      </StatsGrid>
-    </Container>
+    <HistoryContainer>
+      <HistoryContent>
+        <HistoryTextBlock>
+          <HistoryTitle>서울대 개발 커뮤니티의 중심</HistoryTitle>
+          <HistoryDescription>
+            와플스튜디오에서는 개발을 좋아하는 서울대학교 학생들의 네트워크를
+            형성하고, 함께 성장할 수 있는 기회를 제공합니다. 전공과 학번에
+            상관없이 모든 학생들에게 열려 있습니다. 공익적 목적으로 모든 인원이
+            자율적으로 프로젝트에 참여하여 모두에게 도움이 되는 가치를 창출하는
+            것을 목표로 합니다.
+          </HistoryDescription>
+        </HistoryTextBlock>
+        {/* <WaffleStack/> */}
+      </HistoryContent>
+    </HistoryContainer>
   );
 };
 
-const Container = styled.section`
-  width: 100%;
-  min-height: 100vh;
+const HistoryContainer = styled.section`
   display: flex;
-  gap: 2rem;
   flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  background-color: #121212;
+`;
+
+const HistoryContent = styled.div`
+  display: flex;
+  max-width: 1600px;
+  padding: 0 20px;
   justify-content: center;
   align-items: center;
-  padding: 3rem 1rem;
+  align-content: center;
+  align-self: stretch;
+  flex-wrap: wrap;
 `;
 
-const TextBlock = styled.div`
+const HistoryTextBlock = styled.div`
+  display: flex;
+  min-width: 400px;
+  padding: 100px 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  flex: 1 0 0;
+`;
+
+const HistoryTitle = styled.h3`
+  color: ${({ theme }) => theme.colors.black[100]};
+  font-size: ${({ theme }) => theme.fontSizes[40]};
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 60px */
+  letter-spacing: -0.4px;
+`;
+
+const HistoryDescription = styled.p`
   max-width: 800px;
-  text-align: center;
-  margin-bottom: 3rem;
-`;
+  align-self: stretch;
+  color: ${({ theme }) => theme.colors.black[100]};
 
-const Title = styled.h3`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #222;
-`;
-
-const Description = styled.p`
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #555;
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 2rem;
-  width: 100%;
-  max-width: 800px;
-`;
-
-const StatCard = styled.div`
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  text-align: center;
-`;
-
-const Label = styled.p`
-  font-size: 0.95rem;
-  color: #777;
-  margin-bottom: 0.5rem;
-`;
-
-const Value = styled.p`
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #111;
+  /* 18/Medium */
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 27px */
+  letter-spacing: -0.18px;
 `;

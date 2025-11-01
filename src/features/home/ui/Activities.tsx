@@ -32,7 +32,7 @@ export const Activities = () => {
         "개발이 처음이라도 세미나를 통해 배워나갈 수 있어요. 개발을 처음 배우는 회원들을 대상으로 2학기에 개발 세미나를 진행해요. 과제와 세미나를 통해 개발자로 한걸음 성장할 수 있어요.",
       imageUrl: "/",
       button: {
-        content: "스터디 더 알아보기",
+        content: "세미나 더 알아보기",
         onAction: () => {
           return;
         },
@@ -45,104 +45,159 @@ export const Activities = () => {
       imageUrl: "/",
     },
   ];
+
   return (
-    <Container>
-      <Title>와플스튜디오에서는 무엇을 할 수 있나요?</Title>
-      <CardList>
-        {activityData.map(({ title, content, imageUrl, button }, idx) => (
-          <Card key={`history-${idx}`}>
-            <ImageWrapper>
-              <img src={imageUrl} alt={title} />
-            </ImageWrapper>
-            <TextWrapper>
-              <h5>{title}</h5>
-              <p>{content}</p>
-              {button && (
-                <ActionButton onClick={button.onAction}>
-                  {button.content}
-                </ActionButton>
-              )}
-            </TextWrapper>
-          </Card>
-        ))}
-      </CardList>
-    </Container>
+    <ActivitiesContainer>
+      <ActivitiesContent>
+        <ActivitiesTitle>
+          와플스튜디오에서는 무엇을 할 수 있나요?
+        </ActivitiesTitle>
+        <ActivitiesGrid>
+          {activityData.map(({ title, content, imageUrl, button }, idx) => (
+            <ActivitiesCard key={`activity-${idx}`}>
+              <ImageWrapper>
+                <img src={imageUrl} alt={title} />
+              </ImageWrapper>
+              <ActivitiesTextWrapper>
+                <TextContent>
+                  <ActivityTitle>{title}</ActivityTitle>
+                  <ActivityDescription>{content}</ActivityDescription>
+                </TextContent>
+                {button && (
+                  <CTAButton onClick={button.onAction}>
+                    {button.content}
+                  </CTAButton>
+                )}
+              </ActivitiesTextWrapper>
+            </ActivitiesCard>
+          ))}
+        </ActivitiesGrid>
+      </ActivitiesContent>
+    </ActivitiesContainer>
   );
 };
 
-const Container = styled.section`
-  width: 100%;
-  min-height: 100vh;
+const ActivitiesContainer = styled.section`
   display: flex;
-  gap: 2rem;
+  padding: 100px 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3rem 1rem;
+  gap: 10px;
+  align-self: stretch;
+  background-color: #f4ff61;
 `;
 
-const Title = styled.h3`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 3rem;
-  text-align: center;
-`;
-
-const CardList = styled.div`
+const ActivitiesContent = styled.div`
   display: flex;
+  max-width: 1200px;
   flex-direction: column;
-  gap: 4rem;
-  width: 100%;
-  max-width: 960px;
+  align-items: center;
+  gap: 50px;
 `;
 
-const Card = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  align-items: center;
+const ActivitiesTitle = styled.h2`
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  text-align: center;
+  align-self: stretch;
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  letter-spacing: -0.32px;
+`;
+
+const ActivitiesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
+  gap: 20px;
+  justify-content: center;
+
+  @media (max-width: 1130px) {
+    grid-template-columns: repeat(2, 250px);
+  }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    max-width: 250px;
   }
 `;
 
+const ActivitiesCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
 const ImageWrapper = styled.div`
-  flex: 1;
+  width: 100%;
+  height: 219px;
+
   img {
     width: 100%;
-    border-radius: 12px;
+    height: 100%;
     object-fit: cover;
   }
 `;
 
-const TextWrapper = styled.div`
+const ActivitiesTextWrapper = styled.div`
+  display: flex;
+  padding: 20px 20px 24px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  align-self: stretch;
   flex: 1;
-  h5 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
 `;
 
-const ActionButton = styled.button`
-  display: inline-block;
-  background-color: #ff6f61;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+const TextContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  flex: 1;
+`;
+
+const ActivityTitle = styled.div`
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.2px;
+`;
+
+const ActivityDescription = styled.div`
+  min-height: 120px;
+  align-self: stretch;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: 14px;
+  font-style: normal;
   font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
+  line-height: 150%;
+  letter-spacing: -0.14px;
+`;
+
+const CTAButton = styled.button`
+  display: flex;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  background: #876e00;
+  color: ${({ theme }) => theme.colors.white};
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 
   &:hover {
-    background-color: #e55b4d;
+    opacity: 0.9;
   }
 `;
