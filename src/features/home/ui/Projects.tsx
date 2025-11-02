@@ -1,14 +1,17 @@
 import styled from "styled-components";
-import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
+// import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
 import { useProjectQuery } from "../../../entities/api/useProjectQuery";
+import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
 
 export const Projects = () => {
   const { useGetProjects } = useProjectQuery();
 
   const { data, isError } = useGetProjects({});
+
   if (isError) {
     return <div>에러 발생</div>;
   }
+
   if (data === undefined) {
     return <div>로딩중...</div>;
   }
@@ -18,83 +21,136 @@ export const Projects = () => {
     projects.length > 6 ? projects.slice(0, 6) : projects;
 
   return (
-    <Wrapper>
-      <Title>와플스튜디오의 프로젝트</Title>
-      <ProjectGrid>
-        {thumbnailProjects.map(
-          ({ id, name, summary, thumbnail_url, project_type, is_active }) => (
-            <ProjectCard key={`project-${id}`}>
-              <Thumbnail src={thumbnail_url} alt={name} />
-              <CardContent>
-                <CardHeader>
-                  <ProjectName>{name}</ProjectName>
-                  <ProjectStatusBadge
-                    isActive={is_active}
-                    projectType={project_type}
-                  />
-                </CardHeader>
-                <Brief>{summary}</Brief>
-              </CardContent>
-            </ProjectCard>
-          ),
-        )}
-      </ProjectGrid>
-    </Wrapper>
+    <ProjectsContainer>
+      <ProjectsContent>
+        <ProjectsTitle>와플스튜디오의 프로젝트</ProjectsTitle>
+        <ProjectsGrid>
+          {thumbnailProjects.map(
+            ({ id, name, summary, thumbnail_url, project_type, is_active }) => (
+              <ProjectCard key={`project-${id}`}>
+                <ThumbnailWrapper>
+                  <Thumbnail src={thumbnail_url} alt={name} />
+                  {is_active && <StatusBadge>서비스 중</StatusBadge>}
+                </ThumbnailWrapper>
+                <TextContent>
+                  <ProjectTitle>{name}</ProjectTitle>
+                  <ProjectDescription>{summary}</ProjectDescription>
+                </TextContent>
+              </ProjectCard>
+            ),
+          )}
+        </ProjectsGrid>
+        <RecruitingCTAButton />
+      </ProjectsContent>
+    </ProjectsContainer>
   );
 };
 
-const Wrapper = styled.div`
-  padding: 2rem;
+const ProjectsContainer = styled.div`
+  display: flex;
+  padding: 100px 0;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
 `;
 
-const Title = styled.h3`
-  font-size: 1.75rem;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
+const ProjectsContent = styled.div`
+  display: flex;
+  max-width: 1200px;
+  padding: 0 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  flex: 1 0 0;
 `;
 
-const ProjectGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.5rem;
+const ProjectsTitle = styled.h2`
+  color: ${({ theme }) => theme.colors.black[900]};
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.32px;
+  margin: 0;
+`;
+
+const ProjectsGrid = styled.div`
+  display: flex;
+  max-width: 1200px;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 20px;
+  align-self: stretch;
+  flex-wrap: wrap;
 `;
 
 const ProjectCard = styled.div`
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
+  min-width: 300px;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1 0 0;
+`;
+
+const ThumbnailWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 240px;
+  align-self: stretch;
 `;
 
 const Thumbnail = styled.img`
   width: 100%;
-  height: 160px;
+  height: 100%;
   object-fit: cover;
+  border-radius: 8px;
 `;
 
-const CardContent = styled.div`
-  padding: 1rem;
+const StatusBadge = styled.div`
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  padding: 3px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: ${({ theme }) => theme.colors.black[900]};
+  border-radius: 4px;
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: -0.13px;
+`;
+
+const TextContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 4px;
+  align-self: stretch;
 `;
 
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const ProjectTitle = styled.div`
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.18px;
 `;
 
-const ProjectName = styled.span`
-  font-size: 1.125rem;
-  font-weight: 600;
-`;
-
-const Brief = styled.p`
-  font-size: 0.95rem;
-  color: #555;
-  margin: 0;
+const ProjectDescription = styled.div`
+  align-self: stretch;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: -0.14px;
 `;

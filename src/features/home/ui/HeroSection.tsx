@@ -16,7 +16,7 @@ export const HeroSection = () => {
 const Container = styled.section`
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffefba, #ffffff);
+  background-color: #dfffa3;
   display: flex;
   gap: 2rem;
   flex-direction: column;
