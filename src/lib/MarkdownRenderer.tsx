@@ -1,150 +1,68 @@
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { IStyledComponent, styled } from "styled-components";
+import React from "react";
+import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import remarkMath from "remark-math";
 // import rehypeKatex from "rehype-katex";
 import rehypeMathJax from "rehype-mathjax";
+import type { Pluggable, PluggableList } from "unified";
 
-type MarkdownRendererProps = {
-  markdownString: string;
-  StyledWrapper?: IStyledComponent<"web", "div">;
-};
+const asPluggable = (p: unknown): Pluggable => p as Pluggable;
 
-export default function MarkdownRenderer({
-  markdownString,
-  StyledWrapper,
-}: MarkdownRendererProps) {
-  if (StyledWrapper)
-    return (
-      <PreventGlobalStylesResetWrapper>
-        <StyledWrapper>
-          <CustomReactMarkdown markdownString={markdownString} />
-        </StyledWrapper>
-      </PreventGlobalStylesResetWrapper>
-    );
-  else
-    return (
-      <PreventGlobalStylesResetWrapper>
-        <CustomReactMarkdown markdownString={markdownString} />
-      </PreventGlobalStylesResetWrapper>
-    );
+function preprocessMarkdown(src: string) {
+  let s = src ?? "";
+
+  // 1) 개행/공백 정규화
+  s = s.replace(/\r\n?/g, "\n"); // CRLF/CR → LF
+  s = s.replace(/\\n|\/n/g, "\n"); // 문자열로 들어온 "\n" 또는 "/n" → 실제 LF
+  s = s.replace(/[\u2028\u2029]/g, "\n"); // 유니코드 line/paragraph separator → LF
+  s = s.replace(/\u00A0/g, " "); // nbsp → 일반 공백
+  s = s.replace(/[\u200B-\u200D\uFEFF]/g, ""); // zero-width chars 제거
+
+  // 2) 얕은 HTML 래퍼 → 마크다운 문단/줄바꿈
+  s = s.replace(/<br\s*\/?>/gi, "  \n"); // <br> → 마크다운 강제개행(스페이스2 + LF)
+  s = s.replace(/<p[^>]*>/gi, "");
+  s = s.replace(/<\/p>/gi, "\n\n");
+
+  // 3) ATX 헤딩(#) 뒤에 공백 강제 (예: "###2." → "### 2.")
+  s = s.replace(/^(#{1,6})(?=\S)/gm, "$1 "); // 줄 시작에서 #...# 다음에 공백 없으면 넣기
+
+  // 4) 구분선(---)이 텍스트 사이에 끼어있으면 앞뒤에 빈 줄 확보
+  s = s.replace(/\s*^---\s*$/gm, "\n---\n");
+
+  return s.trim();
 }
 
-type CustomReactMarkdownProps = {
-  markdownString: string;
-};
+function CustomReactMarkdown({ markdownString }: { markdownString: string }) {
+  const remarkPlugins: PluggableList = [
+    asPluggable(remarkGfm),
+    asPluggable(remarkMath),
+  ];
+  const rehypePlugins: PluggableList = [
+    asPluggable(rehypeRaw),
+    asPluggable(rehypeMathJax),
+  ];
 
-function CustomReactMarkdown({ markdownString }: CustomReactMarkdownProps) {
+  const normalized = preprocessMarkdown(markdownString);
+
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeRaw, rehypeMathJax]}
-    >
-      {markdownString}
+    <ReactMarkdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins}>
+      {normalized}
     </ReactMarkdown>
   );
 }
 
-// 그냥 user agent stylesheet 박아넣는 styled Component
-const PreventGlobalStylesResetWrapper = styled.div`
-  h1 {
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  h2 {
-    display: block;
-    font-size: 1.5em;
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  h3 {
-    display: block;
-    font-size: 1.17em;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  h4 {
-    display: block;
-    margin-block-start: 1.33em;
-    margin-block-end: 1.33em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  h5 {
-    display: block;
-    font-size: 0.83em;
-    margin-block-start: 1.67em;
-    margin-block-end: 1.67em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  h6 {
-    display: block;
-    font-size: 0.67em;
-    margin-block-start: 2.33em;
-    margin-block-end: 2.33em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    font-weight: bold;
-  }
-  p {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-  }
-  em {
-    font-style: italic;
-  }
-  strong {
-    font-weight: bold;
-  }
-  ul {
-    display: block;
-    list-style: inside disc; // 공식 default는 outside이긴 하다.
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    padding-inline-start: 4rem;
-  }
-  ol {
-    display: block;
-    list-style: inside decimal; // 공식 default는 outside이긴 하다.
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
-    padding-inline-start: 4rem;
-  }
-  code {
-    /* font-family: monospace; */
-  }
-
-  blockquote {
-    display: block;
-    margin: 0;
-    margin-top: 0;
-    margin-bottom: 1.6rem;
-    padding: 0 1em;
-    border-left: 0.25em solid #d0d7de;
-    > p {
-      color: #656d76;
-    }
-  }
-`;
+export default function MarkdownRenderer({
+  markdownString,
+  StyledWrapper,
+}: {
+  markdownString: string;
+  StyledWrapper?: React.ComponentType<{ children: React.ReactNode }>;
+}) {
+  const Wrapper = StyledWrapper ?? React.Fragment;
+  return (
+    <Wrapper>
+      <CustomReactMarkdown markdownString={markdownString} />
+    </Wrapper>
+  );
+}

@@ -31,8 +31,10 @@ export const CombinedSection = styled.section`
   flex-direction: column;
   gap: 100px;
 
-  width: 1200px;
-  max-width: 1200px;
+- width: 1200px;
+- max-width: 1200px;
++ width: 100%;
++ max-width: 1200px;
   box-sizing: border-box;
   padding: 0 20px;
 
@@ -90,7 +92,7 @@ export const ControlsRow = styled.div`
   flex-wrap: nowrap;
   margin: 0 auto;
 
-  @media (max-width: 767px) {
+  @media (max-width: 1200px) {
     max-width: 366px;
     flex-direction: column;
     align-items: center;
