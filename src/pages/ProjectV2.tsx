@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import Footer from "../shared/ui/footer/Footer";
-import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
+
 import {
   HeaderOffset,
   Wrapper,
@@ -13,9 +15,9 @@ import {
   Grid,
 } from "../components/project";
 import { CategoryTabs, ProjectCard, Pagination } from "../components/project";
+
 import { getProjects } from "../apis/project";
-import type { ProjectListItem } from "../shared/api/types/project";
-import type { ProjectType } from "../entities/project/model/types";
+import type { ProjectListItem, ProjectType } from "../features/project/types";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -24,10 +26,21 @@ function isFetchResponse(e: unknown): e is Response {
 }
 
 export default function ProjectPage() {
-  const { toProjectDetail } = useRouteNavigation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedType, setSelectedType] = useState<ProjectType>("SERVICE");
-  const [currentPage, setCurrentPage] = useState(1);
+  const initialType = (searchParams.get("type") as ProjectType) ?? "SERVICE";
+  const initialPage = Math.max(1, Number(searchParams.get("page") ?? 1));
+
+  const [selectedType, setSelectedType] = useState<ProjectType>(initialType);
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+
+  useEffect(() => {
+    const t = (searchParams.get("type") as ProjectType) ?? "SERVICE";
+    const p = Math.max(1, Number(searchParams.get("page") ?? 1));
+    setSelectedType(t);
+    setCurrentPage(p);
+  }, [searchParams]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["projects", { offset: 0, limit: 1000 }],
@@ -39,6 +52,12 @@ export default function ProjectPage() {
   const handleChangeType = (t: ProjectType) => {
     setSelectedType(t);
     setCurrentPage(1);
+    setSearchParams({ type: t, page: "1" });
+  };
+
+  const handleChangePage = (p: number) => {
+    setCurrentPage(p);
+    setSearchParams({ type: selectedType, page: String(p) });
   };
 
   const filtered = useMemo(
@@ -53,6 +72,7 @@ export default function ProjectPage() {
   );
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / ITEMS_PER_PAGE));
+
   const currentItems = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return sorted.slice(start, start + ITEMS_PER_PAGE);
@@ -88,13 +108,16 @@ export default function ProjectPage() {
                 <div style={{ color: "salmon" }}>{errorMessage}</div>
               ) : (
                 <Grid>
-                  {currentItems.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      project={project}
-                      onClick={() => toProjectDetail({ projectId: project.id })}
-                    />
-                  ))}
+                  {currentItems.map((project) => {
+                    const qs = `?type=${selectedType}&page=${currentPage}`;
+                    return (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        onClick={() => navigate(`/projects/${project.id}${qs}`)}
+                      />
+                    );
+                  })}
                 </Grid>
               )}
             </ClassAndGrid>
@@ -103,7 +126,7 @@ export default function ProjectPage() {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onChange={setCurrentPage}
+                onChange={handleChangePage}
               />
             )}
           </ContentGroup>

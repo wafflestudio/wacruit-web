@@ -1,18 +1,19 @@
+// features/home/ui/Projects.tsx
 import styled from "styled-components";
 // import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
 import { useProjectQuery } from "../../../entities/api/useProjectQuery";
+import type { ProjectType } from "../../project/types";
 import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
 
 export const Projects = () => {
   const { useGetProjects } = useProjectQuery();
-
   const { data, isError } = useGetProjects({});
 
   if (isError) {
     return <div>에러 발생</div>;
   }
 
-  if (data === undefined) {
+  if (!data) {
     return <div>로딩중...</div>;
   }
 
@@ -26,18 +27,31 @@ export const Projects = () => {
         <ProjectsTitle>와플스튜디오의 프로젝트</ProjectsTitle>
         <ProjectsGrid>
           {thumbnailProjects.map(
-            ({ id, name, summary, thumbnail_url, project_type, is_active }) => (
-              <ProjectCard key={`project-${id}`}>
-                <ThumbnailWrapper>
-                  <Thumbnail src={thumbnail_url} alt={name} />
-                  {is_active && <StatusBadge>서비스 중</StatusBadge>}
-                </ThumbnailWrapper>
-                <TextContent>
-                  <ProjectTitle>{name}</ProjectTitle>
-                  <ProjectDescription>{summary}</ProjectDescription>
-                </TextContent>
-              </ProjectCard>
-            ),
+            ({
+              id,
+              name,
+              summary,
+              thumbnail_image,
+              project_type,
+              is_active,
+            }) => {
+              const thumb =
+                thumbnail_image?.presigned_url || "/image/empty_thumbnail.svg";
+              const label = getStatusLabel(project_type);
+
+              return (
+                <ProjectCard key={`project-${id}`}>
+                  <ThumbnailWrapper>
+                    <Thumbnail src={thumb} alt={name} loading="lazy" />
+                    {is_active && <StatusBadge>{label}</StatusBadge>}
+                  </ThumbnailWrapper>
+                  <TextContent>
+                    <ProjectTitle>{name}</ProjectTitle>
+                    <ProjectDescription>{summary}</ProjectDescription>
+                  </TextContent>
+                </ProjectCard>
+              );
+            },
           )}
         </ProjectsGrid>
         <RecruitingCTAButton />
@@ -45,6 +59,10 @@ export const Projects = () => {
     </ProjectsContainer>
   );
 };
+
+function getStatusLabel(t: ProjectType) {
+  return t === "SERVICE" ? "서비스 중" : "활동 중";
+}
 
 const ProjectsContainer = styled.div`
   display: flex;
@@ -100,13 +118,15 @@ const ThumbnailWrapper = styled.div`
   width: 100%;
   height: 240px;
   align-self: stretch;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const Thumbnail = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  display: block;
 `;
 
 const StatusBadge = styled.div`
