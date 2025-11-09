@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import Footer from "../shared/ui/footer/Footer";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
@@ -25,9 +26,21 @@ function isFetchResponse(e: unknown): e is Response {
 
 export default function ProjectPage() {
   const { toProjectDetail } = useRouteNavigation();
+  const [searchParams] = useSearchParams();
 
   const [selectedType, setSelectedType] = useState<ProjectType>("SERVICE");
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    if (typeParam === "SERVICE" || typeParam === "STUDY") {
+      setSelectedType(typeParam);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["projects", { offset: 0, limit: 1000 }],

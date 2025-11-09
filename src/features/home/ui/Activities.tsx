@@ -1,16 +1,22 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Activities1 from "../../../components/icons/home/Activities1.png";
+import Activities2 from "../../../components/icons/home/Activities2.png";
+import Activities3 from "../../../components/icons/home/Activities3.jpg";
+import Activities4 from "../../../components/icons/home/Activities4.jpg";
 
 export const Activities = () => {
+  const navigate = useNavigate();
   const activityData = [
     {
       title: "서비스 개발",
       content:
         "아이디어 발굴부터 서비스 출시의 과정에서 개발 역량을 키우고 협업 경험을 쌓을 수 있습니다. 또한 수많은 사람들이 사용하는 서비스 개발팀에 합류할 수도 있어요.",
-      imageUrl: "/",
+      imageUrl: Activities1,
       button: {
         content: "프로젝트 더 알아보기",
         onAction: () => {
-          return;
+          navigate("/projects?type=SERVICE");
         },
       },
     },
@@ -18,11 +24,11 @@ export const Activities = () => {
       title: "개발 스터디",
       content:
         "개발/디자인과 관련된 주제로 자유롭게 스터디를 진행합니다. 네트워크, 클린코드, 아키텍처, 인터렉티브 스터디 등 다양한 주제의 스터디가 열렸습니다.",
-      imageUrl: "/",
+      imageUrl: Activities2,
       button: {
         content: "스터디 더 알아보기",
         onAction: () => {
-          return;
+          navigate("/projects?type=STUDY");
         },
       },
     },
@@ -30,11 +36,11 @@ export const Activities = () => {
       title: "세미나",
       content:
         "개발이 처음이라도 세미나를 통해 배워나갈 수 있어요. 개발을 처음 배우는 회원들을 대상으로 2학기에 개발 세미나를 진행해요. 과제와 세미나를 통해 개발자로 한걸음 성장할 수 있어요.",
-      imageUrl: "/",
+      imageUrl: Activities3,
       button: {
         content: "세미나 더 알아보기",
         onAction: () => {
-          return;
+          navigate("/recruiting-info#rookie-info");
         },
       },
     },
@@ -42,7 +48,7 @@ export const Activities = () => {
       title: "친목과 네트워킹",
       content:
         "홈커밍데이, 동아리 내 해커톤(와커톤), MT 등 다양한 활동을 통해 개발에 관심있는 학생들과 네트워킹할 수 있어요. 또한 학기말마다 수행하는 굽기 활동을 통해 한 학기간의 기술과 경험을 공유하는 시간도 가집니다.",
-      imageUrl: "/",
+      imageUrl: Activities4,
     },
   ];
 
@@ -141,6 +147,8 @@ const ImageWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    filter: grayscale(100%);
   }
 `;
 
