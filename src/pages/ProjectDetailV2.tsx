@@ -232,28 +232,32 @@ const CloseImg = styled.img`
   display: block;
 `;
 
-const labelFromUrlType = (t: string) =>
-  t === "ANDROID_STORE"
-    ? "Android"
-    : t === "IOS_APP_STORE"
-    ? "iOS"
-    : t === "WEB"
-    ? "Web"
-    : t === "GITHUB_ANDROID"
-    ? "Github: Android"
-    : t === "GITHUB_IOS"
-    ? "Github: iOS"
-    : t === "GITHUB_WEB"
-    ? "Github: Web"
-    : t;
+const URL_LABELS: Record<string, string> = {
+  ANDROID_STORE: "Android",
+  IOS_STORE: "IOS",
+  WEBSITE: "Web",
+  ANDROID_GITHUB: "Github: Android",
+  IOS_GITHUB: "Github: IOS",
+  FRONTEND_GITHUB: "Github: Web",
+  BACKEND_GITHUB: "Github: Server",
+  DATA_GITHUB: "Github: Data",
+  CRAWLER_GITHUB: "Github: Crawler",
+  BEHANCE: "Behance",
+};
+
+const labelFromUrlType = (t: string) => URL_LABELS[t] ?? t;
 
 const URL_ORDER = [
   "ANDROID_STORE",
-  "IOS_APP_STORE",
-  "WEB",
-  "GITHUB_ANDROID",
-  "GITHUB_IOS",
-  "GITHUB_WEB",
+  "IOS_STORE",
+  "WEBSITE",
+  "ANDROID_GITHUB",
+  "IOS_GITHUB",
+  "FRONTEND_GITHUB",
+  "BACKEND_GITHUB",
+  "DATA_GITHUB",
+  "CRAWLER_GITHUB",
+  "BEHANCE",
 ];
 
 export default function ProjectDetailPage() {
