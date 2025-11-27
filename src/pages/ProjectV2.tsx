@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import Footer from "../shared/ui/footer/Footer";
-import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
+
 import {
   HeaderOffset,
   Wrapper,
@@ -13,9 +15,9 @@ import {
   Grid,
 } from "../components/project";
 import { CategoryTabs, ProjectCard, Pagination } from "../components/project";
+
 import { getProjects } from "../apis/project";
-import type { ProjectListItem } from "../shared/api/types/project";
-import type { ProjectType } from "../entities/project/model/types";
+import type { ProjectListItem, ProjectType } from "../features/project/types";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -23,11 +25,32 @@ function isFetchResponse(e: unknown): e is Response {
   return typeof e === "object" && e !== null && "ok" in e && "status" in e;
 }
 
-export default function ProjectPage() {
-  const { toProjectDetail } = useRouteNavigation();
+/* 쿼리 파라미터 정규화 */
+const normalizeType = (value: string | null): ProjectType =>
+  value === "SERVICE" || value === "STUDY" ? value : "SERVICE";
 
-  const [selectedType, setSelectedType] = useState<ProjectType>("SERVICE");
-  const [currentPage, setCurrentPage] = useState(1);
+const normalizePage = (value: string | null): number => {
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : 1;
+};
+
+export default function ProjectPage() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialType = normalizeType(searchParams.get("type"));
+  const initialPage = normalizePage(searchParams.get("page"));
+
+  const [selectedType, setSelectedType] = useState<ProjectType>(initialType);
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+
+  useEffect(() => {
+    const t = normalizeType(searchParams.get("type"));
+    const p = normalizePage(searchParams.get("page"));
+    setSelectedType(t);
+    setCurrentPage(p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["projects", { offset: 0, limit: 1000 }],
@@ -35,11 +58,6 @@ export default function ProjectPage() {
   });
 
   const allItems = useMemo<ProjectListItem[]>(() => data?.items ?? [], [data]);
-
-  const handleChangeType = (t: ProjectType) => {
-    setSelectedType(t);
-    setCurrentPage(1);
-  };
 
   const filtered = useMemo(
     () => allItems.filter((p) => p.project_type === selectedType),
@@ -53,10 +71,23 @@ export default function ProjectPage() {
   );
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / ITEMS_PER_PAGE));
+
   const currentItems = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return sorted.slice(start, start + ITEMS_PER_PAGE);
   }, [sorted, currentPage]);
+
+  const handleChangeType = (t: ProjectType) => {
+    setSelectedType(t);
+    setCurrentPage(1);
+    setSearchParams({ type: t, page: "1" });
+  };
+
+  const handleChangePage = (p: number) => {
+    const clamped = Math.max(1, Math.min(p, totalPages));
+    setCurrentPage(clamped);
+    setSearchParams({ type: selectedType, page: String(clamped) });
+  };
 
   const errorMessage = isError
     ? error instanceof Error
@@ -88,13 +119,16 @@ export default function ProjectPage() {
                 <div style={{ color: "salmon" }}>{errorMessage}</div>
               ) : (
                 <Grid>
-                  {currentItems.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      project={project}
-                      onClick={() => toProjectDetail({ projectId: project.id })}
-                    />
-                  ))}
+                  {currentItems.map((project) => {
+                    const qs = `?type=${selectedType}&page=${currentPage}`;
+                    return (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        onClick={() => navigate(`/projects/${project.id}${qs}`)}
+                      />
+                    );
+                  })}
                 </Grid>
               )}
             </ClassAndGrid>
@@ -103,7 +137,7 @@ export default function ProjectPage() {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onChange={setCurrentPage}
+                onChange={handleChangePage}
               />
             )}
           </ContentGroup>

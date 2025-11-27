@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { HeaderOffset } from "../components/project";
 import { getProjectDetail } from "../apis/project";
-import type { ProjectUrl } from "../shared/api/types/project";
-import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
-import type { ProjectImage } from "../shared/api/types/project";
+import type { ProjectUrl, ProjectImage } from "../features/project/types";
+
+import MarkdownRenderer from "../lib/MarkdownRenderer";
 
 const Page = styled.div`
   background: ${({ theme }) => theme.colors.black[900]};
@@ -127,9 +127,10 @@ const ImagesList = styled.div`
 
 const ImageCard = styled.div<{ $src: string }>`
   align-self: stretch;
-  height: 57.931rem;
+  width: 100%;
   aspect-ratio: 58 / 35;
   border-radius: 0.8rem;
+  overflow: hidden;
 
   background-color: ${({ theme }) => theme.colors.black[200]};
   background-image: ${({ $src }) => `url("${$src}")`};
@@ -138,19 +139,70 @@ const ImageCard = styled.div<{ $src: string }>`
   background-repeat: no-repeat;
 
   @media (max-width: 767px) {
-    height: 21.3017rem;
+    aspect-ratio: 16 / 9;
   }
 `;
 
-const Intro = styled.p`
+const Intro = styled.div`
   margin: 0;
+  width: 100%;
   color: ${({ theme }) => theme.colors.white};
   font-family: "Pretendard Variable";
   font-size: ${({ theme }) => theme.fontSizes[16]};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  line-height: ${({ theme }) => theme.lineHeights.base};
+  line-height: 1.7;
   letter-spacing: -0.016rem;
-  white-space: pre-line;
+
+  /* 마크다운/HTML 공통 요소 스타일 */
+  h1,
+  h2,
+  h3 {
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: 1.35;
+    margin: 2rem 0 1rem;
+  }
+  h1 {
+    font-size: 2.2rem;
+  }
+  h2 {
+    font-size: 1.9rem;
+  }
+  h3 {
+    font-size: 1.7rem;
+  }
+
+  p {
+    margin: 0.8rem 0;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0 1rem 2rem;
+  }
+  li {
+    margin: 0.3rem 0;
+  }
+
+  strong {
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+  }
+  em {
+    font-style: italic;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.lime};
+    text-decoration: underline;
+    word-break: break-all;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", monospace;
+    background: ${({ theme }) => theme.colors.black[800]};
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+  }
 
   @media (max-width: 767px) {
     font-size: 1.5rem;
@@ -180,31 +232,37 @@ const CloseImg = styled.img`
   display: block;
 `;
 
-const labelFromUrlType = (t: string) =>
-  t === "ANDROID_STORE"
-    ? "Android"
-    : t === "IOS_APP_STORE"
-    ? "iOS"
-    : t === "WEB"
-    ? "Web"
-    : t === "GITHUB_ANDROID"
-    ? "Github: Android"
-    : t === "GITHUB_IOS"
-    ? "Github: iOS"
-    : t === "GITHUB_WEB"
-    ? "Github: Web"
-    : t;
+const URL_LABELS: Record<string, string> = {
+  ANDROID_STORE: "Android",
+  IOS_STORE: "IOS",
+  WEBSITE: "Web",
+  ANDROID_GITHUB: "Github: Android",
+  IOS_GITHUB: "Github: IOS",
+  FRONTEND_GITHUB: "Github: Web",
+  BACKEND_GITHUB: "Github: Server",
+  DATA_GITHUB: "Github: Data",
+  CRAWLER_GITHUB: "Github: Crawler",
+  BEHANCE: "Behance",
+};
+
+const labelFromUrlType = (t: string) => URL_LABELS[t] ?? t;
 
 const URL_ORDER = [
   "ANDROID_STORE",
-  "IOS_APP_STORE",
-  "WEB",
-  "GITHUB_ANDROID",
-  "GITHUB_IOS",
-  "GITHUB_WEB",
+  "IOS_STORE",
+  "WEBSITE",
+  "ANDROID_GITHUB",
+  "IOS_GITHUB",
+  "FRONTEND_GITHUB",
+  "BACKEND_GITHUB",
+  "DATA_GITHUB",
+  "CRAWLER_GITHUB",
+  "BEHANCE",
 ];
 
 export default function ProjectDetailPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { id } = useParams<{ id?: string }>();
   const enabled = !!id;
 
@@ -214,8 +272,11 @@ export default function ProjectDetailPage() {
     enabled,
   });
 
-  const { toProjectList } = useRouteNavigation();
-  const handleCloseBar = () => toProjectList();
+  const handleCloseBar = () => {
+    const type = searchParams.get("type") ?? "SERVICE";
+    const page = searchParams.get("page") ?? "1";
+    navigate(`/projects?type=${type}&page=${page}`);
+  };
 
   const sortedUrls: ProjectUrl[] = useMemo(() => {
     if (!data) return [];
@@ -298,7 +359,10 @@ export default function ProjectDetailPage() {
                 ))}
               </ImagesList>
 
-              <Intro>{data.introduction}</Intro>
+              <MarkdownRenderer
+                markdownString={data.introduction ?? ""}
+                StyledWrapper={Intro}
+              />
             </>
           ) : null}
         </Main>

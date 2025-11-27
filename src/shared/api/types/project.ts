@@ -1,23 +1,24 @@
 import { ProjectType } from "../../../entities/project/model/types";
 
-export type ProjectListItem = {
-  id: number;
-  name: string;
-  summary: string;
-  thumbnail_url: string;
-  project_type: ProjectType;
-  is_active: boolean;
-};
-
-export type BriefProjectList = {
-  items: ProjectListItem[];
-};
-
 export type ProjectImage = {
   object_name: string;
   presigned_url: string;
   fields: Record<string, unknown>;
   project_image_id: number;
+};
+
+export type ProjectListItem = {
+  id: number;
+  name: string;
+  summary: string;
+  project_type: ProjectType;
+  is_active: boolean;
+  thumbnail_image?: ProjectImage | null;
+  formed_at?: string;
+};
+
+export type BriefProjectList = {
+  items: ProjectListItem[];
 };
 
 export type UrlType =
@@ -39,9 +40,10 @@ export type ProjectDetail = {
   name: string;
   summary: string;
   introduction: string;
-  thumbnail_url: string;
   project_type: ProjectType;
   is_active: boolean;
+  thumbnail_image?: ProjectImage | null;
   images: ProjectImage[];
   urls: ProjectUrl[];
+  formed_at?: string;
 };
