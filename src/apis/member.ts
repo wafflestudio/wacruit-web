@@ -1,3 +1,5 @@
+import { getJSON } from "../features/member/utils";
+
 export type ApiPosition =
   | "FRONTEND"
   | "BACKEND"
@@ -29,12 +31,6 @@ export type MemberQuery = {
   offset?: number;
   limit?: number;
 };
-
-async function getJSON<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
-  const res = await fetch(input, init);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return (await res.json()) as T;
-}
 
 /* 후원자 목록 */
 export async function fetchSponsors(): Promise<ApiSponsorItem[]> {
