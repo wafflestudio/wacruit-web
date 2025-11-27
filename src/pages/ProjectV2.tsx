@@ -25,21 +25,31 @@ function isFetchResponse(e: unknown): e is Response {
   return typeof e === "object" && e !== null && "ok" in e && "status" in e;
 }
 
+/* 쿼리 파라미터 정규화 */
+const normalizeType = (value: string | null): ProjectType =>
+  value === "SERVICE" || value === "STUDY" ? value : "SERVICE";
+
+const normalizePage = (value: string | null): number => {
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : 1;
+};
+
 export default function ProjectPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const initialType = (searchParams.get("type") as ProjectType) ?? "SERVICE";
-  const initialPage = Math.max(1, Number(searchParams.get("page") ?? 1));
+  const initialType = normalizeType(searchParams.get("type"));
+  const initialPage = normalizePage(searchParams.get("page"));
 
   const [selectedType, setSelectedType] = useState<ProjectType>(initialType);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   useEffect(() => {
-    const t = (searchParams.get("type") as ProjectType) ?? "SERVICE";
-    const p = Math.max(1, Number(searchParams.get("page") ?? 1));
+    const t = normalizeType(searchParams.get("type"));
+    const p = normalizePage(searchParams.get("page"));
     setSelectedType(t);
     setCurrentPage(p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -48,17 +58,6 @@ export default function ProjectPage() {
   });
 
   const allItems = useMemo<ProjectListItem[]>(() => data?.items ?? [], [data]);
-
-  const handleChangeType = (t: ProjectType) => {
-    setSelectedType(t);
-    setCurrentPage(1);
-    setSearchParams({ type: t, page: "1" });
-  };
-
-  const handleChangePage = (p: number) => {
-    setCurrentPage(p);
-    setSearchParams({ type: selectedType, page: String(p) });
-  };
 
   const filtered = useMemo(
     () => allItems.filter((p) => p.project_type === selectedType),
@@ -77,6 +76,18 @@ export default function ProjectPage() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return sorted.slice(start, start + ITEMS_PER_PAGE);
   }, [sorted, currentPage]);
+
+  const handleChangeType = (t: ProjectType) => {
+    setSelectedType(t);
+    setCurrentPage(1);
+    setSearchParams({ type: t, page: "1" });
+  };
+
+  const handleChangePage = (p: number) => {
+    const clamped = Math.max(1, Math.min(p, totalPages));
+    setCurrentPage(clamped);
+    setSearchParams({ type: selectedType, page: String(clamped) });
+  };
 
   const errorMessage = isError
     ? error instanceof Error
