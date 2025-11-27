@@ -32,7 +32,10 @@ import {
 import { apiToCore, coreToApi } from "../features/member/mapping";
 import { getErrorMessage } from "../features/member/utils";
 
-type LocalViewMember = ViewMember & { generationNum: number };
+type LocalViewMember = ViewMember & {
+  generationNum: number;
+  nameKey: string;
+};
 
 const PAGE_SIZE = 20;
 
@@ -53,6 +56,25 @@ const LoadingRow = styled.div`
   text-align: center;
   padding: 16px 0;
 `;
+
+/* 정렬: 기수 → 포지션 우선순위 → 이름 → id */
+function makeComparator(sortOrder: SortOrder) {
+  return (a: LocalViewMember, b: LocalViewMember) => {
+    if (a.generationNum !== b.generationNum) {
+      return sortOrder === "desc"
+        ? b.generationNum - a.generationNum
+        : a.generationNum - b.generationNum;
+    }
+    const posDiff =
+      POSITION_ORDER[a.positionKey] - POSITION_ORDER[b.positionKey];
+    if (posDiff !== 0) return posDiff;
+
+    const nameDiff = a.nameKey.localeCompare(b.nameKey, "ko");
+    if (nameDiff !== 0) return nameDiff;
+
+    return a.id - b.id;
+  };
+}
 
 export default function MemberPage() {
   const isMobile = useIsMobile(999);
@@ -103,17 +125,14 @@ export default function MemberPage() {
     (async () => {
       try {
         setLoadingMembers(true);
-        const [items] = await Promise.all([
-          fetchMembers({
-            position:
-              selectedPosition === "all"
-                ? undefined
-                : coreToApi(selectedPosition),
-            offset: 0,
-            limit: PAGE_SIZE,
-          }),
-          new Promise((r) => setTimeout(r, 2000)),
-        ]);
+        const items = await fetchMembers({
+          position:
+            selectedPosition === "all"
+              ? undefined
+              : coreToApi(selectedPosition),
+          offset: 0,
+          limit: PAGE_SIZE,
+        });
         if (!alive) return;
 
         setMembersRaw(items);
@@ -133,10 +152,10 @@ export default function MemberPage() {
     };
   }, [selectedPosition]);
 
-  /* 페이지 추가 로드 */
   useEffect(() => {
     if (!hasMore) return;
     if (loadingMembers) return;
+
     const node = sentinelRef.current;
     if (!node) return;
 
@@ -153,17 +172,14 @@ export default function MemberPage() {
           try {
             setLoadingMembers(true);
             setErrorMembers(null);
-            const [items] = await Promise.all([
-              fetchMembers({
-                position:
-                  selectedPosition === "all"
-                    ? undefined
-                    : coreToApi(selectedPosition),
-                offset,
-                limit: PAGE_SIZE,
-              }),
-              new Promise((r) => setTimeout(r, 2000)),
-            ]);
+            const items = await fetchMembers({
+              position:
+                selectedPosition === "all"
+                  ? undefined
+                  : coreToApi(selectedPosition),
+              offset,
+              limit: PAGE_SIZE,
+            });
             setMembersRaw((prev) => [...prev, ...items]);
             setHasMore(items.length === PAGE_SIZE);
             setOffset((prev) => prev + items.length);
@@ -188,36 +204,32 @@ export default function MemberPage() {
     };
   }, [hasMore, loadingMembers, offset, selectedPosition]);
 
-  /* 카드 데이터 가공 + 정렬 */
   const processed: ViewMember[] = useMemo(() => {
-    const mapped: LocalViewMember[] = membersRaw.map((m, idx) => ({
-      id: m.id ?? idx,
-      name: `${m.last_name}${m.first_name}`,
-      generationText: `${m.generation}`,
-      generationNum: parseGeneration(m.generation),
-      positionKey: apiToCore(m.position),
-    }));
-
-    mapped.sort((a, b) => {
-      if (a.generationNum !== b.generationNum) {
-        return sortOrder === "desc"
-          ? b.generationNum - a.generationNum
-          : a.generationNum - b.generationNum;
-      }
-      return POSITION_ORDER[a.positionKey] - POSITION_ORDER[b.positionKey];
-    });
-
-    return mapped.map((m) => {
+    const mapped: LocalViewMember[] = membersRaw.map((m, idx) => {
+      const name = `${m.last_name}${m.first_name}`;
       return {
-        id: m.id,
-        name: m.name,
-        generationText: m.generationText,
-        positionKey: m.positionKey,
+        id: m.id ?? idx,
+        name,
+        nameKey: name,
+        generationText: `${m.generation}`,
+        generationNum: parseGeneration(m.generation),
+        positionKey: apiToCore(m.position),
       };
     });
+
+    const cmp = makeComparator(sortOrder);
+    mapped.sort(cmp);
+
+    return mapped.map(({ id, name, generationText, positionKey }) => ({
+      id,
+      name,
+      generationText,
+      positionKey,
+    }));
   }, [membersRaw, sortOrder]);
 
-  const toggleSort = () => setSortOrder((p) => (p === "desc" ? "asc" : "desc"));
+  const toggleSort = () =>
+    setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
 
   return (
     <>
@@ -270,12 +282,8 @@ export default function MemberPage() {
               ))}
             </Grid>
 
-            {/* 로딩 표시 / 센티넬 / 끝 */}
+            {/* 로딩 표시 / 센티넬 */}
             {loadingMembers && <LoadingRow>멤버 불러오는 중…</LoadingRow>}
-            {!loadingMembers && !errorMembers && !hasMore && (
-              <LoadingRow>마지막까지 확인했어요.</LoadingRow>
-            )}
-            {/* 이 센티넬이 뷰포트에 들어오면 다음 페이지 로드 */}
             <Sentinel ref={sentinelRef} />
           </MemberBlock>
         </CombinedSection>
