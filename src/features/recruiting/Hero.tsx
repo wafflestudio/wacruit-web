@@ -85,9 +85,9 @@ const HeroBackgroundIcon = styled.div`
 // Desktop Icons
 const CubContainerDesktop = styled.div`
   position: absolute;
-  left: 7.4vw; // 142.002 / 1920
-  bottom: 0; // -25.001 / 1920
-  width: 30vw; // 575.927 / 1920
+  left: 7.40vw; 
+  bottom: 0;
+  width: 30.00vw; 
 
   @media (max-width: 768px) {
     display: none;
@@ -96,9 +96,9 @@ const CubContainerDesktop = styled.div`
 
 const MixerContainerDesktop = styled.div`
   position: absolute;
-  left: 7.14vw; // 137 / 1920
-  top: -16.46vw; // -316 / 1920
-  width: 58.94vw; // 1131.584 / 1920
+  left: 7.14vw; 
+  top: -16.46vw;
+  width: 58.94vw; 
 
   @media (max-width: 768px) {
     display: none;
@@ -192,7 +192,7 @@ const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
   font-family: "Pretendard Variable", sans-serif;
-  font-size: clamp(4rem, 2.604vw, 5rem); // 40px ~ 50px (1920px 기준)
+  font-size: clamp(4rem, 2.604vw, 5rem); 
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.01em;
