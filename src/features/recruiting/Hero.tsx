@@ -85,9 +85,9 @@ const HeroBackgroundIcon = styled.div`
 // Desktop Icons
 const CubContainerDesktop = styled.div`
   position: absolute;
-  left: 7.40vw; 
+  left: 7.4vw;
   bottom: 0;
-  width: 30.00vw; 
+  width: 30vw;
 
   @media (max-width: 768px) {
     display: none;
@@ -96,9 +96,9 @@ const CubContainerDesktop = styled.div`
 
 const MixerContainerDesktop = styled.div`
   position: absolute;
-  left: 7.14vw; 
+  left: 7.14vw;
   top: -16.46vw;
-  width: 58.94vw; 
+  width: 58.94vw;
 
   @media (max-width: 768px) {
     display: none;
@@ -192,7 +192,7 @@ const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
   font-family: "Pretendard Variable", sans-serif;
-  font-size: clamp(4rem, 2.604vw, 5rem); 
+  font-size: clamp(4rem, 2.604vw, 5rem);
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.01em;
