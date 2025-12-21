@@ -45,7 +45,23 @@ const GlobalStyles = createGlobalStyle`
       format("woff");
     font-weight: normal;
     font-style: normal;
-  } 
+  }
+
+  @font-face {
+    font-family: 'Gmarket Sans';
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+      format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Gmarket Sans';
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
+      format("woff");
+    font-weight: 700;
+    font-style: normal;
+  }
 `;
 
 export default GlobalStyles;

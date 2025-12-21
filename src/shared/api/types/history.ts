@@ -1,8 +1,8 @@
-export type HistoryResponse = {
+export type HistoryItem = {
   id: number;
-  start_date: string;
-  operation_period: number;
-  total_projects: number;
-  total_users: number;
-  total_members: number;
+  history_key: string;
+  history_value: string;
+  history_unit: string;
 };
+
+export type HistoryResponse = HistoryItem[];

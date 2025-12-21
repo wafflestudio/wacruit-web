@@ -15,16 +15,20 @@ const RecruitInfoV3 = () => {
 
   useEffect(() => {
     if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - 40;
+      const timeoutId = setTimeout(() => {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - 40;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
     } else {
       window.scrollTo(0, 0);
     }
@@ -46,7 +50,6 @@ const RecruitInfoV3 = () => {
 
 const MainContainer = styled.main`
   display: flex;
-  width: 100%;
   flex-direction: column;
 `;
 
