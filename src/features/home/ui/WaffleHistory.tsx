@@ -88,13 +88,13 @@ export const WaffleHistory = () => {
             const components = getCardComponents(item.id);
             if (!components) return null;
 
-            const { Card, Label, Number, Unit } = components;
+            const { Card, Label, Number: NumberComponent, Unit } = components;
 
             return (
               <Card key={item.id} $isVisible={isVisible}>
                 <Label>{item.history_key}</Label>
                 <StatValueWrapper>
-                  <Number>{item.history_value}</Number>
+                  <NumberComponent>{item.history_value}</NumberComponent>
                   <Unit>{item.history_unit}</Unit>
                 </StatValueWrapper>
               </Card>

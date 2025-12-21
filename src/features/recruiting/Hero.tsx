@@ -192,7 +192,7 @@ const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
   font-family: "Pretendard Variable", sans-serif;
-  font-size: clamp(4rem, 2.604vw, 5rem);
+  font-size: clamp(3rem, 2.604vw, 5rem);
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.01em;
