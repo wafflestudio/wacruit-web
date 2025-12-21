@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const WaffleHistory = () => {
   const { useGetHistories } = useHistoryQuery();
-  const { data: historyData } = useGetHistories();
+  const { data: historyData, isError } = useGetHistories();
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -34,6 +34,14 @@ export const WaffleHistory = () => {
       }
     };
   }, [historyData]);
+
+  if (isError) {
+    return (
+      <HistoryContainer>
+        <ErrorMessage>히스토리 정보를 불러오는데 실패했습니다.</ErrorMessage>
+      </HistoryContainer>
+    );
+  }
 
   if (!historyData) return null;
 
@@ -113,6 +121,13 @@ const HistoryContainer = styled.section`
   gap: 10px;
   align-self: stretch;
   background-color: #121212;
+`;
+
+const ErrorMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  color: ${({ theme }) => theme.colors.white};
+  padding: 60px 20px;
 `;
 
 const HistoryContent = styled.div`
@@ -231,6 +246,12 @@ const StatCardGray = styled.div<{ $isVisible: boolean }>`
       transform: translateY(0);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+    transition: opacity 0.3s ease-in-out;
+  }
 `;
 
 const StatLabel = styled.div`
@@ -342,6 +363,13 @@ const StatCardBlue = styled.div<{ $isVisible: boolean }>`
       transform: translateY(0) rotate(-12.342deg);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+    transform: rotate(-12.342deg);
+    transition: opacity 0.3s ease-in-out;
+  }
 `;
 
 const StatCardGreen = styled.div<{ $isVisible: boolean }>`
@@ -385,6 +413,13 @@ const StatCardGreen = styled.div<{ $isVisible: boolean }>`
       transform: translateY(0) rotate(16.315deg);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+    transform: rotate(16.315deg);
+    transition: opacity 0.3s ease-in-out;
+  }
 `;
 
 const StatCardBrown = styled.div<{ $isVisible: boolean }>`
@@ -427,5 +462,11 @@ const StatCardBrown = styled.div<{ $isVisible: boolean }>`
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+    transition: opacity 0.3s ease-in-out;
   }
 `;
