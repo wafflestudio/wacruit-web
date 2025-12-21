@@ -1,10 +1,11 @@
 import { getRequest, encodeQueryParams } from "./utility";
 import type {
-  BriefProjectList,
+  ProjectListResponse,
+  ProjectListItem,
   ProjectDetail,
   ProjectUrl,
   ProjectImage,
-} from "../shared/api/types/project";
+} from "../features/project/types";
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null;
@@ -34,12 +35,30 @@ function isProjectImageArray(v: unknown): v is ProjectImage[] {
   );
 }
 
-type ServerProjectDetail = Omit<ProjectDetail, "urls" | "images"> & {
-  urls: unknown;
-  images: unknown;
+function isProjectThumbnail(v: unknown): v is ProjectImage {
+  return (
+    isObject(v) &&
+    typeof v.project_image_id === "number" &&
+    typeof v.presigned_url === "string"
+  );
+}
+
+type ServerProjectList = {
+  items: (Omit<ProjectListItem, "thumbnail_image"> & {
+    thumbnail_image?: unknown;
+  })[];
 };
 
-export const getProjects = ({
+type ServerProjectDetail = Omit<
+  ProjectDetail,
+  "urls" | "images" | "thumbnail_image"
+> & {
+  urls: unknown;
+  images: unknown;
+  thumbnail_image?: unknown;
+};
+
+export const getProjects = async ({
   queryParams,
 }: {
   queryParams?: { offset?: number; limit?: number };
@@ -47,15 +66,29 @@ export const getProjects = ({
   const offset = queryParams?.offset ?? 0;
   const limit = queryParams?.limit ?? 1000;
   const query = encodeQueryParams({ params: { offset, limit } });
-  return getRequest<BriefProjectList>(`/v3/projects?${query}`);
+
+  const res = await getRequest<ServerProjectList>(`/v3/projects?${query}`);
+
+  const normalizedItems: ProjectListItem[] = res.items.map((p) => ({
+    ...p,
+    thumbnail_image: isProjectThumbnail(p.thumbnail_image)
+      ? p.thumbnail_image
+      : null,
+  }));
+
+  const out: ProjectListResponse = { items: normalizedItems };
+  return out;
 };
 
-export const getProjectDetail = (projectId: number | string) =>
-  getRequest<ServerProjectDetail>(`/v3/projects/${projectId}`).then((d) => {
-    const urls: ProjectUrl[] = isProjectUrlArray(d.urls) ? d.urls : [];
-    const images: ProjectImage[] = isProjectImageArray(d.images)
-      ? d.images
-      : [];
-    const normalized: ProjectDetail = { ...d, urls, images };
-    return normalized;
-  });
+export const getProjectDetail = async (projectId: number | string) => {
+  const d = await getRequest<ServerProjectDetail>(`/v3/projects/${projectId}`);
+
+  const urls: ProjectUrl[] = isProjectUrlArray(d.urls) ? d.urls : [];
+  const images: ProjectImage[] = isProjectImageArray(d.images) ? d.images : [];
+  const thumbnail_image = isProjectThumbnail(d.thumbnail_image)
+    ? d.thumbnail_image
+    : null;
+
+  const normalized: ProjectDetail = { ...d, urls, images, thumbnail_image };
+  return normalized;
+};

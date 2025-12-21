@@ -33,7 +33,7 @@ const SortControl = styled.div`
   gap: 20px;
   flex-shrink: 0;
 
-  @media (max-width: 767px) {
+  @media (max-width: 1200px) {
     align-self: center;
     width: auto;
   }
@@ -66,7 +66,7 @@ const SortButton = styled.button`
     "Noto Sans KR", sans-serif;
 
   padding: 4px 8px 4px 12px;
-  border: none; /* border 대신 inset box-shadow */
+  border: none;
   border-radius: 3px;
   background: ${theme.colors.white};
   box-shadow: inset 0 0 0 1px ${theme.colors.black[700]};

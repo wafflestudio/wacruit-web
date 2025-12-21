@@ -1,17 +1,15 @@
-// src/mocks/member.ts
-export type ApiPosition = "ANDROID" | "IOS" | "FRONTEND" | "BACKEND" | "DESIGN";
+import type { ApiMemberItem, ApiPosition } from "../apis/member";
+export type {
+  ApiMemberItem as MockApiMember,
+  ApiPosition as MockApiPosition,
+} from "../apis/member";
+type LegacyApiPosition = ApiPosition | "DESIGN";
+type LegacyMember = Omit<ApiMemberItem, "position"> & {
+  position: LegacyApiPosition;
+};
 
-export interface ApiMember {
-  id: number;
-  first_name: string;
-  last_name: string;
-  is_active: boolean;
-  generation: string; // 예: "23", "22.5"
-  position: ApiPosition;
-}
-
-// 40개 mock 데이터 (정수 기수는 "23"처럼, .5는 "22.5"처럼 표기)
-export const members: ApiMember[] = [
+// 40개 mock 데이터
+const RAW: LegacyMember[] = [
   {
     id: 1,
     first_name: "민준",
@@ -336,3 +334,12 @@ export const members: ApiMember[] = [
     position: "DESIGN",
   },
 ];
+
+function normalizePosition(p: LegacyApiPosition): ApiPosition {
+  return p === "DESIGN" ? "DESIGNER" : p;
+}
+
+export const members: ApiMemberItem[] = RAW.map((m) => ({
+  ...m,
+  position: normalizePosition(m.position),
+}));

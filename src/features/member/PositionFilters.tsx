@@ -52,7 +52,7 @@ const Positions = styled.div`
   white-space: nowrap;
   scrollbar-width: thin;
 
-  @media (max-width: 767px) {
+  @media (max-width: 1200px) {
     overflow: visible;
     white-space: normal;
     flex: 0 0 auto;

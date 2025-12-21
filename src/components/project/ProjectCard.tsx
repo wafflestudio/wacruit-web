@@ -97,10 +97,13 @@ interface Props {
 }
 
 export default function ProjectCard({ project, onClick }: Props) {
-  const showStatus = project.is_active; // 활성일 때만 배지 표시
+  const showStatus = project.is_active;
+  const thumb =
+    project.thumbnail_image?.presigned_url || "/image/empty_thumbnail.svg";
+
   return (
     <Card type="button" onClick={onClick}>
-      <Thumbnail $src={project.thumbnail_url}>
+      <Thumbnail $src={thumb}>
         {showStatus && (
           <StatusBadge>{formatProjectStatus(project)}</StatusBadge>
         )}
