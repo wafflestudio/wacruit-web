@@ -11,8 +11,8 @@ export const getTimelines = ({
   queryParams?: { groupType: TimelineGroupType };
 }) => {
   if (queryParams === undefined) {
-    return getRequest<TimelineListResponse>(`/v3/timelines`);
+    return getRequest<TimelineListResponse>(`/v3/timelines`, {}, false);
   }
-  const query = encodeQueryParams({ params: queryParams });
-  return getRequest<TimelineListResponse>(`/v3/timelines/?${query}`);
+  const query = encodeQueryParams({ params: { group: queryParams.groupType } });
+  return getRequest<TimelineListResponse>(`/v3/timelines?${query}`, {}, false);
 };

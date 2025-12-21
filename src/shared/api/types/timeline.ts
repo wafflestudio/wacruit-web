@@ -1,4 +1,4 @@
-export type TimelineGroupType = "ROOKIES" | "PROGRAMMERS" | "DESIGNERS";
+export type TimelineGroupType = "ROOKIE" | "PROGRAMMER" | "DESIGNER";
 
 type TimelineCategoryResponse = {
   id: number;
