@@ -12,19 +12,6 @@
 
 ```shell
 yarn
-husky install # 허스키(pre-commit library) 설치
-husky add .husky/pre-commit "lint-staged --no-stash --verbose" # 허스키 명령어 세팅
-husky add .husky/pre-push "typecheck"
-
-```
-
-- 윈도우의 경우
-
-```shell
-yarn
-yarn husky install # 허스키(pre-commit library) 설치
-yarn husky add .husky/pre-commit "yarn lint-staged --no-stash --verbose" # 허스키 명령어 세팅
-yarn husky add .husky/pre-push "yarn typecheck"
 
 ```
 

@@ -52,6 +52,10 @@ export default function ProjectPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["projects", { offset: 0, limit: 1000 }],
     queryFn: () => getProjects({ queryParams: { offset: 0, limit: 1000 } }),
