@@ -1,1 +1,1 @@
-export const MAILTO_RECRUIT = "mailto:recruit@wafflestudio.com";
+export const MAIL_RECRUIT = "recruit@wafflestudio.com";

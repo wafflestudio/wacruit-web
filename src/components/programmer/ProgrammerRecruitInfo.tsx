@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { MAILTO_RECRUIT } from "../../common/const";
+import { MAIL_RECRUIT } from "../../common/const";
+import { generateMailUrl } from "../../common/utils";
 
 export const ProgrammerRecruitInfo = () => {
   const requirements = [
@@ -40,8 +41,10 @@ export const ProgrammerRecruitInfo = () => {
       <div>
         <Content>
           <Description>
-            <Email href={MAILTO_RECRUIT}>recruit@wafflestudio.com</Email>으로
-            아래 내용을 보내주시면 <Highlight>7일 이내로</Highlight> 비대면
+            <Email href={generateMailUrl(MAIL_RECRUIT)}>
+              recruit@wafflestudio.com
+            </Email>
+            으로 아래 내용을 보내주시면 <Highlight>7일 이내로</Highlight> 비대면
             인터뷰 날짜를 잡아드릴 예정입니다.
           </Description>
 
@@ -63,7 +66,7 @@ const Content = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 3rem;
+  gap: 4.8rem;
 `;
 
 const Description = styled.p`
