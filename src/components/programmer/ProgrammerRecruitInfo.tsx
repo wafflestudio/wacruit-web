@@ -41,9 +41,7 @@ export const ProgrammerRecruitInfo = () => {
       <div>
         <Content>
           <Description>
-            <Email href={generateMailUrl(MAIL_RECRUIT)}>
-              recruit@wafflestudio.com
-            </Email>
+            <Email href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</Email>
             으로 아래 내용을 보내주시면 <Highlight>7일 이내로</Highlight> 비대면
             인터뷰 날짜를 잡아드릴 예정입니다.
           </Description>
