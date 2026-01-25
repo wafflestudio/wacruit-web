@@ -12,9 +12,8 @@ export const ProgrammersRecruitInfoPage = () => {
         <Title>프로그래머스 / 디자이너(정회원) 리크루팅</Title>
         <Description>
           {" "}
-          관련 질문이 있다면 <Mail
-            href={generateMailUrl(MAIL_RECRUIT)}
-          ></Mail>{" "}
+          관련 질문이 있다면{" "}
+          <Mail href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</Mail>{" "}
           이메일로 문의주세요.
         </Description>
         <ProgrammerRecruitInfo />
