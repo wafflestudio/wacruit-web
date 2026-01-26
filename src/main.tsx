@@ -24,9 +24,9 @@ import ProjectDetailV2 from "./pages/ProjectDetailV2";
 import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
-import { ProgrammerRecruitInfo } from "./components/programmer/ProgrammerRecruitInfo";
 import RecruitInfoV3 from "./pages/RecruitInfoV3";
 import LoginRedirect from "./pages/LoginRedirect";
+import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 
 const queryClient = new QueryClient();
 
@@ -73,7 +73,7 @@ const router = createBrowserRouter([
   },
   {
     path: RECRUITING_PROGRAMMERS_DETAIL,
-    element: <ProgrammerRecruitInfo />,
+    element: <ProgrammersRecruitInfoPage />,
     errorElement: <div>프로그래머스 페이지를 불러올 수 없습니다.</div>,
   },
   {

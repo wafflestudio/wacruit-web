@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Header from "../components/home/Header/Header";
-import { MAILTO_RECRUIT } from "../common/const";
+import { MAIL_RECRUIT } from "../common/const";
 import { RecruitItem } from "../components/recruit/RecruitItem";
 import { useQuery } from "@tanstack/react-query";
 import { getAllRecruitings } from "../apis/recruiting";
+import { generateMailUrl } from "../common/utils";
 
 export default function RecruitList() {
   const { data } = useQuery({
@@ -19,7 +20,8 @@ export default function RecruitList() {
       <Main>
         <Title>리크루팅 목록</Title>
         <Description>
-          관련 질문이 있다면 <Mail href={MAILTO_RECRUIT}>{MAILTO_RECRUIT}</Mail>{" "}
+          관련 질문이 있다면{" "}
+          <Mail href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</Mail>{" "}
           이메일로 문의주세요.
         </Description>
         <RecruitItemList>
