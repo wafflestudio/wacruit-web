@@ -1,4 +1,3 @@
-import { getSsoUtils } from "../../../entities/lib/sso";
 import { useAuthQuery } from "../../../entities/api/useAuthQuery";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
 import { DesktopHeader } from "./DesktopHeader";
@@ -7,10 +6,9 @@ import { PATH } from "../../routes/constants";
 import { MobileHeader } from "./MobileHeader";
 
 export default function Headerv2() {
-  const { toHomeV2, toRecruitingInfo, toProjectList, toReviewList } =
+  const { toHomeV2, toRecruitingInfo, toProjectList, toReviewList, toLogin } =
     useRouteNavigation();
   const { useCheckAuth, useLogout } = useAuthQuery();
-  const { tryLogin } = getSsoUtils();
   const { path: currentPath } = useRouteLocation();
 
   const { data: authState } = useCheckAuth();
@@ -39,12 +37,14 @@ export default function Headerv2() {
     },
   ];
   const onLogin = () => {
-    tryLogin("home");
+    toLogin();
   };
   const onLogout = () => {
     tryLogout();
     toHomeV2();
   };
+
+  const isLoginPage = currentPath === PATH.LOGIN || currentPath === PATH.SIGNUP;
 
   return (
     <>
@@ -54,6 +54,7 @@ export default function Headerv2() {
         onLogout={onLogout}
         onLogin={onLogin}
         toHome={toHomeV2}
+        isLoginPage={isLoginPage}
       />
       <DesktopHeader
         authState={authState}
@@ -61,6 +62,7 @@ export default function Headerv2() {
         onLogout={onLogout}
         onLogin={onLogin}
         toHome={toHomeV2}
+        isLoginPage={isLoginPage}
       />
     </>
   );

@@ -10,6 +10,8 @@ export const useRouteNavigation = () => {
     RECRUITING_INFO,
     PROJECT_LIST,
     REVIEW_LIST,
+    LOGIN,
+    SIGNUP,
   } = PATH;
   const { RECRUITING_DETAIL, PROJECT_DETAIL } = CREATE_PATH;
 
@@ -37,6 +39,12 @@ export const useRouteNavigation = () => {
     },
     toRecruitingDetail: ({ recruitId }: { recruitId: number }) => {
       void navigation(RECRUITING_DETAIL({ recruitId }));
+    },
+    toLogin: () => {
+      void navigation(LOGIN);
+    },
+    toSignup: () => {
+      void navigation(SIGNUP);
     },
   };
 };
