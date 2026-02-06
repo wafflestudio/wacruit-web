@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import styled from "styled-components";
 import { HeroSection } from "../features/home/ui/HeroSection";
@@ -9,12 +10,20 @@ import { TimeLine } from "../features/home/ui/Timeline";
 import Footer from "../shared/ui/footer/Footer";
 
 export default function HomeV2() {
+  const waffleHistoryRef = useRef<HTMLDivElement | null>(null);
+
+  const handleScrollToHistory = useCallback(() => {
+    waffleHistoryRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <div>
       <MainContainer>
         <Headerv2 />
-        <HeroSection />
-        <WaffleHistory />
+        <HeroSection onScrollToHistory={handleScrollToHistory} />
+        <div ref={waffleHistoryRef}>
+          <WaffleHistory />
+        </div>
         <Activities />
         <TimeLine />
         <Projects />
