@@ -23,6 +23,8 @@
     "@tanstack/react-query": "^4.32.1",
     "@uiw/react-codemirror": "^4.21.7",
     "js-cookie": "^3.0.5",
+    "matter-js": "^0.20.0",
+    "poly-decomp": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
@@ -38,6 +40,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
+    "@types/matter-js": "^0.20.2",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@types/react-router-dom": "^5.3.3",
@@ -52,7 +55,8 @@
     "prettier": "^2.8.8",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-plugin-svgr": "^4.5.0"
   },
   "msw": {
     "workerDirectory": "public"

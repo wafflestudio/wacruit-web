@@ -8,15 +8,16 @@ const GlobalStyles = createGlobalStyle`
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
 
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   body {
-    * {
-      font-family: Pretendard, sans-serif;
-      box-sizing: border-box;
-      text-decoration: none;
-      border-collapse: collapse;
-      word-break: keep-all;
-      overflow-wrap: break-word;
-    }
+    font-family: Pretendard, sans-serif;
+    text-decoration: none;
+    border-collapse: collapse;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   
   ul, ol {
