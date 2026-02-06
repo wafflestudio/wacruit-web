@@ -231,7 +231,7 @@ const HeroTitle = styled.div`
   gap: 0.25em;
 
   color: ${({ theme }) => theme.colors.black[100]};
-  font-family: "GMarket Sans";
+  font-family: "Gmarket Sans";
   font-size: 12rem;
   font-weight: 400;
 
@@ -250,11 +250,6 @@ const HeroTitleArrowButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: stretch;
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.black[80]};
-    outline-offset: 4px;
-  }
 `;
 
 const HeroTitleArrow = styled.img`
