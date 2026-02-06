@@ -233,9 +233,9 @@ const HeroTitle = styled.div`
   gap: 0.25em;
 
   color: ${({ theme }) => theme.colors.black[100]};
-  font-family: "GMarketSans";
+  font-family: "GMarket Sans";
   font-size: 12rem;
-  font-weight: 500;
+  font-weight: 400;
 
   @media (max-width: 1024px) {
     flex-direction: column;

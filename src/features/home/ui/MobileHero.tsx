@@ -234,9 +234,9 @@ const HeroTitle = styled.div`
   padding: 10px 10px 2px;
 
   color: ${({ theme }) => theme.colors.black[100]};
-  font-family: "GMarketSans";
+  font-family: "GMarket Sans";
   font-size: 6rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: ${HERO_TITLE_LINE_HEIGHT};
 
   white-space: normal;

@@ -225,15 +225,15 @@ const HeroTitleWrapper = styled.div`
 const HeroTitle = styled.div`
   display: inline-flex;
   background: #121212;
-  padding: 14px 14px 0px;
+  padding: 16px 16px 0px;
   line-height: 1.05;
 
   gap: 0.25em;
 
   color: ${({ theme }) => theme.colors.black[100]};
-  font-family: "GMarketSans";
+  font-family: "GMarket Sans";
   font-size: 12rem;
-  font-weight: 500;
+  font-weight: 400;
 
   @media (max-width: 1024px) {
     flex-direction: column;
