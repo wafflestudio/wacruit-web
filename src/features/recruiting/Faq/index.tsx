@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { getAllQuestions } from "../../../apis/recruiting";
 import { FaqAccordion } from "./QuestionAccordion";
-
-const RECRUITING_EMAIL = "recruit@wafflestudio.com";
+import { generateMailUrl } from "../../../common/utils";
+import { MAIL_RECRUIT } from "../../../common/const";
 
 const Section = styled.section`
   width: 100%;
@@ -118,8 +118,8 @@ export const Faq = () => {
 
           <FaqContact>
             이외 문의 사항은{" "}
-            <a href={`mailto:${RECRUITING_EMAIL}`}>{RECRUITING_EMAIL}</a>으로
-            연락 부탁드립니다.
+            <a href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</a>으로 연락
+            부탁드립니다.
           </FaqContact>
         </FaqMain>
       </ContentWrapper>

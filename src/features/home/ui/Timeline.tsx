@@ -1,37 +1,102 @@
 import styled from "styled-components";
 import { useState } from "react";
-// import { useTimelineQuery } from "../../../entities/api/useTimelineQuery";
+import { useQuery } from "@tanstack/react-query";
+import { getTimelines } from "../../../apis/timeline";
+import type { TimelineGroupType } from "../../../shared/api/types/timeline";
 
 type Tabs = "ROOKIES" | "PROGRAMMERS";
 
 const TAB_CONTENTS: {
   id: Tabs;
   label: string;
-  activityInfo: string;
-  passingInfo: string;
+  groupType: TimelineGroupType;
 }[] = [
   {
     id: "ROOKIES",
     label: "준회원 (Rookies)",
-    activityInfo:
-      "• 준회원(Rookies)을 대상으로 개발의 기본부터 다질 수 있습니다.\n• 합격시 원하는 세미나를 선택하여 수강할 수 있으며, 반드시 한 개를 수강 완료하셔야 정회원으로 승격될 수 있습니다.\n• 세미나는 하나만 수강 가능하며, 다른 분야의 세미나를 듣고 싶으신 경우 청강을 진행하실 수 있습니다.",
-    passingInfo:
-      "• 각 세미나에서 제공하는 과제를 마감기한과 스펙에 맞추어 제출해야 합니다.\n• 이후 토이프로젝트를 진행해야 하며, 운영팀에서 참여도와 협업 능력을 확인합니다.",
+    groupType: "ROOKIE",
   },
   {
     id: "PROGRAMMERS",
     label: "정회원 (Programmers) 및 디자이너",
-    activityInfo:
-      "• 다양한 포지션의 준회원(Rookies)과 디자이너가 모여 간단한 서비스를 개발합니다.\n• 클론코딩 또는 기획 프로젝트를 선택하여 진행할 수 있습니다.",
-    passingInfo:
-      "• 토이프로젝트의 필수 스펙을 만족해야 하며, 프로젝트 이후 동료 평가를 통해 기여도를 평가합니다.\n• 클론코딩 프로젝트: 기존 서비스(인스타그램, 당근마켓 등)을 클론코딩하며, 기존에 없던 새로운 기능을 하나 이상 추가해야 합니다.\n- 기획 프로젝트: 필수 스펙을 모두 만족하며, 프로토타입 정도의 이상의 완성도를 가진 서비스를 출시합니다.",
+    groupType: "PROGRAMMER",
   },
 ];
+
+const MONTHS = [
+  "1월",
+  "2월",
+  "3월",
+  "4월",
+  "5월",
+  "6월",
+  "7월",
+  "8월",
+  "9월",
+  "10월",
+  "11월",
+  "12월",
+];
+
+const getColorByTitle = (title: string): string => {
+  if (title.includes("자율 프로젝트")) return "#DFFFA3";
+  if (title.includes("굽기")) return "#FF2C4C";
+  if (title.includes("토이프로젝트")) return "#37007F";
+  if (title.includes("세미나")) return "#E69754";
+  return "#DFFFA3";
+};
+
+const getTextColorByTitle = (title: string): string => {
+  if (title.includes("자율 프로젝트")) return "#121212";
+  return "#FFFFFF";
+};
+
+// 날짜에서 월 추출 (1-12)
+const getMonthFromDate = (dateString: string): number => {
+  const date = new Date(dateString);
+  return date.getMonth() + 1;
+};
+
+type TimelineItem = {
+  id: number;
+  title: string;
+  group: string;
+  category: {
+    id: number;
+    title: string;
+  };
+  start_date: string;
+  end_date: string;
+};
+
+type TimelineBarData = {
+  id: number;
+  title: string;
+  year: number;
+  startMonth: number;
+  endMonth: number;
+  backgroundColor: string;
+  textColor: string;
+};
 
 export const TimeLine = () => {
   const [selectedTab, setSelectedTab] = useState<Tabs>("PROGRAMMERS");
 
   const currentTab = TAB_CONTENTS.find((tab) => tab.id === selectedTab);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["timelines", currentTab?.groupType],
+    queryFn: () => {
+      if (!currentTab) {
+        throw new Error("currentTab is undefined");
+      }
+      return getTimelines({
+        queryParams: { groupType: currentTab.groupType },
+      });
+    },
+    enabled: currentTab != null,
+    staleTime: 60_000,
+  });
 
   const handleTabChange = (tab: Tabs) => {
     setSelectedTab(tab);
@@ -40,6 +105,107 @@ export const TimeLine = () => {
   if (currentTab == null) {
     return null;
   }
+
+  const timelineBars: TimelineBarData[] =
+    data?.items.map((item: TimelineItem) => {
+      const startDate = new Date(item.start_date);
+      const year = startDate.getFullYear();
+
+      return {
+        id: item.id,
+        title: item.title,
+        year,
+        startMonth: getMonthFromDate(item.start_date),
+        endMonth: getMonthFromDate(item.end_date),
+        backgroundColor: getColorByTitle(item.title),
+        textColor: getTextColorByTitle(item.title),
+      };
+    }) || [];
+
+  const bars2025 = timelineBars.filter((bar) => bar.year === 2025);
+  const bars2026 = timelineBars.filter((bar) => bar.year === 2026);
+
+  const renderYearTimelineBars = (bars: TimelineBarData[], year: number) => {
+    return (
+      <TimelineRow key={`desktop-${year}`}>
+        {MONTHS.map((_, index) => (
+          <WhiteCell key={`white-${year}-${index}`} />
+        ))}
+        {bars.map((bar) => {
+          const span = bar.endMonth - bar.startMonth + 1;
+          return (
+            <TimelineBar
+              key={`desktop-${bar.id}`}
+              $backgroundColor={bar.backgroundColor}
+              $textColor={bar.textColor}
+              $span={span}
+              $startMonth={bar.startMonth}
+            >
+              {bar.title}
+            </TimelineBar>
+          );
+        })}
+      </TimelineRow>
+    );
+  };
+
+  const renderMobileFirstHalf = (bars: TimelineBarData[], year: number) => {
+    return (
+      <TimelineRow key={`mobile-first-${year}`}>
+        {MONTHS.slice(0, 6).map((_, index) => (
+          <WhiteCell key={`white-${year}-first-${index}`} />
+        ))}
+        {bars.map((bar) => {
+          if (bar.startMonth > 6) return null;
+          const startInRange = Math.max(bar.startMonth, 1);
+          const endInRange = Math.min(bar.endMonth, 6);
+          const span = endInRange - startInRange + 1;
+          if (span <= 0) return null;
+
+          return (
+            <TimelineBar
+              key={`mobile-first-${bar.id}`}
+              $backgroundColor={bar.backgroundColor}
+              $textColor={bar.textColor}
+              $span={span}
+              $startMonth={startInRange}
+            >
+              {bar.title}
+            </TimelineBar>
+          );
+        })}
+      </TimelineRow>
+    );
+  };
+
+  const renderMobileSecondHalf = (bars: TimelineBarData[], year: number) => {
+    return (
+      <TimelineRow key={`mobile-second-${year}`}>
+        {MONTHS.slice(6, 12).map((_, index) => (
+          <WhiteCell key={`white-${year}-second-${index}`} />
+        ))}
+        {bars.map((bar) => {
+          if (bar.endMonth < 7) return null;
+          const startInRange = Math.max(bar.startMonth, 7);
+          const endInRange = Math.min(bar.endMonth, 12);
+          const span = endInRange - startInRange + 1;
+          if (span <= 0) return null;
+
+          return (
+            <TimelineBar
+              key={`mobile-second-${bar.id}`}
+              $backgroundColor={bar.backgroundColor}
+              $textColor={bar.textColor}
+              $span={span}
+              $startMonth={startInRange - 6}
+            >
+              {bar.title}
+            </TimelineBar>
+          );
+        })}
+      </TimelineRow>
+    );
+  };
 
   return (
     <TimelineContainer>
@@ -74,6 +240,45 @@ export const TimeLine = () => {
               </TabButton>
             ))}
           </TabBar>
+
+          {isLoading ? (
+            <LoadingMessage>타임라인을 불러오는 중...</LoadingMessage>
+          ) : error != null ? (
+            <ErrorMessage>타임라인을 불러올 수 없습니다</ErrorMessage>
+          ) : (
+            <TimelineGridWrapper>
+              <DesktopTimelineWrapper>
+                <MonthHeaderRow>
+                  {MONTHS.slice(6, 12).map((month) => (
+                    <MonthHeader key={month}>{month}</MonthHeader>
+                  ))}
+                  {MONTHS.slice(0, 6).map((month) => (
+                    <MonthHeader key={month}>{month}</MonthHeader>
+                  ))}
+                </MonthHeaderRow>
+                {bars2025.length > 0 && renderYearTimelineBars(bars2025, 2025)}
+                {bars2026.length > 0 && renderYearTimelineBars(bars2026, 2026)}
+              </DesktopTimelineWrapper>
+
+              <MobileTimelineWrapper>
+                <MonthHeaderRow>
+                  {MONTHS.slice(6, 12).map((month) => (
+                    <MonthHeader key={month}>{month}</MonthHeader>
+                  ))}
+                </MonthHeaderRow>
+                {bars2025.length > 0 && renderMobileFirstHalf(bars2025, 2025)}
+                {bars2026.length > 0 && renderMobileFirstHalf(bars2026, 2026)}
+
+                <MonthHeaderRow>
+                  {MONTHS.slice(0, 6).map((month) => (
+                    <MonthHeader key={month}>{month}</MonthHeader>
+                  ))}
+                </MonthHeaderRow>
+                {bars2025.length > 0 && renderMobileSecondHalf(bars2025, 2025)}
+                {bars2026.length > 0 && renderMobileSecondHalf(bars2026, 2026)}
+              </MobileTimelineWrapper>
+            </TimelineGridWrapper>
+          )}
         </TabContainer>
       </TimelineContent>
     </TimelineContainer>
@@ -87,7 +292,7 @@ const TimelineContainer = styled.section`
   align-items: center;
   gap: 10px;
   align-self: stretch;
-  background: ${({ theme }) => theme.colors.black[200] || "#E8EBEF"};
+  background: ${({ theme }) => theme.colors.black[200]};
 `;
 
 const TimelineContent = styled.div`
@@ -132,7 +337,6 @@ const TimelineSubTitle = styled.p`
 const TabContainer = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1000px;
   flex-direction: column;
   align-items: center;
   gap: 30px;
@@ -167,16 +371,108 @@ const TabButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
-// const LoadingMessage = styled.div`
-//   text-align: center;
-//   font-size: ${({ theme }) => theme.fontSizes[16]};
-//   color: ${({ theme }) => theme.colors.black[700]};
-//   padding: 60px 20px;
-// `;
+const LoadingMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  color: ${({ theme }) => theme.colors.black[700]};
+  padding: 60px 20px;
+`;
 
-// const ErrorMessage = styled.div`
-//   text-align: center;
-//   font-size: ${({ theme }) => theme.fontSizes[16]};
-//   color: ${({ theme }) => theme.colors.black[700]};
-//   padding: 60px 20px;
-// `;
+const ErrorMessage = styled.div`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  color: ${({ theme }) => theme.colors.black[700]};
+  padding: 60px 20px;
+`;
+
+const TimelineGridWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+`;
+
+const DesktopTimelineWrapper = styled.div`
+  display: none;
+
+  @media (min-width: 936px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const MobileTimelineWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 936px) {
+    display: none;
+  }
+`;
+
+const MonthHeaderRow = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0;
+`;
+
+const MonthHeader = styled.div`
+  display: flex;
+  width: 78px;
+  height: 40px;
+  padding: 0 22px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  font-style: normal;
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 150%;
+  letter-spacing: -0.16px;
+  flex-shrink: 0;
+`;
+
+const TimelineRow = styled.div`
+  display: flex;
+  width: 100%;
+  height: 40px;
+  position: relative;
+`;
+
+const WhiteCell = styled.div`
+  width: 78px;
+  height: 40px;
+  background-color: ${({ theme }) => theme.colors.white};
+  flex-shrink: 0;
+`;
+
+const TimelineBar = styled.div<{
+  $backgroundColor: string;
+  $textColor: string;
+  $span: number;
+  $startMonth: number;
+}>`
+  position: absolute;
+  left: ${({ $startMonth }) => ($startMonth - 1) * 78}px;
+  width: ${({ $span }) => $span * 78}px;
+  height: 40px;
+  display: flex;
+  padding: 0 22px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
+  color: ${({ $textColor }) => $textColor};
+  border-radius: 4px;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-style: normal;
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: 150%;
+  letter-spacing: -0.14px;
+  z-index: 1;
+`;
