@@ -1,7 +1,11 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
+import { getToken, postLogin, setToken, setRefreshToken } from "../apis/auth";
+import { PATH } from "../shared/routes/constants";
 
 const Input = ({
   label,
@@ -44,11 +48,36 @@ const Button = ({
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { toSignup } = useRouteNavigation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleLogin = () => {
-    // TODO: API 연결 시 로그인 로직 구현
-    console.log("로그인:", { email, password });
+  useEffect(() => {
+    if (getToken()) navigate(PATH.HOME_V2, { replace: true });
+  }, [navigate]);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await postLogin({ email, password });
+      setToken(response.access_token);
+      setRefreshToken(response.refresh_token);
+      queryClient.invalidateQueries(["auth"]);
+      navigate(PATH.HOME_V2);
+    } catch {
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSignup = () => {
@@ -77,11 +106,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해주세요."
             />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
           </InputSection>
 
           <ButtonSection>
             <Button variant="primary" onClick={handleLogin}>
-              로그인
+              {isLoading ? "로그인 중..." : "로그인"}
             </Button>
             <Button variant="secondary" onClick={handleSignup}>
               회원가입
@@ -181,6 +211,12 @@ const ButtonSection = styled.div`
   align-items: flex-start;
   gap: 10px;
   align-self: stretch;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  color: ${({ theme }) => theme.colors.pink};
+  margin: 0;
 `;
 
 const StyledButton = styled.button<{ variant: "primary" | "secondary" }>`

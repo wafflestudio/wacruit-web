@@ -1,6 +1,39 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import {
+  getToken,
+  postLogin,
+  setToken,
+  setRefreshToken,
+  postCheckEmail,
+} from "../apis/auth";
+import { postUser } from "../apis/user";
+import { PATH } from "../shared/routes/constants";
+
+const formatPhoneNumber = (value: string) => {
+  return value.replace(/\D/g, "").slice(0, 11);
+};
+
+const ERROR_MSG_MAP: Record<string, string> = {
+  "not a valid email": "올바른 이메일 형식이 아닙니다.",
+};
+
+const parseApiError = (body: {
+  detail: string | Array<{ loc: (string | number)[]; msg: string }>;
+}): string => {
+  if (typeof body.detail === "string") return body.detail;
+  if (Array.isArray(body.detail) && body.detail.length > 0) {
+    const first = body.detail[0];
+    const matched = Object.entries(ERROR_MSG_MAP).find(([key]) =>
+      first.msg.includes(key),
+    );
+    if (matched) return matched[1];
+  }
+  return "회원가입에 실패했습니다. 다시 시도해주세요.";
+};
 
 const Input = ({
   label,
@@ -26,22 +59,105 @@ const Input = ({
   </InputWrapper>
 );
 
-const Button = ({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) => <StyledButton onClick={onClick}>{children}</StyledButton>;
-
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState("");
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [emailCheckMessage, setEmailCheckMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleSignup = () => {
-    // TODO: API 연결 시 회원가입 로직 구현
-    console.log("회원가입:", { email, password, passwordConfirm });
+  useEffect(() => {
+    if (getToken()) navigate(PATH.HOME_V2, { replace: true });
+  }, [navigate]);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailChecked(false);
+    setEmailCheckMessage("");
+  };
+
+  const handleCheckEmail = async () => {
+    if (!email) {
+      setEmailCheckMessage("이메일을 입력해주세요.");
+      return;
+    }
+
+    try {
+      await postCheckEmail({ email });
+      setEmailChecked(true);
+      setEmailCheckMessage("사용 가능한 이메일입니다.");
+    } catch (err) {
+      setEmailChecked(false);
+      if (err instanceof Response) {
+        const body = await err.json();
+        setEmailCheckMessage(parseApiError(body));
+      } else {
+        setEmailCheckMessage("이메일 확인에 실패했습니다.");
+      }
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(formatPhoneNumber(e.target.value));
+  };
+
+  const handleSignup = async () => {
+    if (
+      !email ||
+      !password ||
+      !passwordConfirm ||
+      !lastName ||
+      !firstName ||
+      !phoneNumber
+    ) {
+      setError("모든 필수 항목을 입력해주세요.");
+      return;
+    }
+
+    if (!emailChecked) {
+      setError("이메일 중복 확인을 해주세요.");
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await postUser({
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        email,
+        password,
+      });
+
+      const loginResponse = await postLogin({ email, password });
+      setToken(loginResponse.access_token);
+      setRefreshToken(loginResponse.refresh_token);
+      queryClient.invalidateQueries(["auth"]);
+      navigate(PATH.HOME_V2);
+    } catch (err) {
+      if (err instanceof Response) {
+        const body = await err.json();
+        setError(parseApiError(body));
+      } else {
+        setError("회원가입에 실패했습니다. 다시 시도해주세요.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,13 +168,23 @@ export default function Signup() {
 
         <ContentSection>
           <InputSection>
-            <Input
-              label="이메일"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일을 입력해주세요."
-            />
+            <InputWrapper>
+              <Label>이메일</Label>
+              <EmailRow>
+                <StyledInput
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  placeholder="이메일을 입력해주세요."
+                />
+                <CheckButton onClick={handleCheckEmail}>중복 확인</CheckButton>
+              </EmailRow>
+              {emailCheckMessage && (
+                <CheckMessage $success={emailChecked}>
+                  {emailCheckMessage}
+                </CheckMessage>
+              )}
+            </InputWrapper>
             <Input
               label="비밀번호"
               type="password"
@@ -73,10 +199,40 @@ export default function Signup() {
               onChange={(e) => setPasswordConfirm(e.target.value)}
               placeholder="비밀번호를 다시 입력해주세요."
             />
+            <NameRow>
+              <InputWrapper>
+                <Label>성</Label>
+                <StyledInput
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="성"
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Label>이름</Label>
+                <StyledInput
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="이름"
+                />
+              </InputWrapper>
+            </NameRow>
+            <InputWrapper>
+              <Label>전화번호</Label>
+              <StyledInput
+                type="tel"
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                placeholder="01012345678"
+              />
+            </InputWrapper>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
           </InputSection>
 
           <ButtonSection>
-            <Button onClick={handleSignup}>회원가입</Button>
+            <StyledButton onClick={handleSignup} disabled={isLoading}>
+              {isLoading ? "가입 중..." : "회원가입"}
+            </StyledButton>
           </ButtonSection>
         </ContentSection>
       </ContentWrapper>
@@ -130,6 +286,23 @@ const InputSection = styled.div`
   align-self: stretch;
 `;
 
+const NameRow = styled.div`
+  display: flex;
+  gap: 10px;
+  align-self: stretch;
+
+  & > div {
+    flex: 1;
+    min-width: 0;
+  }
+`;
+
+const EmailRow = styled.div`
+  display: flex;
+  gap: 8px;
+  align-self: stretch;
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -150,6 +323,8 @@ const StyledInput = styled.input`
   align-items: center;
   gap: 10px;
   align-self: stretch;
+  flex: 1;
+  min-width: 0;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.black[300]};
   font-size: ${({ theme }) => theme.fontSizes[14]};
@@ -164,6 +339,37 @@ const StyledInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.black[500]};
   }
+`;
+
+const CheckButton = styled.button`
+  padding: 10px 14px;
+  border-radius: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.black[900]};
+  background: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  font-family: "Pretendard Variable";
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.black[100]};
+  }
+`;
+
+const CheckMessage = styled.p<{ $success: boolean }>`
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  color: ${({ $success, theme }) =>
+    $success ? theme.colors.green : theme.colors.pink};
+  margin: 0;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  color: ${({ theme }) => theme.colors.pink};
+  margin: 0;
 `;
 
 const ButtonSection = styled.div`
@@ -192,4 +398,9 @@ const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.black[900]};
   color: ${({ theme }) => theme.colors.black[100]};
   border: 1px solid ${({ theme }) => theme.colors.black[900]};
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;

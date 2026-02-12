@@ -40,8 +40,10 @@ export default function Headerv2() {
     toLogin();
   };
   const onLogout = () => {
-    tryLogout();
-    toHomeV2();
+    if (window.confirm("로그아웃하시겠습니까?")) {
+      tryLogout();
+      toHomeV2();
+    }
   };
 
   const isLoginPage = currentPath === PATH.LOGIN || currentPath === PATH.SIGNUP;

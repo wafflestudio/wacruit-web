@@ -1,16 +1,18 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { checkAuth } from "../../apis/auth";
-import { getSsoUtils } from "../lib/sso";
+import { getToken, deleteToken } from "../../apis/auth";
 
 export const useAuthQuery = () => {
   const queryClient = useQueryClient();
 
-  const { deleteSsoToken } = getSsoUtils();
   return {
     useCheckAuth: () => {
       const { data, isError } = useQuery({
         queryKey: ["auth"],
-        queryFn: () => checkAuth(),
+        queryFn: () => {
+          const token = getToken();
+          if (token) return "valid" as const;
+          return "invalid" as const;
+        },
         staleTime: 1000 * 60 * 60,
         retry: 0,
       });
@@ -20,7 +22,7 @@ export const useAuthQuery = () => {
     useLogout: () => {
       return {
         mutation: () => {
-          deleteSsoToken();
+          deleteToken();
           queryClient.invalidateQueries(["auth"]);
         },
       };
