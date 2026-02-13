@@ -48,7 +48,12 @@ const Button = ({
   onClick: () => void;
   disabled?: boolean;
 }) => (
-  <StyledButton type="button" variant={variant} onClick={onClick} disabled={disabled}>
+  <StyledButton
+    type="button"
+    variant={variant}
+    onClick={onClick}
+    disabled={disabled}
+  >
     {children}
   </StyledButton>
 );
