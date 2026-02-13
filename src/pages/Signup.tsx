@@ -96,8 +96,12 @@ export default function Signup() {
     } catch (err) {
       setEmailChecked(false);
       if (err instanceof Response) {
-        const body = await err.json();
-        setEmailCheckMessage(parseApiError(body));
+        try {
+          const body = await err.json();
+          setEmailCheckMessage(parseApiError(body));
+        } catch {
+          setEmailCheckMessage("이메일 확인에 실패했습니다.");
+        }
       } else {
         setEmailCheckMessage("이메일 확인에 실패했습니다.");
       }
@@ -150,8 +154,12 @@ export default function Signup() {
       navigate(PATH.HOME_V2);
     } catch (err) {
       if (err instanceof Response) {
-        const body = await err.json();
-        setError(parseApiError(body));
+        try {
+          const body = await err.json();
+          setError(parseApiError(body));
+        } catch {
+          setError("회원가입에 실패했습니다. 다시 시도해주세요.");
+        }
       } else {
         setError("회원가입에 실패했습니다. 다시 시도해주세요.");
       }
@@ -265,7 +273,7 @@ const SectionTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.black[900]};
   line-height: ${({ theme }) => theme.lineHeights.base};
-  letter-spacing: -1%;
+  letter-spacing: -0.01em;
   margin: 0;
   white-space: nowrap;
 `;

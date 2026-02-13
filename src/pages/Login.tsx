@@ -35,12 +35,14 @@ const Button = ({
   children,
   variant = "primary",
   onClick,
+  disabled,
 }: {
   children: React.ReactNode;
   variant?: "primary" | "secondary";
   onClick: () => void;
+  disabled?: boolean;
 }) => (
-  <StyledButton variant={variant} onClick={onClick}>
+  <StyledButton variant={variant} onClick={onClick} disabled={disabled}>
     {children}
   </StyledButton>
 );
@@ -110,7 +112,7 @@ export default function Login() {
           </InputSection>
 
           <ButtonSection>
-            <Button variant="primary" onClick={handleLogin}>
+            <Button variant="primary" onClick={handleLogin} disabled={isLoading}>
               {isLoading ? "로그인 중..." : "로그인"}
             </Button>
             <Button variant="secondary" onClick={handleSignup}>
@@ -148,7 +150,7 @@ const SectionTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.black[900]};
   line-height: ${({ theme }) => theme.lineHeights.base};
-  letter-spacing: -1%;
+  letter-spacing: -0.01em;
   margin: 0;
   white-space: nowrap;
 `;
@@ -247,4 +249,9 @@ const StyledButton = styled.button<{ variant: "primary" | "secondary" }>`
         color: ${theme.colors.black[900]};
         border: 1px solid ${theme.colors.black[900]};
       `}
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;

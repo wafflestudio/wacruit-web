@@ -10,13 +10,20 @@ import {
 const COOKIE_KEY = "waffle.access-token";
 const REFRESH_COOKIE_KEY = "waffle.refresh-token";
 
+const IS_SECURE = window.location.protocol === "https:";
+const COOKIE_OPTIONS: Cookies.CookieAttributes = {
+  path: "/",
+  secure: IS_SECURE,
+  sameSite: "Lax",
+};
+
 // 토큰 저장
 export const setToken = (token: string) => {
-  Cookies.set(COOKIE_KEY, token, { path: "/" });
+  Cookies.set(COOKIE_KEY, token, { ...COOKIE_OPTIONS, expires: 1 });
 };
 
 export const setRefreshToken = (token: string) => {
-  Cookies.set(REFRESH_COOKIE_KEY, token, { path: "/" });
+  Cookies.set(REFRESH_COOKIE_KEY, token, { ...COOKIE_OPTIONS, expires: 7 });
 };
 
 export const getRefreshToken = (): string | null => {
@@ -43,8 +50,8 @@ export const getToken = (): string | null => {
 };
 
 export const deleteToken = () => {
-  Cookies.remove(COOKIE_KEY, { path: "/" });
-  Cookies.remove(REFRESH_COOKIE_KEY, { path: "/" });
+  Cookies.remove(COOKIE_KEY, COOKIE_OPTIONS);
+  Cookies.remove(REFRESH_COOKIE_KEY, COOKIE_OPTIONS);
 };
 
 // 토큰 갱신
