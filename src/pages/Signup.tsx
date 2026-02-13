@@ -37,24 +37,30 @@ const parseApiError = (body: {
 
 const Input = ({
   label,
+  id,
   type = "text",
   value,
   onChange,
   placeholder,
+  autoComplete,
 }: {
   label: string;
+  id: string;
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  autoComplete?: string;
 }) => (
   <InputWrapper>
-    <Label>{label}</Label>
+    <Label htmlFor={id}>{label}</Label>
     <StyledInput
+      id={id}
       type={type}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      autoComplete={autoComplete}
     />
   </InputWrapper>
 );
@@ -174,18 +180,28 @@ export default function Signup() {
       <ContentWrapper>
         <SectionTitle>회원가입</SectionTitle>
 
-        <ContentSection>
+        <ContentSection
+          as="form"
+          onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            handleSignup();
+          }}
+        >
           <InputSection>
             <InputWrapper>
-              <Label>이메일</Label>
+              <Label htmlFor="signup-email">이메일</Label>
               <EmailRow>
                 <StyledInput
+                  id="signup-email"
                   type="email"
                   value={email}
                   onChange={handleEmailChange}
                   placeholder="이메일을 입력해주세요."
+                  autoComplete="email"
                 />
-                <CheckButton onClick={handleCheckEmail}>중복 확인</CheckButton>
+                <CheckButton type="button" onClick={handleCheckEmail}>
+                  중복 확인
+                </CheckButton>
               </EmailRow>
               {emailCheckMessage && (
                 <CheckMessage $success={emailChecked}>
@@ -195,50 +211,60 @@ export default function Signup() {
             </InputWrapper>
             <Input
               label="비밀번호"
+              id="signup-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해주세요."
+              autoComplete="new-password"
             />
             <Input
               label="비밀번호 확인"
+              id="signup-password-confirm"
               type="password"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
               placeholder="비밀번호를 다시 입력해주세요."
+              autoComplete="new-password"
             />
             <NameRow>
               <InputWrapper>
-                <Label>성</Label>
+                <Label htmlFor="signup-last-name">성</Label>
                 <StyledInput
+                  id="signup-last-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="성"
+                  autoComplete="family-name"
                 />
               </InputWrapper>
               <InputWrapper>
-                <Label>이름</Label>
+                <Label htmlFor="signup-first-name">이름</Label>
                 <StyledInput
+                  id="signup-first-name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="이름"
+                  autoComplete="given-name"
                 />
               </InputWrapper>
             </NameRow>
             <InputWrapper>
-              <Label>전화번호</Label>
+              <Label htmlFor="signup-phone">전화번호</Label>
               <StyledInput
+                id="signup-phone"
                 type="tel"
                 value={phoneNumber}
                 onChange={handlePhoneChange}
                 placeholder="01012345678"
+                autoComplete="tel"
               />
             </InputWrapper>
             {error && <ErrorMessage>{error}</ErrorMessage>}
           </InputSection>
 
           <ButtonSection>
-            <StyledButton onClick={handleSignup} disabled={isLoading}>
+            <StyledButton type="submit" disabled={isLoading}>
               {isLoading ? "가입 중..." : "회원가입"}
             </StyledButton>
           </ButtonSection>

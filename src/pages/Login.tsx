@@ -9,24 +9,30 @@ import { PATH } from "../shared/routes/constants";
 
 const Input = ({
   label,
+  id,
   type = "text",
   value,
   onChange,
   placeholder,
+  autoComplete,
 }: {
   label: string;
+  id: string;
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  autoComplete?: string;
 }) => (
   <InputWrapper>
-    <Label>{label}</Label>
+    <Label htmlFor={id}>{label}</Label>
     <StyledInput
+      id={id}
       type={type}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      autoComplete={autoComplete}
     />
   </InputWrapper>
 );
@@ -42,7 +48,7 @@ const Button = ({
   onClick: () => void;
   disabled?: boolean;
 }) => (
-  <StyledButton variant={variant} onClick={onClick} disabled={disabled}>
+  <StyledButton type="button" variant={variant} onClick={onClick} disabled={disabled}>
     {children}
   </StyledButton>
 );
@@ -92,33 +98,39 @@ export default function Login() {
       <ContentWrapper>
         <SectionTitle>로그인</SectionTitle>
 
-        <ContentSection>
+        <ContentSection
+          as="form"
+          onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <InputSection>
             <Input
               label="이메일"
+              id="login-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력해주세요."
+              autoComplete="email"
             />
             <Input
               label="비밀번호"
+              id="login-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해주세요."
+              autoComplete="current-password"
             />
             {error && <ErrorMessage>{error}</ErrorMessage>}
           </InputSection>
 
           <ButtonSection>
-            <Button
-              variant="primary"
-              onClick={handleLogin}
-              disabled={isLoading}
-            >
+            <StyledButton variant="primary" type="submit" disabled={isLoading}>
               {isLoading ? "로그인 중..." : "로그인"}
-            </Button>
+            </StyledButton>
             <Button variant="secondary" onClick={handleSignup}>
               회원가입
             </Button>
