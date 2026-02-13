@@ -112,7 +112,11 @@ export default function Login() {
           </InputSection>
 
           <ButtonSection>
-            <Button variant="primary" onClick={handleLogin} disabled={isLoading}>
+            <Button
+              variant="primary"
+              onClick={handleLogin}
+              disabled={isLoading}
+            >
               {isLoading ? "로그인 중..." : "로그인"}
             </Button>
             <Button variant="secondary" onClick={handleSignup}>
