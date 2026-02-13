@@ -11,12 +11,14 @@ export const MobileHeader = ({
   onLogout,
   onLogin,
   toHome,
+  isLoginPage,
 }: {
   authState: "invalid" | "valid" | "need_register" | undefined;
   navButtons: { label: string; onAction: () => void; selected: boolean }[];
   onLogout: () => void;
   onLogin: () => void;
   toHome: () => void;
+  isLoginPage: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useIsVisible(ref);
@@ -62,6 +64,7 @@ export const MobileHeader = ({
           ) : (
             <MobileNavButton
               onClick={onLogin}
+              selected={isLoginPage}
               isOpen={isOpen}
               index={navButtons.length}
               isVisible={isVisible}

@@ -25,6 +25,8 @@ import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
 import RecruitInfoV3 from "./pages/RecruitInfoV3";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import LoginRedirect from "./pages/LoginRedirect";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 
@@ -33,6 +35,8 @@ const queryClient = new QueryClient();
 const {
   HOME_V2,
   ANNOUNCEMENT,
+  LOGIN,
+  SIGNUP,
   LOGIN_REDIRECT,
   RECRUITING_LIST,
   RECRUITING_INFO,
@@ -54,6 +58,16 @@ const router = createBrowserRouter([
   {
     path: HOME_V2,
     element: <HomeV2 />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: LOGIN,
+    element: <Login />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: SIGNUP,
+    element: <Signup />,
     errorElement: <div>error</div>,
   },
   {

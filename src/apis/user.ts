@@ -12,4 +12,4 @@ export const getInvitation = () =>
   patchRequest<UserInvitationEmails>("/v1/users/me/invitation-emails", {});
 
 export const postUser = (data: UserRegisterRequest) =>
-  postRequest(`/v1/users`, data);
+  postRequest<User>(`/v1/users`, data, {}, false);
