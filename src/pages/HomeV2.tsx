@@ -21,9 +21,9 @@ export default function HomeV2() {
       <MainContainer>
         <Headerv2 />
         <HeroSection onScrollToHistory={handleScrollToHistory} />
-        <div ref={waffleHistoryRef}>
+        <ScrollTarget ref={waffleHistoryRef}>
           <WaffleHistory />
-        </div>
+        </ScrollTarget>
         <Activities />
         <TimeLine />
         <Projects />
@@ -33,6 +33,10 @@ export default function HomeV2() {
     </div>
   );
 }
+
+const ScrollTarget = styled.div`
+  scroll-margin-top: 47px;
+`;
 
 const MainContainer = styled.main`
   display: flex;
