@@ -9,16 +9,19 @@ type Tabs = "ROOKIES" | "PROGRAMMERS";
 const TAB_CONTENTS: {
   id: Tabs;
   label: string;
+  mobileLabel: string;
   groupType: TimelineGroupType;
 }[] = [
   {
     id: "ROOKIES",
     label: "준회원 (Rookies)",
+    mobileLabel: "준회원",
     groupType: "ROOKIE",
   },
   {
     id: "PROGRAMMERS",
     label: "정회원 (Programmers) 및 디자이너",
+    mobileLabel: "정회원 및 디자이너",
     groupType: "PROGRAMMER",
   },
 ];
@@ -228,7 +231,7 @@ export const TimeLine = () => {
 
         <TabContainer>
           <TabBar>
-            {TAB_CONTENTS.map(({ id, label }) => (
+            {TAB_CONTENTS.map(({ id, label, mobileLabel }) => (
               <TabButton
                 key={id}
                 onClick={() => {
@@ -236,7 +239,8 @@ export const TimeLine = () => {
                 }}
                 $isActive={selectedTab === id}
               >
-                {label}
+                <DesktopLabel>{label}</DesktopLabel>
+                <MobileLabel>{mobileLabel}</MobileLabel>
               </TabButton>
             ))}
           </TabBar>
@@ -297,6 +301,7 @@ const TimelineContainer = styled.section`
 
 const TimelineContent = styled.div`
   display: flex;
+  width: 100%;
   max-width: 1200px;
   padding: 0 20px;
   flex-direction: column;
@@ -371,6 +376,20 @@ const TabButton = styled.button<{ $isActive: boolean }>`
   }
 `;
 
+const DesktopLabel = styled.span`
+  @media (max-width: 935px) {
+    display: none;
+  }
+`;
+
+const MobileLabel = styled.span`
+  display: none;
+
+  @media (max-width: 935px) {
+    display: inline;
+  }
+`;
+
 const LoadingMessage = styled.div`
   text-align: center;
   font-size: ${({ theme }) => theme.fontSizes[16]};
@@ -395,6 +414,8 @@ const TimelineGridWrapper = styled.div`
 
 const DesktopTimelineWrapper = styled.div`
   display: none;
+  border-radius: 4px;
+  overflow: hidden;
 
   @media (min-width: 936px) {
     display: flex;
@@ -405,6 +426,9 @@ const DesktopTimelineWrapper = styled.div`
 const MobileTimelineWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
 
   @media (min-width: 936px) {
     display: none;
@@ -434,6 +458,12 @@ const MonthHeader = styled.div`
   line-height: 150%;
   letter-spacing: -0.16px;
   flex-shrink: 0;
+
+  @media (max-width: 935px) {
+    flex: 1;
+    width: auto;
+    padding: 0 4px;
+  }
 `;
 
 const TimelineRow = styled.div`
@@ -448,6 +478,11 @@ const WhiteCell = styled.div`
   height: 40px;
   background-color: ${({ theme }) => theme.colors.white};
   flex-shrink: 0;
+
+  @media (max-width: 935px) {
+    flex: 1;
+    width: auto;
+  }
 `;
 
 const TimelineBar = styled.div<{
@@ -475,4 +510,10 @@ const TimelineBar = styled.div<{
   line-height: 150%;
   letter-spacing: -0.14px;
   z-index: 1;
+
+  @media (max-width: 935px) {
+    left: calc(${({ $startMonth }) => $startMonth - 1} * 100% / 6);
+    width: calc(${({ $span }) => $span} * 100% / 6);
+    padding: 0 4px;
+  }
 `;
