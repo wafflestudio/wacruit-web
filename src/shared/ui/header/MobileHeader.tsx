@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef, type RefObject } from "react";
+import { useState, useRef, useEffect, type RefObject } from "react";
 import { ASSET_PATH } from "../../assets/constants";
 import { HamburgerButton } from "./HamburgerButton";
 import { MobileNavButton } from "./MoblieNavButton";
@@ -24,6 +24,19 @@ export const MobileHeader = ({
   const isVisible = useIsVisible(ref);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const { body } = document;
+    const prevOverflow = body.style.overflow;
+
+    body.style.overflow = "hidden";
+
+    return () => {
+      body.style.overflow = prevOverflow;
+    };
+  }, [isOpen]);
 
   return (
     <>
