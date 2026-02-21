@@ -28,13 +28,34 @@ export const MobileHeader = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    const { body } = document;
-    const prevOverflow = body.style.overflow;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    const prevStyles = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+    };
 
     body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
 
     return () => {
-      body.style.overflow = prevOverflow;
+      body.style.overflow = prevStyles.overflow;
+      body.style.position = prevStyles.position;
+      body.style.top = prevStyles.top;
+      body.style.left = prevStyles.left;
+      body.style.right = prevStyles.right;
+      body.style.width = prevStyles.width;
+
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
