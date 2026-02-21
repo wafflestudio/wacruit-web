@@ -55,11 +55,6 @@ const router = createBrowserRouter([
     index: true,
   },
   {
-    path: HOME_V2,
-    element: <HomeV2 />,
-    errorElement: <div>error</div>,
-  },
-  {
     path: LOGIN,
     element: <Login />,
     errorElement: <div>error</div>,
