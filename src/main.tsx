@@ -8,7 +8,6 @@ import { PATH } from "./shared/routes/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
-import Home from "./pages/Home";
 import Solve from "./pages/SolveV2";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
@@ -47,7 +46,7 @@ const {
 const router = createBrowserRouter([
   {
     path: "",
-    element: <Home />,
+    element: <HomeV2 />,
     errorElement: <div>error</div>,
     index: true,
   },
