@@ -34,6 +34,10 @@ export default function HomeV2() {
   );
 }
 
+const ScrollTarget = styled.div`
+  scroll-margin-top: 47px;
+`;
+
 const MainContainer = styled.main`
   display: flex;
   width: 100%;

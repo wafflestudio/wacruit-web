@@ -2,6 +2,8 @@ export const PATH = {
   HOME_V2: "/",
   RECRUITING_LIST: "/recruiting",
   ANNOUNCEMENT: "/announcement",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
   LOGIN_REDIRECT: "/login-redirect",
   RECRUITING_INFO: "/recruiting-info",
   RECRUITING_DETAIL: "/recruiting/:recruit_id",

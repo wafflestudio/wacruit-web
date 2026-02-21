@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
-import { checkAuth, deleteSsoToken, tryLogin } from "../../../apis/auth";
+import { checkAuth, deleteToken, tryLogin } from "../../../apis/auth";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -40,7 +40,7 @@ export default function Header() {
         {authState === "valid" ? (
           <NavButton
             onClick={() => {
-              deleteSsoToken();
+              deleteToken();
               queryClient.invalidateQueries(["auth"]);
               navigate("/");
             }}
