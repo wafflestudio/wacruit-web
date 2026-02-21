@@ -49,7 +49,7 @@ const {
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: HOME_V2,
     element: <HomeV2 />,
     errorElement: <div>error</div>,
     index: true,
