@@ -83,7 +83,7 @@ const HeaderContainer = styled.header<{ $isOpen: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 50;
+    z-index: 60;
     width: 100%;
     padding: 1.2rem 0;
     background-color: ${({ theme, $isOpen }) =>
@@ -121,7 +121,7 @@ const MobileDashboard = styled.div<{
   height: 100vh;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.white};
-  z-index: 40;
+  z-index: 60;
   padding: 0 2rem;
   padding-top: 4.8rem;
   transform: ${({ $isOpen }) =>
