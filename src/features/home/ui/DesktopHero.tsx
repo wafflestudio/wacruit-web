@@ -211,7 +211,7 @@ const HeroTitleWrapper = styled.div`
   position: absolute;
   top: 80px;
   left: 35px;
-  z-index: 60;
+  z-index: 50;
   display: flex;
   align-items: flex-start;
 
