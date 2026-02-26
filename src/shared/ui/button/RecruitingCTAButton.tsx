@@ -77,8 +77,10 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 10px;
   border-radius: 4px;
-  background: var(--pink, #ff2c4c);
-  color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
 
   // display: inline-block;
   // background-color: pink;
@@ -94,7 +96,8 @@ const StyledButton = styled.button`
   // transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #e55b4d;
+    background-color: ${({ theme }) => theme.colors.black[300]};
+    cursor: pointer;
   }
 
   &:disabled,
