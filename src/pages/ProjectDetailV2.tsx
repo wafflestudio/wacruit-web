@@ -1,6 +1,12 @@
 import styled from "styled-components";
-import { useMemo } from "react";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import {
+  useParams,
+  useSearchParams,
+  useNavigate,
+  useLocation,
+  useNavigationType,
+} from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { HeaderOffset } from "../components/project";
@@ -262,6 +268,8 @@ const URL_ORDER = [
 
 export default function ProjectDetailPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const navigationType = useNavigationType();
   const [searchParams] = useSearchParams();
   const { id } = useParams<{ id?: string }>();
   const enabled = !!id;
@@ -273,10 +281,29 @@ export default function ProjectDetailPage() {
   });
 
   const handleCloseBar = () => {
+    if (
+      location.state &&
+      (location.state as { from?: string }).from === "home"
+    ) {
+      navigate(-1);
+      return;
+    }
+    if (
+      location.state &&
+      (location.state as { from?: string }).from === "projects"
+    ) {
+      navigate(-1);
+      return;
+    }
     const type = searchParams.get("type") ?? "SERVICE";
     const page = searchParams.get("page") ?? "1";
     navigate(`/projects?type=${type}&page=${page}`);
   };
+
+  useEffect(() => {
+    if (navigationType === "POP") return;
+    window.scrollTo(0, 0);
+  }, [navigationType, id]);
 
   const sortedUrls: ProjectUrl[] = useMemo(() => {
     if (!data) return [];

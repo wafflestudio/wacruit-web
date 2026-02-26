@@ -1,6 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useNavigationType,
+  useSearchParams,
+} from "react-router-dom";
 
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import Footer from "../shared/ui/footer/Footer";
@@ -36,6 +41,9 @@ const normalizePage = (value: string | null): number => {
 
 export default function ProjectPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const navigationType = useNavigationType();
+  const prevPathname = useRef<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialType = normalizeType(searchParams.get("type"));
@@ -53,8 +61,12 @@ export default function ProjectPage() {
   }, [searchParams]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (navigationType === "POP") return;
+    if (prevPathname.current !== location.pathname) {
+      window.scrollTo(0, 0);
+      prevPathname.current = location.pathname;
+    }
+  }, [location.pathname, navigationType]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["projects", { offset: 0, limit: 1000 }],
@@ -129,7 +141,11 @@ export default function ProjectPage() {
                       <ProjectCard
                         key={project.id}
                         project={project}
-                        onClick={() => navigate(`/projects/${project.id}${qs}`)}
+                        onClick={() =>
+                          navigate(`/projects/${project.id}${qs}`, {
+                            state: { from: "projects" },
+                          })
+                        }
                       />
                     );
                   })}
