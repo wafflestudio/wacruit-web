@@ -67,7 +67,7 @@ const Description = styled.div`
   text-align: center;
   color: ${({ theme }) => theme.colors.black[100]};
   font-size: ${({ theme }) => theme.fontSizes[18]};
-  font-weight: ${({ theme }) => theme.fontWeights.normal};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 150%; /* 27px */
   letter-spacing: -0.18px;
 `;
