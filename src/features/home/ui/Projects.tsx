@@ -1,11 +1,13 @@
 // features/home/ui/Projects.tsx
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
 import { useProjectQuery } from "../../../entities/api/useProjectQuery";
 import type { ProjectType } from "../../project/types";
-import { RecruitingCTAButton } from "../../../shared/ui/button/RecruitingCTAButton";
+import { ActivitiesCTAButton } from "../../../shared/ui/button/ActivitiesCTAButton";
 
 export const Projects = () => {
+  const navigate = useNavigate();
   const { useGetProjects } = useProjectQuery();
   const { data, isError } = useGetProjects({});
 
@@ -40,7 +42,12 @@ export const Projects = () => {
               const label = getStatusLabel(project_type);
 
               return (
-                <ProjectCard key={`project-${id}`}>
+                <ProjectCard
+                  key={`project-${id}`}
+                  onClick={() =>
+                    navigate(`/projects/${id}`, { state: { from: "home" } })
+                  }
+                >
                   <ThumbnailWrapper>
                     <Thumbnail src={thumb} alt={name} loading="lazy" />
                     {is_active && <StatusBadge>{label}</StatusBadge>}
@@ -54,7 +61,7 @@ export const Projects = () => {
             },
           )}
         </ProjectsGrid>
-        <RecruitingCTAButton />
+        <ActivitiesCTAButton variant="SERVICE" />
       </ProjectsContent>
     </ProjectsContainer>
   );
@@ -105,6 +112,7 @@ const ProjectsGrid = styled.div`
 `;
 
 const ProjectCard = styled.div`
+  cursor: pointer;
   display: flex;
   min-width: 300px;
   flex-direction: column;
@@ -120,6 +128,10 @@ const ThumbnailWrapper = styled.div`
   align-self: stretch;
   border-radius: 8px;
   overflow: hidden;
+
+  &:hover img {
+    transform: scale(1.1);
+  }
 `;
 
 const Thumbnail = styled.img`
@@ -127,25 +139,26 @@ const Thumbnail = styled.img`
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center;
 `;
 
 const StatusBadge = styled.div`
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
   display: flex;
-  padding: 3px 8px;
+  padding: 0.3rem 0.8rem;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  background-color: ${({ theme }) => theme.colors.black[900]};
-  border-radius: 4px;
-  color: #fff;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: -0.13px;
+  gap: 1rem;
+  background: ${({ theme }) => theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  letter-spacing: -0.013rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-bottom-right-radius: 0.6rem;
 `;
 
 const TextContent = styled.div`
