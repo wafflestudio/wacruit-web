@@ -62,6 +62,7 @@ const SortButton = styled.button`
   font-weight: ${theme.fontWeights.medium};
   line-height: ${theme.lineHeights.base};
   letter-spacing: -0.01em;
+  color: ${theme.colors.black[900]};
   font-family: "Pretendard Variable", system-ui, -apple-system, Segoe UI, Roboto,
     "Noto Sans KR", sans-serif;
 
