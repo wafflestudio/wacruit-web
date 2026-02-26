@@ -2,16 +2,17 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { getAllReviews } from "../apis/review";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import Footer from "../shared/ui/footer/Footer";
 
 const Section = styled.section`
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 128px 0 140px 0;
+  padding: 128px 0 0 0;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 88px 0 140px 0;
+    padding: 88px 0 0 0;
   }
 `;
 
@@ -20,7 +21,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   gap: 40px;
   max-width: 1200px;
-  padding: 0 20px;
+  padding: 0 20px 140px;
   margin: 0 auto;
   box-sizing: border-box;
 `;
@@ -158,6 +159,7 @@ export default function ReviewGrid() {
           </TitleSection>
           <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
         </ContentWrapper>
+        <Footer />
       </Section>
     );
   }
@@ -176,6 +178,7 @@ export default function ReviewGrid() {
           </TitleSection>
           <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
         </ContentWrapper>
+        <Footer />
       </Section>
     );
   }
@@ -221,6 +224,7 @@ export default function ReviewGrid() {
           </Grid>
         )}
       </ContentWrapper>
+      <Footer />
     </Section>
   );
 }

@@ -1,4 +1,5 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useNavigationType } from "react-router-dom";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import styled from "styled-components";
 import { HeroSection } from "../features/home/ui/HeroSection";
@@ -10,11 +11,17 @@ import { TimeLine } from "../features/home/ui/Timeline";
 import Footer from "../shared/ui/footer/Footer";
 
 export default function HomeV2() {
+  const navigationType = useNavigationType();
   const waffleHistoryRef = useRef<HTMLDivElement | null>(null);
 
   const handleScrollToHistory = useCallback(() => {
     waffleHistoryRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    if (navigationType === "POP") return;
+    window.scrollTo(0, 0);
+  }, [navigationType]);
 
   return (
     <div>

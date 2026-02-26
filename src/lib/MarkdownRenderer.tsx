@@ -24,6 +24,9 @@ function preprocessMarkdown(src: string) {
   s = s.replace(/<p[^>]*>/gi, "");
   s = s.replace(/<\/p>/gi, "\n\n");
 
+  // 2.5) "1. 텍스트" 같은 입력이 자동으로 순서 리스트로 파싱되는 문제 방지
+  s = s.replace(/^(\d+)\.\s/gm, "$1\\. ");
+
   // 3) ATX 헤딩(#) 뒤에 공백 강제 (예: "###2." → "### 2.")
   s = s.replace(/^(#{1,6})(?=\S)/gm, "$1 "); // 줄 시작에서 #...# 다음에 공백 없으면 넣기
 

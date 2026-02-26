@@ -5,17 +5,16 @@ export const Outro = () => {
   return (
     <Section>
       <ContentWrapper>
-        <Title>같이 만들고, 같이 배웁니다.</Title>
-        <Description>
-          <p>
+        <TextWrapper>
+          <Title>같이 만들고, 같이 배웁니다.</Title>
+          <Description>
             와플스튜디오는 서울대 개발자들이 함께 모여 웹/앱 서비스를 만들고,
             기술을 나누며 함께 성장하는 공간입니다.
-          </p>
-          <p>
+            <br />
             함께 세미나, 프로젝트, 스터디를 통해 실력을 쌓고 멋진 서비스를 함께
             만들어봐요!
-          </p>
-        </Description>
+          </Description>
+        </TextWrapper>
         <RecruitingCTAButton />
       </ContentWrapper>
     </Section>
@@ -43,11 +42,17 @@ const ContentWrapper = styled.div`
   text-align: center;
 `;
 
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
+
 const Title = styled.h2`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 39px;
   align-self: stretch;
   font-size: ${({ theme }) => theme.fontSizes[32]};
   font-style: normal;
@@ -58,11 +63,11 @@ const Title = styled.h2`
 `;
 
 const Description = styled.div`
+  gap: 20px;
   text-align: center;
+  color: ${({ theme }) => theme.colors.black[100]};
   font-size: ${({ theme }) => theme.fontSizes[18]};
-  font-style: normal;
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 150%; /* 27px */
   letter-spacing: -0.18px;
-  color: ${({ theme }) => theme.colors.white};
 `;
