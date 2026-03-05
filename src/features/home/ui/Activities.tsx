@@ -56,7 +56,9 @@ export const Activities = () => {
     <ActivitiesContainer>
       <ActivitiesContent>
         <ActivitiesTitle>
-          와플스튜디오에서는 무엇을 할 수 있나요?
+          와플스튜디오에서는
+          <MobileBreak />
+          무엇을 할 수 있나요?
         </ActivitiesTitle>
         <ActivitiesGrid>
           {activityData.map(({ title, content, imageUrl, button }, idx) => (
@@ -189,6 +191,14 @@ const ActivityDescription = styled.div`
   font-weight: 500;
   line-height: 150%;
   letter-spacing: -0.14px;
+`;
+
+const MobileBreak = styled.br`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const CTAButton = styled.button`
