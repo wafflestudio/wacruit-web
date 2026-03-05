@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useIsFetching } from "@tanstack/react-query";
 import { Hero } from "../features/recruiting/Hero";
 import { Requirement } from "../features/recruiting/Requirement";
 import { Position } from "../features/recruiting/Position";
@@ -13,26 +14,28 @@ import Footer from "../shared/ui/footer/Footer";
 const RecruitInfoV3 = () => {
   const location = useLocation();
 
+  const [hashScrollPending, setHashScrollPending] = useState(false);
+  const isFetching = useIsFetching();
+
   useEffect(() => {
     if (location.hash) {
-      const timeoutId = setTimeout(() => {
-        const element = document.querySelector(location.hash);
-        if (element) {
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - 40;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          });
-        }
-      }, 100);
-
-      return () => clearTimeout(timeoutId);
+      setHashScrollPending(true);
     } else {
       window.scrollTo(0, 0);
     }
   }, [location]);
+
+  useEffect(() => {
+    if (!hashScrollPending || isFetching > 0) return;
+
+    const element = document.querySelector(location.hash);
+    if (element) {
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - 40;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
+    setHashScrollPending(false);
+  }, [hashScrollPending, isFetching, location.hash]);
 
   return (
     <MainContainer>
