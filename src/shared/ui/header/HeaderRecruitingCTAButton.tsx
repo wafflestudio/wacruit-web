@@ -74,7 +74,9 @@ const StyledButton = styled.button`
   color: ${({ theme }) => theme.colors.black[900]};
   padding: 0.4rem 1.2rem;
   font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium}
   text-align: center;
+  line-height: 150%;
   border-radius: 0.2rem;
   cursor: pointer;
   transition: background-color 0.2s ease;

@@ -116,6 +116,11 @@ const UrlPill = styled.a`
   font-size: ${({ theme }) => theme.fontSizes[14]};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   text-decoration: none;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.black[300]};
+    cursor: pointer;
+  }
 `;
 
 const LinkArrowImg = styled.img`
