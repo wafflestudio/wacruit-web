@@ -58,7 +58,7 @@ const FaqContact = styled.div`
   color: ${({ theme }) => theme.colors.black[900]};
   text-align: center;
   font-size: ${({ theme }) => theme.fontSizes[14]};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.14px;
 `;
