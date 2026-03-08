@@ -10,6 +10,7 @@ export const HeaderOffset = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   max-width: 120rem;
+  min-height: 70vh;
   margin: 0 auto;
   padding: 0 clamp(0rem, calc((100vw - 30rem) / 2), 2rem) 14rem;
   flex-direction: column;
