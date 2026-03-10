@@ -184,47 +184,49 @@ export default function ReviewGrid() {
   }
 
   return (
-    <Section>
-      <Headerv2 />
-      <ContentWrapper>
-        <TitleSection>
-          <SectionTitle>
-            와플스튜디오 회원들의
-            <br />
-            생생한 후기를 모았어요!
-          </SectionTitle>
-        </TitleSection>
+    <>
+      <Section>
+        <Headerv2 />
+        <ContentWrapper>
+          <TitleSection>
+            <SectionTitle>
+              와플스튜디오 회원들의
+              <br />
+              생생한 후기를 모았어요!
+            </SectionTitle>
+          </TitleSection>
 
-        {reviews && reviews.length === 0 ? (
-          <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
-        ) : (
-          <Grid>
-            {reviews &&
-              reviews.map((review) => (
-                <ReviewCard key={review.id}>
-                  <CardHeader>
-                    <LeftInfo>
-                      <MemberName>
-                        {review.member_last_name}
-                        {review.member_first_name}
-                      </MemberName>
-                    </LeftInfo>
-                    <MemberInfo>
-                      {review.member_generation}기{" "}
-                      {formatPosition(review.member_position)}
-                    </MemberInfo>
-                  </CardHeader>
+          {reviews && reviews.length === 0 ? (
+            <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
+          ) : (
+            <Grid>
+              {reviews &&
+                reviews.map((review) => (
+                  <ReviewCard key={review.id}>
+                    <CardHeader>
+                      <LeftInfo>
+                        <MemberName>
+                          {review.member_last_name}
+                          {review.member_first_name}
+                        </MemberName>
+                      </LeftInfo>
+                      <MemberInfo>
+                        {review.member_generation}기{" "}
+                        {formatPosition(review.member_position)}
+                      </MemberInfo>
+                    </CardHeader>
 
-                  <CardContent>
-                    <ReviewTitle>{review.title}</ReviewTitle>
-                    <ReviewText>{review.content}</ReviewText>
-                  </CardContent>
-                </ReviewCard>
-              ))}
-          </Grid>
-        )}
-      </ContentWrapper>
+                    <CardContent>
+                      <ReviewTitle>{review.title}</ReviewTitle>
+                      <ReviewText>{review.content}</ReviewText>
+                    </CardContent>
+                  </ReviewCard>
+                ))}
+            </Grid>
+          )}
+        </ContentWrapper>
+      </Section>
       <Footer />
-    </Section>
+    </>
   );
 }
