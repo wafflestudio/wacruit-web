@@ -147,25 +147,48 @@ export default function ReviewGrid() {
 
   if (isLoading) {
     return (
-      <Section>
-        <Headerv2 />
-        <ContentWrapper>
-          <TitleSection>
-            <SectionTitle>
-              와플스튜디오 회원들의
-              <br />
-              생생한 후기를 모았어요!
-            </SectionTitle>
-          </TitleSection>
-          <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
-        </ContentWrapper>
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
+          </ContentWrapper>
+        </Section>
         <Footer />
-      </Section>
+      </>
     );
   }
 
   if (error != null) {
     return (
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+          </ContentWrapper>
+        </Section>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
       <Section>
         <Headerv2 />
         <ContentWrapper>
@@ -176,55 +199,38 @@ export default function ReviewGrid() {
               생생한 후기를 모았어요!
             </SectionTitle>
           </TitleSection>
-          <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+
+          {reviews && reviews.length === 0 ? (
+            <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
+          ) : (
+            <Grid>
+              {reviews &&
+                reviews.map((review) => (
+                  <ReviewCard key={review.id}>
+                    <CardHeader>
+                      <LeftInfo>
+                        <MemberName>
+                          {review.member_last_name}
+                          {review.member_first_name}
+                        </MemberName>
+                      </LeftInfo>
+                      <MemberInfo>
+                        {review.member_generation}기{" "}
+                        {formatPosition(review.member_position)}
+                      </MemberInfo>
+                    </CardHeader>
+
+                    <CardContent>
+                      <ReviewTitle>{review.title}</ReviewTitle>
+                      <ReviewText>{review.content}</ReviewText>
+                    </CardContent>
+                  </ReviewCard>
+                ))}
+            </Grid>
+          )}
         </ContentWrapper>
-        <Footer />
       </Section>
-    );
-  }
-
-  return (
-    <Section>
-      <Headerv2 />
-      <ContentWrapper>
-        <TitleSection>
-          <SectionTitle>
-            와플스튜디오 회원들의
-            <br />
-            생생한 후기를 모았어요!
-          </SectionTitle>
-        </TitleSection>
-
-        {reviews && reviews.length === 0 ? (
-          <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
-        ) : (
-          <Grid>
-            {reviews &&
-              reviews.map((review) => (
-                <ReviewCard key={review.id}>
-                  <CardHeader>
-                    <LeftInfo>
-                      <MemberName>
-                        {review.member_last_name}
-                        {review.member_first_name}
-                      </MemberName>
-                    </LeftInfo>
-                    <MemberInfo>
-                      {review.member_generation}기{" "}
-                      {formatPosition(review.member_position)}
-                    </MemberInfo>
-                  </CardHeader>
-
-                  <CardContent>
-                    <ReviewTitle>{review.title}</ReviewTitle>
-                    <ReviewText>{review.content}</ReviewText>
-                  </CardContent>
-                </ReviewCard>
-              ))}
-          </Grid>
-        )}
-      </ContentWrapper>
       <Footer />
-    </Section>
+    </>
   );
 }
