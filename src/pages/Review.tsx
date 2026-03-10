@@ -147,39 +147,43 @@ export default function ReviewGrid() {
 
   if (isLoading) {
     return (
-      <Section>
-        <Headerv2 />
-        <ContentWrapper>
-          <TitleSection>
-            <SectionTitle>
-              와플스튜디오 회원들의
-              <br />
-              생생한 후기를 모았어요!
-            </SectionTitle>
-          </TitleSection>
-          <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
-        </ContentWrapper>
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
+          </ContentWrapper>
+        </Section>
         <Footer />
-      </Section>
+      </>
     );
   }
 
   if (error != null) {
     return (
-      <Section>
-        <Headerv2 />
-        <ContentWrapper>
-          <TitleSection>
-            <SectionTitle>
-              와플스튜디오 회원들의
-              <br />
-              생생한 후기를 모았어요!
-            </SectionTitle>
-          </TitleSection>
-          <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
-        </ContentWrapper>
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+          </ContentWrapper>
+        </Section>
         <Footer />
-      </Section>
+      </>
     );
   }
 
