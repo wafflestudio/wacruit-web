@@ -42,7 +42,7 @@ export const languageCodes: Record<Language, LanguageCode> = {
   Javascript: LanguageCode.JAVASCRIPT,
   Python: LanguageCode.PYTHON,
   // Kotlin: LanguageCode.KOTLIN,
-  // Swift: LanguageCode.SWFIT,
+  // Swift: LanguageCode.SWIFT,
 };
 
 export const languageCodesV2: Record<Language, LanguageCodeV2> = {

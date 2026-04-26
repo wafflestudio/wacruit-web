@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
-import { BreifRecruiting } from "../../../apis/recruiting/recruiting.types";
+import { BriefRecruiting } from "../../../apis/recruiting/recruiting.types";
 import { useRecruitingQuery } from "../../../apis/recruiting/recruiting.query";
 import { usePreRegisterQuery } from "../../../apis/preregister/preregister.query";
 
@@ -29,7 +29,7 @@ export const HeaderRecruitingCTAButton = () => {
   } = preRegistrationData;
 
   const currentRecruitingGeneration =
-    recruitings.reduce<BreifRecruiting | null>((max, cur) => {
+    recruitings.reduce<BriefRecruiting | null>((max, cur) => {
       if (max === null) {
         return cur;
       }

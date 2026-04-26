@@ -46,7 +46,7 @@ export type RecruitingResult = {
   status: RecruitingResultCode;
 };
 
-export type BreifRecruiting = {
+export type BriefRecruiting = {
   id: number;
   name: string;
   generation: string;

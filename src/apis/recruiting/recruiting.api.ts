@@ -2,7 +2,7 @@ import {
   Recruiting,
   RecruitingResult,
   RecruitingSummary,
-  BreifRecruiting,
+  BriefRecruiting,
   RecruitingInfoListResponse,
   RecruitingTypeV2,
 } from "./recruiting.types";
@@ -26,7 +26,7 @@ export const cancelRecruiting = (id: Recruiting["id"]) =>
 
 // V2
 export const getActiveRecruitings = () =>
-  getRequest<{ items: BreifRecruiting[] }>(`/v3/recruitings/active`);
+  getRequest<{ items: BriefRecruiting[] }>(`/v3/recruitings/active`);
 
 export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);

@@ -16,7 +16,7 @@ export enum LanguageCode {
   JAVASCRIPT = 93,
   PYTHON = 92,
   KOTLIN = 78,
-  SWFIT = 83,
+  SWIFT = 83,
 }
 
 export enum LanguageCodeV2 {
