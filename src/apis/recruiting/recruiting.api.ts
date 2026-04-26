@@ -8,6 +8,7 @@ import {
 } from "./recruiting.types";
 import { getRequest, postRequest, deleteRequest } from "../utility";
 
+// V1
 export const getAllRecruitings = () =>
   getRequest<{ items: RecruitingSummary[] }>(`/v1/recruitings`, {}, false);
 
@@ -23,12 +24,14 @@ export const applyRecruiting = (id: Recruiting["id"]) =>
 export const cancelRecruiting = (id: Recruiting["id"]) =>
   deleteRequest(`/v1/recruitings/${id}/apply`, {});
 
+// V2
 export const getActiveRecruitings = () =>
   getRequest<{ items: BreifRecruiting[] }>(`/v3/recruitings/active`);
 
 export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
 
+// V3
 export const getRecruitingInfoByType = (type: RecruitingTypeV2) =>
   getRequest<RecruitingInfoListResponse>(
     `/v3/recruitings/info?recruiting_type=${type}`,
