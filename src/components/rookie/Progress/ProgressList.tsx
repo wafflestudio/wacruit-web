@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { ProgressCard } from "./ProgressCard";
-import { Recruiting, RecruitingType } from "../../../types/apiTypes";
+import {
+  Recruiting,
+  RecruitingType,
+} from "../../../apis/recruiting/recruiting.types";
 /* disable-submission 
 import PortfolioCard from "./PortfolioCard";
 */

@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
-import { getToken, postLogin, setToken, setRefreshToken } from "../apis/auth";
+import {
+  getToken,
+  postLogin,
+  setToken,
+  setRefreshToken,
+} from "../apis/auth/auth.api";
 import { PATH } from "../shared/routes/constants";
 
 const Input = ({

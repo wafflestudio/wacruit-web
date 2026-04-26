@@ -1,4 +1,4 @@
-import { getToken, refreshTokens, deleteToken } from "./auth";
+import { getToken, refreshTokens, deleteToken } from "./auth/auth.api";
 import { BASE_URL } from "./environment";
 
 const defaultCommonHeader = {};

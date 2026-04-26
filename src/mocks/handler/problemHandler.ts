@@ -1,6 +1,6 @@
 import { RestHandler, rest } from "msw";
 import { getMockProblem } from "../db/problem";
-import { ProblemSubmissionRequest } from "../../types/apiTypes";
+import { ProblemSubmissionRequest } from "../../apis/problem/problem.types";
 
 const problem: RestHandler = rest.get(
   "/problem/:problem_id",

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { QuestionResponse } from "../../../types/apiTypes";
+import { QuestionResponse } from "../../../apis/question/question.types";
 import { DropdownIcon } from "./DropdownIcon";
 
 type FaqAccordionProps = {

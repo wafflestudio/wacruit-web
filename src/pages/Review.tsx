@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { getAllReviews } from "../apis/review";
+import { getAllReviews } from "../apis/review/review.api";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import Footer from "../shared/ui/footer/Footer";
 

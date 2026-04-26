@@ -7,7 +7,7 @@ import {
   getProblemById,
   getProblemSubmissionV2,
   postProblemSubmissionV2,
-} from "../apis/problem.ts";
+} from "../apis/problem/problem.api";
 import CodeEditor from "../components/solve/CodeEditor/index.tsx";
 import { useCodeRef } from "../components/solve/CodeEditor/useCode.tsx";
 import {
@@ -20,7 +20,7 @@ import ProblemDescription from "../components/solve/ProblemDescription/ProblemDe
 import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
 import TestResultConsole from "../components/solve/TestResultConsoleV2.tsx";
 import { unreachable } from "../lib/unreachable.ts";
-import { ProblemSubmissionResultV2 } from "../types/apiTypes.ts";
+import { ProblemSubmissionResultV2 } from "../apis/problem/problem.types";
 
 export default function Solve() {
   const params = useParams();

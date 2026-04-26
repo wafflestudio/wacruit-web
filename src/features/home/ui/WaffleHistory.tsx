@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useHistoryQuery } from "../../../entities/api/useHistoryQuery";
+import { useHistoryQuery } from "../../../apis/history/history.query";
 import { useEffect, useRef, useState } from "react";
 
 export const WaffleHistory = () => {

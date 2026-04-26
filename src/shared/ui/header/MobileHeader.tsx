@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, type RefObject } from "react";
 import { ASSET_PATH } from "../../assets/constants";
 import { HamburgerButton } from "./HamburgerButton";
 import { MobileNavButton } from "./MoblieNavButton";
-import { useIsVisible } from "../../hooks/useIsVisble";
+import { useIsVisible } from "../../hooks/useIsVisible";
 
 export const MobileHeader = ({
   authState,

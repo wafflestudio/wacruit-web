@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 // import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
-import { useProjectQuery } from "../../../entities/api/useProjectQuery";
+import { useProjectQuery } from "../../../apis/project/project.query";
 import type { ProjectType } from "../../project/types";
 import { ActivitiesCTAButton } from "../../../shared/ui/button/ActivitiesCTAButton";
 

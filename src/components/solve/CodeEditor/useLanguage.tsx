@@ -7,7 +7,10 @@ import { java } from "@codemirror/lang-java";
 import { c } from "@codemirror/legacy-modes/mode/clike";
 // import { c, kotlin } from "@codemirror/legacy-modes/mode/clike";
 // import { swift } from "@codemirror/legacy-modes/mode/swift";
-import { LanguageCode, LanguageCodeV2 } from "../../../types/apiTypes";
+import {
+  LanguageCode,
+  LanguageCodeV2,
+} from "../../../apis/problem/problem.types";
 
 export const languages = [
   "C",
@@ -39,7 +42,7 @@ export const languageCodes: Record<Language, LanguageCode> = {
   Javascript: LanguageCode.JAVASCRIPT,
   Python: LanguageCode.PYTHON,
   // Kotlin: LanguageCode.KOTLIN,
-  // Swift: LanguageCode.SWFIT,
+  // Swift: LanguageCode.SWIFT,
 };
 
 export const languageCodesV2: Record<Language, LanguageCodeV2> = {

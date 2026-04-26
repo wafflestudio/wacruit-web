@@ -1,5 +1,5 @@
 import type { CorePos } from "./constants";
-import type { ApiPosition } from "../../apis/member";
+import type { ApiPosition } from "../../apis/member/member.api";
 
 export const apiToCore = (p: ApiPosition): CorePos => {
   switch (p) {

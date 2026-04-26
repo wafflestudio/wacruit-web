@@ -9,8 +9,8 @@ import {
   setToken,
   setRefreshToken,
   postCheckEmail,
-} from "../apis/auth";
-import { postUser } from "../apis/user";
+} from "../apis/auth/auth.api";
+import { postUser } from "../apis/user/user.api";
 import { PATH } from "../shared/routes/constants";
 
 const formatPhoneNumber = (value: string) => {

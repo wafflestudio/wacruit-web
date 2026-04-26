@@ -1,19 +1,18 @@
 import { QueryClient } from "@tanstack/react-query";
-import { getQuestions } from "../../apis/resume";
+import { getResumeQuestions } from "../../apis/resume/resume.api";
 import { myResumeQuery } from "./DashboardLoader";
 import {
   Resume,
   ResumeQuestion,
   ResumeSubmissionCreate,
-  UserInvitationEmails,
-  UserUpdate,
-} from "../../types/apiTypes";
+} from "../../apis/resume/resume.types";
+import { UserInvitationEmails, UserUpdate } from "../../apis/user/user.types";
 import { LoaderReturnType } from "../../types/commonTypes";
-import { getInvitation, getUser } from "../../apis/user";
+import { getInvitation, getUser } from "../../apis/user/user.api";
 
 export const resumeQuestionQuery = (id: number) => ({
   queryKey: ["resume", "question", id],
-  queryFn: () => getQuestions(id),
+  queryFn: () => getResumeQuestions(id),
   staleTime: Infinity,
 });
 

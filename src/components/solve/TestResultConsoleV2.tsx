@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ProblemSubmissionResultV2 } from "../../types/apiTypes.ts";
+import { ProblemSubmissionResultV2 } from "../../apis/problem/problem.types";
 import { LegacyRef } from "react";
 
 type Props = {

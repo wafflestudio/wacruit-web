@@ -28,7 +28,7 @@ import {
   fetchMembers,
   fetchSponsors,
   type ApiMemberItem,
-} from "../apis/member";
+} from "../apis/member/member.api";
 import { apiToCore, coreToApi } from "../features/member/mapping";
 import { getErrorMessage } from "../features/member/utils";
 

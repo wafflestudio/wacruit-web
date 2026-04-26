@@ -1,4 +1,4 @@
-import { useAuthQuery } from "../../../entities/api/useAuthQuery";
+import { useAuthQuery } from "../../../apis/auth/auth.query";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
 import { DesktopHeader } from "./DesktopHeader";
 import { useRouteLocation } from "../../routes/useRouteLocation";

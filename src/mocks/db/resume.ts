@@ -2,7 +2,7 @@ import {
   Resume,
   ResumeQuestion,
   ResumeSubmissionCreate,
-} from "../../types/apiTypes";
+} from "../../apis/resume/resume.types";
 import { user } from "./user.ts";
 
 const resume: Resume[][] = [
