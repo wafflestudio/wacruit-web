@@ -5,7 +5,7 @@ import { ResultLoaderReturnType } from "./Loader/ResultLoader";
 import { useEffect } from "react";
 import { MAIL_RECRUIT } from "../common/const";
 import { generateMailUrl } from "../common/utils";
-import { RecruitingResultCode } from "../types/apiTypes";
+import { RecruitingResultCode } from "../apis/recruiting/recruiting.types";
 
 export default function Result() {
   const { result } = useLoaderData() as ResultLoaderReturnType;

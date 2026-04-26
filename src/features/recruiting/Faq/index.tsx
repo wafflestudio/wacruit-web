@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { getAllQuestions } from "../../../apis/recruiting";
+import { getRecruitingQuestions } from "../../../apis/question/question.api";
 import { FaqAccordion } from "./QuestionAccordion";
 import { generateMailUrl } from "../../../common/utils";
 import { MAIL_RECRUIT } from "../../../common/const";
@@ -77,7 +77,7 @@ export const Faq = () => {
     error,
   } = useQuery({
     queryKey: ["questions", "all"],
-    queryFn: () => getAllQuestions().then((response) => response.items),
+    queryFn: () => getRecruitingQuestions().then((response) => response.items),
     staleTime: 60_000,
   });
 

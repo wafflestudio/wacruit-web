@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
-import { getRecruitingResult } from "../../apis/recruiting";
+import { getRecruitingResult } from "../../apis/recruiting/recruiting.api";
 import { LoaderReturnType } from "../../types/commonTypes";
-import { RecruitingResult } from "../../types/apiTypes";
+import { RecruitingResult } from "../../apis/recruiting/recruiting.types";
 
 export const recruitingResultQuery = (id: number) => ({
   queryKey: ["recruiting", "result", id],

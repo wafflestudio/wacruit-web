@@ -1,4 +1,4 @@
-import { User } from "../../types/apiTypes.ts";
+import { User } from "../../apis/user/user.types";
 
 export const getMockUser = () => user;
 

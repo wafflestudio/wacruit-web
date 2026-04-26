@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
-import { BreifRecruiting } from "../../api/types/recruiting";
-import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
-import { usePreRegisterQuery } from "../../../entities/api/usePreRegisterQuery";
+import { BreifRecruiting } from "../../../apis/recruiting/recruiting.types";
+import { useRecruitingQuery } from "../../../apis/recruiting/recruiting.query";
+import { usePreRegisterQuery } from "../../../apis/preregister/preregister.query";
 
 export const RecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();

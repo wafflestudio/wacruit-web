@@ -21,7 +21,7 @@ import {
 } from "../components/project";
 import { CategoryTabs, ProjectCard, Pagination } from "../components/project";
 
-import { getProjects } from "../apis/project";
+import { getProjects } from "../apis/project/project.api";
 import type { ProjectListItem, ProjectType } from "../features/project/types";
 
 const ITEMS_PER_PAGE = 6;

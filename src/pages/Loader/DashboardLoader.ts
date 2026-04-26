@@ -1,9 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
-import { getRecruitingById } from "../../apis/recruiting";
-import { Recruiting } from "../../types/apiTypes";
-import { getMyResumes } from "../../apis/resume";
+import { getRecruitingById } from "../../apis/recruiting/recruiting.api";
+import { Recruiting } from "../../apis/recruiting/recruiting.types";
+import { getMyResumes } from "../../apis/resume/resume.api";
 import { redirect } from "react-router-dom";
-import { checkAuth } from "../../apis/auth";
+import { checkAuth } from "../../apis/auth/auth.api";
 
 export const recruitingDetailQuery = (id: number) => ({
   queryKey: ["recruiting", "detail", id],

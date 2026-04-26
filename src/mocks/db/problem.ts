@@ -1,4 +1,4 @@
-import { Problem } from "../../types/apiTypes";
+import { Problem } from "../../apis/problem/problem.types";
 
 const bodySample = (num: number) => `
   # 문제 ${num}

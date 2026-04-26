@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import asset from "./progressCardAsset";
-import { ProblemStatusCode } from "../../../types/apiTypes";
+import { ProblemStatusCode } from "../../../apis/recruiting/recruiting.types";
 
 type ProgressCardProps = {
   title: string;

@@ -3,7 +3,7 @@ import {
   Recruiting,
   RecruitingSummary,
   RecruitingType,
-} from "../../types/apiTypes";
+} from "../../apis/recruiting/recruiting.types";
 
 const recruiting: Recruiting[] = [
   {

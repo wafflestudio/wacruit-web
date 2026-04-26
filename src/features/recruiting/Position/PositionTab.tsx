@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import type { MainTab, SubTab, TabContent } from "./types";
 import { formatSeminarByEnglish } from "./utils";
-import { SeminarType } from "../../../shared/api/types/seminar";
+import { SeminarType } from "../../../apis/seminar/seminar.types";
 
 const DEFAULT_TAB_CONTENTS: TabContent[] = [
   {

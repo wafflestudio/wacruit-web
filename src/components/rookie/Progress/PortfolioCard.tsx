@@ -11,9 +11,9 @@ import {
   postPortfolioFile,
   postPortfolioLink,
   putPortfolioLink,
-} from "../../../apis/portfolio";
+} from "../../../apis/portfolio/portfolio.api";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
-import { Recruiting } from "../../../types/apiTypes";
+import { Recruiting } from "../../../apis/recruiting/recruiting.types";
 
 type PortfolioCardProps = {
   recruiting: Recruiting;

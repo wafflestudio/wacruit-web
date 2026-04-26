@@ -1,6 +1,9 @@
 import { createContext } from "react";
 
-import { UserInvitationEmails, UserUpdate } from "../../../types/apiTypes.ts";
+import {
+  UserInvitationEmails,
+  UserUpdate,
+} from "../../../apis/user/user.types";
 
 export type UserInfoFormProps = {
   value: UserUpdate & UserInvitationEmails;

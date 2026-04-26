@@ -1,4 +1,4 @@
-import { TAnnouncement } from "../../types/apiTypes";
+import { TAnnouncement } from "../../apis/announcement/announcement.types";
 
 const sampleContent = `자기소개서는 500자 이내의 간단한 문항 두 가지로 구성되어 있습니다.  
 코딩 테스트는 지원 기간 막바지에는 트래픽이 몰려서 사이트가 불안정해질 수 있으니,  

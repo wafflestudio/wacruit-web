@@ -10,7 +10,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { HeaderOffset } from "../components/project";
-import { getProjectDetail } from "../apis/project";
+import { getProjectDetail } from "../apis/project/project.api";
 import type { ProjectUrl, ProjectImage } from "../features/project/types";
 
 import MarkdownRenderer from "../lib/MarkdownRenderer";

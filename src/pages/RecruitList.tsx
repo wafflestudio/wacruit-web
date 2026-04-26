@@ -3,7 +3,7 @@ import Header from "../components/home/Header/Header";
 import { MAIL_RECRUIT } from "../common/const";
 import { RecruitItem } from "../components/recruit/RecruitItem";
 import { useQuery } from "@tanstack/react-query";
-import { getAllRecruitings } from "../apis/recruiting";
+import { getAllRecruitings } from "../apis/recruiting/recruiting.api";
 import { generateMailUrl } from "../common/utils";
 
 export default function RecruitList() {

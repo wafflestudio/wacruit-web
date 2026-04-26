@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { getRecruitingInfoByType } from "../../apis/recruiting";
+import { getRecruitingInfoByType } from "../../apis/recruiting/recruiting.api";
 
 type TimelineGroup = {
   id: "ROOKIE" | "DESIGNER" | "PROGRAMMER";

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getTimelines } from "../../../apis/timeline";
-import type { TimelineGroupType } from "../../../shared/api/types/timeline";
+import { getTimelines } from "../../../apis/timeline/timeline.api";
+import type { TimelineGroupType } from "../../../apis/timeline/timeline.types";
 
 type Tabs = "ROOKIES" | "PROGRAMMERS";
 

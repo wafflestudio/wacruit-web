@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import MarkdownRenderer from "../../lib/MarkdownRenderer";
-import { TAnnouncement } from "../../types/apiTypes";
+import { TAnnouncement } from "../../apis/announcement/announcement.types";
 
 type NotificationModalProps = {
   announcement: TAnnouncement;

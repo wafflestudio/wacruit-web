@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import { checkAuth, tryLogin } from "../../apis/auth";
+import { checkAuth, tryLogin } from "../../apis/auth/auth.api";
 import { useNavigate } from "react-router-dom";
 
 type RecruitItemComponentProps = {
