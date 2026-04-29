@@ -103,8 +103,8 @@ export const YearTab = styled.button<{ $active: boolean }>`
     ${(p) => (p.$active ? theme.colors.black[900] : "transparent")};
   padding: 8px 20px;
   cursor: pointer;
-  font-family: "Pretendard Variable", system-ui, -apple-system, Segoe UI,
-    Roboto, "Noto Sans KR", sans-serif;
+  font-family: "Pretendard Variable", system-ui, -apple-system, Segoe UI, Roboto,
+    "Noto Sans KR", sans-serif;
   font-size: ${theme.fontSizes[16]};
   font-weight: ${(p) =>
     p.$active ? theme.fontWeights.semibold : theme.fontWeights.medium};

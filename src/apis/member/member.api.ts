@@ -23,7 +23,11 @@ export type ApiMemberItem = {
 };
 export type ApiMemberResponse = { items: ApiMemberItem[] };
 
-export type ApiSponsorItem = { id: number; name: string; sponsored_date?: string };
+export type ApiSponsorItem = {
+  id: number;
+  name: string;
+  sponsored_date?: string;
+};
 export type ApiSponsorResponse = { items: ApiSponsorItem[] };
 
 export type SponsorQuery = {
