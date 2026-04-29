@@ -5,7 +5,7 @@ export const getTimelines = ({
   queryParams,
 }: {
   queryParams?: { groupType: TimelineGroupType };
-}) => {
+} = {}) => {
   if (queryParams === undefined) {
     return getRequest<TimelineListResponse>(`/v3/timelines`, {}, false);
   }
