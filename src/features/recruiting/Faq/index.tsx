@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { getAllQuestions } from "../../../apis/recruiting";
+import { getRecruitingQuestions } from "../../../apis/question/question.api";
 import { FaqAccordion } from "./QuestionAccordion";
 import { generateMailUrl } from "../../../common/utils";
 import { MAIL_RECRUIT } from "../../../common/const";
@@ -58,7 +58,7 @@ const FaqContact = styled.div`
   color: ${({ theme }) => theme.colors.black[900]};
   text-align: center;
   font-size: ${({ theme }) => theme.fontSizes[14]};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.14px;
 `;
@@ -77,7 +77,7 @@ export const Faq = () => {
     error,
   } = useQuery({
     queryKey: ["questions", "all"],
-    queryFn: () => getAllQuestions().then((response) => response.items),
+    queryFn: () => getRecruitingQuestions().then((response) => response.items),
     staleTime: 60_000,
   });
 

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useState, useRef, type RefObject } from "react";
+import { useState, useRef, useEffect, type RefObject } from "react";
 import { ASSET_PATH } from "../../assets/constants";
 import { HamburgerButton } from "./HamburgerButton";
 import { MobileNavButton } from "./MoblieNavButton";
-import { useIsVisible } from "../../hooks/useIsVisble";
+import { useIsVisible } from "../../hooks/useIsVisible";
 
 export const MobileHeader = ({
   authState,
@@ -11,17 +11,53 @@ export const MobileHeader = ({
   onLogout,
   onLogin,
   toHome,
+  isLoginPage,
 }: {
   authState: "invalid" | "valid" | "need_register" | undefined;
   navButtons: { label: string; onAction: () => void; selected: boolean }[];
   onLogout: () => void;
   onLogin: () => void;
   toHome: () => void;
+  isLoginPage: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useIsVisible(ref);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    const prevStyles = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+    };
+
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    return () => {
+      body.style.overflow = prevStyles.overflow;
+      body.style.position = prevStyles.position;
+      body.style.top = prevStyles.top;
+      body.style.left = prevStyles.left;
+      body.style.right = prevStyles.right;
+      body.style.width = prevStyles.width;
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -62,6 +98,7 @@ export const MobileHeader = ({
           ) : (
             <MobileNavButton
               onClick={onLogin}
+              selected={isLoginPage}
               isOpen={isOpen}
               index={navButtons.length}
               isVisible={isVisible}
@@ -83,7 +120,7 @@ const HeaderContainer = styled.header<{ $isOpen: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 50;
+    z-index: 70;
     width: 100%;
     padding: 1.2rem 0;
     background-color: ${({ theme, $isOpen }) =>
@@ -121,7 +158,7 @@ const MobileDashboard = styled.div<{
   height: 100vh;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.white};
-  z-index: 40;
+  z-index: 60;
   padding: 0 2rem;
   padding-top: 4.8rem;
   transform: ${({ $isOpen }) =>

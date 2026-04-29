@@ -41,7 +41,7 @@ export const RookieInfo = () => {
   }
 
   return (
-    <RookieInfoContainer>
+    <RookieInfoContainer id="rookie-info">
       <RookieInfoContent>
         <RookieInfoHeader>
           <RookieInfoMainTitle>세미나 및 토이프로젝트</RookieInfoMainTitle>
@@ -86,7 +86,6 @@ export const RookieInfo = () => {
   );
 };
 
-// Styled Components
 const RookieInfoContainer = styled.section`
   display: flex;
   padding: 100px 0;

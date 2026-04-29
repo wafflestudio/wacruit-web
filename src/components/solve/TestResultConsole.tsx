@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   ProblemSubmissionResult,
   ProblemSubmissionStatusCode,
-} from "../../types/apiTypes.ts";
+} from "../../apis/problem/problem.types";
 import { LegacyRef } from "react";
 
 type Props = {

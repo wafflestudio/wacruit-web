@@ -1,20 +1,5 @@
 export type ProjectType = "SERVICE" | "STUDY";
 
-export interface ProjectListItem {
-  id: number;
-  name: string;
-  summary: string;
-  thumbnail_url: string;
-  project_type: ProjectType;
-  is_active: boolean;
-}
-
-export interface ProjectListResponse {
-  items: ProjectListItem[];
-}
-
-export type Project = ProjectListItem;
-
 export type UrlType =
   | "ANDROID_STORE"
   | "IOS_APP_STORE"
@@ -24,11 +9,6 @@ export type UrlType =
   | "GITHUB_WEB"
   | string;
 
-export interface ProjectUrl {
-  url_type: UrlType;
-  url: string;
-}
-
 export interface ProjectImage {
   object_name: string;
   presigned_url: string;
@@ -36,14 +16,37 @@ export interface ProjectImage {
   project_image_id: number;
 }
 
+export interface ProjectUrl {
+  url_type: UrlType;
+  url: string;
+}
+
+export interface ProjectListItem {
+  id: number;
+  name: string;
+  summary: string;
+  project_type: ProjectType;
+  is_active: boolean;
+  formed_at?: string;
+  thumbnail_image?: ProjectImage | null;
+}
+
+export interface ProjectListResponse {
+  items: ProjectListItem[];
+}
+
+export type Project = ProjectListItem;
+
 export interface ProjectDetail {
   id: number;
   name: string;
   summary: string;
   introduction: string;
-  thumbnail_url: string;
   project_type: ProjectType;
   is_active: boolean;
+  formed_at?: string;
+
+  thumbnail_image?: ProjectImage | null;
   images: ProjectImage[];
   urls: ProjectUrl[];
 }

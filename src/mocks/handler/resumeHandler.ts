@@ -4,7 +4,7 @@ import {
   getMyMockResume,
   setMyMockResume,
 } from "../db/resume";
-import { ResumeSubmissionCreate } from "../../types/apiTypes";
+import { ResumeSubmissionCreate } from "../../apis/resume/resume.types";
 
 const myResume: RestHandler = rest.get(
   "/recruiting/:recruiting_id/resumes",

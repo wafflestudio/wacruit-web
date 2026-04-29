@@ -9,8 +9,11 @@ import {
   myResumeQuery,
   recruitingDetailQuery,
 } from "./Loader/DashboardLoader.ts";
-import { applyRecruiting, cancelRecruiting } from "../apis/recruiting.ts";
-import { RecruitingType } from "../types/apiTypes.ts";
+import {
+  applyRecruiting,
+  cancelRecruiting,
+} from "../apis/recruiting/recruiting.api";
+import { RecruitingType } from "../apis/recruiting/recruiting.types";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();

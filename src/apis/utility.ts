@@ -1,4 +1,4 @@
-import { getSsoToken } from "./auth";
+import { getToken, refreshTokens, deleteToken } from "./auth/auth.api";
 import { BASE_URL } from "./environment";
 
 const defaultCommonHeader = {};
@@ -23,18 +23,41 @@ const safelyReturnResponse = (res: Response) =>
       : res.json()
     : Promise.reject(res);
 
+// 401 발생 시: refresh → 새 토큰으로 재시도 → refresh도 실패하면 로그인 페이지로
+const withTokenRefresh = async (
+  request: () => Promise<Response>,
+  authorized: boolean,
+): Promise<Response> => {
+  const res = await request();
+  if (res.status === 401 && authorized) {
+    try {
+      await refreshTokens();
+      return request();
+    } catch {
+      deleteToken();
+      window.location.href = "/login";
+      return Promise.reject(res);
+    }
+  }
+  return res;
+};
+
 export const getRequest = <Response>(
   url: string,
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${BASE_URL}${url}`, {
-    headers: {
-      ...defaultCommonHeader,
-      ...header,
-      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
-    },
-  }).then(safelyReturnResponse);
+  withTokenRefresh(
+    () =>
+      fetch(`${BASE_URL}${url}`, {
+        headers: {
+          ...defaultCommonHeader,
+          ...header,
+          ...(authorized ? authorizedHeader(getToken()) : {}),
+        },
+      }),
+    authorized,
+  ).then(safelyReturnResponse);
 
 export const postRequest = <Response>(
   url: string,
@@ -42,16 +65,20 @@ export const postRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${BASE_URL}${url}`, {
-    method: "POST",
-    headers: {
-      ...defaultCommonHeader,
-      ...defaultPostHeader,
-      ...header,
-      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
-    },
-    body: JSON.stringify(body),
-  }).then(safelyReturnResponse);
+  withTokenRefresh(
+    () =>
+      fetch(`${BASE_URL}${url}`, {
+        method: "POST",
+        headers: {
+          ...defaultCommonHeader,
+          ...defaultPostHeader,
+          ...header,
+          ...(authorized ? authorizedHeader(getToken()) : {}),
+        },
+        body: JSON.stringify(body),
+      }),
+    authorized,
+  ).then(safelyReturnResponse);
 
 export const putRequest = <Response>(
   url: string,
@@ -59,16 +86,20 @@ export const putRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${BASE_URL}${url}`, {
-    method: "PUT",
-    headers: {
-      ...defaultCommonHeader,
-      ...defaultPostHeader,
-      ...header,
-      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
-    },
-    body: JSON.stringify(body),
-  }).then(safelyReturnResponse);
+  withTokenRefresh(
+    () =>
+      fetch(`${BASE_URL}${url}`, {
+        method: "PUT",
+        headers: {
+          ...defaultCommonHeader,
+          ...defaultPostHeader,
+          ...header,
+          ...(authorized ? authorizedHeader(getToken()) : {}),
+        },
+        body: JSON.stringify(body),
+      }),
+    authorized,
+  ).then(safelyReturnResponse);
 
 export const patchRequest = <Response>(
   url: string,
@@ -76,16 +107,20 @@ export const patchRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${BASE_URL}${url}`, {
-    method: "PATCH",
-    headers: {
-      ...defaultCommonHeader,
-      ...defaultPostHeader,
-      ...header,
-      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
-    },
-    body: JSON.stringify(body),
-  }).then(safelyReturnResponse);
+  withTokenRefresh(
+    () =>
+      fetch(`${BASE_URL}${url}`, {
+        method: "PATCH",
+        headers: {
+          ...defaultCommonHeader,
+          ...defaultPostHeader,
+          ...header,
+          ...(authorized ? authorizedHeader(getToken()) : {}),
+        },
+        body: JSON.stringify(body),
+      }),
+    authorized,
+  ).then(safelyReturnResponse);
 
 export const deleteRequest = <Response>(
   url: string,
@@ -93,16 +128,20 @@ export const deleteRequest = <Response>(
   header: HeadersInit = {},
   authorized = true,
 ): Promise<Response> =>
-  fetch(`${BASE_URL}${url}`, {
-    method: "DELETE",
-    headers: {
-      ...defaultCommonHeader,
-      ...defaultPostHeader,
-      ...header,
-      ...(authorized ? authorizedHeader(getSsoToken()) : {}),
-    },
-    body: JSON.stringify(body),
-  }).then(safelyReturnResponse);
+  withTokenRefresh(
+    () =>
+      fetch(`${BASE_URL}${url}`, {
+        method: "DELETE",
+        headers: {
+          ...defaultCommonHeader,
+          ...defaultPostHeader,
+          ...header,
+          ...(authorized ? authorizedHeader(getToken()) : {}),
+        },
+        body: JSON.stringify(body),
+      }),
+    authorized,
+  ).then(safelyReturnResponse);
 
 // EventSource API는 POST를 지원하지 않기 때문에 대충 파싱한다
 export const sseRequest = <Response extends { type: string; data: unknown }>(
@@ -119,7 +158,7 @@ export const sseRequest = <Response extends { type: string; data: unknown }>(
         ...defaultCommonHeader,
         ...defaultPostHeader,
         ...header,
-        ...(authorized ? authorizedHeader(getSsoToken()) : {}),
+        ...(authorized ? authorizedHeader(getToken()) : {}),
       },
       body: method === "POST" ? JSON.stringify(body) : undefined,
     });

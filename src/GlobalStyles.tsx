@@ -8,15 +8,16 @@ const GlobalStyles = createGlobalStyle`
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
 
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   body {
-    * {
-      font-family: Pretendard, sans-serif;
-      box-sizing: border-box;
-      text-decoration: none;
-      border-collapse: collapse;
-      word-break: keep-all;
-      overflow-wrap: break-word;
-    }
+    font-family: Pretendard, sans-serif;
+    text-decoration: none;
+    border-collapse: collapse;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   
   ul, ol {
@@ -45,7 +46,23 @@ const GlobalStyles = createGlobalStyle`
       format("woff");
     font-weight: normal;
     font-style: normal;
-  } 
+  }
+
+  @font-face {
+    font-family: 'Gmarket Sans';
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+      format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Gmarket Sans';
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
+      format("woff");
+    font-weight: 700;
+    font-style: normal;
+  }
 `;
 
 export default GlobalStyles;

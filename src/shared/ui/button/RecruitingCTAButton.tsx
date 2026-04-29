@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
-import { BreifRecruiting } from "../../api/types/recruiting";
-import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
-import { usePreRegisterQuery } from "../../../entities/api/usePreRegisterQuery";
+import { BriefRecruiting } from "../../../apis/recruiting/recruiting.types";
+import { useRecruitingQuery } from "../../../apis/recruiting/recruiting.query";
+import { usePreRegisterQuery } from "../../../apis/preregister/preregister.query";
 
 export const RecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
@@ -33,7 +33,7 @@ export const RecruitingCTAButton = () => {
   } = preRegistrationData;
 
   const currentRecruitingGeneration =
-    recruitings.reduce<BreifRecruiting | null>((max, cur) => {
+    recruitings.reduce<BriefRecruiting | null>((max, cur) => {
       if (max === null) {
         return cur;
       }
@@ -77,8 +77,10 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 10px;
   border-radius: 4px;
-  background: var(--pink, #ff2c4c);
-  color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
 
   // display: inline-block;
   // background-color: pink;
@@ -94,7 +96,8 @@ const StyledButton = styled.button`
   // transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #e55b4d;
+    background-color: ${({ theme }) => theme.colors.black[300]};
+    cursor: pointer;
   }
 
   &:disabled,

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
-import { BreifRecruiting } from "../../api/types/recruiting";
-import { useRecruitingQuery } from "../../../entities/api/useRecruitingQuery";
-import { usePreRegisterQuery } from "../../../entities/api/usePreRegisterQuery";
+import { BriefRecruiting } from "../../../apis/recruiting/recruiting.types";
+import { useRecruitingQuery } from "../../../apis/recruiting/recruiting.query";
+import { usePreRegisterQuery } from "../../../apis/preregister/preregister.query";
 
 export const HeaderRecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
@@ -29,7 +29,7 @@ export const HeaderRecruitingCTAButton = () => {
   } = preRegistrationData;
 
   const currentRecruitingGeneration =
-    recruitings.reduce<BreifRecruiting | null>((max, cur) => {
+    recruitings.reduce<BriefRecruiting | null>((max, cur) => {
       if (max === null) {
         return cur;
       }
@@ -74,7 +74,9 @@ const StyledButton = styled.button`
   color: ${({ theme }) => theme.colors.black[900]};
   padding: 0.4rem 1.2rem;
   font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.medium}
   text-align: center;
+  line-height: 150%;
   border-radius: 0.2rem;
   cursor: pointer;
   transition: background-color 0.2s ease;

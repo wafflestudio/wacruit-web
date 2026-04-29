@@ -4,15 +4,12 @@ import QuestionaireInput from "../components/rookie/QuestionaireInput/Questionai
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
-import { putResume } from "../apis/resume.ts";
+import { putResume } from "../apis/resume/resume.api";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import {
-  ResumeSubmissionCreate,
-  UserInvitationEmails,
-  UserUpdate,
-} from "../types/apiTypes.ts";
+import { ResumeSubmissionCreate } from "../apis/resume/resume.types";
+import { UserInvitationEmails, UserUpdate } from "../apis/user/user.types";
 import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
-import { patchUser, patchUserInvitationEmails } from "../apis/user.ts";
+import { patchUser, patchUserInvitationEmails } from "../apis/user/user.api";
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();

@@ -8,7 +8,6 @@ import { PATH } from "./shared/routes/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
-import Home from "./pages/Home";
 import Solve from "./pages/SolveV2";
 import Resume from "./pages/Resume";
 import Recruit from "./pages/Recruit";
@@ -25,6 +24,8 @@ import Review from "./pages/Review";
 import Member from "./pages/Member";
 import HomeV2 from "./pages/HomeV2";
 import RecruitInfoV3 from "./pages/RecruitInfoV3";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import LoginRedirect from "./pages/LoginRedirect";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 
@@ -33,6 +34,8 @@ const queryClient = new QueryClient();
 const {
   HOME_V2,
   ANNOUNCEMENT,
+  LOGIN,
+  SIGNUP,
   LOGIN_REDIRECT,
   RECRUITING_LIST,
   RECRUITING_INFO,
@@ -46,14 +49,18 @@ const {
 
 const router = createBrowserRouter([
   {
-    path: "",
-    element: <Home />,
-    errorElement: <div>error</div>,
-    index: true,
-  },
-  {
     path: HOME_V2,
     element: <HomeV2 />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: LOGIN,
+    element: <Login />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: SIGNUP,
+    element: <Signup />,
     errorElement: <div>error</div>,
   },
   {

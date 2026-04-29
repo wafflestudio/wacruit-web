@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { getAllReviews } from "../apis/review";
+import { getAllReviews } from "../apis/review/review.api";
 import Headerv2 from "../shared/ui/header/HeaderV2";
+import Footer from "../shared/ui/footer/Footer";
 
 const Section = styled.section`
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 128px 0 140px 0;
+  padding: 128px 0 0 0;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 88px 0 140px 0;
+    padding: 88px 0 0 0;
   }
 `;
 
@@ -20,7 +21,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   gap: 40px;
   max-width: 1200px;
-  padding: 0 20px;
+  padding: 0 20px 140px;
   margin: 0 auto;
   box-sizing: border-box;
 `;
@@ -146,24 +147,48 @@ export default function ReviewGrid() {
 
   if (isLoading) {
     return (
-      <Section>
-        <Headerv2 />
-        <ContentWrapper>
-          <TitleSection>
-            <SectionTitle>
-              와플스튜디오 회원들의
-              <br />
-              생생한 후기를 모았어요!
-            </SectionTitle>
-          </TitleSection>
-          <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
-        </ContentWrapper>
-      </Section>
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러오는 중...</LoadingMessage>
+          </ContentWrapper>
+        </Section>
+        <Footer />
+      </>
     );
   }
 
   if (error != null) {
     return (
+      <>
+        <Section>
+          <Headerv2 />
+          <ContentWrapper>
+            <TitleSection>
+              <SectionTitle>
+                와플스튜디오 회원들의
+                <br />
+                생생한 후기를 모았어요!
+              </SectionTitle>
+            </TitleSection>
+            <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+          </ContentWrapper>
+        </Section>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
       <Section>
         <Headerv2 />
         <ContentWrapper>
@@ -174,53 +199,38 @@ export default function ReviewGrid() {
               생생한 후기를 모았어요!
             </SectionTitle>
           </TitleSection>
-          <LoadingMessage>리뷰를 불러올 수 없습니다</LoadingMessage>
+
+          {reviews && reviews.length === 0 ? (
+            <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
+          ) : (
+            <Grid>
+              {reviews &&
+                reviews.map((review) => (
+                  <ReviewCard key={review.id}>
+                    <CardHeader>
+                      <LeftInfo>
+                        <MemberName>
+                          {review.member_last_name}
+                          {review.member_first_name}
+                        </MemberName>
+                      </LeftInfo>
+                      <MemberInfo>
+                        {review.member_generation}기{" "}
+                        {formatPosition(review.member_position)}
+                      </MemberInfo>
+                    </CardHeader>
+
+                    <CardContent>
+                      <ReviewTitle>{review.title}</ReviewTitle>
+                      <ReviewText>{review.content}</ReviewText>
+                    </CardContent>
+                  </ReviewCard>
+                ))}
+            </Grid>
+          )}
         </ContentWrapper>
       </Section>
-    );
-  }
-
-  return (
-    <Section>
-      <Headerv2 />
-      <ContentWrapper>
-        <TitleSection>
-          <SectionTitle>
-            와플스튜디오 회원들의
-            <br />
-            생생한 후기를 모았어요!
-          </SectionTitle>
-        </TitleSection>
-
-        {reviews && reviews.length === 0 ? (
-          <LoadingMessage>등록된 리뷰가 없습니다.</LoadingMessage>
-        ) : (
-          <Grid>
-            {reviews &&
-              reviews.map((review) => (
-                <ReviewCard key={review.id}>
-                  <CardHeader>
-                    <LeftInfo>
-                      <MemberName>
-                        {review.member_last_name}
-                        {review.member_first_name}
-                      </MemberName>
-                    </LeftInfo>
-                    <MemberInfo>
-                      {review.member_generation}기{" "}
-                      {formatPosition(review.member_position)}
-                    </MemberInfo>
-                  </CardHeader>
-
-                  <CardContent>
-                    <ReviewTitle>{review.title}</ReviewTitle>
-                    <ReviewText>{review.content}</ReviewText>
-                  </CardContent>
-                </ReviewCard>
-              ))}
-          </Grid>
-        )}
-      </ContentWrapper>
-    </Section>
+      <Footer />
+    </>
   );
 }

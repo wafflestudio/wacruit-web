@@ -8,12 +8,14 @@ export const DesktopHeader = ({
   onLogout,
   onLogin,
   toHome,
+  isLoginPage,
 }: {
   authState: "invalid" | "valid" | "need_register" | undefined;
   navButtons: { label: string; onAction: () => void; selected: boolean }[];
   onLogout: () => void;
   onLogin: () => void;
   toHome: () => void;
+  isLoginPage: boolean;
 }) => {
   return (
     <HeaderContainer>
@@ -34,7 +36,9 @@ export const DesktopHeader = ({
           {authState === "valid" ? (
             <NavButton onClick={onLogout}>로그아웃</NavButton>
           ) : (
-            <NavButton onClick={onLogin}>로그인</NavButton>
+            <NavButton onClick={onLogin} selected={isLoginPage}>
+              로그인
+            </NavButton>
           )}
         </NavButtonGroup>
         <HeaderRecruitingCTAButton />

@@ -1,5 +1,5 @@
-import type { SeminarType } from "../../../shared/api/types/seminar";
-import type { RecruitingType } from "../../../shared/api/types/recruiting";
+import type { SeminarType } from "../../../apis/seminar/seminar.types";
+import type { RecruitingTypeV2 as RecruitingType } from "../../../apis/recruiting/recruiting.types";
 
 export type MainTab = RecruitingType;
 

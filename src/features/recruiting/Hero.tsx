@@ -85,9 +85,9 @@ const HeroBackgroundIcon = styled.div`
 // Desktop Icons
 const CubContainerDesktop = styled.div`
   position: absolute;
-  left: 141.998px;
-  bottom: 0vh;
-  width: clamp(300px, 30vw, 575px);
+  left: 7.4vw;
+  bottom: 0;
+  width: 30vw;
 
   @media (max-width: 768px) {
     display: none;
@@ -96,8 +96,9 @@ const CubContainerDesktop = styled.div`
 
 const MixerContainerDesktop = styled.div`
   position: absolute;
-  left: 90px;
-  width: clamp(600px, 70vw, 900px);
+  left: 7.14vw;
+  top: -16.46vw;
+  width: 58.94vw;
 
   @media (max-width: 768px) {
     display: none;
@@ -106,8 +107,9 @@ const MixerContainerDesktop = styled.div`
 
 const BowlContainerDesktop = styled.div`
   position: absolute;
-  right: -0px;
-  width: 1200px;
+  right: -7.24vw; // -139.082 / 1920
+  bottom: -1vw; // -19.2 / 1920
+  width: 89.43vw; // 1717.08 / 1920
 
   @media (max-width: 768px) {
     display: none;
@@ -157,7 +159,6 @@ const BowlContainerMobile = styled.div`
 
 const HeroContent = styled.div`
   display: flex;
-  max-width: 782px;
   width: 100%;
   padding: 0 20px;
   flex-direction: column;
@@ -191,7 +192,7 @@ const HeroTitle = styled.h1`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
   font-family: "Pretendard Variable", sans-serif;
-  font-size: ${({ theme }) => theme.fontSizes[40]};
+  font-size: clamp(3rem, 2.604vw, 5rem);
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   line-height: ${({ theme }) => theme.lineHeights.base};
   letter-spacing: -0.01em;

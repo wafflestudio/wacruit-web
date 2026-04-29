@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { tryLogin } from "../apis/auth";
+import { tryLogin } from "../apis/auth/auth.api";
 
 export default function LoginRedirect() {
   const [params] = useSearchParams();
