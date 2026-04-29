@@ -82,6 +82,44 @@ export const MemberBlock = styled.section`
   width: 100%;
 `;
 
+export const YearTabs = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  width: 100%;
+`;
+
+export const YearTab = styled.button<{ $active: boolean }>`
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid
+    ${(p) => (p.$active ? theme.colors.black[900] : "transparent")};
+  padding: 8px 20px;
+  cursor: pointer;
+  font-family: "Pretendard Variable", system-ui, -apple-system, Segoe UI, Roboto,
+    "Noto Sans KR", sans-serif;
+  font-size: ${theme.fontSizes[16]};
+  font-weight: ${(p) =>
+    p.$active ? theme.fontWeights.semibold : theme.fontWeights.medium};
+  line-height: ${theme.lineHeights.base};
+  color: ${(p) =>
+    p.$active ? theme.colors.black[900] : theme.colors.black[500]};
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: ${theme.colors.black[900]};
+  }
+`;
+
 export const ControlsRow = styled.div`
   width: 100%;
   max-width: 1160px;

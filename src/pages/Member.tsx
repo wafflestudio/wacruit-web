@@ -16,6 +16,8 @@ import {
   SponsorName,
   MemberBlock,
   ControlsRow,
+  YearTabs,
+  YearTab,
 } from "../features/member/Layout";
 import {
   POSITION_ORDER,
@@ -28,6 +30,7 @@ import {
   fetchMembers,
   fetchSponsors,
   type ApiMemberItem,
+  type ApiSponsorItem,
 } from "../apis/member/member.api";
 import { apiToCore, coreToApi } from "../features/member/mapping";
 import { getErrorMessage } from "../features/member/utils";
@@ -82,7 +85,8 @@ export default function MemberPage() {
   const [selectedPosition, setSelectedPosition] = useState<PosFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
-  const [sponsors, setSponsors] = useState<{ id: number; name: string }[]>([]);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [allSponsors, setAllSponsors] = useState<ApiSponsorItem[]>([]);
   const [loadingSponsors, setLoadingSponsors] = useState(false);
   const [errorSponsors, setErrorSponsors] = useState<string | null>(null);
 
@@ -101,8 +105,21 @@ export default function MemberPage() {
       try {
         setLoadingSponsors(true);
         setErrorSponsors(null);
-        const items = await fetchSponsors();
-        if (alive) setSponsors(items);
+        const items = await fetchSponsors({ order: "amount" });
+        if (!alive) return;
+        setAllSponsors(items);
+        const years = Array.from(
+          new Set(
+            items
+              .map((s) =>
+                s.sponsored_date
+                  ? parseInt(s.sponsored_date.slice(0, 4), 10)
+                  : null,
+              )
+              .filter((y): y is number => y != null),
+          ),
+        ).sort((a, b) => b - a);
+        if (years.length > 0) setSelectedYear(years[0]);
       } catch (err: unknown) {
         if (alive) setErrorSponsors(getErrorMessage(err));
       } finally {
@@ -228,6 +245,34 @@ export default function MemberPage() {
     }));
   }, [membersRaw, sortOrder]);
 
+  const sponsorYears = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          allSponsors
+            .map((s) =>
+              s.sponsored_date
+                ? parseInt(s.sponsored_date.slice(0, 4), 10)
+                : null,
+            )
+            .filter((y): y is number => y != null),
+        ),
+      ).sort((a, b) => b - a),
+    [allSponsors],
+  );
+
+  const sponsors = useMemo(
+    () =>
+      selectedYear == null
+        ? allSponsors
+        : allSponsors.filter(
+            (s) =>
+              s.sponsored_date != null &&
+              parseInt(s.sponsored_date.slice(0, 4), 10) === selectedYear,
+          ),
+    [allSponsors, selectedYear],
+  );
+
   const toggleSort = () =>
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
 
@@ -243,6 +288,20 @@ export default function MemberPage() {
               <span className="t1-part">와플스튜디오의 발전을 위해</span>
               <span className="t1-part">노력해주신 분들</span>
             </Title1>
+
+            {sponsorYears.length > 0 && (
+              <YearTabs>
+                {sponsorYears.map((year) => (
+                  <YearTab
+                    key={year}
+                    $active={selectedYear === year}
+                    onClick={() => setSelectedYear(year)}
+                  >
+                    {year}
+                  </YearTab>
+                ))}
+              </YearTabs>
+            )}
 
             {loadingSponsors && <div>후원자 불러오는 중…</div>}
             {errorSponsors && (
