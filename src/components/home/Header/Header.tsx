@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
-import { checkAuth, deleteToken, tryLogin } from "../../../apis/auth/auth.api";
+import { checkAuth, deleteToken } from "../../../apis/auth/auth.api";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -51,7 +51,7 @@ export default function Header() {
         ) : (
           <NavButton
             onClick={() => {
-              tryLogin("home");
+              navigate("/login");
             }}
           >
             <img src={"/icon/header/Login.svg"} />
