@@ -105,7 +105,7 @@ export default function MemberPage() {
       try {
         setLoadingSponsors(true);
         setErrorSponsors(null);
-        const items = await fetchSponsors({ order: "amount" });
+        const items = await fetchSponsors({ order: "-amount" });
         if (!alive) return;
         setAllSponsors(items);
         const years = Array.from(
