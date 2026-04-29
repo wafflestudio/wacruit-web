@@ -23,8 +23,13 @@ export type ApiMemberItem = {
 };
 export type ApiMemberResponse = { items: ApiMemberItem[] };
 
-export type ApiSponsorItem = { id: number; name: string };
+export type ApiSponsorItem = { id: number; name: string; sponsored_date?: string };
 export type ApiSponsorResponse = { items: ApiSponsorItem[] };
+
+export type SponsorQuery = {
+  order?: string;
+  year?: number;
+};
 
 export type MemberQuery = {
   position?: ApiPosition;
@@ -32,8 +37,16 @@ export type MemberQuery = {
   limit?: number;
 };
 
-export async function fetchSponsors(): Promise<ApiSponsorItem[]> {
-  const data = await getJSON<ApiSponsorResponse>("/api/v3/sponsor");
+export async function fetchSponsors(
+  query?: SponsorQuery,
+): Promise<ApiSponsorItem[]> {
+  const params = new URLSearchParams();
+  if (query?.order) params.set("order", query.order);
+  if (query?.year != null) params.set("year", String(query.year));
+  const qs = params.toString();
+  const data = await getJSON<ApiSponsorResponse>(
+    `/api/v3/sponsor${qs ? `?${qs}` : ""}`,
+  );
   return data.items ?? [];
 }
 
