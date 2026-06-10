@@ -12,6 +12,7 @@ export const useRouteNavigation = () => {
     REVIEW_LIST,
     LOGIN,
     SIGNUP,
+    FORGOT_PASSWORD,
   } = PATH;
   const { RECRUITING_DETAIL, PROJECT_DETAIL } = CREATE_PATH;
 
@@ -45,6 +46,9 @@ export const useRouteNavigation = () => {
     },
     toSignup: () => {
       void navigation(SIGNUP);
+    },
+    toForgotPassword: () => {
+      void navigation(FORGOT_PASSWORD);
     },
   };
 };

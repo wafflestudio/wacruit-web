@@ -4,6 +4,7 @@ export const PATH = {
   ANNOUNCEMENT: "/announcement",
   LOGIN: "/login",
   SIGNUP: "/signup",
+  FORGOT_PASSWORD: "/forgot-password",
   LOGIN_REDIRECT: "/login-redirect",
   RECRUITING_INFO: "/recruiting-info",
   RECRUITING_DETAIL: "/recruiting/:recruit_id",
