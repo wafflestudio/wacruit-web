@@ -125,7 +125,7 @@ export const TimeLine = () => {
       };
     }) || [];
 
-  const years = [...new Set(timelineBars.map((b) => b.year))].sort();
+  const years = [...new Set(timelineBars.map((b) => b.year))].sort((a, b) => a - b);
   const barsByYear = years.map((year) => ({
     year,
     bars: timelineBars.filter((b) => b.year === year),
