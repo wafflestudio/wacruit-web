@@ -125,8 +125,13 @@ export const TimeLine = () => {
       };
     }) || [];
 
-  const bars2025 = timelineBars.filter((bar) => bar.year === 2025);
-  const bars2026 = timelineBars.filter((bar) => bar.year === 2026);
+  const years = [...new Set(timelineBars.map((b) => b.year))].sort(
+    (a, b) => a - b,
+  );
+  const barsByYear = years.map((year) => ({
+    year,
+    bars: timelineBars.filter((b) => b.year === year),
+  }));
 
   const renderYearTimelineBars = (bars: TimelineBarData[], year: number) => {
     return (
@@ -260,8 +265,10 @@ export const TimeLine = () => {
                     <MonthHeader key={month}>{month}</MonthHeader>
                   ))}
                 </MonthHeaderRow>
-                {bars2025.length > 0 && renderYearTimelineBars(bars2025, 2025)}
-                {bars2026.length > 0 && renderYearTimelineBars(bars2026, 2026)}
+                {barsByYear.map(
+                  ({ year, bars }) =>
+                    bars.length > 0 && renderYearTimelineBars(bars, year),
+                )}
               </DesktopTimelineWrapper>
 
               <MobileTimelineWrapper>
@@ -270,16 +277,20 @@ export const TimeLine = () => {
                     <MonthHeader key={month}>{month}</MonthHeader>
                   ))}
                 </MonthHeaderRow>
-                {bars2025.length > 0 && renderMobileFirstHalf(bars2025, 2025)}
-                {bars2026.length > 0 && renderMobileFirstHalf(bars2026, 2026)}
+                {barsByYear.map(
+                  ({ year, bars }) =>
+                    bars.length > 0 && renderMobileFirstHalf(bars, year),
+                )}
 
                 <MonthHeaderRow>
                   {MONTHS.slice(0, 6).map((month) => (
                     <MonthHeader key={month}>{month}</MonthHeader>
                   ))}
                 </MonthHeaderRow>
-                {bars2025.length > 0 && renderMobileSecondHalf(bars2025, 2025)}
-                {bars2026.length > 0 && renderMobileSecondHalf(bars2026, 2026)}
+                {barsByYear.map(
+                  ({ year, bars }) =>
+                    bars.length > 0 && renderMobileSecondHalf(bars, year),
+                )}
               </MobileTimelineWrapper>
             </TimelineGridWrapper>
           )}

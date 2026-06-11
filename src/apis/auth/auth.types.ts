@@ -17,3 +17,11 @@ export type ApiErrorResponse = {
     | string
     | Array<{ loc: (string | number)[]; msg: string; type: string }>;
 };
+
+export type PasswordResetEmailRequest = { email: string };
+export type PasswordResetVerifyRequest = { email: string; code: string };
+export type PasswordResetRequest = {
+  email: string;
+  code: string;
+  new_password: string;
+};
