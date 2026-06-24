@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import { useRouteNavigation } from "../shared/routes/useRouteNavigation";
@@ -71,10 +71,19 @@ export default function Login() {
   const { toSignup, toForgotPassword } = useRouteNavigation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+
+  const getSafeRedirect = (param: string | null): string => {
+    if (param && param.startsWith("/") && !param.startsWith("//")) {
+      return param;
+    }
+    return PATH.HOME_V2;
+  };
+  const redirectTarget = getSafeRedirect(searchParams.get("redirect"));
 
   useEffect(() => {
-    if (getToken()) navigate(PATH.HOME_V2, { replace: true });
-  }, [navigate]);
+    if (getToken()) navigate(redirectTarget, { replace: true });
+  }, [navigate, redirectTarget]);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -90,7 +99,7 @@ export default function Login() {
       setToken(response.access_token);
       setRefreshToken(response.refresh_token);
       queryClient.invalidateQueries(["auth"]);
-      navigate(PATH.HOME_V2);
+      navigate(redirectTarget);
     } catch {
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
     } finally {

@@ -27,7 +27,6 @@ import RecruitInfoV3 from "./pages/RecruitInfoV3";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
-import LoginRedirect from "./pages/LoginRedirect";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 
 const queryClient = new QueryClient();
@@ -38,7 +37,6 @@ const {
   LOGIN,
   SIGNUP,
   FORGOT_PASSWORD,
-  LOGIN_REDIRECT,
   RECRUITING_LIST,
   RECRUITING_INFO,
   RECRUITING_DETAIL,
@@ -68,11 +66,6 @@ const router = createBrowserRouter([
   {
     path: FORGOT_PASSWORD,
     element: <ForgotPassword />,
-    errorElement: <div>error</div>,
-  },
-  {
-    path: LOGIN_REDIRECT,
-    element: <LoginRedirect />,
     errorElement: <div>error</div>,
   },
   {
