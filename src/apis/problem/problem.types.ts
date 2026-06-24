@@ -27,6 +27,9 @@ export enum LanguageCodeV2 {
   PYTHON = "python",
   KOTLIN = "kotlin",
   SWIFT = "swift",
+  RUST = "rust",
+  GO = "go",
+  TYPESCRIPT = "typescript",
 }
 
 export type ProblemSubmissionRequest = {
