@@ -1,7 +1,14 @@
 import Cookies from "js-cookie";
 import { BASE_URL, SSO_LOGIN_URL, SSO_REDIRECT_URL } from "../environment";
 import { getRequest, postRequest } from "../utility";
-import { CheckEmailRequest, LoginRequest, LoginResponse } from "./auth.types";
+import {
+  CheckEmailRequest,
+  LoginRequest,
+  LoginResponse,
+  PasswordResetEmailRequest,
+  PasswordResetRequest,
+  PasswordResetVerifyRequest,
+} from "./auth.types";
 
 const COOKIE_KEY = "waffle.access-token";
 const REFRESH_COOKIE_KEY = "waffle.refresh-token";
@@ -34,6 +41,19 @@ export const postLogin = (data: LoginRequest): Promise<LoginResponse> =>
 // 이메일 중복 체크 API
 export const postCheckEmail = (data: CheckEmailRequest): Promise<string> =>
   postRequest<string>("/v3/auth/check", data, {}, false);
+
+export const postPasswordResetEmail = (
+  data: PasswordResetEmailRequest,
+): Promise<void> =>
+  postRequest<void>("/v3/auth/password-reset/email", data, {}, false);
+
+export const postPasswordResetVerify = (
+  data: PasswordResetVerifyRequest,
+): Promise<void> =>
+  postRequest<void>("/v3/auth/password-reset/verify", data, {}, false);
+
+export const postPasswordReset = (data: PasswordResetRequest): Promise<void> =>
+  postRequest<void>("/v3/auth/password-reset", data, {}, false);
 
 export const getToken = (): string | null => {
   //로컬 환경에서는 환경변수로 지정한 토큰 사용

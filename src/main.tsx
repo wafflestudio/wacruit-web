@@ -26,6 +26,7 @@ import HomeV2 from "./pages/HomeV2";
 import RecruitInfoV3 from "./pages/RecruitInfoV3";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
 import LoginRedirect from "./pages/LoginRedirect";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 
@@ -36,6 +37,7 @@ const {
   ANNOUNCEMENT,
   LOGIN,
   SIGNUP,
+  FORGOT_PASSWORD,
   LOGIN_REDIRECT,
   RECRUITING_LIST,
   RECRUITING_INFO,
@@ -61,6 +63,11 @@ const router = createBrowserRouter([
   {
     path: SIGNUP,
     element: <Signup />,
+    errorElement: <div>error</div>,
+  },
+  {
+    path: FORGOT_PASSWORD,
+    element: <ForgotPassword />,
     errorElement: <div>error</div>,
   },
   {

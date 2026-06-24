@@ -68,7 +68,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { toSignup } = useRouteNavigation();
+  const { toSignup, toForgotPassword } = useRouteNavigation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -136,6 +136,10 @@ export default function Login() {
             />
             {error && <ErrorMessage>{error}</ErrorMessage>}
           </InputSection>
+
+          <ForgotPasswordLink type="button" onClick={toForgotPassword}>
+            비밀번호를 잊으셨나요?
+          </ForgotPasswordLink>
 
           <ButtonSection>
             <StyledButton variant="primary" type="submit" disabled={isLoading}>
@@ -239,6 +243,18 @@ const ButtonSection = styled.div`
   align-items: flex-start;
   gap: 10px;
   align-self: stretch;
+`;
+
+const ForgotPasswordLink = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  color: ${({ theme }) => theme.colors.black[500]};
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: "Pretendard Variable";
+  align-self: center;
 `;
 
 const ErrorMessage = styled.p`
