@@ -303,7 +303,6 @@ const StatCardGray = styled.div<{ $isVisible: boolean }>`
   --tilt: 0deg;
   opacity: 0;
   ${dropAnimation("1.0s", "0s")}
-  ${reducedMotion}
 
   @media (max-width: 767px) {
     bottom: 196.608px;
@@ -314,6 +313,8 @@ const StatCardGray = styled.div<{ $isVisible: boolean }>`
     height: 146.196px;
     ${dropAnimation("1.0s", "0.1s")}
   }
+
+  ${reducedMotion}
 `;
 
 const StatLabel = styled.div`
@@ -448,7 +449,6 @@ const StatCardBlue = styled.div<{ $isVisible: boolean }>`
   --tilt: -12.342deg;
   opacity: 0;
   ${dropAnimation("1.2s", "0.2s")}
-  ${reducedMotion}
 
   @media (max-width: 767px) {
     bottom: 342.804px;
@@ -460,6 +460,8 @@ const StatCardBlue = styled.div<{ $isVisible: boolean }>`
     --tilt: 0deg;
     ${dropAnimation("1.2s", "0.2s")}
   }
+
+  ${reducedMotion}
 `;
 
 const StatCardGreen = styled.div<{ $isVisible: boolean }>`
@@ -478,7 +480,6 @@ const StatCardGreen = styled.div<{ $isVisible: boolean }>`
   --tilt: 16.315deg;
   opacity: 0;
   ${dropAnimation("1.3s", "0.3s")}
-  ${reducedMotion}
 
   @media (max-width: 767px) {
     bottom: 575px;
@@ -490,6 +491,8 @@ const StatCardGreen = styled.div<{ $isVisible: boolean }>`
     --tilt: 13.811deg;
     ${dropAnimation("1.3s", "0.3s")}
   }
+
+  ${reducedMotion}
 `;
 
 const StatCardBrown = styled.div<{ $isVisible: boolean }>`
@@ -508,7 +511,6 @@ const StatCardBrown = styled.div<{ $isVisible: boolean }>`
   --tilt: 0deg;
   opacity: 0;
   ${dropAnimation("1.1s", "0.1s")}
-  ${reducedMotion}
 
   @media (max-width: 767px) {
     bottom: 0;
@@ -519,4 +521,6 @@ const StatCardBrown = styled.div<{ $isVisible: boolean }>`
     height: 196.608px;
     ${dropAnimation("1.1s", "0s")}
   }
+
+  ${reducedMotion}
 `;
