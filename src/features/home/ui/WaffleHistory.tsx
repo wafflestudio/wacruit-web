@@ -1,6 +1,81 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { useHistoryQuery } from "../../../apis/history/history.query";
 import { useEffect, useRef, useState } from "react";
+
+const FALL = "cubic-bezier(0.45, 0, 1, 1)";
+const RISE = "cubic-bezier(0, 0, 0.35, 1)";
+
+const dropBounce = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(var(--drop-from, -180%)) rotate(var(--tilt, 0deg))
+      scaleX(0.97) scaleY(1.05);
+    animation-timing-function: ${FALL};
+  }
+  36% {
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scaleX(0.99) scaleY(1.02);
+    animation-timing-function: ${FALL};
+  }
+  40% {
+    /* 1차 착지: 바닥을 향해 눌림 */
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scaleX(1.07) scaleY(0.9);
+    animation-timing-function: ${RISE};
+  }
+  45% {
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scaleX(1) scaleY(1);
+    animation-timing-function: ${RISE};
+  }
+  57% {
+    transform: translateY(-12%) rotate(var(--tilt, 0deg));
+    animation-timing-function: ${FALL};
+  }
+  66% {
+    /* 2차 착지: 약한 눌림 */
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scaleX(1.04) scaleY(0.94);
+    animation-timing-function: ${RISE};
+  }
+  70% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+    animation-timing-function: ${RISE};
+  }
+  82% {
+    transform: translateY(-5%) rotate(var(--tilt, 0deg));
+    animation-timing-function: ${FALL};
+  }
+  90% {
+    /* 3차 착지: 미세한 눌림 */
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scaleX(1.02) scaleY(0.97);
+    animation-timing-function: ${RISE};
+  }
+  95% {
+    transform: translateY(-2%) rotate(var(--tilt, 0deg));
+    animation-timing-function: ${FALL};
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+`;
+
+const dropAnimation = (duration: string, delay: string) => css<{
+  $isVisible: boolean;
+}>`
+  animation: ${({ $isVisible }) =>
+    $isVisible
+      ? css`
+          ${dropBounce} ${duration} linear ${delay} forwards
+        `
+      : "none"};
+`;
+
+const reducedMotion = css<{ $isVisible: boolean }>`
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+    transform: rotate(var(--tilt, 0deg));
+    transition: opacity 0.3s ease-in-out;
+  }
+`;
 
 export const WaffleHistory = () => {
   const { useGetHistories } = useHistoryQuery();
@@ -225,40 +300,9 @@ const StatCardGray = styled.div<{ $isVisible: boolean }>`
   align-items: flex-start;
   border-radius: clamp(15px, 2.83cqw, 24px);
   background: #efebeb;
+  --tilt: 0deg;
   opacity: 0;
-  animation: ${({ $isVisible }) =>
-    $isVisible
-      ? "dropWithBounce 1.0s cubic-bezier(0.25, 0.1, 0.25, 1) forwards"
-      : "none"};
-
-  @keyframes dropWithBounce {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh);
-    }
-    55% {
-      transform: translateY(0);
-    }
-    70% {
-      transform: translateY(-15px);
-    }
-    82% {
-      transform: translateY(0);
-    }
-    93% {
-      transform: translateY(-8px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-    transition: opacity 0.3s ease-in-out;
-  }
+  ${dropAnimation("1.0s", "0s")}
 
   @media (max-width: 767px) {
     bottom: 196.608px;
@@ -267,11 +311,10 @@ const StatCardGray = styled.div<{ $isVisible: boolean }>`
     right: unset;
     width: 64.71%;
     height: 146.196px;
-    animation: ${({ $isVisible }) =>
-      $isVisible
-        ? "dropWithBounce 1.0s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards"
-        : "none"};
+    ${dropAnimation("1.0s", "0.1s")}
   }
+
+  ${reducedMotion}
 `;
 
 const StatLabel = styled.div`
@@ -403,64 +446,9 @@ const StatCardBlue = styled.div<{ $isVisible: boolean }>`
   align-items: flex-start;
   border-radius: clamp(15px, 2.83cqw, 24px);
   background: #37007f;
+  --tilt: -12.342deg;
   opacity: 0;
-  animation: ${({ $isVisible }) =>
-    $isVisible
-      ? "dropWithBounceBlue 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards"
-      : "none"};
-
-  @keyframes dropWithBounceBlue {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh) rotate(-12.342deg);
-    }
-    55% {
-      transform: translateY(0) rotate(-12.342deg);
-    }
-    70% {
-      transform: translateY(-15px) rotate(-12.342deg);
-    }
-    82% {
-      transform: translateY(0) rotate(-12.342deg);
-    }
-    93% {
-      transform: translateY(-8px) rotate(-12.342deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) rotate(-12.342deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-    transform: rotate(-12.342deg);
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  @keyframes dropWithBounceBlueNoRotate {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh);
-    }
-    55% {
-      transform: translateY(0);
-    }
-    70% {
-      transform: translateY(-15px);
-    }
-    82% {
-      transform: translateY(0);
-    }
-    93% {
-      transform: translateY(-8px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  ${dropAnimation("1.2s", "0.2s")}
 
   @media (max-width: 767px) {
     bottom: 342.804px;
@@ -469,15 +457,11 @@ const StatCardBlue = styled.div<{ $isVisible: boolean }>`
     left: unset;
     width: 67.81%;
     height: 210.967px;
-    animation: ${({ $isVisible }) =>
-      $isVisible
-        ? "dropWithBounceBlueNoRotate 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards"
-        : "none"};
+    --tilt: 0deg;
+    ${dropAnimation("1.2s", "0.2s")}
   }
 
-  @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
-    transform: none;
-  }
+  ${reducedMotion}
 `;
 
 const StatCardGreen = styled.div<{ $isVisible: boolean }>`
@@ -493,64 +477,9 @@ const StatCardGreen = styled.div<{ $isVisible: boolean }>`
   align-items: flex-start;
   border-radius: clamp(15px, 2.83cqw, 24px);
   background: #00cd48;
+  --tilt: 16.315deg;
   opacity: 0;
-  animation: ${({ $isVisible }) =>
-    $isVisible
-      ? "dropWithBounceGreen 1.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards"
-      : "none"};
-
-  @keyframes dropWithBounceGreen {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh) rotate(16.315deg);
-    }
-    55% {
-      transform: translateY(0) rotate(16.315deg);
-    }
-    70% {
-      transform: translateY(-15px) rotate(16.315deg);
-    }
-    82% {
-      transform: translateY(0) rotate(16.315deg);
-    }
-    93% {
-      transform: translateY(-8px) rotate(16.315deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) rotate(16.315deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-    transform: rotate(16.315deg);
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  @keyframes dropWithBounceGreenMobile {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh) rotate(13.811deg);
-    }
-    55% {
-      transform: translateY(0) rotate(13.811deg);
-    }
-    70% {
-      transform: translateY(-15px) rotate(13.811deg);
-    }
-    82% {
-      transform: translateY(0) rotate(13.811deg);
-    }
-    93% {
-      transform: translateY(-8px) rotate(13.811deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) rotate(13.811deg);
-    }
-  }
+  ${dropAnimation("1.3s", "0.3s")}
 
   @media (max-width: 767px) {
     bottom: 575px;
@@ -559,15 +488,11 @@ const StatCardGreen = styled.div<{ $isVisible: boolean }>`
     right: unset;
     width: 63.58%;
     height: 159.429px;
-    animation: ${({ $isVisible }) =>
-      $isVisible
-        ? "dropWithBounceGreenMobile 1.3s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards"
-        : "none"};
+    --tilt: 13.811deg;
+    ${dropAnimation("1.3s", "0.3s")}
   }
 
-  @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
-    transform: rotate(13.811deg);
-  }
+  ${reducedMotion}
 `;
 
 const StatCardBrown = styled.div<{ $isVisible: boolean }>`
@@ -583,40 +508,9 @@ const StatCardBrown = styled.div<{ $isVisible: boolean }>`
   align-items: flex-start;
   border-radius: clamp(15px, 2.83cqw, 24px);
   background: #876e00;
+  --tilt: 0deg;
   opacity: 0;
-  animation: ${({ $isVisible }) =>
-    $isVisible
-      ? "dropWithBounceBrown 1.1s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards"
-      : "none"};
-
-  @keyframes dropWithBounceBrown {
-    0% {
-      opacity: 1;
-      transform: translateY(-100vh);
-    }
-    55% {
-      transform: translateY(0);
-    }
-    70% {
-      transform: translateY(-15px);
-    }
-    82% {
-      transform: translateY(0);
-    }
-    93% {
-      transform: translateY(-8px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-    transition: opacity 0.3s ease-in-out;
-  }
+  ${dropAnimation("1.1s", "0.1s")}
 
   @media (max-width: 767px) {
     bottom: 0;
@@ -625,9 +519,8 @@ const StatCardBrown = styled.div<{ $isVisible: boolean }>`
     left: unset;
     width: 74.49%;
     height: 196.608px;
-    animation: ${({ $isVisible }) =>
-      $isVisible
-        ? "dropWithBounceBrown 1.1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards"
-        : "none"};
+    ${dropAnimation("1.1s", "0s")}
   }
+
+  ${reducedMotion}
 `;
