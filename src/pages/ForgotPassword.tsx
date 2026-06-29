@@ -69,18 +69,20 @@ export default function ForgotPassword() {
   };
 
   const handleSendCode = async () => {
-    if (!email) {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
       setError("이메일을 입력해주세요.");
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       setError("올바른 이메일 주소를 입력해주세요.");
       return;
     }
+    setEmail(trimmedEmail);
     setIsLoading(true);
     setError("");
     try {
-      await postPasswordResetEmail({ email });
+      await postPasswordResetEmail({ email: trimmedEmail });
       startTimer();
       setStep(2);
     } catch (err) {
