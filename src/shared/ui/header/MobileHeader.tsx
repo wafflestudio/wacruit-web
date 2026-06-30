@@ -13,7 +13,7 @@ export const MobileHeader = ({
   toHome,
   isLoginPage,
 }: {
-  authState: "invalid" | "valid" | "need_register" | undefined;
+  authState: "invalid" | "valid" | undefined;
   navButtons: { label: string; onAction: () => void; selected: boolean }[];
   onLogout: () => void;
   onLogin: () => void;

@@ -64,7 +64,9 @@ export const dashboardLoader =
 
     const authState = await checkAuth();
     if (authState !== "valid") {
-      throw redirect(`/login-redirect?to=${id}`);
+      throw redirect(
+        `/login?redirect=${encodeURIComponent(`/recruiting/${id}`)}`,
+      );
     }
 
     let resume;
