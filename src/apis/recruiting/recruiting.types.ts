@@ -60,7 +60,7 @@ export type BriefRecruiting = {
 
 type RecruitingInfoResponse = {
   id: number;
-  type: RecruitingTypeV2;
+  type: RecruitingType;
   info_num: number;
   title: string;
   date_info: string;

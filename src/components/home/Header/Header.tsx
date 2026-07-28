@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { zIndex } from "../../../lib/zIndex";
 import { useQuery } from "@tanstack/react-query";
@@ -8,7 +8,10 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
+
+  const redirectPath = `${location.pathname}${location.search}${location.hash}`;
 
   /**
    * Check Authorization
@@ -51,7 +54,7 @@ export default function Header() {
         ) : (
           <NavButton
             onClick={() => {
-              navigate("/login");
+              navigate(`/login?redirect=${encodeURIComponent(redirectPath)}`);
             }}
           >
             <img src={"/icon/header/Login.svg"} />
