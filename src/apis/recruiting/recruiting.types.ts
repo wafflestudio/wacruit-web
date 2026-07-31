@@ -50,10 +50,11 @@ export type BriefRecruiting = {
   id: number;
   name: string;
   generation: string;
-  type: RecruitingTypeV2;
+  type: RecruitingType;
   is_active: boolean;
-  from_date: string;
-  to_date: string;
+  // 상시 모집은 모집 기간이 비어 있다
+  from_date: string | null;
+  to_date: string | null;
   applicant_count: number;
   short_description: string;
 };

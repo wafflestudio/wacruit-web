@@ -23,8 +23,7 @@ import { CategoryTabs, ProjectCard, Pagination } from "../components/project";
 
 import { getProjects } from "../apis/project/project.api";
 import type { ProjectListItem, ProjectType } from "../features/project/types";
-
-const ITEMS_PER_PAGE = 6;
+import { ITEMS_PER_PAGE, getProjectsByType } from "../features/project/utils";
 
 function isFetchResponse(e: unknown): e is Response {
   return typeof e === "object" && e !== null && "ok" in e && "status" in e;
@@ -75,15 +74,9 @@ export default function ProjectPage() {
 
   const allItems = useMemo<ProjectListItem[]>(() => data?.items ?? [], [data]);
 
-  const filtered = useMemo(
-    () => allItems.filter((p) => p.project_type === selectedType),
-    [allItems, selectedType],
-  );
-
   const sorted = useMemo(
-    () =>
-      [...filtered].sort((a, b) => Number(b.is_active) - Number(a.is_active)),
-    [filtered],
+    () => getProjectsByType(allItems, selectedType),
+    [allItems, selectedType],
   );
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / ITEMS_PER_PAGE));
