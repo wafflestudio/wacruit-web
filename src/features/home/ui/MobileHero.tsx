@@ -1,6 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import { useMemo } from "react";
 
+import { zIndex } from "../../../lib/zIndex";
+
 import HalfRoundSVG from "../../../components/icons/home/hero/HalfRoundMobile.svg?react";
 import MixerSVG from "../../../components/icons/home/hero/MixerMobile.svg?react";
 import RoundGreenSVG from "../../../components/icons/home/hero/RoundGreenMobile.svg?react";
@@ -214,7 +216,7 @@ const HeroTitleWrapper = styled.div`
   position: absolute;
   top: 65px;
   left: 18px;
-  z-index: 50;
+  z-index: ${zIndex.heroTitle};
 
   display: inline-flex;
   align-items: flex-start;
@@ -270,7 +272,7 @@ const ConfettiLayer = styled.div`
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 40;
+  z-index: ${zIndex.heroConfetti};
   mix-blend-mode: difference;
   isolation: isolate;
 `;

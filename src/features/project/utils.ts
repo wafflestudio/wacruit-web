@@ -1,6 +1,14 @@
-import { Project } from "./types";
+import { Project, ProjectType } from "./types";
 
 export const ITEMS_PER_PAGE = 6;
+
+// 프로젝트 탭과 소개 탭이 같은 순서를 보여주도록 정렬 기준을 한곳에서 관리한다.
+// 진행 중인 것을 먼저 보여주고, 그 안에서는 서버가 준 순서를 유지한다.
+export function getProjectsByType(projects: Project[], type: ProjectType) {
+  return projects
+    .filter((project) => project.project_type === type)
+    .sort((a, b) => Number(b.is_active) - Number(a.is_active));
+}
 
 export function formatProjectStatus(
   p: Pick<Project, "project_type" | "is_active">,

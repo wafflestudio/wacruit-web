@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 // import { ProjectStatusBadge } from "../../../entities/project/ui/ProjectStatusBadge";
 import { useProjectQuery } from "../../../apis/project/project.query";
 import type { ProjectType } from "../../project/types";
+import { ITEMS_PER_PAGE, getProjectsByType } from "../../project/utils";
 import { ActivitiesCTAButton } from "../../../shared/ui/button/ActivitiesCTAButton";
 
 export const Projects = () => {
@@ -20,8 +21,11 @@ export const Projects = () => {
   }
 
   const { items: projects } = data;
-  const thumbnailProjects =
-    projects.length > 6 ? projects.slice(0, 6) : projects;
+  // 프로젝트 탭 첫 페이지와 같은 목록을 보여준다
+  const thumbnailProjects = getProjectsByType(projects, "SERVICE").slice(
+    0,
+    ITEMS_PER_PAGE,
+  );
 
   return (
     <ProjectsContainer>

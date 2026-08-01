@@ -1,67 +1,62 @@
 import styled from "styled-components";
 import { useRouteNavigation } from "../../routes/useRouteNavigation";
-import { BriefRecruiting } from "../../../apis/recruiting/recruiting.types";
 import { useRecruitingQuery } from "../../../apis/recruiting/recruiting.query";
+import { getOngoingRecruitings } from "../../../apis/recruiting/recruiting.util";
 import { usePreRegisterQuery } from "../../../apis/preregister/preregister.query";
+import Modal from "../../../components/Modal/Modal";
+import useModals from "../../../components/Modal/useModals";
+import { PreRegisterModal } from "../modal/PreRegisterModal";
 
 export const RecruitingCTAButton = () => {
   const { toRecruitingList } = useRouteNavigation();
   const { useGetActiveRecruitings } = useRecruitingQuery();
   const { useGetActivePreRegisterInfo } = usePreRegisterQuery();
 
-  const { data: recruitingData, isError: isRecruitingError } =
+  const { data: recruitingData, isLoading: isRecruitingLoading } =
     useGetActiveRecruitings();
-  const { data: preRegistrationData, isError: isPreRegistrationError } =
+  const { data: preRegistration, isLoading: isPreRegistrationLoading } =
     useGetActivePreRegisterInfo();
-  if (isRecruitingError || isPreRegistrationError) {
-    return (
-      <StyledButton onClick={toRecruitingList}>
-        와플스튜디오 지원하러 가기
-      </StyledButton>
-    );
-  }
-  if (recruitingData === undefined || preRegistrationData === undefined) {
+
+  const [modalHandle] = useModals(1);
+
+  if (isRecruitingLoading || isPreRegistrationLoading) {
     return <StyledButton onClick={toRecruitingList}>로딩 중...</StyledButton>;
   }
 
-  const { items: recruitings } = recruitingData;
-  const {
-    url: preRegistrationUrl,
-    generation: currentPreRegistrationGeneration,
-    isActive: isPreRegistrationActive,
-  } = preRegistrationData;
+  const { seasonal, continuous } = getOngoingRecruitings(
+    recruitingData?.items ?? [],
+  );
 
-  const currentRecruitingGeneration =
-    recruitings.reduce<BriefRecruiting | null>((max, cur) => {
-      if (max === null) {
-        return cur;
-      }
-      return parseFloat(cur.generation) > parseFloat(max.generation)
-        ? cur
-        : max;
-    }, null)?.generation;
-
-  if (currentRecruitingGeneration !== undefined) {
+  // 사전등록을 받던 기수의 모집이 시작되면 사전등록 대신 리크루팅으로 보낸다
+  if (seasonal) {
     return (
       <StyledButton as="button" onClick={toRecruitingList}>
-        {currentRecruitingGeneration}기 리크루팅 바로가기
+        {seasonal.generation}기 리크루팅 바로가기
       </StyledButton>
     );
   }
 
-  if (isPreRegistrationActive) {
+  // 상시 모집이 열려 있으면 지금 지원할 수 있으므로 사전등록 안내보다 우선한다
+  if (preRegistration && !continuous) {
     return (
-      <StyledButton
-        as="a"
-        href={preRegistrationUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {currentPreRegistrationGeneration}기 모집 알림 신청하기
-      </StyledButton>
+      <>
+        <StyledButton as="button" onClick={modalHandle.openModal}>
+          {preRegistration.generation}기 모집 알림 신청하기
+        </StyledButton>
+        <Modal
+          handle={modalHandle}
+          modalContainerBackgroundColor={"rgba(0, 0, 0, 0.6)"}
+        >
+          <PreRegisterModal
+            generation={preRegistration.generation}
+            onClose={modalHandle.closeModal}
+          />
+        </Modal>
+      </>
     );
   }
 
+  // 상시 모집만 열려 있거나 열린 모집이 아예 없으면 기수 없이 안내한다
   return (
     <StyledButton onClick={toRecruitingList}>
       와플스튜디오 지원하러 가기
