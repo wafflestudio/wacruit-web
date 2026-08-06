@@ -12,6 +12,14 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  strong, b {
+    font-weight: 700;
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
   body {
     font-family: Pretendard, sans-serif;
     text-decoration: none;
