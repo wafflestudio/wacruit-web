@@ -36,10 +36,10 @@ export default function TestResultConsole(props: Props) {
           </li>
         ))}
         {props.error.map((err, i) => (
-          <li key={i}>
+          <ErrorItem key={i}>
             <h4>에러 {i + 1}</h4>
             <pre>{err}</pre>
-          </li>
+          </ErrorItem>
         ))}
       </ul>
     </Section>
@@ -78,6 +78,15 @@ const Section = styled.section`
 
 const SectionTitle = styled.h3`
   font-size: 1.6rem;
+`;
+
+const ErrorItem = styled.li`
+  color: #c7382a;
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 `;
 
 const Status = styled.p<{ $status: string }>`
