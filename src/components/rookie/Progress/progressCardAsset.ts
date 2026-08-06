@@ -10,13 +10,13 @@ type ProgressCardAsset = CardAsset & {
 //resume
 const resumeSubmit: CardAsset = {
   iconSrc: "/icon/rookie/Check.svg",
-  iconAlt: "제출 완료 아이콘",
-  description: "제출 완료",
+  iconAlt: "저장 완료 아이콘",
+  description: "저장 완료",
 };
 const resumeNotSubmit: CardAsset = {
   iconSrc: "/icon/rookie/Pencil.svg",
-  iconAlt: "미제출 아이콘",
-  description: "미제출",
+  iconAlt: "작성 전 아이콘",
+  description: "작성 전",
 };
 
 //portfolio

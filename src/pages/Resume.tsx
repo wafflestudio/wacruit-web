@@ -5,11 +5,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { putResume } from "../apis/resume/resume.api";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { ResumeSubmissionCreate } from "../apis/resume/resume.types";
 import { UserInvitationEmails, UserUpdate } from "../apis/user/user.types";
 import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
 import { patchUser, patchUserInvitationEmails } from "../apis/user/user.api";
+import Modal from "../components/Modal/Modal.tsx";
+import AlertModal from "../components/Modal/AlertModal.tsx";
+import useModals from "../components/Modal/useModals.tsx";
+
+type Alert = { title: string; description?: string; afterClose?: () => void };
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
@@ -18,11 +23,26 @@ export default function Resume() {
   const [userInfoInput, setUserInfoInput] = useState(initialData.userInputs);
 
   const putResume = useSubmit(Number(recruit_id));
-  const navigate = useNavigate();
+
+  const [alertModal] = useModals(1);
+  const [alertContent, setAlertContent] = useState<Alert | null>(null);
+
+  const openAlert = (content: Alert) => {
+    setAlertContent(content);
+    alertModal.openModal();
+  };
+
+  const closeAlert = () => {
+    alertModal.closeModal();
+    alertContent?.afterClose?.();
+  };
 
   const submit = (options?: Parameters<typeof putResume>[1]) => {
     if (!checkRequired(userInfoInput)) {
-      alert("필수 정보를 모두 입력하세요");
+      openAlert({
+        title: "필수 정보를 모두 입력해주세요.",
+        description: "추가 정보 입력의 모든 항목은 필수 응답 항목입니다.",
+      });
       return;
     }
 
@@ -56,6 +76,19 @@ export default function Resume() {
   return (
     <>
       <Header />
+      <Modal
+        handle={alertModal}
+        modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
+        onBackgroundClicked={closeAlert}
+      >
+        {alertContent && (
+          <AlertModal
+            title={alertContent.title}
+            description={alertContent.description}
+            onClose={closeAlert}
+          />
+        )}
+      </Modal>
       <Main>
         <Title>자기소개서</Title>
         <Description>모든 문항에 성실히 응답해주세요.</Description>
@@ -94,28 +127,20 @@ export default function Resume() {
           ref={userInfoFormRef}
         />
         <Buttons>
-          <SaveButton
-            onClick={() => {
-              submit({
-                onSuccess: () => alert("저장되었습니다."),
-                onError: () => alert("모집이 마감되었습니다."),
-              });
-            }}
-          >
-            임시저장
-          </SaveButton>
           <SubmitButton
             onClick={() =>
               submit({
-                onSuccess: () => {
-                  alert("제출되었습니다.");
-                  navigate(`/recruiting/${recruit_id}`);
-                },
-                onError: () => alert("모집이 마감되었습니다."),
+                onSuccess: () =>
+                  openAlert({
+                    title: "저장되었습니다.",
+                    description:
+                      "마감 전까지 언제든 이어서 작성할 수 있습니다.",
+                  }),
+                onError: () => openAlert({ title: "모집이 마감되었습니다." }),
               })
             }
           >
-            제출하기
+            저장하기
           </SubmitButton>
         </Buttons>
       </Main>
@@ -166,18 +191,6 @@ const checkRequired = (
   return true;
 };
 
-// const pickValidInputOnly = (
-//   userInfo: UserUpdate & UserInvitationEmails,
-// ): Partial<UserUpdate & UserInvitationEmails> => {
-//   const validInput: Partial<UserUpdate & UserInvitationEmails> = {};
-//   for (const key in userInfo) {
-//     if (userInfo[key as keyof (UserUpdate & UserInvitationEmails)] !== "")
-//       validInput[key as keyof (UserUpdate & UserInvitationEmails)] =
-//         userInfo[key as keyof (UserUpdate & UserInvitationEmails)];
-//   }
-//   return validInput;
-// };
-
 const Main = styled.main`
   position: relative;
   font-family: Pretendard, sans-serif;
@@ -217,24 +230,6 @@ const Buttons = styled.div`
   justify-content: flex-end;
   gap: 2.5rem;
 `;
-const SaveButton = styled.button`
-  display: inline-flex;
-  padding: 1rem 2rem;
-  justify-content: center;
-  align-items: flex-start;
-  border-radius: 0.5rem;
-  border: none;
-  background: #f0f0f0;
-  color: #737373;
-  font-size: 2rem;
-  font-weight: 500;
-  cursor: pointer;
-
-  transition: background 0.2s ease-in-out;
-  &:hover {
-    background: #e6e6e6;
-  }
-`;
 const SubmitButton = styled.button`
   display: inline-flex;
   padding: 1rem 2rem;
@@ -250,7 +245,6 @@ const SubmitButton = styled.button`
 
   transition: background 0.2s ease-in-out;
   &:hover {
-    background: #fff;
-    color: #f0745f;
+    background: #e05c46;
   }
 `;
