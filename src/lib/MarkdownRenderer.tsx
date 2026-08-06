@@ -15,7 +15,7 @@ function preprocessMarkdown(src: string) {
 
   // 1) 개행/공백 정규화
   s = s.replace(/\r\n?/g, "\n"); // CRLF/CR → LF
-  s = s.replace(/\\n/g, "\n"); // 문자열로 들어온 "\n" → 실제 LF
+  s = s.replace(/\\n(?![a-zA-Z])/g, "\n"); // 문자열로 들어온 "\n" → 실제 LF
   s = s.replace(/[\u2028\u2029]/g, "\n"); // 유니코드 line/paragraph separator → LF
   s = s.replace(/\u00A0/g, " "); // nbsp → 일반 공백
   s = s.replace(/[\u200B-\u200D\uFEFF]/g, ""); // zero-width chars 제거

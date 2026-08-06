@@ -68,13 +68,11 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
     alertModal.openModal();
   };
 
-  const handleAPIError = async (error: unknown) => {
-    openAlert(
-      await resolveApiErrorMessage(
-        error,
-        "요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
-      ),
-    );
+  const handleAPIError = async (
+    error: unknown,
+    fallback = "요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+  ) => {
+    openAlert(await resolveApiErrorMessage(error, fallback));
   };
 
   const [linksInput, setLinksInput] = useState<
@@ -203,8 +201,8 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
               <File
                 key={file_id}
                 onClick={() => {
-                  downloadPortfolioFile(file_id).catch(() =>
-                    openAlert("다운로드에 실패했습니다."),
+                  downloadPortfolioFile(file_id).catch((error: unknown) =>
+                    handleAPIError(error, "다운로드에 실패했습니다."),
                   );
                 }}
               >

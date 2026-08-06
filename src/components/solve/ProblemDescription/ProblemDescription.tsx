@@ -167,6 +167,9 @@ const MarkdownStyledWrapper = styled.div`
   line-height: 160%;
 
   table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
     border-collapse: collapse;
     margin: 1.6rem 0;
   }
