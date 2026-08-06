@@ -43,7 +43,7 @@ export default function ProblemTabs({
   judgingProblemId,
 }: ProblemTabsProps) {
   return (
-    <Nav>
+    <Nav aria-label="문제 목록">
       <BackLink to={`/recruiting/${recruitId}`}>
         <img src="/icon/LeftArrow.svg" alt="" width={31} />
         Back
@@ -113,6 +113,7 @@ const TabList = styled.ul`
 `;
 
 const Tab = styled(Link)<{ $current: boolean }>`
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;

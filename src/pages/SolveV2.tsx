@@ -229,7 +229,7 @@ export default function Solve() {
             <BottomNav>
               <NoticeArea>
                 {actionError ? (
-                  <ErrorText role="status">{actionError}</ErrorText>
+                  <ErrorText role="alert">{actionError}</ErrorText>
                 ) : (
                   <NoticeText>
                     메인 리크루팅 페이지에서 <em>최종 제출하기</em> 버튼을

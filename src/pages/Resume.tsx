@@ -13,8 +13,9 @@ import { patchUser, patchUserInvitationEmails } from "../apis/user/user.api";
 import Modal from "../components/Modal/Modal.tsx";
 import AlertModal from "../components/Modal/AlertModal.tsx";
 import useModals from "../components/Modal/useModals.tsx";
+import { resolveApiErrorMessage } from "../lib/apiErrorMessage.ts";
 
-type Alert = { title: string; description?: string; afterClose?: () => void };
+type Alert = { title: string; description?: string };
 
 export default function Resume() {
   const { recruit_id } = useParams<{ recruit_id: string }>();
@@ -34,7 +35,6 @@ export default function Resume() {
 
   const closeAlert = () => {
     alertModal.closeModal();
-    alertContent?.afterClose?.();
   };
 
   const submit = (options?: Parameters<typeof putResume>[1]) => {
@@ -136,7 +136,11 @@ export default function Resume() {
                     description:
                       "마감 전까지 언제든 이어서 작성할 수 있습니다.",
                   }),
-                onError: () => openAlert({ title: "모집이 마감되었습니다." }),
+                onError: (error) =>
+                  void resolveApiErrorMessage(
+                    error,
+                    "저장에 실패했습니다. 잠시 후 다시 시도해주세요.",
+                  ).then((message) => openAlert({ title: message })),
               })
             }
           >

@@ -43,9 +43,10 @@ export default function Dashboard() {
   const isProgrammer = recruiting.type === RecruitingType.PROGRAMMER;
   const applied = recruiting.applied;
   const isClosed =
-    recruiting.to_date !== undefined &&
-    recruiting.to_date !== null &&
-    new Date(recruiting.to_date).getTime() <= Date.now();
+    !recruiting.is_active ||
+    (recruiting.to_date !== undefined &&
+      recruiting.to_date !== null &&
+      new Date(recruiting.to_date).getTime() <= Date.now());
 
   const refetchRecruiting = () =>
     Promise.all([
@@ -113,6 +114,7 @@ export default function Dashboard() {
           confirmLabel="지원 취소하기"
           onConfirm={handleCancel}
           onClose={cancelModal.closeModal}
+          irreversible
         />
       </Modal>
       <Main>
@@ -188,7 +190,7 @@ export default function Dashboard() {
                 </SubmitButton>
               )}
               {errorMessage && (
-                <ErrorText role="status">{errorMessage}</ErrorText>
+                <ErrorText role="alert">{errorMessage}</ErrorText>
               )}
             </ActionArea>
           </>

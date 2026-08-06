@@ -157,6 +157,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
           title="포트폴리오를 삭제할까요?"
           description="업로드한 파일이 삭제되며 되돌릴 수 없습니다."
           confirmLabel="삭제하기"
+          irreversible
           onConfirm={deleteFile}
           onClose={() => {
             setDeleteTargetId(null);

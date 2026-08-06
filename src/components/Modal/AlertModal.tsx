@@ -12,9 +12,16 @@ export default function AlertModal({
   onClose,
 }: AlertModalProps) {
   return (
-    <Dialog role="alertdialog" aria-modal="true" aria-labelledby="alert-title">
+    <Dialog
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="alert-title"
+      aria-describedby={description ? "alert-description" : undefined}
+    >
       <Title id="alert-title">{title}</Title>
-      {description && <Description>{description}</Description>}
+      {description && (
+        <Description id="alert-description">{description}</Description>
+      )}
       <Buttons>
         <ConfirmButton type="button" onClick={onClose} autoFocus>
           확인

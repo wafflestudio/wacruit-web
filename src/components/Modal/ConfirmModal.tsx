@@ -6,6 +6,7 @@ type ConfirmModalProps = {
   confirmLabel: string;
   onConfirm: () => void;
   onClose: () => void;
+  irreversible?: boolean;
 };
 
 export default function ConfirmModal({
@@ -14,20 +15,26 @@ export default function ConfirmModal({
   confirmLabel,
   onConfirm,
   onClose,
+  irreversible = false,
 }: ConfirmModalProps) {
   return (
     <Dialog
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="confirm-title"
+      aria-describedby="confirm-description"
     >
       <Title id="confirm-title">{title}</Title>
-      <Description>{description}</Description>
+      <Description id="confirm-description">{description}</Description>
       <Buttons>
-        <CloseButton type="button" onClick={onClose}>
+        <CloseButton type="button" onClick={onClose} autoFocus={irreversible}>
           닫기
         </CloseButton>
-        <ConfirmButton type="button" onClick={onConfirm} autoFocus>
+        <ConfirmButton
+          type="button"
+          onClick={onConfirm}
+          autoFocus={!irreversible}
+        >
           {confirmLabel}
         </ConfirmButton>
       </Buttons>
