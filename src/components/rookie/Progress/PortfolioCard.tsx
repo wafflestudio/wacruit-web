@@ -14,6 +14,11 @@ import {
 } from "../../../apis/portfolio/portfolio.api";
 import { LoadingBackgroundBlink } from "../../../lib/loading";
 import { Recruiting } from "../../../apis/recruiting/recruiting.types";
+import Modal from "../../Modal/Modal";
+import ConfirmModal from "../../Modal/ConfirmModal";
+import AlertModal from "../../Modal/AlertModal";
+import useModals from "../../Modal/useModals";
+import { resolveApiErrorMessage } from "../../../lib/apiErrorMessage";
 
 type PortfolioCardProps = {
   recruiting: Recruiting;
@@ -22,6 +27,10 @@ type PortfolioCardProps = {
 export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
+  const [replaceModal, deleteModal, alertModal] = useModals(3);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const { data: files } = useQuery({
     queryKey: ["portfolio", "files", recruiting.id],
@@ -54,8 +63,18 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
     );
   };
 
-  const handleAPIError = (r: Response) => {
-    r.json().then((res) => alert(res.detail));
+  const openAlert = (message: string) => {
+    setAlertMessage(message);
+    alertModal.openModal();
+  };
+
+  const handleAPIError = async (error: unknown) => {
+    openAlert(
+      await resolveApiErrorMessage(
+        error,
+        "요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.",
+      ),
+    );
   };
 
   const [linksInput, setLinksInput] = useState<
@@ -69,19 +88,88 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
   ]);
 
   useEffect(() => {
-    if (links) {
-      const updated = linksInput.map((input, index) =>
-        links.items[index] ? links.items[index] : { id: null, url: "" },
-      );
-      setLinksInput(updated);
-    }
-  }, [links, linksInput]);
+    if (!links) return;
+    setLinksInput((prev) =>
+      prev.map((_, index) => links.items[index] ?? { id: null, url: "" }),
+    );
+  }, [links]);
+
+  const clearFileInput = () => {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const replaceFile = () => {
+    replaceModal.closeModal();
+    const target = pendingFile;
+    const previousId = files?.items[0]?.id;
+    setPendingFile(null);
+    if (!target || previousId === undefined) return;
+    deletePortfolioFile(previousId)
+      .then(() => postPortfolioFile(target, recruiting.id))
+      .catch(handleAPIError)
+      .finally(refetchFiles);
+  };
+
+  const deleteFile = () => {
+    deleteModal.closeModal();
+    const target = deleteTargetId;
+    setDeleteTargetId(null);
+    if (target === null) return;
+    deletePortfolioFile(target)
+      .then(clearFileInput)
+      .catch(handleAPIError)
+      .finally(refetchFiles);
+  };
 
   if (files === undefined || links === undefined)
     return <EmptyCard></EmptyCard>;
 
   return (
     <Card $submit={submit}>
+      <Modal
+        handle={replaceModal}
+        modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
+        onBackgroundClicked={() => {
+          setPendingFile(null);
+          replaceModal.closeModal();
+        }}
+      >
+        <ConfirmModal
+          title="포트폴리오를 교체할까요?"
+          description="기존에 업로드한 포트폴리오가 삭제되고 새로 선택한 파일로 바뀝니다."
+          confirmLabel="교체하기"
+          onConfirm={replaceFile}
+          onClose={() => {
+            setPendingFile(null);
+            replaceModal.closeModal();
+          }}
+        />
+      </Modal>
+      <Modal
+        handle={deleteModal}
+        modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
+        onBackgroundClicked={() => {
+          setDeleteTargetId(null);
+          deleteModal.closeModal();
+        }}
+      >
+        <ConfirmModal
+          title="포트폴리오를 삭제할까요?"
+          description="업로드한 파일이 삭제되며 되돌릴 수 없습니다."
+          confirmLabel="삭제하기"
+          onConfirm={deleteFile}
+          onClose={() => {
+            setDeleteTargetId(null);
+            deleteModal.closeModal();
+          }}
+        />
+      </Modal>
+      <Modal
+        handle={alertModal}
+        modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
+      >
+        <AlertModal title={alertMessage} onClose={alertModal.closeModal} />
+      </Modal>
       <InfoSection>
         <img src={iconSrc} alt={iconAlt} />
         <Name>포트폴리오</Name>
@@ -95,25 +183,16 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
           type="file"
           id="portfolio"
           onChange={(e) => {
-            if (!e.target.files) return;
-            const targetFile = e.target.files[0];
+            const targetFile = e.target.files?.[0];
+            e.target.value = "";
+            if (!targetFile) return;
             if (files.items.length < 1) {
               postPortfolioFile(targetFile, recruiting.id)
                 .catch(handleAPIError)
                 .finally(refetchFiles);
             } else {
-              if (
-                confirm(
-                  "기존에 업로드한 포트폴리오가 삭제됩니다. 계속하시겠습니까?",
-                )
-              ) {
-                deletePortfolioFile(files.items[0].id)
-                  .then(() => postPortfolioFile(targetFile, recruiting.id))
-                  .catch(handleAPIError)
-                  .finally(refetchFiles);
-              } else {
-                e.target.value = "";
-              }
+              setPendingFile(targetFile);
+              replaceModal.openModal();
             }
           }}
         />
@@ -124,26 +203,20 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
                 key={file_id}
                 onClick={() => {
                   downloadPortfolioFile(file_id).catch(() =>
-                    alert("다운로드에 실패했습니다."),
+                    openAlert("다운로드에 실패했습니다."),
                   );
                 }}
               >
                 {file_name}
                 <DeleteButton
+                  aria-label="포트폴리오 삭제"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (confirm("포트폴리오를 삭제하시겠습니까?")) {
-                      deletePortfolioFile(file_id)
-                        .then(() => {
-                          if (fileInputRef.current === null) return;
-                          fileInputRef.current.value = "";
-                        })
-                        .catch(handleAPIError)
-                        .finally(refetchFiles);
-                    }
+                    setDeleteTargetId(file_id);
+                    deleteModal.openModal();
                   }}
                 >
-                  <img src="/icon/rookie/DeleteFile.svg" />
+                  <img src="/icon/rookie/DeleteFile.svg" alt="" />
                 </DeleteButton>
               </File>
             ))}
@@ -192,6 +265,7 @@ const EmptyCard = styled.li`
   position: relative;
   display: flex;
   width: 84rem;
+  max-width: 100%;
   height: 19.3rem;
   flex-shrink: 0;
   border-radius: 0.5rem;
@@ -209,12 +283,18 @@ const Card = styled.li<{
   border-radius: 0.5rem;
   border: 0.1rem solid #d1d1d1;
   padding: 2.7rem;
+  max-width: 100%;
   color: ${(props) => (props.$submit ? "#64CB3F" : "#F0745F")};
-  border: "0.1rem solid #D1D1D1";
-  background: "#fff";
+  background: #fff;
   gap: 1.4rem;
+
   &:hover {
-    background: "#f6f6f6";
+    background: #f6f6f6;
+  }
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    height: auto;
   }
 `;
 
