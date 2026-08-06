@@ -66,9 +66,10 @@ export default function Result() {
             </Title>
             <Description>
               지원 시 적어주셨던 이메일로 디스코드 초대 예정입니다. <br />
-              또한 {ORIENTATION_DATE}에 루키/디자이너 오리엔테이션이 진행될
+              또한 {ORIENTATION_DATE}에 루키/디자이너 OT 및 개강 파티가 진행될
               예정이니 참고 바랍니다. <br />
-              오티 참석은 필수입니다.
+              OT 참석은 필수이며, 부득이하게 참석이 어려운 경우 디스코드로
+              운영팀에 문의해주세요.
             </Description>
             <Contact>
               기타 문의사항은{" "}
