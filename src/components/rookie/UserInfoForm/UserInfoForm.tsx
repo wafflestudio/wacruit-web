@@ -43,7 +43,7 @@ const UserInfoForm = forwardRef<HTMLFormElement, UserInfoFormProps>(
           placeholder="example@gmail.com"
           type="email"
         >
-          슬랙 초대 이메일
+          디스코드 초대 이메일
         </LabeledInput>
         <LabeledInput
           name="notion_email"

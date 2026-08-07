@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import asset from "./progressCardAsset";
 import { ProblemStatusCode } from "../../../apis/recruiting/recruiting.types";
@@ -11,7 +11,6 @@ type ProgressCardProps = {
 };
 
 export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
-  const navigate = useNavigate();
   const { iconSrc, iconAlt, theme, description } = useMemo(() => {
     switch (statusCode) {
       case ProblemStatusCode.NOT_SUBMITTED:
@@ -28,29 +27,40 @@ export function ProgressCard({ title, statusCode, to }: ProgressCardProps) {
   }, [statusCode]);
 
   return (
-    <Card $theme={theme} onClick={() => navigate(to)}>
-      <img src={iconSrc} alt={iconAlt} />
-      <Name>{title}</Name>
-      <Description>{description}</Description>
-      <Button>
-        <img src={"/icon/rookie/CardRightArrow.svg"} width={24} />
-      </Button>
-    </Card>
+    <Item>
+      <Card $theme={theme} to={to}>
+        <img src={iconSrc} alt={iconAlt} />
+        <Name>{title}</Name>
+        <Description>{description}</Description>
+        <Arrow aria-hidden="true">
+          <img src="/icon/rookie/CardRightArrow.svg" alt="" width={24} />
+        </Arrow>
+      </Card>
+    </Item>
   );
 }
 
-const Card = styled.li<{
+const Item = styled.li`
+  display: flex;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const Card = styled(Link)<{
   $theme: "red" | "green" | "yellow" | "gray";
 }>`
   position: relative;
   box-sizing: border-box;
+  display: block;
   width: 28rem;
   height: 19.3rem;
-  flex-shrink: 0;
   border-radius: 0.5rem;
-  border: 0.1rem solid #d1d1d1;
   padding: 2.7rem;
   cursor: pointer;
+  text-decoration: none;
   color: ${(props) =>
     props.$theme === "green"
       ? "#45B61D"
@@ -88,9 +98,18 @@ const Card = styled.li<{
         ? "linear-gradient(180deg, #FFF7CE 0%, #F6F6F6 46.88%);"
         : "#f6f6f6"};
   }
+
+  &:focus-visible {
+    outline: 0.3rem solid #f0745f;
+    outline-offset: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
-const Name = styled.h1`
+const Name = styled.h3`
   font-size: 2.4rem;
   font-weight: 600;
   margin-top: 1.6rem;
@@ -106,14 +125,15 @@ const Description = styled.p`
   margin: 0;
 `;
 
-const Button = styled.button`
+const Arrow = styled.span`
   position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 3rem;
   height: 3rem;
-  padding: 0.2rem 0 0 0;
   border-radius: 50%;
   border: 0.1rem solid #737373;
   right: 2.7rem;
   bottom: 2.7rem;
-  background: none;
 `;
