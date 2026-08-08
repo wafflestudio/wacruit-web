@@ -12,11 +12,18 @@ export const PATH = {
   PROJECT_DETAIL: "/projects/:id",
   REVIEW_LIST: "/reviews",
   MEMBER: "/members",
+  ADMIN: "/admin",
+  RECRUITING_RESULT: "/recruiting-result",
+  RECRUITING_RESULT_DETAIL: "/recruiting-result/:recruit_id",
 };
+
+export const RECRUITING_RESULT_ROUTE_ID = "recruiting-result";
 
 export const CREATE_PATH = {
   RECRUITING_DETAIL: ({ recruitId }: { recruitId: number }) =>
     `/recruiting/${recruitId}`,
   PROJECT_DETAIL: ({ projectId }: { projectId: number }) =>
     `/projects/${projectId}`,
+  RECRUITING_RESULT_DETAIL: ({ recruitId }: { recruitId: number }) =>
+    `/recruiting-result/${recruitId}`,
 };
