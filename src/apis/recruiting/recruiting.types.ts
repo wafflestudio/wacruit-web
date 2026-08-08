@@ -34,7 +34,12 @@ export type Recruiting = {
 export type RecruitingSummary = Pick<
   Recruiting,
   "id" | "name" | "type" | "is_active" | "from_date" | "to_date"
-> & { applicant_count: number; short_description: string };
+> & {
+  applicant_count: number;
+  short_description: string;
+  // 상시 모집 등 기수가 없는 경우 "0.0"으로 내려온다
+  generation?: string;
+};
 
 export enum RecruitingResultCode {
   IN_PROGRESS = 1,
@@ -69,6 +74,28 @@ type RecruitingInfoResponse = {
 
 export type RecruitingInfoListResponse = {
   items: RecruitingInfoResponse[];
+};
+
+// 관리자 전용: 특정 리크루팅의 지원자 제출 내역
+export type RecruitingSubmission = {
+  first_name: string;
+  last_name: string;
+  university: string | null;
+  college: string | null;
+  department: string | null;
+  phone_number: string;
+  github_email: string;
+  slack_email: string;
+  notion_email: string;
+  q1_answer: string | null;
+  q2_answer: string | null;
+  q3_answer: string | null;
+  problem_1_code: string | null;
+  problem_2_code: string | null;
+  problem_3_code: string | null;
+  problem_1_correct: number;
+  problem_2_correct: number;
+  problem_3_correct: number;
 };
 
 export type RecruitingInfo = {

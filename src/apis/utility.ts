@@ -35,12 +35,18 @@ const withTokenRefresh = async (
       return request();
     } catch {
       deleteToken();
-      window.location.href = "/login";
+
+      const from = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      window.location.href = `/login?redirect=${encodeURIComponent(from)}`;
       return Promise.reject(res);
     }
   }
   return res;
 };
+
+// 유효한 토큰인데도 거부당한 경우 = 계정에 권한이 없는 경우
+export const isForbiddenError = (error: unknown): boolean =>
+  error instanceof Response && (error.status === 403 || error.status === 401);
 
 export const getRequest = <Response>(
   url: string,
