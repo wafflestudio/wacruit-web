@@ -12,11 +12,11 @@ export const ProgrammerRecruitInfo = () => {
       detail: "예. 010-1234-5678",
     },
     {
-      contents: "슬랙, 노션, 깃허브 초대를 위한 이메일",
+      contents: "디스코드, 노션, 깃허브 초대를 위한 이메일",
       detail: (
         <>
           세 가지에 대해 모두 작성해주세요. (예. 깃허브
-          example_github@gmail.com, 슬랙/노션 example_slack@naver.com)
+          example_github@gmail.com, 디스코드/노션 example_discord@naver.com)
         </>
       ),
     },

@@ -4,6 +4,7 @@ import {
   RecruitingSummary,
   BriefRecruiting,
   RecruitingInfoListResponse,
+  RecruitingSubmission,
   RecruitingTypeV2,
 } from "./recruiting.types";
 import { getRequest, postRequest, deleteRequest } from "../utility";
@@ -30,6 +31,15 @@ export const getActiveRecruitings = () =>
 
 export const getRecruitingInfo = () =>
   getRequest<RecruitingInfoListResponse>(`/v3/recruitings/info`);
+
+// 관리자 전용
+export const getAllRecruitingsAsAdmin = () =>
+  getRequest<{ items: RecruitingSummary[] }>(`/v1/recruitings`);
+
+export const getRecruitingSubmissions = (id: Recruiting["id"]) =>
+  getRequest<{ items: RecruitingSubmission[] }>(
+    `/v3/recruitings/${id}/submission`,
+  );
 
 // V3
 export const getRecruitingInfoByType = (type: RecruitingTypeV2) =>

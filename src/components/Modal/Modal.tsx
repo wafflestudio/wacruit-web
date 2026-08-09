@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ModalState } from "./useModals";
 import { ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { zIndex } from "../../lib/zIndex";
 
 interface ModalProps {
@@ -22,16 +23,19 @@ export default function Modal({
   onBackgroundClicked,
   modalContainerBackgroundColor,
 }: ModalProps) {
-  return (
-    handle.state !== "closed" && (
-      <ModalContainer
-        onClick={onBackgroundClicked ?? handle.closeModal}
-        $state={handle.state}
-        $backgroundColor={modalContainerBackgroundColor || "transparent"}
-      >
-        <ModalDiv onClick={(e) => e.stopPropagation()}>{children}</ModalDiv>
-      </ModalContainer>
-    )
+  if (handle.state === "closed") return null;
+
+  // body로 포털하지 않으면 모달을 연 쪽(헤더 등)의 스택 컨텍스트에 갇혀
+  // 페이지 콘텐츠에 가려질 수 있다
+  return createPortal(
+    <ModalContainer
+      onClick={onBackgroundClicked ?? handle.closeModal}
+      $state={handle.state}
+      $backgroundColor={modalContainerBackgroundColor || "transparent"}
+    >
+      <ModalDiv onClick={(e) => e.stopPropagation()}>{children}</ModalDiv>
+    </ModalContainer>,
+    document.body,
   );
 }
 

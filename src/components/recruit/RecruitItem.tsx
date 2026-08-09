@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import { checkAuth, tryLogin } from "../../apis/auth/auth.api";
+import { checkAuth } from "../../apis/auth/auth.api";
 import { useNavigate } from "react-router-dom";
 
 type RecruitItemComponentProps = {
@@ -42,11 +42,7 @@ export function RecruitItem({
       navigate(`/recruiting/${id}`);
       return;
     }
-    if (authState === "need_register") {
-      tryLogin(id);
-      return;
-    }
-    tryLogin(id);
+    navigate(`/login?redirect=${encodeURIComponent(`/recruiting/${id}`)}`);
   }, [id, isActive, navigate, type]);
 
   return (

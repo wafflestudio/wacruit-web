@@ -21,12 +21,15 @@ export enum LanguageCode {
 
 export enum LanguageCodeV2 {
   C = "c",
-  CPP = "c++",
+  CPP = "cpp",
   JAVA = "java",
-  JAVASCRIPT = "javascript",
+  JAVASCRIPT = "node",
   PYTHON = "python",
   KOTLIN = "kotlin",
   SWIFT = "swift",
+  RUST = "rust",
+  GO = "go",
+  TYPESCRIPT = "typescript",
 }
 
 export type ProblemSubmissionRequest = {

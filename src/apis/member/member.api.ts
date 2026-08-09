@@ -1,4 +1,5 @@
 import { getJSON } from "../../features/member/utils";
+import { BASE_URL } from "../environment";
 
 export type ApiPosition =
   | "FRONTEND"
@@ -49,7 +50,7 @@ export async function fetchSponsors(
   if (query?.year != null) params.set("year", String(query.year));
   const qs = params.toString();
   const data = await getJSON<ApiSponsorResponse>(
-    `/api/v3/sponsor${qs ? `?${qs}` : ""}`,
+    `${BASE_URL}/v3/sponsor${qs ? `?${qs}` : ""}`,
   );
   return data.items ?? [];
 }
@@ -63,7 +64,7 @@ export async function fetchMembers(
   params.set("limit", String(query.limit ?? 200));
 
   const data = await getJSON<ApiMemberResponse>(
-    `/api/v3/members?${params.toString()}`,
+    `${BASE_URL}/v3/members?${params.toString()}`,
   );
   return data.items ?? [];
 }

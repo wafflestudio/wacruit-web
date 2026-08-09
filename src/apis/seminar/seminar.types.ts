@@ -3,7 +3,8 @@ export type SeminarType =
   | "FAST_API"
   | "FRONTEND"
   | "ANDROID"
-  | "IOS";
+  | "IOS"
+  | "PRODUCT_ENGINEERING";
 
 type SeminarResponse = {
   id: number;

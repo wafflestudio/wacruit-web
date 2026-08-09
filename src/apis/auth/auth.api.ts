@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
-import { BASE_URL, SSO_LOGIN_URL, SSO_REDIRECT_URL } from "../environment";
-import { getRequest, postRequest } from "../utility";
+import { BASE_URL } from "../environment";
+import { postRequest } from "../utility";
 import {
   CheckEmailRequest,
   LoginRequest,
@@ -104,12 +104,11 @@ export const refreshTokens = async (): Promise<LoginResponse> => {
 };
 
 export const tryLogin = (recruit_id: number | "home") => {
-  location.href = `${SSO_LOGIN_URL}/?redirect_uri=${SSO_REDIRECT_URL}/${recruit_id}`;
+  const redirectPath =
+    recruit_id === "home" ? "/" : `/recruiting/${recruit_id}`;
+  location.href = `/login?redirect=${encodeURIComponent(redirectPath)}`;
 };
 
-// DESCRIPTION: 유일하게 API인 부분이므로 남겨둠.
-export const checkAuth = (): Promise<"invalid" | "valid" | "need_register"> =>
-  getRequest<{ signup: boolean }>("/v1/users/check").then(
-    (res) => (res.signup ? ("valid" as const) : ("need_register" as const)),
-    () => Promise.resolve("invalid" as const),
-  );
+export const checkAuth = (): Promise<"invalid" | "valid"> => {
+  return Promise.resolve(getToken() ? "valid" : "invalid");
+};

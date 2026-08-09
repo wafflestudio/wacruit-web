@@ -45,6 +45,13 @@ const DEFAULT_TAB_CONTENTS: TabContent[] = [
         requirementInfo:
           "• Swift의 기본 문법을 간단하게 확인하신 분\n• 맥북 / 아이맥 등 macOS가 설치된 기기를 한 개 이상 소지하신 분",
       },
+      {
+        id: "PRODUCT_ENGINEERING",
+        activityInfo:
+          "• 주변 문제를 해결할 수 있는 제품을 모바일 앱으로 만듭니다.\n• 제품의 요구사항을 화면·데이터·API 설계로 옮기고, 시스템 전체를 이해합니다.\n• AI 에이전트를 활용해 유지보수 가능한 코드를 작성합니다.",
+        requirementInfo:
+          "• 한 가지 프로그래밍 언어로 프로그램을 작성해보신 분\n• 안드로이드 기기 or (아이폰 and 맥북)",
+      },
     ],
   },
   {

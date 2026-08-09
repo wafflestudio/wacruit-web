@@ -1,6 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import { useMemo } from "react";
 
+import { zIndex } from "../../../lib/zIndex";
+
 import RoundGreenSVG from "../../../components/icons/home/hero/RoundGreenDesktop.svg?react";
 import TriangleSVG from "../../../components/icons/home/hero/TriangleDesktop2.svg?react";
 import WaffleSVG from "../../../components/icons/home/hero/WaffleDesktop.svg?react";
@@ -211,7 +213,7 @@ const HeroTitleWrapper = styled.div`
   position: absolute;
   top: 80px;
   left: 35px;
-  z-index: 50;
+  z-index: ${zIndex.heroTitle};
   display: flex;
   align-items: flex-start;
 
@@ -269,7 +271,7 @@ const ConfettiLayer = styled.div`
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 40;
+  z-index: ${zIndex.heroConfetti};
   mix-blend-mode: difference;
   isolation: isolate;
 `;

@@ -4,7 +4,7 @@ import { ThemeProvider } from "styled-components";
 import "./index.css";
 import initMocks from "./mocks/index";
 import { theme } from "./shared/styles/designSystem";
-import { PATH } from "./shared/routes/constants";
+import { PATH, RECRUITING_RESULT_ROUTE_ID } from "./shared/routes/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
@@ -27,8 +27,17 @@ import RecruitInfoV3 from "./pages/RecruitInfoV3";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
-import LoginRedirect from "./pages/LoginRedirect";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
+import Admin from "./pages/Admin";
+import RecruitingResult, {
+  RecruitingResultDetail,
+  RecruitingResultError,
+  RecruitingResultList,
+} from "./pages/RecruitingResult";
+import {
+  adminLoader,
+  recruitingResultLoader,
+} from "./pages/Loader/RecruitingResultLoader";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +47,6 @@ const {
   LOGIN,
   SIGNUP,
   FORGOT_PASSWORD,
-  LOGIN_REDIRECT,
   RECRUITING_LIST,
   RECRUITING_INFO,
   RECRUITING_DETAIL,
@@ -47,6 +55,8 @@ const {
   PROJECT_DETAIL,
   REVIEW_LIST,
   MEMBER,
+  ADMIN,
+  RECRUITING_RESULT,
 } = PATH;
 
 const router = createBrowserRouter([
@@ -68,11 +78,6 @@ const router = createBrowserRouter([
   {
     path: FORGOT_PASSWORD,
     element: <ForgotPassword />,
-    errorElement: <div>error</div>,
-  },
-  {
-    path: LOGIN_REDIRECT,
-    element: <LoginRedirect />,
     errorElement: <div>error</div>,
   },
   {
@@ -109,6 +114,23 @@ const router = createBrowserRouter([
     path: MEMBER,
     element: <Member />,
     errorElement: <div>error</div>,
+  },
+  {
+    path: ADMIN,
+    element: <Admin />,
+    loader: adminLoader(queryClient),
+    errorElement: <RecruitingResultError />,
+  },
+  {
+    path: RECRUITING_RESULT,
+    id: RECRUITING_RESULT_ROUTE_ID,
+    element: <RecruitingResult />,
+    loader: recruitingResultLoader(queryClient),
+    errorElement: <RecruitingResultError />,
+    children: [
+      { index: true, element: <RecruitingResultList /> },
+      { path: ":recruit_id", element: <RecruitingResultDetail /> },
+    ],
   },
   {
     path: RECRUITING_DETAIL,

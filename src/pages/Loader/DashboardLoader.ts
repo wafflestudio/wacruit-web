@@ -2,6 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getRecruitingById } from "../../apis/recruiting/recruiting.api";
 import { Recruiting } from "../../apis/recruiting/recruiting.types";
 import { getMyResumes } from "../../apis/resume/resume.api";
+import { Resume } from "../../apis/resume/resume.types";
 import { redirect } from "react-router-dom";
 import { checkAuth } from "../../apis/auth/auth.api";
 
@@ -19,7 +20,7 @@ export const myResumeQuery = (id: number) => ({
 
 export type DashboardLoaderReturnType = {
   recruiting: Recruiting & { applied?: boolean };
-  resume: { items: unknown[] };
+  resume: { items: Resume[] };
 };
 
 export const dashboardLoader =
@@ -64,12 +65,14 @@ export const dashboardLoader =
 
     const authState = await checkAuth();
     if (authState !== "valid") {
-      throw redirect(`/login-redirect?to=${id}`);
+      throw redirect(
+        `/login?redirect=${encodeURIComponent(`/recruiting/${id}`)}`,
+      );
     }
 
     let resume;
     try {
-      resume = await queryClient.fetchQuery<{ items: unknown[] }>(
+      resume = await queryClient.fetchQuery<{ items: Resume[] }>(
         myResumeQuery(id),
       );
     } catch {

@@ -163,6 +163,26 @@ const ProblemTitle = styled.h1`
 // `;
 
 const MarkdownStyledWrapper = styled.div`
+  font-size: 1.8rem;
+  line-height: 160%;
+
+  table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin: 1.6rem 0;
+  }
+  th,
+  td {
+    border: 0.1rem solid #d1d1d1;
+    padding: 0.6rem 1.2rem;
+  }
+  th {
+    background: #f6f6f6;
+    font-weight: 600;
+  }
+
   h1 {
     font-size: 4rem;
     line-height: 160%;
