@@ -27,6 +27,7 @@ export const formatSeminarByEnglish = ({
     FRONTEND: "Frontend",
     ANDROID: "Android",
     IOS: "iOS",
+    PRODUCT_ENGINEERING: "Product Engineering",
   };
 
   return map[seminar];
@@ -51,6 +52,9 @@ export const formatSubTabsByEnglish = ({
   }
   if (tab === "IOS") {
     return "iOS";
+  }
+  if (tab === "PRODUCT_ENGINEERING") {
+    return "Product Engineering";
   }
   return null;
 };
