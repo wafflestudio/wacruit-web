@@ -29,6 +29,11 @@ import { unreachable } from "../lib/unreachable.ts";
 import { ProblemSubmissionResultV2 } from "../apis/problem/problem.types";
 
 export default function Solve() {
+  const { problem_number } = useParams();
+  return <SolveProblem key={problem_number} />;
+}
+
+function SolveProblem() {
   const params = useParams();
   const queryClient = useQueryClient();
   const problemNumber = Number(params.problem_number);
@@ -50,7 +55,7 @@ export default function Solve() {
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [language, setLanguage] = useLanguage();
-  const [isCodeInitialized, setIsCodeInitialized] = useState(true);
+  const [editorRevision, setEditorRevision] = useState(0);
   const codeRef = useCodeRef(language, problemNumber);
   const [customTestcases, setCustomTestcases] =
     useCustomTestCases(problemNumber);
@@ -154,7 +159,7 @@ export default function Solve() {
   const handleResetCode = () => {
     resetModal.closeModal();
     codeRef.current = boilerplates[language];
-    setIsCodeInitialized(true);
+    setEditorRevision((revision) => revision + 1);
     setActionError(null);
   };
 
@@ -207,11 +212,11 @@ export default function Solve() {
           <Col>
             <Col>
               <CodeEditor
+                key={editorRevision}
                 isFullScreen={isFullScreen}
                 setIsFullScreen={setIsFullScreen}
                 code={codeRef.current}
                 setCode={(newCode) => {
-                  setIsCodeInitialized(false);
                   codeRef.current = newCode;
                 }}
                 language={language}
@@ -251,10 +256,7 @@ export default function Solve() {
               >
                 테스트 실행
               </SubmitButton> */}
-                <SubmitButton
-                  onClick={resetModal.openModal}
-                  disabled={isCodeInitialized}
-                >
+                <SubmitButton onClick={resetModal.openModal}>
                   코드 초기화
                 </SubmitButton>
               </Buttons>
