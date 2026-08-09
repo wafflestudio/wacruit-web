@@ -90,5 +90,5 @@ const ErrorItem = styled.li`
 `;
 
 const Status = styled.p<{ $status: string }>`
-  color: ${(props) => (props.$status === "CORRECT" ? "#2fa500" : "#ff0000")};
+  color: ${(props) => (props.$status === "Accepted" ? "#2fa500" : "#ff0000")};
 `;
