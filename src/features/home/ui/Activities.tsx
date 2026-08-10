@@ -56,8 +56,7 @@ export const Activities = () => {
     <ActivitiesContainer>
       <ActivitiesContent>
         <ActivitiesTitle>
-          와플스튜디오에서는
-          <MobileBreak />
+          와플스튜디오에서는 <MobileBreak />
           무엇을 할 수 있나요?
         </ActivitiesTitle>
         <ActivitiesGrid>
