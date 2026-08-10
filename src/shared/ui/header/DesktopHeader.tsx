@@ -41,7 +41,9 @@ export const DesktopHeader = ({
             </NavButton>
           )}
         </NavButtonGroup>
-        <HeaderRecruitingCTAButton />
+        <CTAArea>
+          <HeaderRecruitingCTAButton />
+        </CTAArea>
       </HeaderGroupContainer>
     </HeaderContainer>
   );
@@ -65,8 +67,8 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderGroupContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 2rem;
   width: 100%;
@@ -74,11 +76,16 @@ const HeaderGroupContainer = styled.div`
 `;
 
 const LogoButton = styled.button`
+  justify-self: start;
   cursor: pointer;
 
   img {
     height: 2rem;
   }
+`;
+
+const CTAArea = styled.div`
+  justify-self: end;
 `;
 
 const NavButtonGroup = styled.div`
