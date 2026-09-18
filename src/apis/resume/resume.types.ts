@@ -18,6 +18,7 @@ export type ResumeSubmissionCreate = {
 };
 
 export type ResumeQuestion = {
+  id: number;
   recruiting_id: number;
   question_num: number;
   content: string;

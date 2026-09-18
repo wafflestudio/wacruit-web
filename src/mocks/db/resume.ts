@@ -75,6 +75,7 @@ const resume: Resume[][] = [
 const questions: ResumeQuestion[][] = [
   [
     {
+      id: 1,
       recruiting_id: 0,
       question_num: 1,
       content: "지원동기를 500자 이내로 서술해주세요.",
@@ -83,6 +84,7 @@ const questions: ResumeQuestion[][] = [
       updated_at: "2021-08-04T00:00:00.000Z",
     },
     {
+      id: 2,
       recruiting_id: 0,
       question_num: 2,
       content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
@@ -91,6 +93,7 @@ const questions: ResumeQuestion[][] = [
       updated_at: "2021-08-04T00:00:00.000Z",
     },
     {
+      id: 3,
       recruiting_id: 0,
       question_num: 3,
       content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
@@ -101,6 +104,7 @@ const questions: ResumeQuestion[][] = [
   ],
   [
     {
+      id: 4,
       recruiting_id: 1,
       question_num: 1,
       content: "지원동기를 500자 이내로 서술해주세요.",
@@ -109,6 +113,7 @@ const questions: ResumeQuestion[][] = [
       updated_at: "2021-08-04T00:00:00.000Z",
     },
     {
+      id: 5,
       recruiting_id: 1,
       question_num: 2,
       content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
@@ -117,6 +122,7 @@ const questions: ResumeQuestion[][] = [
       updated_at: "2021-08-04T00:00:00.000Z",
     },
     {
+      id: 6,
       recruiting_id: 1,
       question_num: 3,
       content: "프로젝트 경험이 있다면 간단히 설명해주세요.",
