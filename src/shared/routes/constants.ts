@@ -13,6 +13,8 @@ export const PATH = {
   REVIEW_LIST: "/reviews",
   MEMBER: "/members",
   ADMIN: "/admin",
+  ADMIN_PREREGISTRATION: "/admin-preregistration",
+  ADMIN_PREREGISTRATION_DETAIL: "/admin-preregistration/:pre_registration_id",
   RECRUITING_RESULT: "/recruiting-result",
   RECRUITING_RESULT_DETAIL: "/recruiting-result/:recruit_id",
 };
@@ -26,4 +28,9 @@ export const CREATE_PATH = {
     `/projects/${projectId}`,
   RECRUITING_RESULT_DETAIL: ({ recruitId }: { recruitId: number }) =>
     `/recruiting-result/${recruitId}`,
+  ADMIN_PREREGISTRATION_DETAIL: ({
+    preregistrationId,
+  }: {
+    preregistrationId: number;
+  }) => `/admin-preregistration/${preregistrationId}`,
 };

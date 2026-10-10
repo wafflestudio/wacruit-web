@@ -28,6 +28,10 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import { ProgrammersRecruitInfoPage } from "./pages/ProgrammersRecruitInfoPage";
 import Admin from "./pages/Admin";
+import AdminPreregistration, {
+  AdminPreregistrationDetail,
+  AdminPreregistrationList,
+} from "./pages/AdminPreregistration";
 import RecruitingResult, {
   RecruitingResultDetail,
   RecruitingResultError,
@@ -35,6 +39,7 @@ import RecruitingResult, {
 } from "./pages/RecruitingResult";
 import {
   adminLoader,
+  adminPreregistrationLoader,
   recruitingResultLoader,
 } from "./pages/Loader/RecruitingResultLoader";
 
@@ -55,6 +60,7 @@ const {
   REVIEW_LIST,
   MEMBER,
   ADMIN,
+  ADMIN_PREREGISTRATION,
   RECRUITING_RESULT,
 } = PATH;
 
@@ -119,6 +125,19 @@ const router = createBrowserRouter([
     element: <Admin />,
     loader: adminLoader(queryClient),
     errorElement: <RecruitingResultError />,
+  },
+  {
+    path: ADMIN_PREREGISTRATION,
+    element: <AdminPreregistration />,
+    loader: adminPreregistrationLoader(queryClient),
+    errorElement: <RecruitingResultError />,
+    children: [
+      { index: true, element: <AdminPreregistrationList /> },
+      {
+        path: ":pre_registration_id",
+        element: <AdminPreregistrationDetail />,
+      },
+    ],
   },
   {
     path: RECRUITING_RESULT,
