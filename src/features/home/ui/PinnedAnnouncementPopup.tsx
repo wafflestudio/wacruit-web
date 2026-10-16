@@ -35,7 +35,7 @@ const hideToday = (announcementIds: number[]) => {
       localStorage.setItem(hideDateKey(id), today),
     );
   } catch {
-
+    // localStorage에 접근할 수 없으면 '오늘 하루 보지 않기'를 저장하지 않고 넘어간다.
   }
 };
 
