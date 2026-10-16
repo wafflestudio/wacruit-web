@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { PATH, CREATE_PATH } from "./constants";
 
+export type AnnouncementLocationState = { announcementId?: number };
+
 export const useRouteNavigation = () => {
   const navigation = useNavigate();
   const {
@@ -32,8 +34,8 @@ export const useRouteNavigation = () => {
     toReviewList: () => {
       void navigation(REVIEW_LIST);
     },
-    toAnnouncement: () => {
-      void navigation(ANNOUNCEMENT);
+    toAnnouncement: (state?: AnnouncementLocationState) => {
+      void navigation(ANNOUNCEMENT, { state });
     },
     toRecruitingList: () => {
       void navigation(RECRUITING_LIST);

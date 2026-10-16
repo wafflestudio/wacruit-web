@@ -10,6 +10,8 @@ import MarkdownRenderer from "../lib/MarkdownRenderer";
 import { Union } from "../types/commonTypes";
 import { MAIL_RECRUIT } from "../common/const";
 import { generateMailUrl } from "../common/utils";
+import { useLocation } from "react-router-dom";
+import { AnnouncementLocationState } from "../shared/routes/useRouteNavigation";
 
 const listItemStates = [
   "nothingSelected",
@@ -24,8 +26,10 @@ export default function Announcement() {
     queryFn: () => getAllAnnouncements(),
     staleTime: 1,
   });
-  const [selectedAnnouncementId, setSelectedAnnouncementId] =
-    useState<number>();
+  const location = useLocation();
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState(
+    (location.state as AnnouncementLocationState | null)?.announcementId,
+  );
 
   return (
     <>
