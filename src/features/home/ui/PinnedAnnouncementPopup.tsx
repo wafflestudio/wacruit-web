@@ -39,7 +39,6 @@ const hideToday = (announcementIds: number[]) => {
   }
 };
 
-
 let hasClosedInThisSession = false;
 
 const CLOSING_TIME = 300;
@@ -50,7 +49,6 @@ export const PinnedAnnouncementPopup = () => {
   const { data: pinnedAnnouncements } = useGetPinnedAnnouncements();
   const { toAnnouncement } = useRouteNavigation();
 
- 
   const visibleAnnouncements = useMemo(
     () =>
       (pinnedAnnouncements ?? []).filter(
@@ -108,7 +106,6 @@ export const PinnedAnnouncementPopup = () => {
           <AnnouncementPopupCard
             key={announcement.id}
             announcement={announcement}
-       
             stackOrder={renderedAnnouncements.length - idx}
             isClosing={closingIds.includes(announcement.id)}
             isPlaceholder={placeholderIds.includes(announcement.id)}
