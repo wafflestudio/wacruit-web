@@ -1,59 +1,57 @@
+import type { StatusTagVariant } from "../../../shared/ui/tag/Tag";
+
 type CardAsset = {
-  iconSrc: string;
-  iconAlt: string;
-  description: string;
+  variant: StatusTagVariant;
+  label: string;
 };
 type ProgressCardAsset = CardAsset & {
   theme: "red" | "green" | "yellow" | "gray";
+  description: string;
 };
 
 //resume
 const resumeSubmit: CardAsset = {
-  iconSrc: "/icon/rookie/Check.svg",
-  iconAlt: "저장 완료 아이콘",
-  description: "저장 완료",
+  variant: "saved",
+  label: "저장 완료",
 };
 const resumeNotSubmit: CardAsset = {
-  iconSrc: "/icon/rookie/Pencil.svg",
-  iconAlt: "작성 전 아이콘",
-  description: "작성 전",
+  variant: "todo",
+  label: "작성 전",
 };
 
 //portfolio
-const portfolioSubmit: Omit<ProgressCardAsset, "theme"> = {
-  iconSrc: "/icon/rookie/Check.svg",
-  iconAlt: "포트폴리오 제출 아이콘",
-  description: "제출 완료",
+const portfolioSubmit: CardAsset = {
+  variant: "saved",
+  label: "제출 완료",
 };
-const portfolioNotSubmit: Omit<ProgressCardAsset, "theme"> = {
-  iconSrc: "/icon/rookie/Portfolio.svg",
-  iconAlt: "포트폴리오 미제출 아이콘",
-  description: "미제출",
+const portfolioNotSubmit: CardAsset = {
+  variant: "todo",
+  label: "미제출",
 };
 
 //problem (default)
 const problemSubmitCorrect: ProgressCardAsset = {
   theme: "green",
-  iconSrc: "/icon/rookie/Check.svg",
-  iconAlt: "정답 아이콘",
+  variant: "done",
+  label: "정답",
   description: "정답입니다!",
 };
 const problemJudging: ProgressCardAsset = {
   theme: "yellow",
-  iconSrc: "/icon/rookie/Dots.svg",
-  iconAlt: "채점 중 아이콘",
+  variant: "judging",
+  label: "채점 중",
   description: "채점 중입니다...",
 };
 const problemSubmitWrong: ProgressCardAsset = {
   theme: "red",
-  iconSrc: "/icon/rookie/X.svg",
-  iconAlt: "오답 아이콘",
+  variant: "wrong",
+  label: "오답",
   description: "오답입니다!",
 };
 const problemNotSubmit: ProgressCardAsset = {
   theme: "gray",
-  iconSrc: "/icon/rookie/Code.svg",
-  iconAlt: "풀지 않은 문제 아이콘",
+  variant: "todo",
+  label: "미제출",
   description: "미제출",
 };
 

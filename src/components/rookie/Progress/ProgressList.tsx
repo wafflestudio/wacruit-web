@@ -4,12 +4,8 @@ import {
   Recruiting,
   RecruitingType,
 } from "../../../apis/recruiting/recruiting.types";
-/* disable-submission 
-import PortfolioCard from "./PortfolioCard";
-*/
 import { ResumeCard } from "./ResumeCard";
 import PortfolioCard from "./PortfolioCard";
-// import PortfolioCard from "./PortfolioCard";
 import { ProgrammerRecruitInfo } from "../../programmer/ProgrammerRecruitInfo";
 
 type ProgressListProps = {
@@ -18,70 +14,56 @@ type ProgressListProps = {
   type: number;
 };
 
-function ResumeInfo({
-  recruitingType,
-  recruiting,
-  hasResume,
-}: {
-  recruitingType: number;
-  recruiting: Recruiting;
-  hasResume: boolean;
-}) {
-  if (recruitingType === RecruitingType.ROOKIE) {
-    const problems = recruiting.problem_status;
-    return (
-      <>
-        <ResumeCard submit={hasResume} />
-        {problems
-          .sort((a, b) => {
-            if (a.num > b.num) return 1;
-            if (a.num < b.num) return -1;
-            return 0;
-          })
-          .map(({ id, num, status }) => (
-            <ProgressCard
-              key={id}
-              title={`문제 ${num}`}
-              statusCode={status}
-              to={`./solve/${id}`}
-            />
-          ))}
-      </>
-    );
-  }
-  if (recruitingType === RecruitingType.PROGRAMMER) {
-    return <ProgrammerRecruitInfo />;
-  }
-  return (
-    <>
-      <ResumeCard submit={hasResume} />
-      <PortfolioCard recruiting={recruiting} />
-    </>
-  );
-}
-
 export function ProgressList({
   recruiting,
   hasResume,
   type,
 }: ProgressListProps) {
+  if (type === RecruitingType.PROGRAMMER) {
+    return <ProgrammerRecruitInfo />;
+  }
+
+  if (type === RecruitingType.ROOKIE) {
+    const problems = [...recruiting.problem_status].sort(
+      (a, b) => a.num - b.num,
+    );
+    return (
+      <List>
+        <ResumeCard submit={hasResume} />
+        {problems.map(({ id, num, status }) => (
+          <ProgressCard
+            key={id}
+            title={`문제 ${num}`}
+            statusCode={status}
+            to={`./solve/${id}`}
+          />
+        ))}
+      </List>
+    );
+  }
+
   return (
     <List>
-      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
-      <ResumeInfo
-        recruiting={recruiting}
-        recruitingType={type}
-        hasResume={hasResume}
-      />
+      <ResumeCard submit={hasResume} />
+      <PortfolioCard recruiting={recruiting} />
     </List>
   );
 }
 
 const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  list-style: none;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.6rem;
   margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
 `;

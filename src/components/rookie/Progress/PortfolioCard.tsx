@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import asset from "./progressCardAsset";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deletePortfolioFile,
@@ -19,6 +19,7 @@ import ConfirmModal from "../../Modal/ConfirmModal";
 import AlertModal from "../../Modal/AlertModal";
 import useModals from "../../Modal/useModals";
 import { resolveApiErrorMessage } from "../../../lib/apiErrorMessage";
+import { StatusTag } from "../../../shared/ui/tag/Tag";
 
 type PortfolioCardProps = {
   recruiting: Recruiting;
@@ -44,10 +45,9 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
   });
 
   const submit = files !== undefined && files.items.length > 0;
-  const { description, iconSrc, iconAlt } = useMemo(
-    () => (submit ? asset.portfolioSubmit : asset.portfolioNotSubmit),
-    [submit],
-  );
+  const { variant, label } = submit
+    ? asset.portfolioSubmit
+    : asset.portfolioNotSubmit;
 
   const refetchFiles = () => {
     setTimeout(
@@ -123,7 +123,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
     return <EmptyCard></EmptyCard>;
 
   return (
-    <Card $submit={submit}>
+    <Card>
       <Modal
         handle={replaceModal}
         modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
@@ -170,12 +170,11 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
         <AlertModal title={alertMessage} onClose={alertModal.closeModal} />
       </Modal>
       <InfoSection>
-        <img src={iconSrc} alt={iconAlt} />
+        <StatusTag $variant={variant}>{label}</StatusTag>
         <Name>포트폴리오</Name>
-        <Description>{description}</Description>
       </InfoSection>
       <FileSection>
-        <div>파일 첨부</div>
+        <SectionLabel>파일 첨부</SectionLabel>
         <FileInputButton htmlFor="portfolio">파일 선택</FileInputButton>
         <FileInput
           ref={fileInputRef}
@@ -206,7 +205,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
                   );
                 }}
               >
-                {file_name}
+                <FileName>{file_name}</FileName>
                 <DeleteButton
                   aria-label="포트폴리오 삭제"
                   onClick={(e) => {
@@ -224,7 +223,7 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
       </FileSection>
 
       <LinkSection>
-        <div>링크 첨부</div>
+        <SectionLabel>링크 첨부</SectionLabel>
         {linksInput.map((input, index) => (
           <LinkInput
             key={index}
@@ -261,68 +260,90 @@ export default function PortfolioCard({ recruiting }: PortfolioCardProps) {
 }
 
 const EmptyCard = styled.li`
-  position: relative;
-  display: flex;
-  width: 84rem;
-  max-width: 100%;
-  height: 19.3rem;
-  flex-shrink: 0;
-  border-radius: 0.5rem;
+  grid-column: span 3;
+  min-height: 15rem;
+  border-radius: 0.8rem;
   animation: ${LoadingBackgroundBlink};
+
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+  }
 `;
 
-const Card = styled.li<{
-  $submit: boolean;
-}>`
-  position: relative;
-  display: flex;
-  width: 84rem;
-  height: 19.3rem;
-  flex-shrink: 0;
-  border-radius: 0.5rem;
-  border: 0.1rem solid #d1d1d1;
-  padding: 2.7rem;
-  max-width: 100%;
-  color: ${(props) => (props.$submit ? "#64CB3F" : "#F0745F")};
-  background: #fff;
-  gap: 1.4rem;
+const Card = styled.li`
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.4rem;
+  padding: 2.4rem;
+  border: 1px solid ${({ theme }) => theme.colors.black[200]};
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.white};
 
-  &:hover {
-    background: #f6f6f6;
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    > :first-child {
+      grid-column: 1 / -1;
+    }
   }
 
-  @media (max-width: 1200px) {
-    flex-direction: column;
-    height: auto;
+  @media (max-width: 768px) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding: 2rem;
   }
 `;
 
 const InfoSection = styled.div`
-  width: 26.6rem;
-`;
-
-const FileSection = styled.div`
-  width: 23.7rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-right: 0.1rem solid #f6f6f6;
-  gap: 0.8rem;
-  color: #404040;
+  gap: 1.2rem;
+`;
+
+const Name = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+`;
+
+const SectionLabel = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+`;
+
+const FileSection = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
 `;
 
 const FileInputButton = styled.label`
-  padding: 0.7rem 1.2rem;
-  gap: 1rem;
-  border-radius: 0.5rem;
-  background: #f0745f;
-  color: #fff;
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 160%; /* 2.56rem */
-  letter-spacing: 0.064rem;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid ${({ theme }) => theme.colors.black[900]};
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.black[100]};
+  }
 `;
+
 const FileInput = styled.input`
   position: absolute;
   top: 0;
@@ -332,86 +353,76 @@ const FileInput = styled.input`
   border: 0;
   visibility: hidden;
 `;
+
 const Files = styled.div`
-  width: calc(100% - 1.5rem);
-  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border-radius: 0.5rem;
   gap: 0.6rem;
-  background: #f6f6f6;
+  width: 100%;
 `;
+
 const File = styled.div`
-  padding: 0.4rem 0.8rem;
-  border-radius: 2.5rem;
-  border: 0.1rem solid #d1d1d1;
-  background: #fff;
-  color: #404040;
-  font-size: 1.2rem;
-  font-weight: 400;
-  line-height: 160%; /* 1.92rem */
-  letter-spacing: 0.048rem;
   display: flex;
-  gap: 1rem;
   align-items: center;
+  gap: 0.8rem;
+  max-width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.black[100]};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[13]};
   cursor: pointer;
+
   &:hover {
     text-decoration: underline;
   }
 `;
 
+const FileName = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const DeleteButton = styled.button`
-  width: 1.6rem;
-  height: 1.6rem;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
   cursor: pointer;
-  padding: 1rem;
+
   &:hover {
     opacity: 0.5;
   }
 `;
 
 const LinkSection = styled.div`
-  width: 23.7rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.8rem;
-  color: #404040;
+  align-items: stretch;
+  gap: 1rem;
+  min-width: 0;
 `;
 
 const LinkInput = styled.input`
-  width: 26rem;
-  padding: 0.7rem 1.2rem;
-  color: #404040;
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 160%;
-  letter-spacing: 0.064rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #f6f6f6;
+  width: 100%;
+  padding: 1rem 1.4rem;
+  border: 1px solid ${({ theme }) => theme.colors.black[300]};
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.oak};
+  }
 
   &::placeholder {
-    color: #d9d9d9;
+    color: ${({ theme }) => theme.colors.black[500]};
   }
-`;
-
-const Name = styled.h1`
-  font-size: 2.4rem;
-  font-weight: 600;
-  margin-top: 1.6rem;
-  margin-bottom: 0.7rem;
-`;
-
-const Description = styled.p`
-  color: #737373;
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 160%; /* 2.2399999999999998rem */
-  letter-spacing: 0.05600000000000001rem;
-  margin: 0;
 `;

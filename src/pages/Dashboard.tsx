@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import { ProgressList } from "../components/rookie/Progress/ProgressList";
-import Header from "../components/home/Header/Header";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
 import Modal from "../components/Modal/Modal";
@@ -19,6 +18,10 @@ import {
   cancelRecruiting,
 } from "../apis/recruiting/recruiting.api";
 import { RecruitingType } from "../apis/recruiting/recruiting.types";
+import Headerv2 from "../shared/ui/header/HeaderV2";
+import HeaderSpacer from "../shared/ui/header/HeaderSpacer";
+import { PositionTag, StatusTag } from "../shared/ui/tag/Tag";
+import { PATH } from "../shared/routes/constants";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -89,9 +92,26 @@ export default function Dashboard() {
       .finally(() => setIsPending(false));
   };
 
+  const arrowIcon = (
+    <svg
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+
   return (
     <>
-      <Header />
+      <Headerv2 />
+      <HeaderSpacer />
       <Modal
         handle={submitModal}
         modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
@@ -118,68 +138,89 @@ export default function Dashboard() {
         />
       </Modal>
       <Main>
-        <Title>
-          <MarkdownRenderer
-            markdownString={recruiting.name}
-            StyledWrapper={TitleMarkdownStyledWrapper}
+        <Content>
+          <Heading>
+            <BackLink to={PATH.RECRUITING_LIST}>
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M19 12H5M11 18l-6-6 6-6" />
+              </svg>
+              리크루팅 목록
+            </BackLink>
+            <PositionTag type={recruiting.type} />
+            <Title>
+              <MarkdownRenderer
+                markdownString={recruiting.name}
+                StyledWrapper={TitleMarkdownStyledWrapper}
+              />
+            </Title>
+          </Heading>
+          <Information>
+            <MarkdownRenderer
+              markdownString={recruiting.description}
+              StyledWrapper={InformationMarkdownStyledWrapper}
+            />
+          </Information>
+          <ProgressList
+            recruiting={recruiting}
+            hasResume={resume.items.length > 0}
+            type={recruiting.type}
           />
-        </Title>
-        <Information>
-          <MarkdownRenderer
-            markdownString={recruiting.description}
-            StyledWrapper={InformationMarkdownStyledWrapper}
-          />
-        </Information>
-        <ProgressList
-          recruiting={recruiting}
-          hasResume={resume.items.length > 0}
-          type={recruiting.type}
-        />
-        {!isProgrammer && (
-          <>
-            {!isClosed && (
-              <Caution>
-                위 내용은 마감 전까지 상시 수정할 수 있으며, 모두 완료한 뒤 아래{" "}
-                <em>최종 제출하기</em> 버튼을 눌러야 지원이 완료됩니다.
-              </Caution>
-            )}
-            <ActionArea>
+          {!isProgrammer && (
+            <SubmitPanel>
+              <SubmitText>
+                {isClosed ? (
+                  <strong>지원이 마감되었습니다.</strong>
+                ) : applied ? (
+                  <>
+                    <strong>
+                      <StatusTag $variant="done">최종 제출 완료</StatusTag>
+                    </strong>
+                    <p>
+                      제출 후에도 마감 전까지는 자기소개서와 문제 풀이를 계속
+                      수정할 수 있습니다.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <strong>
+                      모두 완료한 뒤 최종 제출하기 버튼을 눌러야 지원이
+                      완료됩니다.
+                    </strong>
+                    <p>위 내용은 마감 전까지 상시 수정할 수 있습니다.</p>
+                  </>
+                )}
+                {errorMessage && (
+                  <ErrorText role="alert">{errorMessage}</ErrorText>
+                )}
+              </SubmitText>
               {isClosed ? (
-                applied ? (
+                applied && (
                   <ResultButton
                     type="button"
                     onClick={() => navigate("./result")}
                   >
                     지원 결과 확인하기
-                    <div>
-                      <img
-                        src="/icon/rookie/AnnounceRightArrow.svg"
-                        alt="&rarr;"
-                        width={20}
-                      />
-                      <img
-                        src="/icon/rookie/AnnounceRightArrowWhite.svg"
-                        alt="&rarr;"
-                        width={20}
-                      />
-                    </div>
+                    {arrowIcon}
                   </ResultButton>
-                ) : (
-                  <ClosedText>지원이 마감되었습니다.</ClosedText>
                 )
               ) : applied ? (
-                <ActionRow>
-                  <SubmitButton type="button" disabled $done>
-                    최종 제출 완료
-                  </SubmitButton>
-                  <CancelButton
-                    type="button"
-                    onClick={cancelModal.openModal}
-                    disabled={isPending}
-                  >
-                    지원 취소
-                  </CancelButton>
-                </ActionRow>
+                <CancelButton
+                  type="button"
+                  onClick={cancelModal.openModal}
+                  disabled={isPending}
+                >
+                  지원 취소
+                </CancelButton>
               ) : (
                 <SubmitButton
                   type="button"
@@ -189,246 +230,205 @@ export default function Dashboard() {
                   {isPending ? "제출하는 중..." : "최종 제출하기"}
                 </SubmitButton>
               )}
-              {errorMessage && (
-                <ErrorText role="alert">{errorMessage}</ErrorText>
-              )}
-            </ActionArea>
-          </>
-        )}
+            </SubmitPanel>
+          )}
+        </Content>
       </Main>
     </>
   );
 }
 
 const Main = styled.main`
-  position: relative;
-  font-family: Pretendard, sans-serif;
-  font-style: normal;
-  line-height: normal;
-  padding: calc(6.4rem + 6rem) max(calc(50vw - 65rem), 3rem) 8rem;
-
-  @media (max-width: 1200px) {
-    padding: calc(6.4rem + 5rem) 4rem 6rem;
-  }
+  display: flex;
+  justify-content: center;
+  padding: 7.2rem 2rem 10.4rem;
 
   @media (max-width: 768px) {
-    padding: calc(5.6rem + 3rem) 2rem 4rem;
+    padding: 4rem 2rem 7.2rem;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
+  max-width: 100rem;
+
+  @media (max-width: 768px) {
+    gap: 3.2rem;
+  }
+`;
+
+const Heading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+`;
+
+const BackLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.black[900]};
   }
 `;
 
 const Title = styled.h1`
-  margin: 0.9rem 0;
+  margin: 0;
 `;
 
 const TitleMarkdownStyledWrapper = styled.div`
   p {
     margin: 0;
-    color: #222;
-    font-size: 4.6rem;
-    font-weight: 700;
+    color: ${({ theme }) => theme.colors.black[900]};
+    font-size: ${({ theme }) => theme.fontSizes[32]};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: 1.4;
 
     @media (max-width: 768px) {
-      font-size: 3rem;
+      font-size: ${({ theme }) => theme.fontSizes[24]};
     }
   }
 `;
 
 const Information = styled.div`
-  margin-bottom: 3.4rem;
+  padding: 2.8rem 3.2rem;
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.black[100]};
+
+  @media (max-width: 768px) {
+    padding: 2rem 2.4rem;
+  }
 `;
 
 const InformationMarkdownStyledWrapper = styled.div`
-  p {
-    color: #737373;
-    font-size: 1.8rem;
-    font-weight: 400;
-    line-height: 170%; /* 3.06rem */
-    letter-spacing: 0.072rem;
-    margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: 1.7;
 
-    @media (max-width: 768px) {
-      font-size: 1.5rem;
-    }
+  p {
+    margin: 0;
+  }
+  p + p {
+    margin-top: 0.6rem;
   }
   code {
-    color: #b44f3d;
-    font-weight: 600;
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
   }
   ul,
   ol {
-    padding: 0;
-    margin: 0.4rem;
+    margin: 0.4rem 0;
     padding-left: 2rem;
-    li {
-      font: inherit;
-      color: #737373;
-      font-size: 1.8rem;
-      font-weight: 400;
-      line-height: 170%; /* 3.06rem */
-      letter-spacing: 0.072rem;
-
-      @media (max-width: 768px) {
-        font-size: 1.5rem;
-      }
-    }
-  }
-`;
-
-const Caution = styled.p`
-  margin: 2.5rem 0 0;
-  color: #515151;
-  font-size: 1.8rem;
-  font-weight: 400;
-  line-height: 160%; /* 2.88rem */
-  letter-spacing: 0.072rem;
-
-  em {
-    font-style: normal;
-    font-weight: 600;
-    color: #222;
-    white-space: nowrap;
+    list-style: disc;
   }
 
   @media (max-width: 768px) {
-    font-size: 1.5rem;
+    font-size: ${({ theme }) => theme.fontSizes[14]};
   }
 `;
 
-const ClosedText = styled.p`
-  margin: 0;
-  color: #515151;
-  font-size: 1.8rem;
-  font-weight: 400;
-  line-height: 160%;
-  letter-spacing: 0.072rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const ActionArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.6rem;
-  margin-top: 3.2rem;
-`;
-
-const SubmitButton = styled.button<{ $done?: boolean }>`
-  box-sizing: border-box;
-  width: 32rem;
-  padding: 1.8rem;
-  background: #f0745f;
-  border: 0.1rem solid #f0745f;
-  border-radius: 0.5rem;
-  color: #fff;
-  font-family: inherit;
-  font-size: 2.2rem;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:enabled {
-    background: #e05c46;
-    border-color: #e05c46;
-  }
-
-  &:disabled {
-    cursor: default;
-    background: ${(props) => (props.$done ? "#fff" : "#c4c4c4")};
-    border-color: ${(props) => (props.$done ? "#64cb3f" : "#c4c4c4")};
-    color: ${(props) => (props.$done ? "#45b61d" : "#fff")};
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1.8rem;
-  }
-`;
-
-const ActionRow = styled.div`
-  display: flex;
-  align-items: stretch;
-  gap: 2rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
-  }
-`;
-
-const ResultButton = styled.button`
+const SubmitPanel = styled.section`
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  background: #f0745f;
-  border: #f0745f 0.1rem solid;
-  border-radius: 0.5rem;
-  color: #fff;
-  font-family: inherit;
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 2.5rem;
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 2.4rem;
+  padding: 2.8rem 3.2rem;
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.white};
 
-  > div {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: #fff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-
-    > img:last-child {
-      display: none;
-    }
-  }
-
-  &:hover {
-    color: #f0745f;
-    background: #fff;
-    > div {
-      background: #f0745f;
-      > img:first-child {
-        display: none;
-      }
-      > img:last-child {
-        display: inline;
-      }
-    }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 2.4rem;
   }
 `;
 
-const CancelButton = styled.button`
-  padding: 1rem 2rem;
-  background: #fff;
-  border: 0.1rem solid #d1d1d1;
-  border-radius: 0.5rem;
-  color: #737373;
-  font-family: inherit;
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 2.5rem;
-  cursor: pointer;
+const SubmitText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
 
-  &:hover:enabled {
-    border-color: #737373;
-    color: #515151;
+  strong {
+    font-size: ${({ theme }) => theme.fontSizes[18]};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: ${({ theme }) => theme.lineHeights.base};
   }
 
-  &:disabled {
-    cursor: default;
-    color: #c4c4c4;
+  p {
+    margin: 0;
+    color: ${({ theme }) => theme.colors.black[300]};
+    font-size: ${({ theme }) => theme.fontSizes[14]};
+    line-height: ${({ theme }) => theme.lineHeights.base};
   }
 `;
 
 const ErrorText = styled.p`
-  margin: 0;
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 160%;
-  color: #f0745f;
-  white-space: pre-line;
+  && {
+    color: ${({ theme }) => theme.colors.pink};
+    white-space: pre-line;
+  }
+`;
+
+const PanelButton = styled.button`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem 1.8rem;
+  border-radius: 0.4rem;
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+`;
+
+const SubmitButton = styled(PanelButton)`
+  border: 1px solid ${({ theme }) => theme.colors.pink};
+  background-color: ${({ theme }) => theme.colors.pink};
+  color: ${({ theme }) => theme.colors.black[100]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+
+  &:hover:enabled {
+    opacity: 0.85;
+  }
+`;
+
+const CancelButton = styled(PanelButton)`
+  border: 1px solid ${({ theme }) => theme.colors.black[700]};
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.black[300]};
+
+  &:hover:enabled {
+    border-color: ${({ theme }) => theme.colors.black[300]};
+    color: ${({ theme }) => theme.colors.white};
+  }
+`;
+
+const ResultButton = styled(PanelButton)`
+  border: 1px solid ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.black[100]};
+  }
 `;
