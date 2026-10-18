@@ -9,8 +9,8 @@ export interface TestCase {
 
 export const Text = styled.p<SpacerProps>`
   ${spacer}
-  font-size: 1.8rem;
-  line-height: 160%;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  line-height: 1.6;
 `;
 
 export const BoldText = styled(Text)`
@@ -19,7 +19,9 @@ export const BoldText = styled(Text)`
 
 export const HorizontalLine = styled.hr<SpacerProps>`
   ${spacer}
-  height: 0.1rem;
+  height: 1px;
+  border: 0;
+  background-color: ${({ theme }) => theme.colors.black[200]};
 `;
 
 export const Table = styled.table<SpacerProps>`
@@ -34,8 +36,8 @@ export const Table = styled.table<SpacerProps>`
 
 export const TableHeader = styled.tr`
   display: grid;
-  grid-template-columns: 6rem 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 4rem 1fr 1fr;
+  gap: 0.6rem;
   > td {
     > pre {
       font-family: Pretendard;
@@ -48,12 +50,15 @@ export const TableHeader = styled.tr`
 export const TableItem = styled(TableHeader)`
   > th,
   td {
-    background-color: #f6f6f6;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.4rem;
+    background-color: ${({ theme }) => theme.colors.black[100]};
   }
-  > td:focus-within {
-    background-color: #e6e6e6;
+  > th {
+    background-color: transparent;
+  }
+  > td pre {
+    font-family: monospace;
   }
 `;
 
@@ -93,12 +98,12 @@ export function DeletableTableItem({
 
 const DeletableTableRow = styled(TableHeader)`
   td {
-    background-color: #f6f6f6;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.4rem;
+    background-color: ${({ theme }) => theme.colors.black[100]};
   }
   > td:focus-within {
-    background-color: #e6e6e6;
+    background-color: ${({ theme }) => theme.colors.black[200]};
   }
 `;
 
@@ -108,8 +113,8 @@ const DeletableTh = styled.th`
   p {
     width: 100%;
     height: 100%;
-    color: #323232;
-    border-radius: 0.5rem;
+    color: ${({ theme }) => theme.colors.black[900]};
+    border-radius: 0.4rem;
     animation: appear 300ms;
     @keyframes appear {
       from {
@@ -125,16 +130,17 @@ const DeletableTh = styled.th`
     line-height: 160%;
     letter-spacing: 5%;
     border: none;
-    background-color: #f0745f;
+    background-color: ${({ theme }) => theme.colors.black[900]};
+    color: ${({ theme }) => theme.colors.white};
     transition: 0.3s;
     &:hover {
       transition: inherit;
-      background-color: #e6e6e6;
+      background-color: ${({ theme }) => theme.colors.black[700]};
       cursor: pointer;
     }
   }
   > p {
-    padding: 1rem 1.5rem;
-    background-color: #f6f6f6;
+    padding: 0.8rem 1.2rem;
+    background-color: ${({ theme }) => theme.colors.black[100]};
   }
 `;

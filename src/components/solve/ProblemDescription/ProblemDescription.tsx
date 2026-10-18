@@ -93,42 +93,27 @@ export default function ProblemDescription({
 /* end */
 
 const Section = styled.section`
-  border: 0.4rem solid #373737;
-  border-radius: 0.5rem;
-  padding: 2.8rem 2.6rem;
+  flex: 1;
+  min-height: 0;
+  padding: 2.4rem;
+  border: 1px solid ${({ theme }) => theme.colors.black[200]};
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.white};
   overflow-y: auto;
 
-  /* code start: scrollbar css design */
-  &::-webkit-scrollbar {
-    width: 1.7rem; // border-left 0.5rem, border-right 5px를 뺀 7px가 보이는 두께
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #373737;
-    border-radius: 1rem;
-    border: 0.5rem solid #fff; // 컨텐츠 배경색과 같은 흰색 border를 줌으로써 스크롤바 오른쪽 여백을 구현
-    // 스크롤바의 border-radius까지 figma대로 구현하려면 위처럼 상하좌우 전체에 border를 주고 border-radius를 적용시켜야 함.
-  }
-  // 스크롤바 위아래 여백
-  &::-webkit-scrollbar-button:vertical:start:decrement, // 위 여백
-  &::-webkit-scrollbar-button:vertical:end:decrement // 아래 여백
-  {
-    display: block;
-    height: 2.3rem; // 위아래 여백을 2.8rem 주어야 하는데, border-top, border-bottom이 0.5rem 있으므로 23px만
-  }
-  /* end */
-
-  /* Solve page layout */
-  flex: 1;
-
   * {
-    color: #323232;
+    color: ${({ theme }) => theme.colors.black[900]};
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem;
   }
 `;
 
 const ProblemTitle = styled.h1`
-  font-weight: bold;
-  font-size: 4rem;
-  margin-bottom: 2.8rem;
+  margin-bottom: 1.6rem;
+  font-size: ${({ theme }) => theme.fontSizes[24]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
 // const AddTestCaseButton = styled.button`
@@ -163,8 +148,8 @@ const ProblemTitle = styled.h1`
 // `;
 
 const MarkdownStyledWrapper = styled.div`
-  font-size: 1.8rem;
-  line-height: 160%;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: 1.7;
 
   table {
     display: block;
@@ -175,54 +160,55 @@ const MarkdownStyledWrapper = styled.div`
   }
   th,
   td {
-    border: 0.1rem solid #d1d1d1;
+    border: 1px solid ${({ theme }) => theme.colors.black[200]};
     padding: 0.6rem 1.2rem;
   }
   th {
-    background: #f6f6f6;
-    font-weight: 600;
+    background-color: ${({ theme }) => theme.colors.black[100]};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
   }
 
   h1 {
-    font-size: 4rem;
-    line-height: 160%;
+    font-size: ${({ theme }) => theme.fontSizes[24]};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: 1.5;
   }
   h2 {
-    font-weight: 600;
-    font-size: 3.2rem;
-    line-height: 160%;
+    font-size: ${({ theme }) => theme.fontSizes[20]};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    line-height: 1.5;
   }
   h3 {
-    font-weight: 500;
-    font-size: 2.4rem;
-    line-height: 160%;
+    font-size: ${({ theme }) => theme.fontSizes[18]};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    line-height: 1.5;
   }
   p {
-    font-size: 1.8rem;
-    line-height: 160%;
+    font-size: ${({ theme }) => theme.fontSizes[16]};
+    line-height: 1.7;
   }
   ul,
   ol {
     list-style: disc outside none !important;
-    font-size: 1.8rem;
-    line-height: 160%;
+    font-size: ${({ theme }) => theme.fontSizes[16]};
+    line-height: 1.7;
   }
   code {
-    background: rgba(135, 131, 120, 0.15);
     padding: 0.2em 0.4em;
+    border-radius: 0.2rem;
+    background-color: ${({ theme }) => theme.colors.black[100]};
     font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-    color: #f0745f;
-    border-radius: 0.3rem;
   }
   pre {
-    background: rgba(135, 131, 120, 0.15);
+    padding: 1.2rem 1.6rem;
+    border-radius: 0.4rem;
+    background-color: ${({ theme }) => theme.colors.black[100]};
     white-space: pre-wrap !important;
-    padding: 1em 2rem;
     code {
       background: none;
-      padding: 0rem !important;
-      line-height: 2em !important;
+      padding: 0 !important;
+      line-height: 1.8 !important;
     }
   }
 `;

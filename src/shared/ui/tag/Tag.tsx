@@ -62,7 +62,7 @@ export const StatusTag = styled.span<{ $variant: StatusTagVariant }>`
         `;
       case "judging":
         return css`
-          background-color: ${theme.colors.yellow};
+          background-color: ${theme.colors.oak};
           color: ${theme.colors.black[900]};
         `;
       case "wrong":
