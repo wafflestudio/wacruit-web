@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import Header from "../components/home/Header/Header.tsx";
 import QuestionaireInput from "../components/rookie/QuestionaireInput/QuestionaireInput";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import UserInfoForm from "../components/rookie/UserInfoForm/UserInfoForm.tsx";
 import { putResume } from "../apis/resume/resume.api";
-import { useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import { ResumeSubmissionCreate } from "../apis/resume/resume.types";
 import { UserInvitationEmails, UserUpdate } from "../apis/user/user.types";
 import { ResumeLoaderReturnType } from "./Loader/ResumeLoader.ts";
@@ -14,6 +13,9 @@ import Modal from "../components/Modal/Modal.tsx";
 import AlertModal from "../components/Modal/AlertModal.tsx";
 import useModals from "../components/Modal/useModals.tsx";
 import { resolveApiErrorMessage } from "../lib/apiErrorMessage.ts";
+import Headerv2 from "../shared/ui/header/HeaderV2";
+import HeaderSpacer from "../shared/ui/header/HeaderSpacer";
+import { CREATE_PATH } from "../shared/routes/constants";
 
 type Alert = { title: string; description?: string };
 
@@ -73,9 +75,14 @@ export default function Resume() {
 
   const userInfoFormRef = useRef<HTMLFormElement>(null);
 
+  const dashboardPath = CREATE_PATH.RECRUITING_DETAIL({
+    recruitId: Number(recruit_id),
+  });
+
   return (
     <>
-      <Header />
+      <Headerv2 />
+      <HeaderSpacer />
       <Modal
         handle={alertModal}
         modalContainerBackgroundColor="rgba(0, 0, 0, 0.6)"
@@ -90,44 +97,71 @@ export default function Resume() {
         )}
       </Modal>
       <Main>
-        <Title>자기소개서</Title>
-        <Description>모든 문항에 성실히 응답해주세요.</Description>
-        <Questionaires>
-          {resumeInput.map(
-            (
-              {
-                question_id,
-                question_num,
-                question_content,
-                content_limit,
-                answer,
-              },
-              i,
-            ) => (
-              <QuestionaireInput
-                key={question_id}
-                index={question_num}
-                question={question_content}
-                max={content_limit}
-                value={answer}
-                onChange={(e) => {
-                  const copy = [...resumeInput];
-                  copy[i] = { ...copy[i], answer: e.target.value };
-                  setResumeInput(copy);
-                }}
-              />
-            ),
-          )}
-        </Questionaires>
-        <Title>추가 정보 입력</Title>
-        <Description>모든 문항은 필수 응답 항목입니다.</Description>
-        <UserInfoForm
-          value={userInfoInput}
-          onChange={setUserInfoInput}
-          ref={userInfoFormRef}
-        />
-        <Buttons>
+        <Content>
+          <Heading>
+            <BackLink to={dashboardPath}>
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M19 12H5M11 18l-6-6 6-6" />
+              </svg>
+              지원 현황
+            </BackLink>
+            <Title>자기소개서</Title>
+            <Description>모든 문항에 성실히 응답해주세요.</Description>
+          </Heading>
+          <Questionaires>
+            {resumeInput.map(
+              (
+                {
+                  question_id,
+                  question_num,
+                  question_content,
+                  content_limit,
+                  answer,
+                },
+                i,
+              ) => (
+                <QuestionaireInput
+                  key={question_id}
+                  index={question_num}
+                  question={question_content}
+                  max={content_limit}
+                  value={answer}
+                  onChange={(e) => {
+                    const copy = [...resumeInput];
+                    copy[i] = { ...copy[i], answer: e.target.value };
+                    setResumeInput(copy);
+                  }}
+                />
+              ),
+            )}
+          </Questionaires>
+          <Divider />
+          <Heading>
+            <SubTitle>추가 정보 입력</SubTitle>
+            <Description>모든 문항은 필수 응답 항목입니다.</Description>
+          </Heading>
+          <UserInfoForm
+            value={userInfoInput}
+            onChange={setUserInfoInput}
+            ref={userInfoFormRef}
+          />
+        </Content>
+      </Main>
+      <SaveBar>
+        <SaveBarInner>
+          <OutlineButton to={dashboardPath}>지원 현황으로</OutlineButton>
           <SubmitButton
+            type="button"
             onClick={() =>
               submit({
                 onSuccess: () =>
@@ -146,8 +180,8 @@ export default function Resume() {
           >
             저장하기
           </SubmitButton>
-        </Buttons>
-      </Main>
+        </SaveBarInner>
+      </SaveBar>
     </>
   );
 }
@@ -196,59 +230,155 @@ const checkRequired = (
 };
 
 const Main = styled.main`
-  position: relative;
-  font-family: Pretendard, sans-serif;
-  font-style: normal;
-  line-height: normal;
-  padding: 23vh max(calc(50vw - 53.4rem), 3rem);
+  display: flex;
+  justify-content: center;
+  padding: 7.2rem 2rem 8rem;
+
+  @media (max-width: 768px) {
+    padding: 4rem 2rem 6rem;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
+  max-width: 100rem;
+
+  @media (max-width: 768px) {
+    gap: 3.2rem;
+  }
+`;
+
+const Heading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+`;
+
+const BackLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.black[900]};
+  }
 `;
 
 const Title = styled.h1`
-  color: #000;
-  font-size: 4rem;
-  font-weight: 600;
   margin: 0;
-  margin-bottom: 0.8rem;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[24]};
+  }
 `;
+
+const SubTitle = styled.h2`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[24]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[20]};
+  }
+`;
+
 const Description = styled.p`
-  color: #737373;
-  font-size: 1.8rem;
-  font-weight: 400;
-  line-height: 160%; /* 2.88rem */
-  letter-spacing: 0.072rem;
   margin: 0;
-  margin-bottom: 4.1rem;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
 `;
+
 const Questionaires = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4.1rem;
-  width: 100%;
+  gap: 4rem;
+  margin: 0;
   padding: 0;
   list-style: none;
-  margin-bottom: 10rem;
 `;
-const Buttons = styled.div`
+
+const Divider = styled.hr`
   width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background-color: ${({ theme }) => theme.colors.black[200]};
+`;
+
+const SaveBar = styled.div`
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding: 1.4rem 2rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.black[200]};
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const SaveBarInner = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 2.5rem;
-`;
-const SubmitButton = styled.button`
-  display: inline-flex;
-  padding: 1rem 2rem;
-  justify-content: center;
-  align-items: flex-start;
-  border-radius: 0.5rem;
-  border: none;
-  background: #f0745f;
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 500;
-  cursor: pointer;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100rem;
 
-  transition: background 0.2s ease-in-out;
+  > * {
+    @media (max-width: 768px) {
+      flex: 1;
+    }
+  }
+`;
+
+const buttonBase = `
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.8rem;
+  border-radius: 0.4rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+`;
+
+const OutlineButton = styled(Link)`
+  ${buttonBase}
+  border: 1px solid ${({ theme }) => theme.colors.black[900]};
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+
   &:hover {
-    background: #e05c46;
+    background-color: ${({ theme }) => theme.colors.black[100]};
+  }
+`;
+
+const SubmitButton = styled.button`
+  ${buttonBase}
+  border: 1px solid ${({ theme }) => theme.colors.black[900]};
+  background-color: ${({ theme }) => theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.white};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.black[700]};
+    background-color: ${({ theme }) => theme.colors.black[700]};
   }
 `;
