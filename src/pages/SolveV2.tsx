@@ -17,7 +17,6 @@ import {
 } from "../components/solve/CodeEditor/useLanguage.tsx";
 import DragResizable from "../components/solve/DragResizable.tsx";
 import ProblemDescription from "../components/solve/ProblemDescription/ProblemDescription.tsx";
-import { useCustomTestCases } from "../components/solve/ProblemDescription/useCustomTestCases.tsx";
 import ProblemTabs from "../components/solve/ProblemTabs.tsx";
 import TestResultConsole from "../components/solve/TestResultConsoleV2.tsx";
 import Modal from "../components/Modal/Modal.tsx";
@@ -57,8 +56,6 @@ function SolveProblem() {
   const [language, setLanguage] = useLanguage();
   const [editorRevision, setEditorRevision] = useState(0);
   const codeRef = useCodeRef(language, problemNumber);
-  const [customTestcases, setCustomTestcases] =
-    useCustomTestCases(problemNumber);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testResults, setTestResults] = useState<ProblemSubmissionResultV2[]>(
@@ -73,7 +70,7 @@ function SolveProblem() {
     (a, b) => a.num - b.num,
   );
 
-  const handleSubmit = async (is_example: boolean) => {
+  const handleSubmit = async () => {
     if (!codeRef.current) {
       setActionError("코드를 입력해주세요.");
       return;
@@ -90,13 +87,8 @@ function SolveProblem() {
         problem_id: problemNumber,
         language: languageCodesV2[language],
         source_code: codeRef.current,
-        is_example,
-        extra_testcases: is_example
-          ? customTestcases.map((t) => ({
-              stdin: t.input,
-              expected_output: t.output,
-            }))
-          : [],
+        is_example: false,
+        extra_testcases: [],
       });
     } catch (e) {
       setActionError(
@@ -206,8 +198,6 @@ function SolveProblem() {
                 input: t.stdin,
                 output: t.expected_output,
               }))}
-              customTestCases={customTestcases}
-              setCustomTestCases={setCustomTestcases}
             />
           </Col>
           <Col>
@@ -250,7 +240,7 @@ function SolveProblem() {
           </ResetButton>
           <SubmitButton
             type="button"
-            onClick={() => handleSubmit(false)}
+            onClick={handleSubmit}
             disabled={isSubmitting}
           >
             {isSubmitting ? "채점 중..." : "제출하기"}

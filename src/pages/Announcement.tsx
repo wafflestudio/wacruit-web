@@ -69,6 +69,7 @@ export default function Announcement() {
                 ))
               ))}
           </AnnouncementList>
+          {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
         </Content>
       </Main>
     </>
@@ -94,6 +95,7 @@ const pinIcon = (
 );
 
 function ListItem({ announcement, isOpen, onToggle }: ListItemProps) {
+  // TODO: 공지 여러 개 한꺼번에 확인 불가?
   const { id, title, content, pinned, created_at } = announcement;
   const date = created_at.slice(0, 10).split("-").join(".");
   const bodyId = `announcement-${id}`;

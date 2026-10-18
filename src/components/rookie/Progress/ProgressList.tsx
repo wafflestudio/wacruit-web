@@ -44,6 +44,7 @@ export function ProgressList({
 
   return (
     <List>
+      {/* 루키가 아니면 코딩테스트 대신 포트폴리오 제출 필요 */}
       <ResumeCard submit={hasResume} />
       <PortfolioCard recruiting={recruiting} />
     </List>

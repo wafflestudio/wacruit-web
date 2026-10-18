@@ -11,6 +11,7 @@ import {
 import Headerv2 from "../shared/ui/header/HeaderV2";
 import HeaderSpacer from "../shared/ui/header/HeaderSpacer";
 
+// to가 null이면 상시 모집이므로 항상 활성화
 const isRecruitingActive = (recruiting: RecruitingSummary) =>
   recruiting.is_active &&
   (recruiting.type === RecruitingType.PROGRAMMER ||

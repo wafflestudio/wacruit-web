@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 import { spacer, SpacerProps } from "../../../lib/spacer";
-import { ReactNode, useState } from "react";
 
 export interface TestCase {
   input: string;
@@ -59,88 +58,5 @@ export const TableItem = styled(TableHeader)`
   }
   > td pre {
     font-family: monospace;
-  }
-`;
-
-interface DeletableTableItemProps {
-  index: number;
-  deleteItem: () => void;
-  children: ReactNode;
-}
-
-export function DeletableTableItem({
-  index,
-  deleteItem,
-  children,
-}: DeletableTableItemProps) {
-  const [isHover, setIsHover] = useState<boolean>(false);
-
-  return (
-    <DeletableTableRow
-      onMouseEnter={() => {
-        setIsHover(true);
-      }}
-      onMouseLeave={() => {
-        setIsHover(false);
-      }}
-    >
-      <DeletableTh>
-        {isHover ? (
-          <button onClick={deleteItem}>삭제</button>
-        ) : (
-          <BoldText>{index}</BoldText>
-        )}
-      </DeletableTh>
-      {children}
-    </DeletableTableRow>
-  );
-}
-
-const DeletableTableRow = styled(TableHeader)`
-  td {
-    padding: 0.8rem 1.2rem;
-    border-radius: 0.4rem;
-    background-color: ${({ theme }) => theme.colors.black[100]};
-  }
-  > td:focus-within {
-    background-color: ${({ theme }) => theme.colors.black[200]};
-  }
-`;
-
-const DeletableTh = styled.th`
-  background-color: transparent;
-  > button,
-  p {
-    width: 100%;
-    height: 100%;
-    color: ${({ theme }) => theme.colors.black[900]};
-    border-radius: 0.4rem;
-    animation: appear 300ms;
-    @keyframes appear {
-      from {
-        opacity: 0;
-      }
-    }
-  }
-  > button {
-    display: block;
-    padding: 1.3199999999999998rem 1.75rem;
-    font-size: 1.4rem;
-    font-weight: bold;
-    line-height: 160%;
-    letter-spacing: 5%;
-    border: none;
-    background-color: ${({ theme }) => theme.colors.black[900]};
-    color: ${({ theme }) => theme.colors.white};
-    transition: 0.3s;
-    &:hover {
-      transition: inherit;
-      background-color: ${({ theme }) => theme.colors.black[700]};
-      cursor: pointer;
-    }
-  }
-  > p {
-    padding: 0.8rem 1.2rem;
-    background-color: ${({ theme }) => theme.colors.black[100]};
   }
 `;
