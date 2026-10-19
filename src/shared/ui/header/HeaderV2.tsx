@@ -4,6 +4,8 @@ import { DesktopHeader } from "./DesktopHeader";
 import { useRouteLocation } from "../../routes/useRouteLocation";
 import { PATH } from "../../routes/constants";
 import { MobileHeader } from "./MobileHeader";
+import { isRecruitingSectionPath } from "../../routes/recruitingRoute";
+import { RecruitingTabs } from "./RecruitingTabs";
 
 export default function Headerv2() {
   const { toHomeV2, toRecruitingInfo, toProjectList, toReviewList, toLogin } =
@@ -23,7 +25,7 @@ export default function Headerv2() {
     {
       label: "리크루팅",
       onAction: toRecruitingInfo,
-      selected: currentPath === PATH.RECRUITING_INFO,
+      selected: isRecruitingSectionPath(currentPath),
     },
     {
       label: "프로젝트",
@@ -66,6 +68,7 @@ export default function Headerv2() {
         toHome={toHomeV2}
         isLoginPage={isLoginPage}
       />
+      {isRecruitingSectionPath(currentPath) && <RecruitingTabs />}
     </>
   );
 }

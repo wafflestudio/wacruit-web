@@ -25,7 +25,7 @@ export function LabeledInput({
 }: LabeledInputProps) {
   const { value, onChange } = useContext(UserInfoFormContext);
   return (
-    <Label name={name}>
+    <Label>
       <span>{children}</span>
       <input
         value={value[name]}

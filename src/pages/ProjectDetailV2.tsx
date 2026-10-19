@@ -210,7 +210,7 @@ const Intro = styled.div`
   code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
       "Liberation Mono", monospace;
-    background: ${({ theme }) => theme.colors.black[800]};
+    background: ${({ theme }) => theme.colors.black[700]};
     padding: 0.2rem 0.4rem;
     border-radius: 0.3rem;
   }

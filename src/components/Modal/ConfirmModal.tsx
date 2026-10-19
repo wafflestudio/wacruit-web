@@ -34,6 +34,7 @@ export default function ConfirmModal({
           type="button"
           onClick={onConfirm}
           autoFocus={!irreversible}
+          $irreversible={irreversible}
         >
           {confirmLabel}
         </ConfirmButton>
@@ -46,34 +47,31 @@ const Dialog = styled.div`
   box-sizing: border-box;
   width: min(44rem, calc(100vw - 4rem));
   padding: 3.2rem;
-  border-radius: 0.8rem;
-  background: #fff;
-  box-shadow: 0 0.4rem 2.4rem rgba(0, 0, 0, 0.18);
+  border-radius: 1.6rem;
+  background: ${({ theme }) => theme.colors.white};
   font-family: Pretendard, sans-serif;
 `;
 
 const Title = styled.h2`
   margin: 0;
-  color: #222;
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 140%;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[20]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
 `;
 
 const Description = styled.p`
-  margin: 1.2rem 0 0;
-  color: #737373;
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 160%;
-  letter-spacing: 0.064rem;
+  margin: 1rem 0 0;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
 `;
 
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 3rem;
+  gap: 0.8rem;
+  margin-top: 2.8rem;
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -81,31 +79,39 @@ const Buttons = styled.div`
 `;
 
 const BaseButton = styled.button`
-  padding: 1.2rem 2.4rem;
-  border-radius: 0.5rem;
+  padding: 1rem 1.8rem;
+  border-radius: 0.4rem;
   font-family: inherit;
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    opacity 0.2s ease;
 `;
 
 const CloseButton = styled(BaseButton)`
-  border: 0.1rem solid #d1d1d1;
-  background: #fff;
-  color: #515151;
+  border: 1px solid ${({ theme }) => theme.colors.black[900]};
+  background: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
 
   &:hover {
-    background: #f6f6f6;
+    background: ${({ theme }) => theme.colors.black[100]};
   }
 `;
 
-const ConfirmButton = styled(BaseButton)`
-  border: 0.1rem solid #f0745f;
-  background: #f0745f;
-  color: #fff;
+const ConfirmButton = styled(BaseButton)<{ $irreversible: boolean }>`
+  border: 1px solid
+    ${({ $irreversible, theme }) =>
+      $irreversible ? theme.colors.pink : theme.colors.black[900]};
+  background: ${({ $irreversible, theme }) =>
+    $irreversible ? theme.colors.pink : theme.colors.black[900]};
+  color: ${({ theme }) => theme.colors.white};
 
   &:hover {
-    background: #e05c46;
-    border-color: #e05c46;
+    ${({ $irreversible, theme }) =>
+      $irreversible
+        ? "opacity: 0.85;"
+        : `background: ${theme.colors.black[700]}; border-color: ${theme.colors.black[700]};`}
   }
 `;

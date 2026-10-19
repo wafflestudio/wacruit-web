@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useId, useState } from "react";
 import styled from "styled-components";
 
 type QuestionaireInputProps = {
@@ -17,11 +17,15 @@ export default function QuestionaireInput({
   onChange,
 }: QuestionaireInputProps) {
   const [isLimit, setIsLimit] = useState(false);
+  const id = useId();
   return (
     <Wrapper>
-      <Question>{`${index}. ${question}`}</Question>
+      <QuestionNumber>문항 {index}</QuestionNumber>
+      <Question htmlFor={id}>{question}</Question>
       <TextArea
+        id={id}
         value={value}
+        placeholder="답변을 입력해주세요."
         onChange={(e) => {
           if (e.target.value.length > max) {
             setIsLimit(true);
@@ -31,7 +35,7 @@ export default function QuestionaireInput({
           }
         }}
       />
-      <Count>
+      <Count $isLimit={isLimit}>
         {isLimit ? `${max}자를 초과할 수 없습니다` : `${value.length} / ${max}`}
       </Count>
     </Wrapper>
@@ -39,39 +43,58 @@ export default function QuestionaireInput({
 }
 
 const Wrapper = styled.li`
-  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1rem;
 `;
-const Question = styled.div`
-  color: #404040;
-  font-size: 2rem;
-  font-weight: 400;
-  line-height: 160%; /* 3.2rem */
-  letter-spacing: 0.08rem;
+
+const QuestionNumber = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[500]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
 `;
-const TextArea = styled.textarea`
-  height: 21.4rem;
-  padding: 1.5rem;
-  flex-shrink: 0;
-  border-radius: 0.5rem;
-  border: 0.1rem solid #d9d9d9;
-  background: #f6f6f6;
-  resize: none;
-  font: inherit;
-  &:focus {
-    background: #e6e6e6;
-    outline: none;
+
+const Question = styled.label`
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[18]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[16]};
   }
 `;
-const Count = styled.div`
-  position: absolute;
-  right: 3.2rem;
-  bottom: 1.5rem;
-  color: #737373;
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 160%; /* 2.56rem */
-  letter-spacing: 0.064rem;
+
+const TextArea = styled.textarea`
+  height: 21.4rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid ${({ theme }) => theme.colors.black[300]};
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: 1.7;
+  resize: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.black[500]};
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.oak};
+  }
+`;
+
+const Count = styled.p<{ $isLimit: boolean }>`
+  align-self: flex-end;
+  margin: 0;
+  color: ${({ $isLimit, theme }) =>
+    $isLimit ? theme.colors.pink : theme.colors.black[500]};
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  font-weight: ${({ $isLimit, theme }) =>
+    $isLimit ? theme.fontWeights.semibold : theme.fontWeights.medium};
+  font-variant-numeric: tabular-nums;
 `;

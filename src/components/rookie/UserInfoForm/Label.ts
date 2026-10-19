@@ -1,42 +1,34 @@
-// import 안 꼬이게 따로 배치함
-
 import styled from "styled-components";
 
-export const Label = styled.label<{
-  name: string;
-}>`
-  grid-area: ${(props) => props.name};
-
-  position: relative;
-
+export const Label = styled.label`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-
-  color: #404040;
-  font-size: 20px;
+  gap: 0.6rem;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
 
   > span {
-    font-weight: 500;
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
 
   input {
     width: 100%;
-    height: 40px;
-    padding: 0 12px;
-
-    border-radius: 5px;
-    border: 1px solid #d9d9d9;
-
-    background: #f6f6f6;
+    padding: 1rem 1.4rem;
+    border: 1px solid ${({ theme }) => theme.colors.black[300]};
+    border-radius: 0.4rem;
+    background-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.black[900]};
+    font-family: inherit;
+    font-size: ${({ theme }) => theme.fontSizes[14]};
+    line-height: ${({ theme }) => theme.lineHeights.base};
   }
 
   input::placeholder {
-    color: #d9d9d9;
+    color: ${({ theme }) => theme.colors.black[500]};
   }
 
   input:focus {
-    background: #e6e6e6;
     outline: none;
+    border-color: ${({ theme }) => theme.colors.oak};
   }
 `;

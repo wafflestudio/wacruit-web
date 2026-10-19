@@ -1,7 +1,8 @@
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import Header from "../components/home/Header/Header";
+import Headerv2 from "../shared/ui/header/HeaderV2";
+import HeaderSpacer from "../shared/ui/header/HeaderSpacer";
 import { ResultLoaderReturnType } from "./Loader/ResultLoader";
 import { recruitingDetailQuery } from "./Loader/DashboardLoader";
 import { useEffect } from "react";
@@ -24,11 +25,12 @@ export default function Result() {
     //불합격 시
     return (
       <>
-        <Header />
+        <Headerv2 />
+        <HeaderSpacer />
         <Main>
           <Container>
             <LogoWrapper>
-              <img src="/image/result/fail.svg"></img>
+              <img src="/image/result/fail.svg" alt="" />
             </LogoWrapper>
             <Title>합격자 명단에 없습니다.</Title>
             <Description>
@@ -55,11 +57,12 @@ export default function Result() {
     //합격 시
     return (
       <>
-        <Header />
+        <Headerv2 />
+        <HeaderSpacer />
         <Main>
           <Container>
             <LogoWrapper>
-              <img src="/image/result/pass.svg"></img>
+              <img src="/image/result/pass.svg" alt="" />
             </LogoWrapper>
             <Title>
               와플스튜디오 <Emphasis>합격</Emphasis>을 축하드립니다!
@@ -85,11 +88,12 @@ export default function Result() {
   //결과가 없을 시
   return (
     <>
-      <Header />
+      <Headerv2 />
+      <HeaderSpacer />
       <Main>
         <Container>
           <LogoWrapper>
-            <img src="/image/result/pass.svg"></img>
+            <img src="/image/result/pass.svg" alt="" />
           </LogoWrapper>
           <Title>아직 합/불 결과가 나오지 않았습니다.</Title>
           <Contact>
@@ -112,57 +116,81 @@ export function NoResult() {
   return <div></div>;
 }
 const Main = styled.main`
-  width: 100%;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: calc(100vh - 10.1rem);
+  padding: 8rem 2rem 12rem;
+
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 9.2rem);
+    padding: 6rem 2rem 8rem;
+  }
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 110rem;
-  padding: 6rem 0;
+  gap: 1.8rem;
+  width: 100%;
+  max-width: 64rem;
+  text-align: center;
 `;
 
 const LogoWrapper = styled.div`
-  margin-bottom: 4.8rem;
+  margin-bottom: 1.2rem;
+
+  img {
+    display: block;
+    width: 20rem;
+    height: auto;
+
+    @media (max-width: 768px) {
+      width: 15rem;
+    }
+  }
 `;
 
-const Title = styled.div`
-  color: #222;
-  font-size: 5.2rem;
-  font-weight: 700;
-  margin-bottom: 3.6rem;
-`;
-const Emphasis = styled.span`
-  color: #f0745f;
-  font-size: 6.4rem;
-  font-weight: 700;
-`;
-const Description = styled.div`
-  color: #484848;
-  text-align: center;
-  font-size: 2.4rem;
-  font-weight: 500;
-  line-height: 150%;
-  margin-bottom: 3.6rem;
+const Title = styled.h1`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.4;
   word-break: keep-all;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[24]};
+  }
 `;
-const Contact = styled.div`
-  color: #484848;
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-weight: 400;
-  text-align: center;
+
+const Emphasis = styled.span`
+  color: ${({ theme }) => theme.colors.oak};
+`;
+
+const Description = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: 1.7;
+  word-break: keep-all;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[14]};
+  }
+`;
+
+const Contact = styled.p`
+  margin: 1.2rem 0 0;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+
   a {
-    color: #484848;
-    font-family: Pretendard;
-    font-size: 1.6rem;
-    font-weight: 500;
-    text-decoration-line: underline;
-    cursor: pointer;
+    color: ${({ theme }) => theme.colors.black[900]};
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
   }
 `;

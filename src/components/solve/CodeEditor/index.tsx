@@ -24,7 +24,6 @@ export default function CodeEditor({
   setLanguage,
   language,
 }: Props) {
-  // const [isEditorOpen, setIsEditorOpen] = useState(true);
   const lang = languageSupports[language];
   const { setContainer } = useCodeMirror({
     height: "100%",
@@ -35,99 +34,93 @@ export default function CodeEditor({
   });
   return (
     <Section>
-      {/* Header가 Editor를 가리도록, Header를 먼저 배치. 실제 렌더 위치는 grid에 의해 보정됨 */}
-      <EditorWrapper ref={(elem) => setContainer(elem ?? undefined)} />
       <Header>
         <HeaderTitle>Script</HeaderTitle>
-        <FullscreenButton
-          onClick={() => setIsFullScreen(!isFullScreen)}
-          $isFullScreen={isFullScreen}
+        <LanguageSelection
+          language={language}
+          onChange={(language) => setLanguage(language)}
         />
+        <Version>({languageVersions[language]})</Version>
+        <FullscreenButton
+          type="button"
+          onClick={() => setIsFullScreen(!isFullScreen)}
+          aria-label={isFullScreen ? "전체화면 끄기" : "전체화면"}
+        >
+          <img
+            src={
+              isFullScreen ? "/icon/ExitFullScreen.svg" : "/icon/FullScreen.svg"
+            }
+            alt=""
+          />
+        </FullscreenButton>
       </Header>
-      <LanguageSelection
-        language={language}
-        onChange={(language) => setLanguage(language)}
-      />
-      <Version>({languageVersions[language]})</Version>
-      {/* <EditorToggle value={isEditorOpen} onChange={(v) => setIsEditorOpen(v)} /> */}
+      <EditorWrapper ref={(elem) => setContainer(elem ?? undefined)} />
     </Section>
   );
 }
 
 const Section = styled.section`
-  display: grid;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: auto auto 1fr auto;
-
-  min-width: 29.5rem; // 탭 모양이 안 깨지는 크기
-
-  /* Solve page layout */
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  border: 1px solid ${({ theme }) => theme.colors.black[200]};
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const Header = styled.h3`
-  background: url("/image/TabHeader.svg");
-  background-size: 88.5rem;
-
+const Header = styled.div`
+  flex-shrink: 0;
   display: flex;
   align-items: center;
+  gap: 1rem;
+  height: 4.6rem;
+  padding: 0 1.6rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black[200]};
+`;
 
-  padding-left: 3.2rem;
-  padding-right: 3.2rem;
-  height: 4.7rem;
-  width: 29.3rem;
-  margin: 0 0 -0.4rem 0; // 탭 헤더로 테두리 일부를 가린다
-  box-sizing: border-box;
+const HeaderTitle = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+`;
 
-  grid-row: 1;
-  grid-column: 1;
+const Version = styled.span`
+  color: ${({ theme }) => theme.colors.black[500]};
+  font-size: ${({ theme }) => theme.fontSizes[12]};
+  white-space: nowrap;
+`;
 
-  span {
-    font-weight: bold;
-    flex: 1;
+const FullscreenButton = styled.button`
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-left: auto;
+  border-radius: 0.4rem;
+  cursor: pointer;
+
+  img {
+    width: 1.8rem;
+    height: 1.8rem;
+    opacity: 0.7;
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.black[100]};
   }
 `;
 
-const HeaderTitle = styled.span`
-  font-size: 1.6rem;
-`;
-
 const EditorWrapper = styled.div`
-  border: 0.4rem solid #373737;
-  border-bottom-width: 0.2rem;
-  border-radius: 0 0.4rem 0.4rem 0.4rem;
-
   flex: 1;
+  min-height: 0;
   overflow: auto;
-  margin: 0;
-
-  grid-row: 2;
-  grid-column: 1 / 5;
+  border-radius: 0 0 0.8rem 0.8rem;
 
   .cm-editor * {
     font-family: monospace;
     font-size: 1.3rem;
   }
-`;
-
-const FullscreenButton = styled.button<{ $isFullScreen: boolean }>`
-  width: 2rem;
-  height: 2rem;
-
-  border: none;
-  background: url("${(props) =>
-    props.$isFullScreen
-      ? "/icon/ExitFullScreen.svg"
-      : "/icon/FullScreen.svg"}");
-  background-size: 2rem;
-  cursor: pointer;
-`;
-
-const Version = styled.span`
-  font-size: 1.2rem;
-  color: #373737;
-  margin-left: 0.8rem;
-  display: flex;
-  align-items: center;
 `;

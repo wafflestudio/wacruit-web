@@ -1,24 +1,15 @@
 import { styled } from "styled-components";
-import Header from "../components/home/Header/Header";
-import { MouseEventHandler, useState } from "react";
-import closedListItemIcon from "/icon/announcement/ClosedListItem.svg";
-import openedListItemIcon from "/icon/announcement/OpenedListItem.svg";
+import { useState } from "react";
 import { TAnnouncement } from "../apis/announcement/announcement.types";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAnnouncements } from "../apis/announcement/announcement.api";
 import MarkdownRenderer from "../lib/MarkdownRenderer";
-import { Union } from "../types/commonTypes";
 import { MAIL_RECRUIT } from "../common/const";
 import { generateMailUrl } from "../common/utils";
 import { useLocation } from "react-router-dom";
 import { AnnouncementLocationState } from "../shared/routes/useRouteNavigation";
-
-const listItemStates = [
-  "nothingSelected",
-  "isSelected",
-  "SomethingElseSelected",
-] as const;
-type ListItemState = Union<typeof listItemStates>;
+import Headerv2 from "../shared/ui/header/HeaderV2";
+import HeaderSpacer from "../shared/ui/header/HeaderSpacer";
 
 export default function Announcement() {
   const { data: announcements } = useQuery({
@@ -31,52 +22,55 @@ export default function Announcement() {
     (location.state as AnnouncementLocationState | null)?.announcementId,
   );
 
+  const sortedAnnouncements = [...(announcements ?? [])].sort(
+    (a, b) =>
+      Number(b.pinned) - Number(a.pinned) ||
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
+
   return (
     <>
-      <Header />
+      <Headerv2 />
+      <HeaderSpacer />
       <Main>
-        <Title>공지사항</Title>
-        <Description>
-          찾는 공지가 없다면{" "}
-          <Mail href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</Mail>{" "}
-          이메일로 문의주세요.
-        </Description>
-        <AnnouncementList>
-          <ListHeaderRow>
-            <p>NO.</p>
-            <p>제목</p>
-            <p>등록일</p>
-            <div></div>
-          </ListHeaderRow>
-          {announcements &&
-            (announcements.length === 0 ? (
-              <NoAnnouncements>
-                <p>등록된 공지사항이 없습니다.</p>
-              </NoAnnouncements>
-            ) : (
-              announcements.map((announcement, idx) => (
-                <ListItem
-                  key={idx}
-                  announcement={announcement}
-                  listItemState={
-                    selectedAnnouncementId === undefined
-                      ? "nothingSelected"
-                      : announcement.id === selectedAnnouncementId
-                      ? "isSelected"
-                      : "SomethingElseSelected"
-                  }
-                  handleOnClick={() => {
-                    setSelectedAnnouncementId(
-                      announcement.id === selectedAnnouncementId
-                        ? undefined
-                        : announcement.id,
-                    );
-                  }}
-                />
-              ))
-            ))}
-        </AnnouncementList>
-        {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
+        <Content>
+          <Heading>
+            <Title>공지사항</Title>
+            <Description>
+              찾는 공지가 없다면{" "}
+              <Mail href={generateMailUrl(MAIL_RECRUIT)}>{MAIL_RECRUIT}</Mail>{" "}
+              이메일로 문의주세요.
+            </Description>
+          </Heading>
+          <AnnouncementList>
+            <ListHeaderRow aria-hidden="true">
+              <span>NO.</span>
+              <span>제목</span>
+              <span>등록일</span>
+              <span />
+            </ListHeaderRow>
+            {announcements &&
+              (announcements.length === 0 ? (
+                <NoAnnouncements>등록된 공지사항이 없습니다.</NoAnnouncements>
+              ) : (
+                sortedAnnouncements.map((announcement) => (
+                  <ListItem
+                    key={announcement.id}
+                    announcement={announcement}
+                    isOpen={announcement.id === selectedAnnouncementId}
+                    onToggle={() => {
+                      setSelectedAnnouncementId(
+                        announcement.id === selectedAnnouncementId
+                          ? undefined
+                          : announcement.id,
+                      );
+                    }}
+                  />
+                ))
+              ))}
+          </AnnouncementList>
+          {/* TODO: 페이지네이션은 이후 api 페이지네이션 처리되면 작업하겠습니다 */}
+        </Content>
       </Main>
     </>
   );
@@ -84,153 +78,318 @@ export default function Announcement() {
 
 type ListItemProps = {
   announcement: TAnnouncement;
-  listItemState: ListItemState;
-  handleOnClick: MouseEventHandler<HTMLLIElement>;
+  isOpen: boolean;
+  onToggle: () => void;
 };
 
-function ListItem({
-  announcement,
-  listItemState,
-  handleOnClick,
-}: ListItemProps) {
+const pinIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    width="14"
+    height="14"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M16 3a1 1 0 0 1 .7 1.7L15 6.4v4.2l2.7 2.7a1 1 0 0 1 .3.7v1a1 1 0 0 1-1 1h-4v4.3a1 1 0 0 1-2 0V16H7a1 1 0 0 1-1-1v-1a1 1 0 0 1 .3-.7L9 10.6V6.4L7.3 4.7A1 1 0 0 1 8 3h8Z" />
+  </svg>
+);
+
+function ListItem({ announcement, isOpen, onToggle }: ListItemProps) {
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
-  const { id, title, content, updated_at, created_at } = announcement;
+  const { id, title, content, pinned, created_at } = announcement;
+  const date = created_at.slice(0, 10).split("-").join(".");
+  const bodyId = `announcement-${id}`;
+
   return (
-    <ListItemRow onClick={handleOnClick} $listItemState={listItemState}>
-      <p>{id}</p>
-      <p>
-        {title}
-        {listItemState === "isSelected" && (
+    <Item>
+      <Row
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={bodyId}
+      >
+        <NumberCell>
+          {pinned ? (
+            <PinTag role="img" aria-label="고정 공지">
+              {pinIcon}
+            </PinTag>
+          ) : (
+            id
+          )}
+        </NumberCell>
+        <ItemTitle $isOpen={isOpen}>
+          {pinned && (
+            <MobilePinTag role="img" aria-label="고정 공지">
+              {pinIcon}
+            </MobilePinTag>
+          )}
+          {title}
+        </ItemTitle>
+        <ItemDate>{date}</ItemDate>
+        <Chevron $isOpen={isOpen} aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </Chevron>
+      </Row>
+      {isOpen && (
+        <Body id={bodyId}>
           <MarkdownRenderer
             markdownString={content}
             StyledWrapper={MarkdownStyledWrapper}
           />
-        )}
-      </p>
-      <p>{(updated_at || created_at).slice(0, 10).split("-").join(".")}</p>
-      <div>
-        <img
-          src={
-            listItemState === "isSelected"
-              ? openedListItemIcon
-              : closedListItemIcon
-          }
-          style={{ width: "2.1rem", height: "1.2rem" }}
-        />
-      </div>
-    </ListItemRow>
+        </Body>
+      )}
+    </Item>
   );
 }
 
 const Main = styled.main`
-  padding: 23vh max(50vw - 53.4rem, 3rem) 3rem;
+  display: flex;
+  justify-content: center;
+  padding: 7.2rem 2rem 10.4rem;
+
+  @media (max-width: 768px) {
+    padding: 4rem 2rem 7.2rem;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
+  max-width: 100rem;
+
+  @media (max-width: 768px) {
+    gap: 3.2rem;
+  }
+`;
+
+const Heading = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 `;
 
 const Title = styled.h1`
-  font-size: 5.2rem;
-  font-weight: 600;
-  color: #222222;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[32]};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes[24]};
+  }
 `;
 
-const Description = styled.h2`
-  margin-top: 1.2rem;
-  line-height: 140%;
-  font-size: 1.6rem;
-  margin-bottom: 13.9rem;
-  color: #484848;
-  > span {
-    font-weight: 500;
-    text-decoration: underline;
-    text-underline-position: under;
-  }
+const Description = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: ${({ theme }) => theme.lineHeights.base};
 `;
 
 const Mail = styled.a`
-  font-weight: 500;
-  text-decoration-line: underline;
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
 `;
 
 const AnnouncementList = styled.ol`
-  margin-top: 5rem;
-  min-width: 97rem;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid ${({ theme }) => theme.colors.black[900]};
+  list-style: none;
 `;
 
-const ListRow = styled.li<{ $listItemState?: ListItemState }>`
+const rowColumns = `
   display: grid;
-  grid-template-columns: 9fr 68fr 17fr 7fr;
-  font-size: 2rem;
-  line-height: 140%;
-  border-bottom: 0.1rem solid #c9c9c9;
+  grid-template-columns: 6.4rem minmax(0, 1fr) 11.2rem 3.2rem;
+  gap: 1.6rem;
+  align-items: center;
+`;
 
-  > p:nth-child(3) {
+const ListHeaderRow = styled.li`
+  ${rowColumns}
+  padding: 1.4rem 0.8rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black[200]};
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+
+  > :nth-child(1),
+  > :nth-child(3) {
     text-align: center;
   }
-`;
 
-const ListHeaderRow = styled(ListRow)`
-  border-top: 0.2rem solid #222222;
-  font-weight: 600;
-  color: #222222;
-  padding: 1.6rem 0;
-
-  > p:first-child {
-    padding-left: 20%;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
-const ListItemRow = styled(ListRow)`
+const Item = styled.li`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black[200]};
+`;
+
+const Row = styled.button`
+  ${rowColumns}
+  width: 100%;
+  padding: 1.8rem 0.8rem;
+  font-family: inherit;
+  text-align: left;
   cursor: pointer;
-  color: #3c3c3c;
-  ${({ $listItemState }) =>
-    $listItemState === "isSelected" && {
-      color: "#222222",
-      "font-weight": "500",
-    }}
-  ${({ $listItemState }) =>
-    $listItemState === "SomethingElseSelected" && { color: "#9c9c9c" }}
-  padding: 3.0rem 0 3.2rem 0;
 
-  > p:first-child {
-    padding-left: 30%;
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.oak};
+    outline-offset: -2px;
   }
-  > p:nth-child(2) {
-    font-weight: 500;
-    ${({ $listItemState }) =>
-      $listItemState === "isSelected" && { "font-weight": "600" }}
-  }
-  > div:nth-child(4) {
-    padding: 0 38%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: minmax(0, 1fr) 2.4rem;
+    grid-template-areas:
+      "title chevron"
+      "date chevron";
+    gap: 0.4rem 1.2rem;
+    padding: 1.6rem 0.4rem;
   }
 `;
 
-const NoAnnouncements = styled.div`
-  border-bottom: 0.1rem solid #c9c9c9;
-  height: 45rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  > p {
-    color: #3c3c3c;
-    font-weight: 500;
-    font-size: 2rem;
-    line-height: 140%;
+const NumberCell = styled.span`
+  color: ${({ theme }) => theme.colors.black[500]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 768px) {
+    display: none;
   }
+`;
+
+const PinTag = styled.span`
+  display: inline-grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: ${({ theme }) => theme.colors.black[900]};
+  vertical-align: middle;
+
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+`;
+
+const MobilePinTag = styled(PinTag)`
+  display: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 0.6rem;
+
+  @media (max-width: 768px) {
+    display: inline-grid;
+  }
+`;
+
+const ItemTitle = styled.span<{ $isOpen: boolean }>`
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  font-weight: ${({ $isOpen, theme }) =>
+    $isOpen ? theme.fontWeights.bold : theme.fontWeights.semibold};
+  line-height: ${({ theme }) => theme.lineHeights.base};
+
+  ${Row}:hover & {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-area: title;
+    font-size: ${({ theme }) => theme.fontSizes[14]};
+  }
+`;
+
+const ItemDate = styled.span`
+  color: ${({ theme }) => theme.colors.black[500]};
+  font-size: ${({ theme }) => theme.fontSizes[14]};
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 768px) {
+    grid-area: date;
+    font-size: ${({ theme }) => theme.fontSizes[13]};
+    text-align: left;
+  }
+`;
+
+const Chevron = styled.span<{ $isOpen: boolean }>`
+  display: grid;
+  place-items: center;
+  color: ${({ theme }) => theme.colors.black[700]};
+  transform: rotate(${({ $isOpen }) => ($isOpen ? "180deg" : "0deg")});
+  transition: transform 0.2s ease;
+
+  @media (max-width: 768px) {
+    grid-area: chevron;
+  }
+`;
+
+const Body = styled.div`
+  padding: 0 0.8rem 2.4rem calc(6.4rem + 1.6rem + 0.8rem);
+
+  @media (max-width: 768px) {
+    padding: 0 0 2rem;
+  }
+`;
+
+const NoAnnouncements = styled.li`
+  padding: 12rem 2rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black[200]};
+  color: ${({ theme }) => theme.colors.black[700]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  text-align: center;
 `;
 
 const MarkdownStyledWrapper = styled.div`
+  padding: 2.2rem 2.6rem;
+  border-radius: 0.4rem;
+  background-color: ${({ theme }) => theme.colors.black[100]};
+  color: ${({ theme }) => theme.colors.black[900]};
+  font-size: ${({ theme }) => theme.fontSizes[16]};
+  line-height: 1.8;
+  word-break: keep-all;
+
   p {
-    margin-top: 4.6rem;
-    font-size: 1.8rem;
-    font-weight: normal;
-    line-height: 185%;
-    color: #373737;
+    margin: 0;
     white-space: pre-wrap;
-    work-break: keep-all;
+  }
+  p + p {
+    margin-top: 0.8rem;
+  }
+  ul,
+  ol {
+    margin: 0.4rem 0;
+    padding-left: 2rem;
+    list-style: disc;
   }
   a {
     text-decoration: underline;
-    &:hover {
-      color: #f0745f;
-    }
+    text-underline-offset: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.8rem 2rem;
+    font-size: ${({ theme }) => theme.fontSizes[14]};
   }
 `;
