@@ -34,8 +34,7 @@ export default function RecruitList() {
     if (r2IsContinuous) return 1;
     const r1IsActive = !r1.to_date || new Date(r1.to_date) > new Date();
     const r2IsActive = !r2.to_date || new Date(r2.to_date) > new Date();
-    if (!r1IsActive) return 1;
-    if (!r2IsActive) return -1;
+    if (r1IsActive !== r2IsActive) return r1IsActive ? -1 : 1;
     return r1.id === r2.id ? 0 : r1.id > r2.id ? -1 : 1;
   });
 

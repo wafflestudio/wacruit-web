@@ -44,6 +44,10 @@ export const ProgrammerRecruitInfo = () => {
   };
 
   const copyEmail = () => {
+    if (!navigator.clipboard) {
+      selectEmail();
+      return;
+    }
     navigator.clipboard
       .writeText(MAIL_RECRUIT)
       .then(() => {

@@ -56,7 +56,10 @@ export default function ProblemTabs({
 }: ProblemTabsProps) {
   return (
     <Nav aria-label="문제 목록">
-      <BackLink to={CREATE_PATH.RECRUITING_DETAIL({ recruitId })}>
+      <BackLink
+        to={CREATE_PATH.RECRUITING_DETAIL({ recruitId })}
+        aria-label="지원 현황"
+      >
         <svg
           viewBox="0 0 24 24"
           width="16"
