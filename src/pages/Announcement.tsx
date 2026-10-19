@@ -53,10 +53,11 @@ export default function Announcement() {
               (announcements.length === 0 ? (
                 <NoAnnouncements>등록된 공지사항이 없습니다.</NoAnnouncements>
               ) : (
-                sortedAnnouncements.map((announcement) => (
+                sortedAnnouncements.map((announcement, index) => (
                   <ListItem
                     key={announcement.id}
                     announcement={announcement}
+                    number={sortedAnnouncements.length - index}
                     isOpen={announcement.id === selectedAnnouncementId}
                     onToggle={() => {
                       setSelectedAnnouncementId(
@@ -78,6 +79,7 @@ export default function Announcement() {
 
 type ListItemProps = {
   announcement: TAnnouncement;
+  number: number;
   isOpen: boolean;
   onToggle: () => void;
 };
@@ -94,7 +96,7 @@ const pinIcon = (
   </svg>
 );
 
-function ListItem({ announcement, isOpen, onToggle }: ListItemProps) {
+function ListItem({ announcement, number, isOpen, onToggle }: ListItemProps) {
   // TODO: 공지 여러 개 한꺼번에 확인 불가?
   const { id, title, content, pinned, created_at } = announcement;
   const date = created_at.slice(0, 10).split("-").join(".");
@@ -114,7 +116,7 @@ function ListItem({ announcement, isOpen, onToggle }: ListItemProps) {
               {pinIcon}
             </PinTag>
           ) : (
-            id
+            number
           )}
         </NumberCell>
         <ItemTitle $isOpen={isOpen}>
