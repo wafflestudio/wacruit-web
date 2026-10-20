@@ -72,12 +72,7 @@ export default function DragResizable(props: Props) {
           };
         }}
       >
-        <img
-          src="/icon/DragHandle.svg"
-          alt="&equiv;"
-          draggable={false}
-          height={HANDLE_HEIGHT}
-        />
+        <Grip aria-hidden="true" />
       </Handle>
       {props.children}
     </Container>
@@ -87,6 +82,8 @@ export default function DragResizable(props: Props) {
 const Container = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
+  padding-top: ${HANDLE_HEIGHT}px;
 `;
 const Handle = styled.div`
   position: absolute;
@@ -94,7 +91,20 @@ const Handle = styled.div`
   left: 0;
   right: 0;
   height: ${HANDLE_HEIGHT}px;
+  display: grid;
+  place-items: center;
   cursor: ns-resize;
-  text-align: center;
   user-select: none;
+
+  &:hover > span {
+    background-color: ${({ theme }) => theme.colors.black[500]};
+  }
+`;
+
+const Grip = styled.span`
+  width: 3.6rem;
+  height: 0.4rem;
+  border-radius: 0.2rem;
+  background-color: ${({ theme }) => theme.colors.black[300]};
+  transition: background-color 0.2s ease;
 `;

@@ -9,6 +9,7 @@ import { Projects } from "../features/home/ui/Projects";
 import { Outro } from "../features/home/ui/Outro";
 import { TimeLine } from "../features/home/ui/Timeline";
 import Footer from "../shared/ui/footer/Footer";
+import { PinnedAnnouncementPopup } from "../features/home/ui/PinnedAnnouncementPopup";
 
 export default function HomeV2() {
   const navigationType = useNavigationType();
@@ -37,6 +38,7 @@ export default function HomeV2() {
         <Outro />
         <Footer />
       </MainContainer>
+      <PinnedAnnouncementPopup />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "styled-components";
 import "./index.css";
-import initMocks from "./mocks/index";
 import { theme } from "./shared/styles/designSystem";
 import { PATH, RECRUITING_RESULT_ROUTE_ID } from "./shared/routes/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -160,10 +159,6 @@ const router = createBrowserRouter([
   },
   { path: ANNOUNCEMENT, element: <Announcement /> },
 ]);
-
-if (import.meta.env.DEV && import.meta.env.VITE_API_TYPE === "MSW") {
-  await initMocks();
-}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

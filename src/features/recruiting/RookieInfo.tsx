@@ -93,7 +93,7 @@ const RookieInfoContainer = styled.section`
   align-items: center;
   gap: 10px;
   align-self: stretch;
-  background: ${({ theme }) => theme.colors.grey || "#efebeb"};
+  background: ${({ theme }) => theme.colors.gray};
 `;
 
 const RookieInfoContent = styled.div`

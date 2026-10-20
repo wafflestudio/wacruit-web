@@ -52,14 +52,10 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
-    "msw": "^1.2.2",
     "prettier": "^2.8.8",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
     "vite-plugin-svgr": "^4.5.0"
-  },
-  "msw": {
-    "workerDirectory": "public"
   }
 }

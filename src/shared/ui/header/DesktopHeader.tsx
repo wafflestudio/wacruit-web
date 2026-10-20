@@ -96,6 +96,7 @@ const NavButtonGroup = styled.div`
 
 const NavButton = styled.button<{ selected?: boolean }>`
   cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSizes[14]};
   color: ${({ selected, theme }) =>
     selected ? theme.colors.white : theme.colors.black[500]};
   transition: color 0.2s ease;

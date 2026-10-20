@@ -55,13 +55,13 @@ export const resumeLoader =
     })[] = [];
     question.items.forEach((item) => {
       const resumeIndex = resume.items.findIndex(
-        (resumeItem) => resumeItem.question_id === item.question_num,
+        (resumeItem) => resumeItem.question_id === item.id,
       );
       initialInputs.push({
         question_num: item.question_num,
         question_content: item.content,
         content_limit: item.content_limit,
-        question_id: item.question_num,
+        question_id: item.id,
         answer: resumeIndex !== -1 ? resume.items[resumeIndex].answer : "",
       });
     });
