@@ -69,10 +69,17 @@ const ensureAdminAccess = async (
 export const adminLoader = (queryClient: QueryClient) => () =>
   ensureAdminAccess(queryClient, PATH.ADMIN);
 
+export const adminPreregistrationLoader = (queryClient: QueryClient) => () =>
+  ensureAdminAccess(queryClient, PATH.ADMIN_PREREGISTRATION);
+
 export const recruitingResultLoader = (queryClient: QueryClient) => () =>
   ensureAdminAccess(queryClient, PATH.RECRUITING_RESULT);
 
 export type AdminLoaderReturnType = LoaderReturnType<typeof adminLoader>;
+
+export type AdminPreregistrationLoaderReturnType = LoaderReturnType<
+  typeof adminPreregistrationLoader
+>;
 
 export type RecruitingResultLoaderReturnType = LoaderReturnType<
   typeof recruitingResultLoader

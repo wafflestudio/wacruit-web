@@ -26,9 +26,12 @@ export default function Admin() {
             <MenuHint>리크루팅별 지원자의 제출 내역을 확인합니다.</MenuHint>
           </MenuButton>
 
-          <MenuButton type="button" disabled>
+          <MenuButton
+            type="button"
+            onClick={() => navigate(PATH.ADMIN_PREREGISTRATION)}
+          >
             <MenuLabel>사전등록 메일 전송</MenuLabel>
-            <MenuHint>준비 중입니다.</MenuHint>
+            <MenuHint>사전등록자에게 모집 시작 안내 메일을 보냅니다.</MenuHint>
           </MenuButton>
         </MenuList>
       </Main>
