@@ -39,18 +39,24 @@ export type PreRegisterUpdate = Partial<
 >;
 
 export type PreRegisterEmailAttachment = {
-  filename: string;
+  file_name: string;
   content_type: string;
-  content: string;
+  content_base64: string;
+};
+
+// 메일 HTML의 <img src="cid:{content_id}">로 참조한다. content_id에 cid: 접두사는 넣지 않는다
+export type PreRegisterEmailInlineImage = PreRegisterEmailAttachment & {
+  content_id: string;
 };
 
 export type PreRegisterEmailSend = {
   subject: string;
-  content: string;
+  content?: string;
   html_content?: string;
   pre_registration_id?: number;
   active_only?: boolean;
   attachments?: PreRegisterEmailAttachment[];
+  inline_images?: PreRegisterEmailInlineImage[];
 };
 
 export type PreRegisterEmailSendResponse = {

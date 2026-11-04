@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import {
   Outlet,
   useLoaderData,
@@ -12,21 +12,28 @@ import { AdminPreregistrationLoaderReturnType } from "./Loader/RecruitingResultL
 import { Forbidden } from "./RecruitingResult";
 import { usePreRegisterQuery } from "../apis/preregister/preregister.query";
 import {
-  PreRegisterEmailAttachment,
   PreRegisterResponse,
   PreRegisterUpdate,
 } from "../apis/preregister/preregister.types";
 import { isForbiddenError } from "../apis/utility";
 import Modal from "../components/Modal/Modal";
-import EmailBlockEditor, {
-  EmailBlockPreview,
-} from "../components/admin/EmailBlockEditor";
+import RichTextEditor from "../components/admin/RichTextEditor";
+import AttachmentManager from "../components/admin/AttachmentManager";
+import { useEmailImages } from "../components/admin/useEmailImages";
 import {
-  EmailBlock,
-  blocksToImages,
-  blocksToText,
-  createTextBlock,
-} from "../components/admin/emailBlocks";
+  AttachedImage,
+  MAX_ATTACHMENTS,
+  MAX_EMAIL_BYTES,
+  estimateEmailBytes,
+  formatFileSize,
+  htmlToText,
+  toEmailHtml,
+  toPreviewHtml,
+} from "../components/admin/emailContent";
+import HtmlPanel, {
+  HtmlEmailPreview,
+  HtmlPanelView,
+} from "../components/admin/HtmlEmailEditor";
 import useModals from "../components/Modal/useModals";
 
 const USER_PAGE_SIZE = 50;
@@ -386,20 +393,14 @@ function PreregistrationUsers({
   );
 }
 
-const fileToAttachment = (file: File): Promise<PreRegisterEmailAttachment> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      resolve({
-        filename: file.name,
-        content_type: file.type,
-        content: dataUrl.slice(dataUrl.indexOf(",") + 1),
-      });
-    };
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
+const toAttachmentPayload = ({ file, base64 }: AttachedImage) => ({
+  file_name: file.name,
+  content_type: file.type,
+  content_base64: base64,
+});
+
+const DISCARD_HTML_CONFIRM =
+  "HTML에서 직접 수정한 내용이 사라집니다. 텍스트 편집기로 돌아갈까요?";
 
 /** 사전등록 신청자 전원에게 메일을 보낸다. 작성 → 확인 → 결과 순으로 진행한다 */
 function PreregistrationEmailModal({
@@ -413,42 +414,79 @@ function PreregistrationEmailModal({
   const { mutate, data, isLoading, isError, isSuccess, reset } =
     usePostPreRegisterEmail();
   const [subject, setSubject] = useState("");
-  const [blocks, setBlocks] = useState<EmailBlock[]>(() => [createTextBlock()]);
+  const [body, setBody] = useState("");
+  const [view, setView] = useState<HtmlPanelView>("preview");
+  // HTML을 직접 수정하는 동안에는 텍스트 편집기 대신 html 상태가 발송된다
+  const [isHtmlEditing, setIsHtmlEditing] = useState(false);
+  const [html, setHtml] = useState("");
+  // 직접 수정을 시작할 때의 HTML. 이와 다르면 돌아갈 때 수정 내용이 사라진다고 확인한다
+  const initialHtmlRef = useRef("");
   const [isConfirming, setIsConfirming] = useState(false);
-  const [isEncoding, setIsEncoding] = useState(false);
-  const [isEncodeError, setIsEncodeError] = useState(false);
-  const isSending = isEncoding || isLoading;
-  const content = blocksToText(blocks);
+  const images = useEmailImages((inlineImages) =>
+    isHtmlEditing ? html : toEmailHtml(body, inlineImages),
+  );
+  const { emailHtml: htmlContent, attachments, usedInlineImages } = images;
+  const content = htmlToText(htmlContent);
+  const previewHtml = toPreviewHtml(htmlContent, images.inlineImages);
+  const emailBytes = estimateEmailBytes(
+    [subject, content, htmlContent],
+    [...attachments, ...usedInlineImages].map(({ base64 }) => base64.length),
+  );
+  // 용량 초과는 서버가 발송 접수 뒤에 검사해 조용히 실패하므로 여기서 막는다
+  const problems = [
+    images.missingCids.length > 0 &&
+      `HTML이 참조하는 본문 이미지(cid: ${images.missingCids.join(
+        ", ",
+      )})가 없습니다.`,
+    images.imageCount > MAX_ATTACHMENTS &&
+      `이미지는 본문과 첨부를 합쳐 최대 ${MAX_ATTACHMENTS}개까지 보낼 수 있습니다.`,
+    emailBytes > MAX_EMAIL_BYTES &&
+      "메일 용량이 2MB를 넘습니다. 이미지를 줄여주세요.",
+  ].filter((problem): problem is string => !!problem);
+  // 이미지 배너만 있는 HTML처럼 텍스트가 없어도 발송할 수 있게 HTML 원문으로 판단한다
+  const canProceed =
+    !!subject.trim() && !!htmlContent.trim() && problems.length === 0;
+
+  // 텍스트 편집기 내용을 HTML로 옮겨 직접 수정한다. HTML을 텍스트 편집기로 되돌리는 변환은 하지 않는다
+  const startHtmlEditing = () => {
+    const generated = toEmailHtml(body, images.inlineImages);
+    initialHtmlRef.current = generated;
+    setHtml(generated);
+    setIsHtmlEditing(true);
+  };
+
+  const stopHtmlEditing = () => {
+    if (
+      html !== initialHtmlRef.current &&
+      !window.confirm(DISCARD_HTML_CONFIRM)
+    )
+      return;
+    setIsHtmlEditing(false);
+  };
 
   const toConfirm = (e: FormEvent) => {
     e.preventDefault();
-    if (!subject.trim() || !content.trim()) return;
+    if (!canProceed) return;
     setIsConfirming(true);
   };
 
-  const send = async () => {
-    setIsEncodeError(false);
-    setIsEncoding(true);
-    let attachments: PreRegisterEmailAttachment[];
-    try {
-      attachments = await Promise.all(
-        blocksToImages(blocks).map(fileToAttachment),
-      );
-    } catch {
-      setIsEncodeError(true);
-      return;
-    } finally {
-      setIsEncoding(false);
-    }
-
+  const send = () =>
     mutate({
       subject: subject.trim(),
       content,
+      html_content: htmlContent,
       pre_registration_id: preregistration.id,
       active_only: false,
-      ...(attachments.length > 0 && { attachments }),
+      ...(attachments.length > 0 && {
+        attachments: attachments.map(toAttachmentPayload),
+      }),
+      ...(usedInlineImages.length > 0 && {
+        inline_images: usedInlineImages.map((image) => ({
+          ...toAttachmentPayload(image),
+          content_id: image.cid,
+        })),
+      }),
     });
-  };
 
   if (isSuccess && data) {
     return (
@@ -463,6 +501,8 @@ function PreregistrationEmailModal({
           <Warning>
             한 번에 보낼 수 있는 인원({data.recipient_limit}명)을 넘어{" "}
             {data.total_count - data.queued_count}명에게는 발송되지 않았습니다.
+            같은 메일을 다시 발송하면 남은 신청자가 아니라 이미 받은 신청자에게
+            중복으로 발송됩니다.
           </Warning>
         )}
         <ModalFooter>
@@ -484,13 +524,16 @@ function PreregistrationEmailModal({
         </ModalDescription>
         <Preview>
           <PreviewSubject>{subject.trim()}</PreviewSubject>
-          <EmailBlockPreview blocks={blocks} />
+          <HtmlEmailPreview html={previewHtml} />
         </Preview>
-        {(isError || isEncodeError) && (
+        {attachments.length > 0 && (
+          <PreviewAttachments>
+            첨부파일: {attachments.map(({ file }) => file.name).join(", ")}
+          </PreviewAttachments>
+        )}
+        {isError && (
           <FormMessage $error>
-            {isEncodeError
-              ? "첨부 이미지를 읽지 못했습니다. 이미지를 다시 첨부해주세요."
-              : "메일을 발송하지 못했습니다. 다시 시도해주세요."}
+            메일을 발송하지 못했습니다. 다시 시도해주세요.
           </FormMessage>
         )}
         <ModalFooter>
@@ -498,15 +541,14 @@ function PreregistrationEmailModal({
             type="button"
             onClick={() => {
               reset();
-              setIsEncodeError(false);
               setIsConfirming(false);
             }}
-            disabled={isSending}
+            disabled={isLoading}
           >
             이전
           </SecondaryButton>
-          <PrimaryButton type="button" onClick={send} disabled={isSending}>
-            {isSending ? "발송 중..." : "발송"}
+          <PrimaryButton type="button" onClick={send} disabled={isLoading}>
+            {isLoading ? "발송 중..." : "발송"}
           </PrimaryButton>
         </ModalFooter>
       </ModalCard>
@@ -514,7 +556,7 @@ function PreregistrationEmailModal({
   }
 
   return (
-    <ModalCard as="form" onSubmit={toConfirm}>
+    <ModalCard as="form" onSubmit={toConfirm} $wide>
       <ModalTitle>메일 작성</ModalTitle>
       <ModalDescription>
         {preregistration.generation} 사전등록 신청자 전원에게 발송됩니다.
@@ -529,18 +571,65 @@ function PreregistrationEmailModal({
           required
         />
       </Field>
-      <Field>
-        <FieldLabel as="span">본문</FieldLabel>
-        <EmailBlockEditor blocks={blocks} onChange={setBlocks} />
-      </Field>
+      <Composer>
+        <Field>
+          <ComposerHeader>
+            <FieldLabel as="span">본문</FieldLabel>
+          </ComposerHeader>
+          {isHtmlEditing ? (
+            <HtmlEditingNotice>
+              <p>
+                HTML을 직접 수정하고 있습니다. 오른쪽 코드가 그대로 발송되며,
+                텍스트 편집기 내용은 발송되지 않습니다.
+              </p>
+              <SecondaryButton type="button" onClick={stopHtmlEditing}>
+                텍스트 편집기로 돌아가기
+              </SecondaryButton>
+            </HtmlEditingNotice>
+          ) : (
+            <RichTextEditor
+              html={body}
+              onChange={setBody}
+              onImageFiles={async (files) =>
+                (await images.addInlineImages(files)).map(({ url }) => url)
+              }
+              isImageFull={images.isFull}
+              placeholder="메일 본문을 입력하세요"
+            />
+          )}
+          <AttachmentManager {...images} />
+          <SizeInfo $error={emailBytes > MAX_EMAIL_BYTES}>
+            메일 용량 약 {formatFileSize(emailBytes)} /{" "}
+            {formatFileSize(MAX_EMAIL_BYTES)}
+          </SizeInfo>
+          {problems.map((problem) => (
+            <FormMessage key={problem} $error>
+              {problem}
+            </FormMessage>
+          ))}
+        </Field>
+        <HtmlPanel
+          html={htmlContent}
+          previewHtml={previewHtml}
+          view={view}
+          onViewChange={setView}
+          editable={isHtmlEditing}
+          onChange={setHtml}
+          action={
+            view === "code" &&
+            !isHtmlEditing && (
+              <TextButton type="button" onClick={startHtmlEditing}>
+                직접 수정
+              </TextButton>
+            )
+          }
+        />
+      </Composer>
       <ModalFooter>
         <SecondaryButton type="button" onClick={onClose}>
           취소
         </SecondaryButton>
-        <PrimaryButton
-          type="submit"
-          disabled={!subject.trim() || !content.trim()}
-        >
+        <PrimaryButton type="submit" disabled={!canProceed}>
           다음
         </PrimaryButton>
       </ModalFooter>
@@ -902,11 +991,11 @@ const PageInfo = styled.span`
   color: ${({ theme }) => theme.colors.black[500]};
 `;
 
-const ModalCard = styled.div`
+const ModalCard = styled.div<{ $wide?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  width: 56rem;
+  width: ${({ $wide }) => ($wide ? "112rem" : "56rem")};
   max-width: calc(100vw - 4rem);
   max-height: calc(100vh - 8rem);
   overflow-y: auto;
@@ -950,6 +1039,71 @@ const Preview = styled.div`
   padding: 2rem;
   border-radius: 0.8rem;
   background: ${({ theme }) => theme.colors.black[100]};
+`;
+
+const Composer = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.4rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+// 오른쪽 패널의 미리보기/코드 토글과 높이를 맞춘다
+const ComposerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  min-height: 2.8rem;
+`;
+
+const HtmlEditingNotice = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 1.6rem;
+  border-radius: 0.8rem;
+  background: ${({ theme }) => theme.colors.black[100]};
+
+  p {
+    margin: 0;
+    font-size: ${({ theme }) => theme.fontSizes[14]};
+    line-height: 160%;
+    color: ${({ theme }) => theme.colors.black[700]};
+  }
+`;
+
+const TextButton = styled.button`
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: none;
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  color: ${({ theme }) => theme.colors.black[700]};
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.black[900]};
+  }
+`;
+
+const SizeInfo = styled.p<{ $error: boolean }>`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSizes[12]};
+  color: ${({ theme, $error }) =>
+    $error ? theme.colors.pink : theme.colors.black[500]};
+`;
+
+const PreviewAttachments = styled.p`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSizes[13]};
+  color: ${({ theme }) => theme.colors.black[500]};
+  word-break: break-all;
 `;
 
 const PreviewSubject = styled.p`
